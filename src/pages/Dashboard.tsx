@@ -1,0 +1,623 @@
+import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../hooks/useAuth'
+import { Button } from '../components/ui/Button'
+import { Card } from '../components/ui/Card'
+import { RankBadge } from '../components/RankBadge'
+import { SEASONS } from '../data/mockData'
+import { formatWealth } from '../types/game'
+import { supabase } from '../lib/supabase'
+import { TutorialModal } from '../components/TutorialModal'
+
+type Tab = 'home' | 'leaderboard' | 'contracts' | 'profile'
+
+
+interface LeaderboardEntry {
+  id: string
+  user_id: string
+  username: string
+  wins: number
+  losses: number
+  total_games: number
+  highest_net_worth: number
+}
+
+export function Dashboard() {
+  const { profile, logout } = useAuth()
+  const navigate = useNavigate()
+  const [tab, setTab] = useState<Tab>('home')
+  const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([])
+  const [leaderboardLoading, setLeaderboardLoading] = useState(false)
+  const [showTutorial, setShowTutorial] = useState(false)
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true)
+  const [onlineUsers, setOnlineUsers] = useState(() => Math.floor(Math.random() * 301) + 200)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setOnlineUsers(prev => {
+        const diff = Math.random() > 0.5 ? 1 : -1
+        const changeAmount = Math.floor(Math.random() * 4) + 1
+        return Math.max(200, Math.min(500, prev + (diff * changeAmount)))
+      })
+    }, 15000)
+    return () => clearInterval(interval)
+  }, [])
+
+  useEffect(() => {
+    if (localStorage.getItem('justRegistered') === 'true') {
+      setShowTutorial(true)
+      localStorage.removeItem('justRegistered')
+      localStorage.setItem('hasSeenTutorial', 'true')
+    }
+  }, [])
+
+  const handleLogout = async () => {
+    await logout()
+    navigate('/')
+  }
+
+  useEffect(() => {
+    if (tab === 'leaderboard') fetchLeaderboard()
+  }, [tab])
+
+  const fetchLeaderboard = async () => {
+    setLeaderboardLoading(true)
+    const { data } = await supabase
+      .from('leaderboard')
+      .select('*')
+      .order('wins', { ascending: false })
+      .limit(50)
+    setLeaderboard(data ?? [])
+    setLeaderboardLoading(false)
+  }
+
+  const rp = profile?.rank_points ?? 0
+  const coins = profile?.daanik_coins ?? 100
+  const currentSeason = SEASONS[0]
+
+
+  return (
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+      {showTutorial && (
+        <TutorialModal onClose={() => {
+          setShowTutorial(false)
+          localStorage.setItem('hasSeenTutorial', 'true')
+        }} />
+      )}
+      {/* Top Nav */}
+      <nav style={{
+        position: 'sticky', top: 0, zIndex: 40,
+        background: 'rgba(255,255,255,0.7)', backdropFilter: 'blur(12px)',
+        borderBottom: '1px solid var(--green-primary)',
+        padding: '0 20px',
+        height: 60,
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <button 
+            className="desktop-only"
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)} 
+            style={{ background: 'transparent', border: 'none', color: 'var(--text-dark)', cursor: 'pointer', fontSize: 25, display: 'flex', alignItems: 'center', padding: 4 }}
+          >
+            ☰
+          </button>
+          <div style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: 'clamp(18px, 5vw, 23px)', color: 'var(--green-primary)' }}>PAISA WAR</div>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(8px, 2vw, 16px)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 4, background: 'rgba(0,0,0,0.05)', border: '1px solid rgba(0,0,0,0.1)', borderRadius: 8, padding: '5px clamp(6px, 2vw, 12px)' }}>
+            <span style={{ fontSize: 'clamp(14px, 4vw, 18px)' }}>🪙</span>
+            <span style={{ fontSize: 'clamp(14px, 4vw, 18px)', fontWeight: 700, color: 'var(--orange-dark)', whiteSpace: 'nowrap' }}>{coins.toLocaleString()} DC</span>
+          </div>
+          <button onClick={handleLogout} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: 'clamp(14px, 4vw, 16px)', fontFamily: 'inherit', whiteSpace: 'nowrap' }}>Sign Out</button>
+        </div>
+      </nav>
+
+      <div style={{ display: 'flex', flex: 1 }}>
+        {/* Sidebar (Desktop) */}
+        {isSidebarOpen && (
+        <aside className="glass-panel desktop-flex" style={{
+          width: 220, flexShrink: 0,
+          borderTop: 'none', borderLeft: 'none', borderBottom: 'none',
+          padding: '24px 16px',
+          flexDirection: 'column', gap: 6,
+          position: 'sticky', top: 60, height: 'calc(100vh - 60px)',
+          overflowY: 'auto',
+          borderRadius: 0,
+          borderRight: '1px solid var(--green-primary)',
+        }}>
+          {([
+            { id: 'home', label: 'Home', icon: '🏠' },
+            { id: 'leaderboard', label: 'Leaderboard', icon: '🏆' },
+            { id: 'contracts', label: 'Contracts', icon: '📋' },
+            { id: 'profile', label: 'Profile', icon: '👤' },
+          ] as const).map(item => (
+            <button
+              key={item.id}
+              onClick={() => setTab(item.id)}
+              style={{
+                display: 'flex', alignItems: 'center', gap: 10,
+                padding: '12px 16px', borderRadius: 12, border: 'none',
+                background: tab === item.id ? 'rgba(0,0,0,0.05)' : 'transparent',
+                color: tab === item.id ? 'var(--green-primary)' : 'var(--text-muted)',
+                cursor: 'pointer', fontSize: 16, fontWeight: 600, fontFamily: 'inherit',
+                textAlign: 'left', width: '100%',
+                transition: 'all 0.15s',
+              }}
+            >
+              <span style={{ fontSize: 20 }}>{item.icon}</span>
+              {item.label}
+            </button>
+          ))}
+
+          <div style={{ marginTop: 'auto', padding: '12px 0', borderTop: '1px solid var(--green-primary)' }}>
+            <button
+              onClick={() => setShowTutorial(true)}
+              style={{
+                display: 'flex', alignItems: 'center', gap: 10,
+                padding: '12px 16px', borderRadius: 12,
+                background: 'rgba(224,80,32,0.05)', border: '1px solid var(--orange-primary)',
+                color: 'var(--orange-primary)',
+                cursor: 'pointer', fontSize: 16, fontWeight: 700, fontFamily: 'inherit',
+                textAlign: 'left', width: '100%', marginBottom: 16,
+                transition: 'all 0.15s',
+              }}
+            >
+              <span style={{ fontSize: 20 }}>📖</span>
+              How to Play
+            </button>
+            {profile && <RankBadge rp={rp} showProgress size="sm" />}
+          </div>
+        </aside>
+        )}
+
+        {/* Main Content */}
+        <main style={{ flex: 1, minWidth: 0, padding: 'clamp(12px, 3vw, 24px)', overflowY: 'auto', animation: 'fadeIn 0.3s ease', paddingBottom: '90px' }}>
+          {tab === 'home' && <HomeTab navigate={navigate} profile={profile} currentSeason={currentSeason} onlineUsers={onlineUsers} />}
+          {tab === 'leaderboard' && <LeaderboardTab leaderboard={leaderboard} loading={leaderboardLoading} profile={profile} onRefresh={fetchLeaderboard} />}
+          {tab === 'contracts' && <ContractsTab />}
+          {tab === 'profile' && <ProfileTab />}
+        </main>
+      </div>
+
+      {/* Bottom Nav (Mobile) */}
+      <nav className="glass-panel mobile-flex bottom-nav" style={{
+        position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 50,
+        padding: '8px 16px',
+        justifyContent: 'space-around', alignItems: 'center',
+        borderLeft: 'none', borderRight: 'none', borderBottom: 'none',
+        borderRadius: 0,
+        flexWrap: 'nowrap',
+        display: 'none', // Hidden by default, shown by .mobile-flex
+      }}>
+        {([
+          { id: 'home', label: 'Home', icon: '🏠' },
+          { id: 'leaderboard', label: 'Leaderboard', icon: '🏆' },
+          { id: 'contracts', label: 'Contracts', icon: '📋' },
+          { id: 'profile', label: 'Profile', icon: '👤' },
+        ] as const).map(item => (
+          <button
+            key={item.id}
+            className="bottom-nav-btn"
+            onClick={() => setTab(item.id)}
+            style={{
+              display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4,
+              padding: '8px', border: 'none', background: 'transparent',
+              color: tab === item.id ? 'var(--green-primary)' : 'var(--text-muted)',
+              cursor: 'pointer', fontSize: 13, fontWeight: 600, fontFamily: 'inherit',
+              transition: 'all 0.15s',
+            }}
+          >
+            <span style={{ fontSize: 25, marginBottom: 2 }}>{item.icon}</span>
+            {item.label}
+          </button>
+        ))}
+      </nav>
+    </div>
+  )
+}
+
+function HomeTab({ navigate, profile, currentSeason, onlineUsers }: { navigate: (path: string) => void; profile: ReturnType<typeof useAuth>['profile']; currentSeason: typeof SEASONS[0], onlineUsers: number }) {
+  const [seasonTimeLeft, setSeasonTimeLeft] = useState('Calculating...')
+
+  useEffect(() => {
+    const end = new Date()
+    end.setDate(end.getDate() + 12)
+    end.setHours(end.getHours() + 4)
+    const endTime = end.getTime()
+
+    const updateTimer = () => {
+      const diff = endTime - Date.now()
+      if (diff <= 0) {
+        setSeasonTimeLeft('Ended')
+        return
+      }
+      const d = Math.floor(diff / (1000 * 60 * 60 * 24))
+      const h = Math.floor((diff / (1000 * 60 * 60)) % 24)
+      setSeasonTimeLeft(`${d}d ${h}h`)
+    }
+    updateTimer()
+    const interval = setInterval(updateTimer, 60000)
+    return () => clearInterval(interval)
+  }, [])
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 24, maxWidth: 900, width: '100%', margin: '0 auto' }}>
+      {/* Welcome */}
+      <div style={{ background: 'rgba(255,255,255,0.4)', border: '1px solid rgba(255,255,255,0.6)', borderRadius: 16, padding: '24px 28px', boxShadow: '0 8px 32px rgba(0,0,0,0.05)' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 16 }}>
+          <div>
+            <h1 style={{ fontSize: 30, fontWeight: 800, color: 'var(--text-dark)', fontFamily: 'var(--font-display)', marginBottom: 4 }}>
+              Welcome, {profile?.username ?? 'Mogul'} 👋
+            </h1>
+            <p style={{ color: 'var(--text-muted)', fontSize: 18 }}>Ready to build your empire?</p>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 14, color: '#10b981', fontWeight: 700, letterSpacing: '0.02em', marginTop: 12 }}>
+              <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#10b981', boxShadow: '0 0 8px rgba(16, 185, 129, 0.8)', animation: 'pulse 2s infinite' }} />
+              {onlineUsers} Players Online Now
+            </div>
+          </div>
+          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+            <Button variant="gold" size="lg" onClick={() => navigate('/multiplayer')}>Play Online</Button>
+            <Button variant="primary" onClick={() => navigate('/game')}>vs AI</Button>
+          </div>
+        </div>
+      </div>
+
+      {/* Stats Row */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4">
+        {[
+          { label: 'Games Played', value: (profile?.games_played ?? 0).toString(), icon: '🎮', color: 'var(--blue-deep)' },
+          { label: 'Games Won', value: (profile?.games_won ?? 0).toString(), icon: '🏆', color: 'var(--green-primary)' },
+          { label: 'Win Streak', value: `${profile?.win_streak ?? 0}`, icon: '🔥', color: 'var(--orange-dark)' },
+          { label: 'Total XP', value: (profile?.total_xp ?? 0).toLocaleString(), icon: '⭐', color: 'var(--orange-dark)' },
+        ].map(stat => (
+          <Card key={stat.label} className="p-2 sm:p-4">
+            <div className="text-xl sm:text-2xl" style={{ marginBottom: 6 }}>{stat.icon}</div>
+            <div className="text-lg sm:text-2xl font-bold" style={{ color: stat.color, fontFamily: 'var(--font-display)' }}>{stat.value}</div>
+            <div className="text-xs sm:text-sm" style={{ color: 'var(--text-muted)', marginTop: 2 }}>{stat.label}</div>
+          </Card>
+        ))}
+      </div>
+
+      {/* Season Banner */}
+      <Card glow="gold" style={{ padding: 20 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
+          <div>
+            <div style={{ fontSize: 15, color: 'var(--orange-dark)', fontWeight: 700, letterSpacing: '0.05em', marginBottom: 6 }}>ACTIVE SEASON</div>
+            <h2 style={{ fontSize: 25, fontWeight: 800, color: 'var(--text-dark)', fontFamily: 'var(--font-display)', marginBottom: 4 }}>
+              Season {currentSeason.number}: {currentSeason.name}
+            </h2>
+            <p style={{ color: 'var(--text-muted)', fontSize: 16 }}>{currentSeason.theme}</p>
+            <div style={{ marginTop: 8, padding: '4px 10px', borderRadius: 6, background: 'rgba(224,80,32,0.08)', border: '1px solid var(--orange-dark)', display: 'inline-block', fontSize: 15, color: 'var(--orange-dark)', fontWeight: 600 }}>
+              ⚡ {currentSeason.special_rule}
+            </div>
+          </div>
+          <div style={{ textAlign: 'right' }}>
+            <div style={{ fontSize: 16, color: 'var(--text-muted)', marginBottom: 4 }}>Season ends in</div>
+            <div style={{ fontSize: 35, fontWeight: 800, color: 'var(--orange-dark)', fontFamily: 'var(--font-display)' }}>{seasonTimeLeft}</div>
+          </div>
+        </div>
+      </Card>
+
+      {/* Quick Play Options */}
+      <div>
+        <h2 className="text-xl sm:text-2xl font-bold" style={{ color: 'var(--text-dark)', marginBottom: 16, fontFamily: 'var(--font-display)' }}>Game Modes</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+          {[
+            { title: 'Play Online', desc: 'Create or join a room. Play against real players worldwide.', icon: '🌐', action: () => navigate('/multiplayer'), color: 'var(--orange-dark)' },
+            { title: 'vs AI', desc: 'Practice against adaptive AI opponents.', icon: '🤖', action: () => navigate('/game?mode=ai'), color: 'var(--green-primary)' },
+            { title: 'Ranked Match', desc: 'Earn/lose RP. Climb the Mogul ladder.', icon: '🏆', action: () => navigate('/game?mode=ranked'), color: 'var(--blue-deep)' },
+          ].map(m => (
+            <Card key={m.title} hoverable onClick={m.action} className="p-3 sm:p-4" style={{ cursor: 'pointer' }}>
+              <div className="text-2xl sm:text-3xl" style={{ marginBottom: 12 }}>{m.icon}</div>
+              <h3 className="text-lg sm:text-xl font-bold" style={{ color: 'var(--text-dark)', marginBottom: 6, fontFamily: 'var(--font-display)' }}>{m.title}</h3>
+              <p className="text-sm sm:text-base" style={{ color: 'var(--text-muted)', lineHeight: 1.5, marginBottom: 12 }}>{m.desc}</p>
+              <div className="text-xs sm:text-sm font-bold" style={{ display: 'inline-block', padding: '4px 12px', borderRadius: 6, background: `${m.color}15`, color: m.color, border: `1px solid ${m.color}35` }}>
+                Play Now
+              </div>
+            </Card>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function LeaderboardTab({ leaderboard, loading, profile, onRefresh }: { leaderboard: LeaderboardEntry[]; loading: boolean; profile: ReturnType<typeof useAuth>['profile']; onRefresh: () => void }) {
+  return (
+    <div style={{ maxWidth: 700, width: '100%', margin: '0 auto' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+        <h2 style={{ fontSize: 28, fontWeight: 800, color: 'var(--text-dark)', fontFamily: 'Space Grotesk, sans-serif' }}>Leaderboard</h2>
+        <button onClick={onRefresh} style={{ background: 'rgba(0,0,0,0.05)', border: '1px solid rgba(0,0,0,0.1)', borderRadius: 8, padding: '6px 14px', color: 'var(--text-muted)', cursor: 'pointer', fontSize: 16, fontFamily: 'inherit' }}>
+          Refresh
+        </button>
+      </div>
+      <Card>
+        {loading ? (
+          <div style={{ textAlign: 'center', padding: '40px 0', color: 'var(--text-muted)' }}>
+            <div style={{ width: 28, height: 28, border: '2px solid rgba(0,0,0,0.1)', borderTopColor: 'var(--orange-primary)', borderRadius: '50%', animation: 'spin 0.8s linear infinite', margin: '0 auto 12px' }} />
+            Loading leaderboard...
+          </div>
+        ) : leaderboard.length === 0 ? (
+          <div style={{ textAlign: 'center', padding: '40px 0', color: 'var(--text-muted)' }}>
+            <div style={{ fontSize: 40, marginBottom: 12 }}>🏆</div>
+            No entries yet. Be the first to play!
+          </div>
+        ) : (
+          <div className="scroll-x" style={{ width: '100%' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 600 }}>
+            <thead>
+              <tr style={{ borderBottom: '1px solid rgba(0,0,0,0.1)' }}>
+                {['Rank', 'Player', 'Wins', 'Games', 'Win %', 'Best Wealth'].map(h => (
+                  <th key={h} style={{ padding: 'clamp(8px, 2vw, 12px)', textAlign: 'left', fontSize: 15, color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {leaderboard.map((player, i) => {
+                const isMe = player.username === profile?.username
+                const winRate = player.total_games > 0 ? Math.round((player.wins / player.total_games) * 100) : 0
+                return (
+                  <tr key={player.id} style={{ borderBottom: '1px solid rgba(0,0,0,0.05)', background: isMe ? 'rgba(32,160,96,0.08)' : 'transparent' }}>
+                    <td style={{ padding: 'clamp(8px, 2vw, 12px)', fontSize: 'clamp(15px, 4vw, 18px)', fontWeight: 700, color: i === 0 ? 'var(--orange-dark)' : i === 1 ? 'var(--text-muted)' : i === 2 ? 'var(--orange-primary)' : 'var(--text-muted)' }}>
+                      {i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `#${i + 1}`}
+                    </td>
+                    <td style={{ padding: 'clamp(8px, 2vw, 12px)', fontSize: 'clamp(15px, 4vw, 18px)', color: 'var(--text-dark)', fontWeight: isMe ? 700 : 400 }}>
+                      {player.username} {isMe && <span style={{ fontSize: 14, color: 'var(--green-primary)', marginLeft: 6 }}>(you)</span>}
+                    </td>
+                    <td style={{ padding: 'clamp(8px, 2vw, 12px)', fontSize: 'clamp(15px, 4vw, 18px)', fontWeight: 700, color: 'var(--green-primary)' }}>{player.wins}</td>
+                    <td style={{ padding: 'clamp(8px, 2vw, 12px)', fontSize: 'clamp(14px, 3.5vw, 16px)', color: 'var(--text-muted)' }}>{player.total_games}</td>
+                    <td style={{ padding: 'clamp(8px, 2vw, 12px)', fontSize: 'clamp(14px, 3.5vw, 16px)', color: winRate > 60 ? 'var(--green-primary)' : 'var(--text-muted)' }}>{winRate}%</td>
+                    <td style={{ padding: 'clamp(8px, 2vw, 12px)', fontSize: 'clamp(14px, 3.5vw, 16px)', color: 'var(--orange-dark)', fontWeight: 600 }}>{formatWealth(player.highest_net_worth)}</td>
+                  </tr>
+                )
+              })}
+            </tbody>
+            </table>
+          </div>
+        )}
+      </Card>
+    </div>
+  )
+}
+
+
+function ContractsTab() {
+  const { profile } = useAuth()
+  const [contracts, setContracts] = useState<any[]>([])
+  const [progressData, setProgressData] = useState<Record<string, { progress: number, completed: boolean }>>({})
+  const [resetTime, setResetTime] = useState('Calculating...')
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    async function fetchContracts() {
+      if (!profile) return
+      try {
+        const { data: activeContracts } = await supabase
+          .from('daily_contracts')
+          .select('*')
+          .gte('contract_date', new Date().toISOString().split('T')[0])
+        
+        if (activeContracts) setContracts(activeContracts)
+
+        const { data: pContracts } = await supabase
+          .from('player_contracts')
+          .select('*')
+          .eq('player_id', profile.id)
+
+        if (pContracts) {
+          const pMap: Record<string, { progress: number, completed: boolean }> = {}
+          for (const pc of pContracts) {
+            pMap[pc.contract_id] = { progress: pc.progress, completed: pc.completed }
+          }
+          setProgressData(pMap)
+        }
+      } catch (err) {
+        console.error('Error fetching contracts:', err)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchContracts()
+  }, [profile])
+
+  useEffect(() => {
+    const updateTimer = () => {
+      const now = new Date()
+      const tomorrow = new Date(now)
+      tomorrow.setHours(24, 0, 0, 0)
+      const diff = tomorrow.getTime() - now.getTime()
+      const h = Math.floor((diff / (1000 * 60 * 60)) % 24)
+      const m = Math.floor((diff / 1000 / 60) % 60)
+      setResetTime(`${h}h ${m}m`)
+    }
+    updateTimer()
+    const interval = setInterval(updateTimer, 60000)
+    return () => clearInterval(interval)
+  }, [])
+
+  const difficultyColors: Record<string, string> = { easy: '#10b981', medium: '#f59e0b', hard: '#ef4444' }
+
+  return (
+    <div style={{ maxWidth: 700 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+        <h2 style={{ fontSize: 28, fontWeight: 800, color: 'var(--text-dark)', fontFamily: 'Space Grotesk, sans-serif' }}>Daily Contracts</h2>
+        <div style={{ fontSize: 16, color: 'var(--text-muted)' }}>Resets in <span style={{ color: 'var(--orange-dark)', fontWeight: 700 }}>{resetTime}</span></div>
+      </div>
+
+      {loading ? (
+        <div style={{ textAlign: 'center', color: 'var(--text-muted)', padding: 40 }}>Loading active contracts...</div>
+      ) : contracts.length === 0 ? (
+        <Card style={{ padding: 24, textAlign: 'center', background: 'rgba(0,0,0,0.02)', borderColor: 'rgba(0,0,0,0.05)' }}>
+          <div style={{ color: 'var(--text-muted)' }}>No active contracts for today. Check back tomorrow!</div>
+        </Card>
+      ) : (
+        <>
+          {Object.keys(progressData).length === 0 && (
+            <Card style={{ padding: 24, textAlign: 'center', marginBottom: 20, background: 'rgba(59,130,246,0.05)', borderColor: 'rgba(59,130,246,0.2)' }}>
+              <div style={{ fontSize: 30, marginBottom: 8 }}>🎮</div>
+              <h3 style={{ fontSize: 20, fontWeight: 700, color: 'var(--blue-deep)', marginBottom: 4 }}>Start Your Journey</h3>
+              <p style={{ fontSize: 18, color: 'var(--text-muted)' }}>Play a game to start earning contract progress and unlock rewards!</p>
+            </Card>
+          )}
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            {contracts.map(contract => {
+              const progress = progressData[contract.id]?.progress ?? 0
+              const completed = progressData[contract.id]?.completed ?? false
+              const pct = Math.min(100, (progress / contract.requirement_value) * 100)
+              const color = difficultyColors[contract.difficulty] || '#3b82f6'
+
+              return (
+                <Card key={contract.id} style={{ padding: 20, borderColor: completed ? 'rgba(16,185,129,0.5)' : contract.is_weekly ? 'rgba(245,158,11,0.4)' : 'rgba(0,0,0,0.1)', background: completed ? 'rgba(16,185,129,0.05)' : contract.is_weekly ? 'rgba(245,158,11,0.04)' : 'rgba(255,255,255,0.5)' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12 }}>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+                        <span style={{ fontSize: 14, fontWeight: 700, padding: '2px 8px', borderRadius: 4, background: `${color}22`, color, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                          {contract.difficulty}
+                        </span>
+                        {contract.is_weekly && <span style={{ fontSize: 14, fontWeight: 700, padding: '2px 8px', borderRadius: 4, background: 'rgba(245,158,11,0.2)', color: '#d97706' }}>WEEKLY</span>}
+                        {completed && <span style={{ fontSize: 14, fontWeight: 700, color: '#059669' }}>✓ COMPLETE</span>}
+                      </div>
+                      <div style={{ fontSize: 19, fontWeight: 700, color: 'var(--text-dark)', marginBottom: 4, fontFamily: 'Space Grotesk, sans-serif' }}>{contract.title}</div>
+                      <div style={{ fontSize: 16, color: 'var(--text-muted)', marginBottom: 10 }}>{contract.description}</div>
+
+                      <div style={{ height: 4, background: 'rgba(0,0,0,0.06)', borderRadius: 2, overflow: 'hidden' }}>
+                        <div style={{ height: '100%', width: `${pct}%`, background: completed ? '#10b981' : color, borderRadius: 2, transition: 'width 0.5s ease' }} />
+                      </div>
+                      <div style={{ fontSize: 14, color: 'var(--text-muted)', marginTop: 4 }}>{Math.min(progress, contract.requirement_value)}/{contract.requirement_value}</div>
+                    </div>
+
+                    <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                      <div style={{ fontSize: 23, fontWeight: 800, color: 'var(--orange-dark)', fontFamily: 'Space Grotesk, sans-serif' }}>🪙 {contract.reward_dc}</div>
+                      {contract.reward_card_tier && (
+                        <div style={{ fontSize: 14, color: 'var(--text-muted)', marginTop: 2 }}>+ 1 {contract.reward_card_tier} card</div>
+                      )}
+                    </div>
+                  </div>
+                </Card>
+              )
+            })}
+          </div>
+        </>
+      )}
+    </div>
+  )
+}
+
+function ProfileTab() {
+  const { profile, logout, refreshProfile } = useAuth()
+  const [isEditingAvatar, setIsEditingAvatar] = useState(false)
+  const [updating, setUpdating] = useState(false)
+
+  const rp = profile?.rank_points ?? 0
+  const winRate = profile && profile.games_played > 0 ? Math.round((profile.games_won / profile.games_played) * 100) : 0
+  
+  // Use first character of username if no avatar is set, or generic fallback
+  const fallbackAvatar = profile?.username ? profile.username[0].toUpperCase() : '👤'
+  const avatar = profile?.avatar_url || fallbackAvatar
+
+  const AVATARS = ['😎', '👽', '🤖', '🦊', '🐉', '💎', '🤑', '🦁', '🦉', '🚀', '👑', '👻']
+
+  const handleUpdateAvatar = async (newAvatar: string) => {
+    if (!profile) return
+    setUpdating(true)
+    await supabase.from('profiles').update({ avatar_url: newAvatar }).eq('id', profile.id)
+    await refreshProfile()
+    setIsEditingAvatar(false)
+    setUpdating(false)
+  }
+
+  return (
+    <div style={{ maxWidth: 750, width: '100%', margin: '0 auto' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+        <h2 style={{ fontSize: 28, fontWeight: 800, color: 'var(--text-dark)', fontFamily: 'Space Grotesk, sans-serif' }}>Player Profile</h2>
+      </div>
+
+      <Card style={{ padding: 0, overflow: 'hidden', marginBottom: 32, border: '1px solid rgba(0,0,0,0.1)' }}>
+        {/* Banner */}
+        <div style={{ height: 140, background: 'linear-gradient(135deg, var(--green-primary), var(--green-deep))', position: 'relative' }}>
+           <div style={{ position: 'absolute', bottom: -45, left: 32, display: 'flex', alignItems: 'flex-end', gap: 20 }}>
+             <div 
+               onClick={() => setIsEditingAvatar(!isEditingAvatar)}
+               style={{ width: 100, height: 100, borderRadius: '50%', background: 'var(--card-paper)', border: '4px solid var(--gold)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 50, cursor: 'pointer', position: 'relative', boxShadow: '0 8px 16px rgba(0,0,0,0.15)', transition: 'transform 0.2s' }}
+               onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.05)'}
+               onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+             >
+               {avatar}
+               <div style={{ position: 'absolute', bottom: 0, right: 0, background: 'var(--orange-primary)', width: 32, height: 32, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, border: '3px solid var(--card-paper)', color: '#fff' }}>
+                 ✎
+               </div>
+             </div>
+           </div>
+        </div>
+
+        {/* Profile Info */}
+        <div style={{ padding: '60px clamp(16px, 4vw, 32px) 32px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 16 }}>
+            <div style={{ minWidth: 0, flex: 1 }}>
+              <h2 style={{ fontSize: 'clamp(24px, 6vw, 36px)', fontWeight: 800, color: 'var(--text-dark)', fontFamily: 'Space Grotesk, sans-serif', marginBottom: 8, letterSpacing: '-0.02em', wordBreak: 'break-all' }}>
+                {profile?.username ?? 'Unknown Player'}
+              </h2>
+              <RankBadge rp={rp} showProgress />
+            </div>
+            
+            <div style={{ textAlign: 'right', background: 'rgba(0,0,0,0.03)', padding: '12px 20px', borderRadius: 12, border: '1px solid rgba(0,0,0,0.05)' }}>
+              <div style={{ fontSize: 13, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 4, fontWeight: 700 }}>Total XP</div>
+              <div style={{ fontSize: 26, fontWeight: 800, color: 'var(--orange-dark)', fontFamily: 'Space Grotesk, sans-serif' }}>{(profile?.total_xp ?? 0).toLocaleString()} <span style={{fontSize:18}}>⭐</span></div>
+            </div>
+          </div>
+
+          {/* Avatar Selector */}
+          {isEditingAvatar && (
+            <div style={{ marginTop: 28, padding: 20, background: 'rgba(0,0,0,0.2)', borderRadius: 16, border: '1px solid rgba(255,255,255,0.05)' }}>
+              <div style={{ fontSize: 15, color: '#94a3b8', marginBottom: 16, fontWeight: 600 }}>Choose your avatar:</div>
+              <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+                {AVATARS.map(a => (
+                  <button
+                    key={a}
+                    onClick={() => handleUpdateAvatar(a)}
+                    disabled={updating}
+                    style={{ width: 52, height: 52, borderRadius: '50%', background: avatar === a ? 'rgba(59,130,246,0.2)' : 'rgba(255,255,255,0.05)', border: avatar === a ? '2px solid #3b82f6' : '1px solid rgba(255,255,255,0.1)', fontSize: 28, cursor: 'pointer', transition: 'all 0.2s', display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: updating ? 0.5 : 1 }}
+                    onMouseEnter={e => { if (avatar !== a) e.currentTarget.style.background = 'rgba(255,255,255,0.1)' }}
+                    onMouseLeave={e => { if (avatar !== a) e.currentTarget.style.background = 'rgba(255,255,255,0.05)' }}
+                  >
+                    {a}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </Card>
+
+      {/* Stats Grid */}
+      <h3 className="text-xl sm:text-2xl font-bold" style={{ color: 'var(--text-dark)', marginBottom: 20, fontFamily: 'Space Grotesk, sans-serif' }}>Career Stats</h3>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4" style={{ marginBottom: 40 }}>
+        {[
+          { label: 'DAANIK Coins', value: `${(profile?.daanik_coins ?? 0).toLocaleString()}`, icon: '🪙', color: '#f59e0b', bg: 'rgba(245,158,11,0.1)' },
+          { label: 'Win Rate', value: `${winRate}%`, icon: '🎯', color: winRate >= 50 ? '#10b981' : '#f43f5e', bg: winRate >= 50 ? 'rgba(16,185,129,0.1)' : 'rgba(244,63,94,0.1)' },
+          { label: 'Games Won', value: (profile?.games_won ?? 0).toString(), icon: '🏆', color: '#3b82f6', bg: 'rgba(59,130,246,0.1)' },
+          { label: 'Games Played', value: (profile?.games_played ?? 0).toString(), icon: '🎮', color: '#8b5cf6', bg: 'rgba(139,92,246,0.1)' },
+          { label: 'Best Win Streak', value: `${profile?.max_win_streak ?? 0}`, icon: '🔥', color: '#ef4444', bg: 'rgba(239,68,68,0.1)' },
+          { label: 'Current Streak', value: `${profile?.win_streak ?? 0}`, icon: '⚡', color: '#14b8a6', bg: 'rgba(20,184,166,0.1)' },
+        ].map(stat => (
+          <Card key={stat.label} className="p-3 sm:p-4 flex" style={{ alignItems: 'center', gap: '12px', background: 'var(--card-paper)', border: '1px solid rgba(0,0,0,0.08)' }}>
+            <div style={{ width: '48px', height: '48px', borderRadius: 16, background: stat.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, flexShrink: 0 }}>
+              {stat.icon}
+            </div>
+            <div>
+              <div className="text-xs sm:text-sm font-bold" style={{ color: 'var(--text-muted)', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{stat.label}</div>
+              <div className="text-xl sm:text-2xl font-bold" style={{ color: 'var(--text-dark)', fontFamily: 'Space Grotesk, sans-serif' }}>{stat.value}</div>
+            </div>
+          </Card>
+        ))}
+      </div>
+
+      <div style={{ borderTop: '1px solid rgba(0,0,0,0.1)', paddingTop: 32, display: 'flex', justifyContent: 'center' }}>
+        <Button variant="ghost" onClick={logout} style={{ color: '#dc2626', border: '1px solid rgba(220,38,38,0.3)', background: 'rgba(220,38,38,0.05)', padding: '12px 24px', fontSize: 16 }}>
+          Sign Out of Account
+        </Button>
+      </div>
+    </div>
+  )
+}
