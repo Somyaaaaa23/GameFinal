@@ -3,10 +3,11 @@ import { Button } from '../ui/Button'
 import { PlayerBoard } from './PlayerBoard'
 import { GameLog } from './GameLog'
 import { TurnTimer } from './TurnTimer'
-import type { GameState, GameCard } from '../../types/game'
+
 import { formatWealth } from '../../types/game'
 import { TURN_TIME_LIMIT_MS } from '../../lib/gameEngine'
-import type { GameBoardProps, UIPhase } from './GameBoard'
+import type { GameBoardProps } from './GameBoard'
+import { LevelHUD } from './LevelHUD'
 
 export function GameBoardMobile({
   gameState,
@@ -59,6 +60,13 @@ export function GameBoardMobile({
             )
           })}
         </div>
+
+        {/* Level HUD (if campaign level is active) */}
+        {gameState.levelState && (
+          <div style={{ padding: '0 16px', marginBottom: 16 }}>
+            <LevelHUD levelState={gameState.levelState} />
+          </div>
+        )}
 
         {/* Action panel */}
         <div className="glass-panel" style={{

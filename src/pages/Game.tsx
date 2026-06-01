@@ -1,14 +1,15 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams, useParams } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import { Button } from '../components/ui/Button'
 import { ForfeitModal } from '../components/ForfeitModal'
 import type { GameState, PlayerState, GameCard as GameCardType } from '../types/game'
 import { formatWealth } from '../types/game'
 import {
-  initGame, startDrawPhase, processDecision, processAction,
+  initGame, initLevelGame, startDrawPhase, processDecision, processAction,
   advanceTurn, doBotTurn, calculateRPChange, forceSkipTurn
 } from '../lib/gameEngine'
+import { ARTHA_YATRA_LEVELS } from '../data/levels'
 import { saveGameResult } from '../lib/auth'
 import { playSound } from '../lib/audio'
 import Confetti from 'react-confetti'
@@ -39,7 +40,8 @@ function GameClock({ startTime, timeLimit }: { startTime: number; timeLimit: num
 
 export function Game() {
   const [params] = useSearchParams()
-  const mode = params.get('mode') ?? 'ranked'
+  const { levelId } = useParams()
+  const mode = levelId ? 'campaign' : (params.get('mode') ?? 'ranked')
   const navigate = useNavigate()
   const { profile, refreshProfile } = useAuth()
 
@@ -69,10 +71,22 @@ export function Game() {
 
   const startGame = useCallback(() => {
     const humanName = profile?.username ?? 'You'
-    const state = initGame({ id: profile?.id ?? 'human', name: humanName }, botCount)
+    let state: GameState
+    if (levelId) {
+      const level = ARTHA_YATRA_LEVELS.find(l => l.id === levelId)
+      if (level) {
+        state = initLevelGame({ id: profile?.id ?? 'human', name: humanName }, level)
+      } else {
+        state = initGame({ id: profile?.id ?? 'human', name: humanName }, botCount)
+      }
+    } else {
+      state = initGame({ id: profile?.id ?? 'human', name: humanName }, botCount)
+    }
     setGameState(state)
     setUiPhase('playing')
-  }, [profile, botCount])
+  }, [profile, botCount, levelId])
+
+
 
   const handleGameOver = useCallback((finalState: GameState) => {
     setGameState(finalState)
@@ -247,7 +261,7 @@ export function Game() {
 
 
   if (uiPhase === 'setup') {
-    return <SetupScreen mode={mode} botCount={botCount} setBotCount={setBotCount} onStart={startGame} onBack={() => navigate('/dashboard')} />
+    return <SetupScreen botCount={botCount} setBotCount={setBotCount} onStart={startGame} onBack={() => navigate(levelId ? '/campaign' : '/dashboard')} levelId={levelId} />
   }
 
   if (uiPhase === 'result' && gameState) {
@@ -279,8 +293,9 @@ export function Game() {
 
   if (!gameState) return null
 
+  const themeClass = levelId === 'level_2' ? 'theme-level2' : levelId === 'level_3' ? 'theme-level3' : ''
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+    <div className={themeClass} style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       {/* Header */}
       <div className="glass-panel" style={{
         position: 'sticky', top: 0, zIndex: 40,
@@ -300,9 +315,23 @@ export function Game() {
               RANKED
             </span>
           )}
+          {mode === 'campaign' && gameState.levelConfig && (
+            <span style={{ padding: '3px 10px', borderRadius: 5, background: 'rgba(245,158,11,0.15)', color: '#f59e0b', fontSize: 14, fontWeight: 700 }}>
+              LEVEL: {gameState.levelConfig.name}
+            </span>
+          )}
           <GameClock startTime={gameState.startTime} timeLimit={gameState.timeLimit} />
         </div>
       </div>
+
+      {/* Campaign Mechanic HUD */}
+      {gameState.levelState?.currentLevelId === 'level_1' && (
+        <div style={{ background: 'rgba(0,0,0,0.4)', padding: '8px 20px', borderBottom: '1px solid rgba(255,255,255,0.1)', display: 'flex', justifyContent: 'center', gap: 24, fontSize: 14 }}>
+          <div style={{ color: 'var(--orange-primary)', fontWeight: 700 }}>
+            🔥 Desire Meter: {gameState.levelState.desireMeter}/100
+          </div>
+        </div>
+      )}
 
       {showForfeitModal && (
         <ForfeitModal 
@@ -391,17 +420,16 @@ function EventPopup({ info, onContinue }: { info: { reason: string, amountStr: s
   )
 }
 
-function SetupScreen({ mode, botCount, setBotCount, onStart, onBack }: { mode: string; botCount: number; setBotCount: (n: number) => void; onStart: () => void; onBack: () => void }) {
+function SetupScreen({ botCount, setBotCount, onStart, onBack, levelId }: { botCount: number; setBotCount: (n: number) => void; onStart: () => void; onBack: () => void; levelId?: string }) {
+  const levelConfig = levelId ? ARTHA_YATRA_LEVELS.find(l => l.id === levelId) : null;
+  const wealthGoalText = levelConfig ? formatWealth(levelConfig.targetCorpus) : '₹50 Lakhs';
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
+    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24, background: '#d1fae5' }}>
       <div style={{ width: '100%', maxWidth: 480, animation: 'slideUp 0.4s ease' }}>
         <button onClick={onBack} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: 16, fontFamily: 'inherit', marginBottom: 24, display: 'flex', alignItems: 'center', gap: 6 }}>
           ← Back
         </button>
-        <h1 style={{ fontSize: 35, fontWeight: 800, color: 'var(--text-dark)', fontFamily: 'Space Grotesk, sans-serif', marginBottom: 8 }}>New Game</h1>
-        <div style={{ display: 'inline-block', padding: '4px 12px', borderRadius: 6, background: mode === 'ranked' ? 'rgba(37,99,235,0.15)' : 'rgba(16,185,129,0.15)', color: mode === 'ranked' ? 'var(--blue-deep)' : 'var(--green-primary)', fontSize: 15, fontWeight: 700, textTransform: 'uppercase', marginBottom: 28 }}>
-          {mode} mode
-        </div>
+        <h1 style={{ fontSize: 35, fontWeight: 800, color: 'var(--text-dark)', fontFamily: 'Space Grotesk, sans-serif', marginBottom: 28 }}>New Game</h1>
 
         <div className="glass-panel" style={{ borderRadius: 16, padding: 28, marginBottom: 20 }}>
           <h3 style={{ fontSize: 19, fontWeight: 700, color: 'var(--text-dark)', marginBottom: 16 }}>AI Opponents</h3>
@@ -426,7 +454,7 @@ function SetupScreen({ mode, botCount, setBotCount, onStart, onBack }: { mode: s
 
         <div className="glass-panel" style={{ padding: '14px 16px', marginBottom: 24, fontSize: 16, color: 'var(--text-muted)', borderRadius: 12, boxShadow: 'none' }}>
           <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-            <div>🎯 Race to <span style={{ color: 'var(--orange-dark)', fontWeight: 700 }}>₹50 Lakhs</span></div>
+            <div>🎯 Race to <span style={{ color: 'var(--orange-dark)', fontWeight: 700 }}>{wealthGoalText}</span></div>
             <div>⏱ <span style={{ color: 'var(--text-dark)', fontWeight: 600 }}>25 min</span> time limit</div>
           </div>
         </div>

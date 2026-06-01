@@ -8,6 +8,7 @@ import { SEASONS } from '../data/mockData'
 import { formatWealth } from '../types/game'
 import { supabase } from '../lib/supabase'
 import { TutorialModal } from '../components/TutorialModal'
+import { ARTHA_YATRA_LEVELS } from '../data/levels'
 
 type Tab = 'home' | 'leaderboard' | 'contracts' | 'profile'
 
@@ -257,7 +258,6 @@ function HomeTab({ navigate, profile, currentSeason, onlineUsers }: { navigate: 
           </div>
           <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
             <Button variant="gold" size="lg" onClick={() => navigate('/multiplayer')}>Play Online</Button>
-            <Button variant="primary" onClick={() => navigate('/game')}>vs AI</Button>
           </div>
         </div>
       </div>
@@ -277,6 +277,24 @@ function HomeTab({ navigate, profile, currentSeason, onlineUsers }: { navigate: 
           </Card>
         ))}
       </div>
+
+      {/* Career Journey Banner */}
+      <Card glow="green" style={{ padding: 20 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
+          <div>
+            <div style={{ fontSize: 15, color: 'var(--green-primary)', fontWeight: 700, letterSpacing: '0.05em', marginBottom: 6, textTransform: 'uppercase' }}>
+              {ARTHA_YATRA_LEVELS.find(l => l.id === 'level_3')?.name || 'ARTHA YATRA'}
+            </div>
+            <h2 style={{ fontSize: 25, fontWeight: 800, color: 'var(--text-dark)', fontFamily: 'var(--font-display)', marginBottom: 4 }}>
+              Start your journey
+            </h2>
+            <p style={{ color: 'var(--text-muted)', fontSize: 16 }}>Play through the levels and master personal finance.</p>
+          </div>
+          <div style={{ textAlign: 'right' }}>
+            <Button variant="primary" size="lg" onClick={() => navigate('/campaign')}>  Your Journey</Button>
+          </div>
+        </div>
+      </Card>
 
       {/* Season Banner */}
       <Card glow="gold" style={{ padding: 20 }}>
@@ -298,26 +316,7 @@ function HomeTab({ navigate, profile, currentSeason, onlineUsers }: { navigate: 
         </div>
       </Card>
 
-      {/* Quick Play Options */}
-      <div>
-        <h2 className="text-xl sm:text-2xl font-bold" style={{ color: 'var(--text-dark)', marginBottom: 16, fontFamily: 'var(--font-display)' }}>Game Modes</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
-          {[
-            { title: 'Play Online', desc: 'Create or join a room. Play against real players worldwide.', icon: '🌐', action: () => navigate('/multiplayer'), color: 'var(--orange-dark)' },
-            { title: 'vs AI', desc: 'Practice against adaptive AI opponents.', icon: '🤖', action: () => navigate('/game?mode=ai'), color: 'var(--green-primary)' },
-            { title: 'Ranked Match', desc: 'Earn/lose RP. Climb the Mogul ladder.', icon: '🏆', action: () => navigate('/game?mode=ranked'), color: 'var(--blue-deep)' },
-          ].map(m => (
-            <Card key={m.title} hoverable onClick={m.action} className="p-3 sm:p-4" style={{ cursor: 'pointer' }}>
-              <div className="text-2xl sm:text-3xl" style={{ marginBottom: 12 }}>{m.icon}</div>
-              <h3 className="text-lg sm:text-xl font-bold" style={{ color: 'var(--text-dark)', marginBottom: 6, fontFamily: 'var(--font-display)' }}>{m.title}</h3>
-              <p className="text-sm sm:text-base" style={{ color: 'var(--text-muted)', lineHeight: 1.5, marginBottom: 12 }}>{m.desc}</p>
-              <div className="text-xs sm:text-sm font-bold" style={{ display: 'inline-block', padding: '4px 12px', borderRadius: 6, background: `${m.color}15`, color: m.color, border: `1px solid ${m.color}35` }}>
-                Play Now
-              </div>
-            </Card>
-          ))}
-        </div>
-      </div>
+
     </div>
   )
 }

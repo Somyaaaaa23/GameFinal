@@ -108,6 +108,14 @@
   --bg-gradient: linear-gradient(135deg, #EEEFE0 0%, #9FC7AA 100%);
 }
 
+.theme-level2 {
+  --bg-gradient: linear-gradient(135deg, #e0e7ff 0%, #c4b5fd 100%);
+}
+
+.theme-level3 {
+  --bg-gradient: linear-gradient(135deg, #fef3c7 0%, #99f6e4 100%);
+}
+
 .spend {
   background: linear-gradient(180deg, #F09060, #E05020 55%, #D05020) !important;
   color: #FFFFFF !important;

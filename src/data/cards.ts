@@ -1,4 +1,5 @@
 import type { GameCard } from '../types/game'
+import { LEVEL_SITUATION_CARDS } from './levelCards'
 
 // Starting wealth: ₹5L  |  Win goal: ₹50 Lakhs  |  ~20-25 turns to win with good play
 // Card values are tuned so invest choices gain ~₹2-5L, attacks cost ~₹1-3L
@@ -389,6 +390,36 @@ export function createGameDeck(): GameCard[] {
     deck.push({ ...card, id: `${card.id}_1` })
   }
 
+  // Shuffle
+  for (let i = deck.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[deck[i], deck[j]] = [deck[j], deck[i]]
+  }
+
+  return deck
+}
+
+export function createLevelDeck(validCardIds: string[]): GameCard[] {
+  const deck: GameCard[] = []
+  
+  // Base pool of generic action/defense cards
+  const genericCards = [...ACTION_CARDS, ...DEFENSE_CARDS]
+  
+  // Valid situation cards
+  const validSituations = LEVEL_SITUATION_CARDS.filter(c => validCardIds.includes(c.id))
+
+  // Add 2 of each valid situation card
+  for (const card of validSituations) {
+    deck.push({ ...card, id: `${card.id}_a` })
+    deck.push({ ...card, id: `${card.id}_b` })
+  }
+  
+  // Add 2 of each generic card
+  for (const card of genericCards) {
+    deck.push({ ...card, id: `${card.id}_a` })
+    deck.push({ ...card, id: `${card.id}_b` })
+  }
+  
   // Shuffle
   for (let i = deck.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))

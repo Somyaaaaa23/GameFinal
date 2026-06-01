@@ -7,6 +7,7 @@ import { Dashboard } from './pages/Dashboard'
 import { Game } from './pages/Game'
 import { Lobby } from './pages/Lobby'
 import { MultiplayerGame } from './pages/MultiplayerGame'
+import { Campaign } from './pages/Campaign'
 
 class ErrorBoundary extends Component<{children: React.ReactNode}, {hasError: boolean, error: Error | null}> {
   constructor(props: {children: React.ReactNode}) {
@@ -57,6 +58,8 @@ function AppRoutes() {
       <Route path="/auth" element={<PublicRoute><Auth /></PublicRoute>} />
       <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
       <Route path="/game" element={<ProtectedRoute><Game /></ProtectedRoute>} />
+      <Route path="/game/level/:levelId" element={<ProtectedRoute><Game /></ProtectedRoute>} />
+      <Route path="/campaign" element={<ProtectedRoute><Campaign /></ProtectedRoute>} />
       <Route path="/multiplayer" element={<ProtectedRoute><Lobby /></ProtectedRoute>} />
       <Route path="/multiplayer/:roomId" element={<ProtectedRoute><MultiplayerGame /></ProtectedRoute>} />
       <Route path="*" element={<Navigate to="/" replace />} />

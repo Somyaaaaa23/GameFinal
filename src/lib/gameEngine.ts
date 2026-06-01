@@ -1,5 +1,6 @@
 import type { GameState, PlayerState, GameCard, CardEffect, DecisionChoice } from '../types/game'
-import { createGameDeck } from '../data/cards'
+import type { LevelConfig } from '../types/level'
+import { createGameDeck, createLevelDeck } from '../data/cards'
 import { SEASONS } from '../data/mockData'
 
 export const STARTING_WEALTH = 500000   // ₹5 Lakhs
@@ -62,6 +63,59 @@ export function initGame(humanPlayer: { id: string; name: string }, botCount: nu
     timeLimit: TIME_LIMIT_MS,
     startTime: Date.now(),
     turnStartTime: Date.now(),
+  }
+}
+
+export function initLevelGame(humanPlayer: { id: string; name: string }, level: LevelConfig): GameState {
+  const deck = createLevelDeck(level.validCardIds)
+  const players: PlayerState[] = [createPlayer(humanPlayer.id, humanPlayer.name, false)]
+  for (let i = 0; i < level.botCount; i++) {
+    const diffMap: Record<string, number> = { easy: 1000, medium: 2000, hard: 3000 }
+    players.push(createPlayer(`bot_${i}`, BOT_NAMES[i] ?? `Bot ${i + 1}`, true, diffMap[level.botDifficulty]))
+  }
+  
+  players.forEach(p => p.wealth = level.startingCorpus)
+
+  const hands: GameCard[][] = players.map(() => [])
+  const remaining = [...deck]
+  for (let i = 0; i < 3; i++) {
+    for (let p = 0; p < players.length; p++) {
+      const card = remaining.shift()
+      if (card) hands[p].push(card)
+    }
+  }
+
+  const newPlayers = players.map((p, i) => ({ ...p, hand: hands[i] }))
+
+  return {
+    id: crypto.randomUUID(),
+    players: newPlayers,
+    deck: remaining,
+    discardPile: [],
+    currentPlayerIndex: 0,
+    turn: 1,
+    phase: 'draw',
+    drawnCard: null,
+    playedCard: null,
+    pendingDecision: null,
+    pendingTarget: null,
+    winner: null,
+    log: [`Artha Yatra: ${level.name} started! Goal: ${level.targetCorpus}`],
+    wealthGoal: level.targetCorpus,
+    timeLimit: TIME_LIMIT_MS,
+    startTime: Date.now(),
+    turnStartTime: Date.now(),
+    levelConfig: level,
+    levelState: {
+      currentLevelId: level.id,
+      desireMeter: 0,
+      savingStreak: 0,
+      lifestyleCreep: 0,
+      investmentSlots: 0,
+      activeInvestments: [],
+      bossTriggered: false,
+      starsEarned: 0
+    }
   }
 }
 
@@ -256,6 +310,19 @@ export function processDecision(state: GameState, playerIndex: number, choice: D
   let logEntry = `${state.players[playerIndex].name} played ${card.name} → ${choice.toUpperCase()}${diffStr}`
   if (riskFired) logEntry += ' 📉 (Investment Failed!)'
   if (seasonBoost !== 1.0 && !riskFired) logEntry += ' ⚡ (Season Boost!)'
+
+  // Update level state if active
+  if (newState.levelState) {
+    const ls = { ...newState.levelState }
+    if (newState.levelConfig?.id === 'level_1') {
+      if (choice === 'spend') ls.desireMeter += 15
+      else ls.desireMeter = Math.max(0, ls.desireMeter - 10)
+    } else if (newState.levelConfig?.id === 'level_2') {
+      if (choice === 'save') ls.savingStreak += 1
+      else ls.savingStreak = 0
+    }
+    newState.levelState = ls
+  }
 
   return checkWinCondition({
     ...newState,
@@ -457,6 +524,26 @@ export function checkWinCondition(state: GameState): GameState {
       log: [`🏆 Everyone else forfeited! ${remainingWinner.name} WINS!`, ...state.log].slice(0, 20),
     }
   }
+  if (state.levelConfig && state.turn > state.levelConfig.turnLimit) {
+    // Campaign time/turn out - Did human reach the goal?
+    const human = state.players[0]
+    if (human.wealth >= state.wealthGoal) {
+      return {
+        ...state,
+        winner: human,
+        phase: 'game_over',
+        log: [`🏆 Level Complete! Reached ${state.wealthGoal} in time.`, ...state.log].slice(0, 20),
+      }
+    } else {
+       return {
+        ...state,
+        winner: state.players.find(p => p.isBot) || null, // Human lost
+        phase: 'game_over',
+        log: [`❌ Turn limit reached! You failed to reach the goal.`, ...state.log].slice(0, 20),
+      }
+    }
+  }
+
   return state
 }
 
