@@ -1,6 +1,5 @@
 import { supabase } from './supabase'
 import type { Profile } from '../types/database'
-import { calculateRPChange } from './gameEngine'
 
 export async function signUp(email: string, password: string, username: string): Promise<void> {
   const { data, error } = await supabase.auth.signUp({ email, password })
@@ -52,7 +51,7 @@ export interface GameStats {
 }
 
 export async function saveGameResult(
-  userId: string,
+  _userId: string,
   username: string,
   won: boolean,
   finalWealth: number,
