@@ -61,128 +61,21 @@ export async function saveGameResult(
   winStreak: number = 0,
   stats: GameStats = { investChoices: 0, emiDamageTaken: false }
 ): Promise<void> {
-  // Upsert leaderboard entry
-  const { data: existing } = await supabase
-    .from('leaderboard')
-    .select('id, wins, losses, total_games, highest_net_worth')
-    .eq('user_id', userId)
-    .maybeSingle()
-
-  if (existing) {
-    const currentWins = existing.wins || 0;
-    const currentLosses = existing.losses || 0;
-    const currentTotalGames = existing.total_games || 0;
-    const currentHighestNetWorth = existing.highest_net_worth || 0;
-
-    await supabase
-      .from('leaderboard')
-      .update({
-        wins: currentWins + (won ? 1 : 0),
-        losses: currentLosses + (won ? 0 : 1),
-        total_games: currentTotalGames + 1,
-        highest_net_worth: Math.max(currentHighestNetWorth, finalWealth),
-        updated_at: new Date().toISOString(),
-      })
-      .eq('user_id', userId)
-  } else {
-    await supabase
-      .from('leaderboard')
-      .insert({
-        user_id: userId,
-        username,
-        wins: won ? 1 : 0,
-        losses: won ? 0 : 1,
-        total_games: 1,
-        highest_net_worth: finalWealth,
-      })
-  }
-
-  // Update profile stats
-  let awardedDc = 0;
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('games_played, games_won, win_streak, max_win_streak, rank_points, total_xp, daanik_coins')
-    .eq('id', userId)
-    .maybeSingle()
-
-  if (profile) {
-    const currentGamesPlayed = profile.games_played || 0;
-    const currentGamesWon = profile.games_won || 0;
-    const currentWinStreak = profile.win_streak || 0;
-    const currentMaxWinStreak = profile.max_win_streak || 0;
-    const currentRankPoints = profile.rank_points || 0;
-    const currentTotalXp = profile.total_xp || 0;
-    
-    const newStreak = won ? currentWinStreak + 1 : 0
-    // Use the proper placement-based RP formula
-    const rpGain = calculateRPChange(placement, totalPlayers, winStreak)
-    await supabase
-      .from('profiles')
-      .update({
-        games_played: currentGamesPlayed + 1,
-        games_won: currentGamesWon + (won ? 1 : 0),
-        win_streak: newStreak,
-        max_win_streak: Math.max(currentMaxWinStreak, newStreak),
-        rank_points: Math.max(0, currentRankPoints + rpGain),
-        total_xp: currentTotalXp + (won ? 100 : 25),
-        updated_at: new Date().toISOString(),
-      })
-      .eq('id', userId)
-
-    // Process Contracts
-    try {
-      const { data: activeContracts } = await supabase
-        .from('daily_contracts')
-        .select('*')
-        .gte('contract_date', new Date().toISOString().split('T')[0])
-
-      if (activeContracts && activeContracts.length > 0) {
-        for (const contract of activeContracts) {
-          // Calculate progress increment for this game
-          let increment = 0;
-          if (contract.requirement_type === 'wins' && won) increment = 1;
-          if (contract.requirement_type === 'weekly_wins' && won) increment = 1;
-          if (contract.requirement_type === 'invest_choices') increment = stats.investChoices;
-          if (contract.requirement_type === 'no_emi_win' && won && !stats.emiDamageTaken) increment = 1;
-
-          if (increment > 0) {
-            // Check existing progress
-            const { data: pContract } = await supabase
-              .from('player_contracts')
-              .select('*')
-              .eq('player_id', userId)
-              .eq('contract_id', contract.id)
-              .maybeSingle();
-
-            const currentProgress = pContract ? pContract.progress : 0;
-            const newProgress = currentProgress + increment;
-            const isNewlyCompleted = !pContract?.completed && newProgress >= contract.requirement_value;
-
-            // Upsert progress
-            await supabase.from('player_contracts').upsert({
-              player_id: userId,
-              contract_id: contract.id,
-              progress: newProgress,
-              completed: isNewlyCompleted || (pContract?.completed ?? false),
-              completed_at: isNewlyCompleted ? new Date().toISOString() : pContract?.completed_at,
-            });
-
-            if (isNewlyCompleted) {
-              awardedDc += contract.reward_dc;
-            }
-          }
-        }
-
-        // Award DC if any contracts were completed
-        if (awardedDc > 0) {
-          await supabase
-            .from('profiles')
-            .update({ daanik_coins: (profile.daanik_coins || 0) + awardedDc })
-            .eq('id', userId);
-        }
-      }
-    } catch (e) {
-      console.error('Failed to process contracts', e);
+  // We now call the secure Edge Function instead of trusting the client to update stats directly!
+  const { error } = await supabase.functions.invoke('save-game-result', {
+    body: {
+      username,
+      won,
+      finalWealth,
+      placement,
+      totalPlayers,
+      winStreak,
+      stats
     }
+  })
+
+  if (error) {
+    console.error('Failed to save game result securely:', error)
+    throw error
   }
 }
