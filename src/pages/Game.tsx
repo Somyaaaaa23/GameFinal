@@ -75,12 +75,12 @@ export function Game() {
     if (levelId) {
       const level = ARTHA_YATRA_LEVELS.find(l => l.id === levelId)
       if (level) {
-        state = initLevelGame({ id: profile?.id ?? 'human', name: humanName }, { ...level, botCount })
+        state = initLevelGame({ id: profile?.id ?? 'human', name: humanName, avatar_url: profile?.avatar_url }, { ...level, botCount })
       } else {
-        state = initGame({ id: profile?.id ?? 'human', name: humanName }, botCount)
+        state = initGame({ id: profile?.id ?? 'human', name: humanName, avatar_url: profile?.avatar_url }, botCount)
       }
     } else {
-      state = initGame({ id: profile?.id ?? 'human', name: humanName }, botCount)
+      state = initGame({ id: profile?.id ?? 'human', name: humanName, avatar_url: profile?.avatar_url }, botCount)
     }
     setGameState(state)
     setUiPhase('playing')

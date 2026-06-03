@@ -117,63 +117,63 @@ export function PlayerBoard({ player, isCurrent, isMe, isTarget, isOffline, weal
         ))}
       </AnimatePresence>
 
-      {/* Seat number badge — top-right corner */}
-      <div style={{
-        position: 'absolute', top: -10, right: -10,
-        width: 28, height: 28, borderRadius: '50%',
-        background: theme.nameBg,
-        border: `2px solid ${theme.accent}`,
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        fontSize: 13, fontWeight: 800, color: theme.accent,
-        fontFamily: 'Space Grotesk, sans-serif',
-        boxShadow: `0 2px 8px rgba(0,0,0,0.5)`,
-        zIndex: 10,
-      }}>
-        {seatIndex + 1}
-      </div>
-
-      {/* PLAYING / OFFLINE / SKIP badge */}
-      {isCurrent && !isOffline && (
-        <motion.div
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          style={{
-            position: 'absolute', top: -12, left: 12,
-            background: theme.nameBg, border: `1px solid ${theme.accent}`,
-            borderRadius: 20, padding: '3px 10px',
-            fontSize: 10, fontWeight: 800, color: theme.accent,
-            letterSpacing: '0.12em', zIndex: 10,
-          }}
-        >
-          PLAYING
-        </motion.div>
-      )}
-      {isOffline && (
-        <div style={{
-          position: 'absolute', top: -12, left: 12,
-          background: '#1e293b', border: '1px solid #475569',
-          borderRadius: 20, padding: '3px 10px',
-          fontSize: 10, fontWeight: 800, color: '#64748b',
-          letterSpacing: '0.12em', zIndex: 10,
-        }}>
-          OFFLINE
+      {/* Absolutely positioned inner badges */}
+      <div style={{ position: 'absolute', top: 6, left: 6, right: 6, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', pointerEvents: 'none' }}>
+        {/* Status badges */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 4, alignItems: 'flex-start' }}>
+          {isCurrent && !isOffline && (
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              style={{
+                background: theme.nameBg, border: `1px solid ${theme.accent}`,
+                borderRadius: 20, padding: '2px 6px',
+                fontSize: 8, fontWeight: 800, color: theme.accent,
+                letterSpacing: '0.08em', pointerEvents: 'auto'
+              }}
+            >
+              PLAYING
+            </motion.div>
+          )}
+          {isOffline && (
+            <div style={{
+              background: '#1e293b', border: '1px solid #475569',
+              borderRadius: 20, padding: '2px 6px',
+              fontSize: 8, fontWeight: 800, color: '#64748b',
+              letterSpacing: '0.08em', pointerEvents: 'auto'
+            }}>
+              OFFLINE
+            </div>
+          )}
+          {isTarget && (
+            <motion.div
+              animate={{ scale: [1, 1.1, 1] }}
+              transition={{ repeat: Infinity, duration: 0.7 }}
+              style={{
+                background: 'rgba(239,68,68,0.2)', border: '1px solid #ef4444',
+                borderRadius: 20, padding: '2px 6px',
+                fontSize: 8, fontWeight: 800, color: '#f87171',
+                letterSpacing: '0.08em', pointerEvents: 'auto'
+              }}
+            >
+              ⚡ TARGET
+            </motion.div>
+          )}
         </div>
-      )}
-      {isTarget && (
-        <motion.div
-          animate={{ scale: [1, 1.1, 1] }}
-          transition={{ repeat: Infinity, duration: 0.7 }}
-          style={{
-            position: 'absolute', top: -12, left: 12,
-            background: 'rgba(239,68,68,0.2)', border: '1px solid #ef4444',
-            borderRadius: 20, padding: '3px 10px',
-            fontSize: 10, fontWeight: 800, color: '#f87171',
-            letterSpacing: '0.12em', zIndex: 10,
-          }}
-        >
-          ⚡ TARGET
-        </motion.div>
-      )}
+
+        {/* Seat number badge */}
+        <div style={{
+          width: 18, height: 18, borderRadius: '50%',
+          background: theme.nameBg,
+          border: `1px solid ${theme.accent}`,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontSize: 10, fontWeight: 800, color: theme.accent,
+          fontFamily: 'Space Grotesk, sans-serif',
+          boxShadow: `0 2px 4px rgba(0,0,0,0.3)`, pointerEvents: 'auto'
+        }}>
+          {seatIndex + 1}
+        </div>
+      </div>
 
       {/* Avatar + Name row */}
       <div style={{ display: 'flex', flexDirection: compact ? 'column' : 'row', alignItems: 'center', gap: compact ? 2 : 10, marginBottom: compact ? 6 : 10, textAlign: compact ? 'center' : 'left' }}>
@@ -182,9 +182,10 @@ export function PlayerBoard({ player, isCurrent, isMe, isTarget, isOffline, weal
             width: '2.5em', height: '2.5em', borderRadius: '50%',
             background: 'rgba(255,255,255,0.1)', border: `2px solid ${theme.accent}`,
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            boxShadow: `0 4px 12px rgba(0,0,0,0.3)`
+            boxShadow: `0 4px 12px rgba(0,0,0,0.3)`,
+            overflow: 'hidden'
           }}>
-            {avatar}
+            {avatar.startsWith('/') ? <img src={avatar} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : avatar}
           </div>
         )}
         <div style={{ flex: 1, minWidth: 0, width: '100%' }}>

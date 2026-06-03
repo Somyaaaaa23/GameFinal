@@ -515,7 +515,16 @@ function ProfileTab() {
   const fallbackAvatar = profile?.username ? profile.username[0].toUpperCase() : '👤'
   const avatar = profile?.avatar_url || fallbackAvatar
 
-  const AVATARS = ['😎', '👽', '🤖', '🦊', '🐉', '💎', '🤑', '🦁', '🦉', '🚀', '👑', '👻']
+  const AVATARS = [
+    '/avatars/avatar1.jpeg',
+    '/avatars/avatar2.jpeg',
+    '/avatars/avatar3.jpeg',
+    '/avatars/avatar4.jpeg',
+    '/avatars/avatar5.jpeg',
+    '/avatars/avatar6.jpeg',
+    '/avatars/avatar7.jpeg',
+    '/avatars/avatar8.jpeg',
+  ]
 
   const handleUpdateAvatar = async (newAvatar: string) => {
     if (!profile) return
@@ -542,7 +551,7 @@ function ProfileTab() {
                onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.05)'}
                onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
              >
-               {avatar}
+               {avatar.startsWith('/') ? <img src={avatar} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} /> : avatar}
                <div style={{ position: 'absolute', bottom: 0, right: 0, background: 'var(--orange-primary)', width: 32, height: 32, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, border: '3px solid var(--card-paper)', color: '#fff' }}>
                  ✎
                </div>
@@ -580,7 +589,7 @@ function ProfileTab() {
                     onMouseEnter={e => { if (avatar !== a) e.currentTarget.style.background = 'rgba(255,255,255,0.1)' }}
                     onMouseLeave={e => { if (avatar !== a) e.currentTarget.style.background = 'rgba(255,255,255,0.05)' }}
                   >
-                    {a}
+                    {a.startsWith('/') ? <img src={a} alt="Avatar option" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} /> : a}
                   </button>
                 ))}
               </div>

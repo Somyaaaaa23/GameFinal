@@ -10,7 +10,7 @@ export const TURN_TIME_LIMIT_MS = 60000 // 60 seconds per turn
 
 const BOT_NAMES = ['Rahul AI', 'Priya Bot', 'Arjun AI', 'Sneha Bot', 'Vikram AI']
 
-function createPlayer(id: string, name: string, isBot: boolean, rankPoints?: number): PlayerState {
+function createPlayer(id: string, name: string, isBot: boolean, rankPoints?: number, avatarUrl?: string | null): PlayerState {
   return {
     id,
     name,
@@ -24,13 +24,13 @@ function createPlayer(id: string, name: string, isBot: boolean, rankPoints?: num
     doubleInvestActive: false,
     investChoices: 0,
     emiDamageTaken: false,
-    profile: isBot ? { rank_points: rankPoints ?? 1500, avatar_url: null } : undefined,
+    profile: isBot ? { rank_points: rankPoints ?? 1500, avatar_url: null } : { rank_points: 0, avatar_url: avatarUrl ?? null },
   }
 }
 
-export function initGame(humanPlayer: { id: string; name: string }, botCount: number): GameState {
+export function initGame(humanPlayer: { id: string; name: string; avatar_url?: string | null }, botCount: number): GameState {
   const deck = createGameDeck()
-  const players: PlayerState[] = [createPlayer(humanPlayer.id, humanPlayer.name, false)]
+  const players: PlayerState[] = [createPlayer(humanPlayer.id, humanPlayer.name, false, undefined, humanPlayer.avatar_url)]
   for (let i = 0; i < botCount; i++) {
     players.push(createPlayer(`bot_${i}`, BOT_NAMES[i] ?? `Bot ${i + 1}`, true, 1000 + i * 500))
   }
@@ -61,10 +61,10 @@ export function initGame(humanPlayer: { id: string; name: string }, botCount: nu
   }
 }
 
-export function initLevelGame(humanPlayer: { id: string; name: string }, level: LevelConfig): GameState {
+export function initLevelGame(humanPlayer: { id: string; name: string; avatar_url?: string | null }, level: LevelConfig): GameState {
   const levelIndex = parseInt(level.id.replace('level_', '')) - 1
   const deck = createLevelDeck(levelIndex, level.botDifficulty)
-  const players: PlayerState[] = [createPlayer(humanPlayer.id, humanPlayer.name, false)]
+  const players: PlayerState[] = [createPlayer(humanPlayer.id, humanPlayer.name, false, undefined, humanPlayer.avatar_url)]
   for (let i = 0; i < level.botCount; i++) {
     const diffMap: Record<string, number> = { easy: 1000, medium: 2000, hard: 3000 }
     players.push(createPlayer(`bot_${i}`, BOT_NAMES[i] ?? `Bot ${i + 1}`, true, diffMap[level.botDifficulty]))
