@@ -12,28 +12,17 @@ const Lobby = lazy(() => import('./pages/Lobby').then(m => ({ default: m.Lobby }
 const MultiplayerGame = lazy(() => import('./pages/MultiplayerGame').then(m => ({ default: m.MultiplayerGame })))
 const Campaign = lazy(() => import('./pages/Campaign').then(m => ({ default: m.Campaign })))
 
-class ErrorBoundary extends Component<{children: React.ReactNode}, {hasError: boolean, error: Error | null}> {
-  constructor(props: {children: React.ReactNode}) {
-    super(props)
-    this.state = { hasError: false, error: null }
-  }
-  static getDerivedStateFromError(error: Error) {
-    return { hasError: true, error }
-  }
-  render() {
-    if (this.state.hasError) {
-      return (
-        <div style={{ padding: 40, color: 'white', background: '#dc2626', minHeight: '100vh' }}>
-          <h1>Something went wrong.</h1>
-          <pre style={{ whiteSpace: 'pre-wrap' }}>{this.state.error?.toString()}</pre>
-          <pre style={{ whiteSpace: 'pre-wrap' }}>{this.state.error?.stack}</pre>
-        </div>
-      )
-    }
-    return this.props.children
-  }
-}
+import * as Sentry from '@sentry/react'
 
+// We use Sentry.ErrorBoundary instead of a custom class to capture crashes directly to the dashboard
+function FallbackComponent() {
+  return (
+    <div style={{ padding: 40, color: 'white', background: '#dc2626', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+      <h1>Something went wrong.</h1>
+      <p>Our team has been notified and we are working on a fix.</p>
+    </div>
+  )
+}
 // Minimal Loading Spinner for Suspense fallback
 function PageLoader() {
   return (
@@ -78,11 +67,11 @@ function AppRoutes() {
 export default function App() {
   return (
     <BrowserRouter>
-      <ErrorBoundary>
+      <Sentry.ErrorBoundary fallback={<FallbackComponent />}>
         <AuthProvider>
           <AppRoutes />
         </AuthProvider>
-      </ErrorBoundary>
+      </Sentry.ErrorBoundary>
     </BrowserRouter>
   )
 }
