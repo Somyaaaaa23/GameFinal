@@ -75,14 +75,6 @@ export function Landing() {
             <Link to="/auth">
               <Button size="lg" variant="secondary">Sign In</Button>
             </Link>
-            <Button 
-              size="lg" 
-              variant="secondary" 
-              onClick={() => { throw new Error("Sentry Test Error from Landing Page!") }}
-              style={{ background: '#dc2626', color: 'white', borderColor: '#b91c1c' }}
-            >
-              Test Sentry Error
-            </Button>
           </div>
         </div>
 
