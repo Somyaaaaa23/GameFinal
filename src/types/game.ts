@@ -19,6 +19,7 @@ export interface DecisionOption {
   investRisk?: number
   /** Applied when investRisk triggers (e.g. -₹200K loss) */
   failEffect?: CardEffect
+  mentorInsight?: string
 }
 
 export interface GameCard {
@@ -31,6 +32,10 @@ export interface GameCard {
   options?: DecisionOption[]
   effect?: CardEffect
   blocksCardTypes?: string[]
+  debtAmount?: number
+  interestRate?: number
+  tenorMonths?: number
+  mentorInsight?: string
 }
 
 export interface PlayerState {

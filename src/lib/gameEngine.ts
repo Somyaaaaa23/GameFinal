@@ -108,7 +108,6 @@ export function initLevelGame(humanPlayer: { id: string; name: string }, level: 
     levelConfig: level,
     levelState: {
       currentLevelId: level.id,
-      desireMeter: 0,
       savingStreak: 0,
       lifestyleCreep: 0,
       investmentSlots: 0,
@@ -179,6 +178,8 @@ function applyEffect(state: GameState, effect: CardEffect, sourcePlayerIndex: nu
       const pct = (effect.value ?? 0) / 100
       if (effect.target === 'self') {
         players[sourcePlayerIndex] = { ...source, wealth: clampWealth(Math.floor(source.wealth * (1 + pct)), source.wealthFloor) }
+      } else {
+        players[targetPlayerIndex] = { ...target, wealth: clampWealth(Math.floor(target.wealth * (1 + pct)), target.wealthFloor) }
       }
       break
     }
@@ -314,10 +315,7 @@ export function processDecision(state: GameState, playerIndex: number, choice: D
   // Update level state if active
   if (newState.levelState) {
     const ls = { ...newState.levelState }
-    if (newState.levelConfig?.id === 'level_1') {
-      if (choice === 'spend') ls.desireMeter += 15
-      else ls.desireMeter = Math.max(0, ls.desireMeter - 10)
-    } else if (newState.levelConfig?.id === 'level_2') {
+    if (newState.levelConfig?.id === 'level_2') {
       if (choice === 'save') ls.savingStreak += 1
       else ls.savingStreak = 0
     }

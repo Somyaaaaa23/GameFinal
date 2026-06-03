@@ -21,7 +21,6 @@ export interface LevelConfig {
 export interface LevelState {
   currentLevelId: string
   // Mechanics
-  desireMeter: number // Level 1
   savingStreak: number // Level 2
   lifestyleCreep: number // Level 3
   investmentSlots: number // Level 3

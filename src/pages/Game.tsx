@@ -75,7 +75,7 @@ export function Game() {
     if (levelId) {
       const level = ARTHA_YATRA_LEVELS.find(l => l.id === levelId)
       if (level) {
-        state = initLevelGame({ id: profile?.id ?? 'human', name: humanName }, level)
+        state = initLevelGame({ id: profile?.id ?? 'human', name: humanName }, { ...level, botCount })
       } else {
         state = initGame({ id: profile?.id ?? 'human', name: humanName }, botCount)
       }
@@ -324,14 +324,6 @@ export function Game() {
         </div>
       </div>
 
-      {/* Campaign Mechanic HUD */}
-      {gameState.levelState?.currentLevelId === 'level_1' && (
-        <div style={{ background: 'rgba(0,0,0,0.4)', padding: '8px 20px', borderBottom: '1px solid rgba(255,255,255,0.1)', display: 'flex', justifyContent: 'center', gap: 24, fontSize: 14 }}>
-          <div style={{ color: 'var(--orange-primary)', fontWeight: 700 }}>
-            🔥 Desire Meter: {gameState.levelState.desireMeter}/100
-          </div>
-        </div>
-      )}
 
       {showForfeitModal && (
         <ForfeitModal 

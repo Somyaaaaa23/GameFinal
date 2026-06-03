@@ -194,8 +194,17 @@ export function GameBoardDesktop({
                   invest: { bg: 'rgba(59, 130, 246, 0.08)', border: '#3b82f6', labelColor: '#1d4ed8', hoverBg: 'rgba(59, 130, 246, 0.15)', borderFocus: '#1e40af' }
                 }
                 const c = colors[opt.type as keyof typeof colors] || colors.save
-                const effectVal = opt.effect.value ?? 0
+                let effectVal = opt.effect.value ?? 0
+                if (opt.effect.type === 'wealth_pct' && myPlayer) {
+                  effectVal = Math.floor(myPlayer.wealth * (effectVal / 100))
+                }
                 const sign = effectVal >= 0 ? '+' : ''
+                
+                let failVal = opt.failEffect?.value ?? 0
+                if (opt.failEffect?.type === 'wealth_pct' && myPlayer) {
+                  failVal = Math.floor(myPlayer.wealth * (failVal / 100))
+                }
+                
                 return (
                   <button
                     key={opt.type}
@@ -219,7 +228,7 @@ export function GameBoardDesktop({
                     </div>
                     {opt.investRisk && opt.failEffect && (
                       <div style={{ fontSize: 12, color: '#dc2626', fontWeight: 700, marginTop: 4, background: 'rgba(220, 38, 38, 0.1)', padding: '4px 8px', borderRadius: 6, display: 'inline-block' }}>
-                        ⚠️ {opt.investRisk}% Risk: {opt.failEffect.value! < 0 ? '-' : '+'}{formatWealth(Math.abs(opt.failEffect.value ?? 0))}
+                        ⚠️ {opt.investRisk}% Risk: {failVal < 0 ? '-' : '+'}{formatWealth(Math.abs(failVal))}
                       </div>
                     )}
                   </button>

@@ -171,8 +171,16 @@ export function GameBoardMobile({
                     invest: { bg: '#eff6ff', border: '#93c5fd', labelColor: '#2563eb', labelBg: '#dbeafe' }
                   }
                   const c = colors[opt.type as keyof typeof colors] || colors.save
-                  const effectVal = opt.effect.value ?? 0
-                  const sign = effectVal >= 0 ? '' : ''
+                  let effectVal = opt.effect.value ?? 0
+                  if (opt.effect.type === 'wealth_pct' && myPlayer) {
+                    effectVal = Math.floor(myPlayer.wealth * (effectVal / 100))
+                  }
+                  const sign = effectVal >= 0 ? '+' : ''
+                  
+                  let failVal = opt.failEffect?.value ?? 0
+                  if (opt.failEffect?.type === 'wealth_pct' && myPlayer) {
+                    failVal = Math.floor(myPlayer.wealth * (failVal / 100))
+                  }
                   
                   return (
                     <button
@@ -196,9 +204,9 @@ export function GameBoardMobile({
                         </div>
                         <div style={{ fontSize: 14, color: '#475569', fontWeight: 600 }}>{opt.description}</div>
                         {opt.investRisk && opt.failEffect && (
-                          <div style={{ fontSize: 11, color: '#dc2626', fontWeight: 700, marginTop: 4 }}>
-                            ⚠️ {opt.investRisk}% Risk
-                          </div>
+                          <div style={{ fontSize: 11, color: '#dc2626', fontWeight: 700, marginTop: 4, background: 'rgba(220, 38, 38, 0.1)', padding: '2px 6px', borderRadius: 4, display: 'inline-block' }}>
+                          ⚠️ {opt.investRisk}% Risk: {failVal < 0 ? '-' : '+'}{formatWealth(Math.abs(failVal))}
+                        </div>
                         )}
                       </div>
                       
