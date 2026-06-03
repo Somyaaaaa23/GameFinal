@@ -35,10 +35,10 @@ export function GameBoardDesktop({
   }
 
   return (
-    <div className="game-board-layout" style={{ flex: 1, display: 'flex', padding: '16px 24px', gap: 24, maxWidth: 1440, margin: '0 auto', width: '100%' }}>
+    <div className="game-board-layout" style={{ flex: 1, display: 'flex', padding: '16px 24px', gap: 24, maxWidth: 1440, margin: '0 auto', width: '100%', height: 'calc(100vh - 60px)', overflow: 'hidden' }}>
       
       {/* LEFT COLUMN: Players & Action */}
-      <div className="game-left-col" style={{ flex: '1 1 900px', display: 'flex', flexDirection: 'column', gap: 16 }}>
+      <div className="game-left-col" style={{ flex: '1 1 900px', display: 'flex', flexDirection: 'column', gap: 16, overflowY: 'auto', paddingRight: 8, paddingBottom: 32 }}>
         {/* Players */}
         <div className="grid grid-cols-3 gap-2 sm:gap-3">
           {displayPlayers.map((player) => {
@@ -256,7 +256,7 @@ export function GameBoardDesktop({
       </div>
 
       {/* RIGHT COLUMN: Game Log & Deck (Desktop only if space tight) */}
-      <div className="game-right-col" style={{ flex: '0 0 320px', display: 'flex', flexDirection: 'column', gap: 16 }}>
+      <div className="game-right-col" style={{ flex: '0 0 320px', display: 'flex', flexDirection: 'column', gap: 16, overflowY: 'auto', paddingRight: 8, paddingBottom: 32 }}>
       <GameLog log={gameState.log} />
       </div>
     </div>

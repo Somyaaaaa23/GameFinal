@@ -37,7 +37,7 @@ export function GameLog({ log, mobileCompact }: GameLogProps) {
           {isExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
         </div>
       </div>
-      <div className={`game-log-content ${isExpanded ? 'expanded' : ''}`} style={{ display: 'flex', flexDirection: 'column', gap: 8, paddingRight: 4 }}>
+      <div className={`game-log-content ${isExpanded ? 'expanded' : ''}`} style={{ display: 'flex', flexDirection: 'column', gap: 8, paddingRight: 4, overflowY: 'auto', maxHeight: 'calc(100vh - 160px)' }}>
         {log.length === 0 ? (
           <div style={{ fontSize: 15, color: 'var(--text-muted)', fontStyle: 'italic' }}>Game started. Waiting for first move...</div>
         ) : (

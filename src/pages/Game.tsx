@@ -295,7 +295,7 @@ export function Game() {
 
   const themeClass = levelId === 'level_2' ? 'theme-level2' : levelId === 'level_3' ? 'theme-level3' : ''
   return (
-    <div className={themeClass} style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+    <div className={themeClass} style={{ minHeight: '100dvh', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
       {/* Header */}
       <div className="glass-panel" style={{
         position: 'sticky', top: 0, zIndex: 40,

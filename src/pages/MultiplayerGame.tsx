@@ -508,7 +508,7 @@ export function MultiplayerGame() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'transparent' }}>
+    <div style={{ minHeight: '100dvh', display: 'flex', flexDirection: 'column', background: 'transparent', overflow: 'hidden' }}>
       {/* Header */}
       <div style={{
         position: 'sticky', top: 0, zIndex: 40,

@@ -1682,9 +1682,82 @@ export const DECISION_CARDS: GameCard[] = [
       { type: 'invest', label: 'Invest', description: "Quit your job. Invest the ₹5 Lakhs. The business instantly finds product-market fit!", effect: { type: 'wealth_pct', value: 35, target: 'self' }, investRisk: 40, failEffect: { type: 'wealth_pct', value: -25, target: 'self' } },
     ],
   },
+  {
+    id: "dc_premium_cybersecurity_software_171",
+    name: "Premium Cybersecurity Software",
+    type: 'decision',
+    tier: 'rare',
+    flavor: "Cyber attacks are rising. You need to secure your digital wallets.",
+    options: [
+      { type: 'spend', label: 'Spend', description: "Use the free trial and get hacked.", effect: { type: 'wealth_pct', value: -20, target: 'self' } },
+      { type: 'save', label: 'Save', description: "Use strong passwords but no premium software.", effect: { type: 'wealth_pct', value: 5, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Buy the premium software. It blocks a major attack instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 10, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
+    ],
+  },
+  {
+    id: "dc_premium_travel_insurance_180",
+    name: "Premium Travel Insurance",
+    type: 'decision',
+    tier: 'rare',
+    flavor: "You are booking an expensive international trip.",
+    options: [
+      { type: 'spend', label: 'Spend', description: "Don't buy insurance, and your flight gets cancelled.", effect: { type: 'wealth_pct', value: -20, target: 'self' } },
+      { type: 'save', label: 'Save', description: "Buy the basic trip cancellation coverage.", effect: { type: 'wealth_pct', value: 5, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Buy premium insurance. Your lost luggage results in a massive payout!", effect: { type: 'wealth_pct', value: 30, target: 'self' }, investRisk: 20, failEffect: { type: 'wealth_pct', value: -10, target: 'self' } },
+    ],
+  },
+  {
+    id: "dc_comprehensive_pet_insurance_181",
+    name: "Comprehensive Pet Insurance",
+    type: 'decision',
+    tier: 'rare',
+    flavor: "Your pet needs checkups. You are offered a premium health plan.",
+    options: [
+      { type: 'spend', label: 'Spend', description: "Decline the plan and get hit with unexpected vet bills.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'save', label: 'Save', description: "Set aside an emergency fund specifically for the pet.", effect: { type: 'wealth_pct', value: 5, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Buy the comprehensive plan. It covers a major surgery instantly!", effect: { type: 'wealth_pct', value: 25, target: 'self' }, investRisk: 20, failEffect: { type: 'wealth_pct', value: -10, target: 'self' } },
+    ],
+  },
+  {
+    id: "dc_diversified_portfolio_183",
+    name: "Diversified Portfolio",
+    type: 'decision',
+    tier: 'epic',
+    flavor: "You are reviewing your investments. A guru suggests putting everything in one stock.",
+    options: [
+      { type: 'spend', label: 'Spend', description: "Buy the guru's risky stock and it crashes.", effect: { type: 'wealth_pct', value: -30, target: 'self' } },
+      { type: 'save', label: 'Save', description: "Keep your money in a low-yield savings account.", effect: { type: 'wealth_pct', value: 5, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Build a diversified portfolio. The market surges and you win big!", effect: { type: 'wealth_pct', value: 40, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+    ],
+  },
+  {
+    id: "dc_extended_manufacturer_warranty_186",
+    name: "Extended Manufacturer Warranty",
+    type: 'decision',
+    tier: 'common',
+    flavor: "You just bought an expensive appliance. The cashier offers a 5-year warranty.",
+    options: [
+      { type: 'spend', label: 'Spend', description: "Decline it. The appliance breaks the next week.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'save', label: 'Save', description: "Set aside the warranty cost in your emergency fund.", effect: { type: 'wealth_pct', value: 5, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Buy the warranty. The appliance is completely replaced with a newer model!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 15, failEffect: { type: 'wealth_pct', value: -10, target: 'self' } },
+    ],
+  },
+  {
+    id: "dc_home_security_cameras_196",
+    name: "Home Security Cameras",
+    type: 'decision',
+    tier: 'rare',
+    flavor: "Your neighborhood has seen a spike in car vandalism. You consider installing high-definition security cameras.",
+    options: [
+      { type: 'spend', label: 'Spend', description: "Buy cheap dummy cameras that provide no actual security.", effect: { type: 'wealth_pct', value: -5, target: 'self' } },
+      { type: 'save', label: 'Save', description: "Rely on standard locks and hope for the best.", effect: { type: 'wealth_pct', value: 2, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Buy the premium 4K cameras. They capture a thief instantly and you collect a massive reward!", effect: { type: 'wealth_pct', value: 15, target: 'self' }, investRisk: 15, failEffect: { type: 'wealth_pct', value: -10, target: 'self' } },
+    ],
+  },
 ]
 
 export const ACTION_CARDS: GameCard[] = [
+
   {
     id: "ac_cyber_hack_141",
     name: "Cyber Hack",
@@ -1929,14 +2002,6 @@ export const ACTION_CARDS: GameCard[] = [
 
 export const DEFENSE_CARDS: GameCard[] = [
   {
-    id: "def_premium_cybersecurity_software_171",
-    name: "Premium Cybersecurity Software",
-    type: 'defense',
-    tier: 'rare',
-    flavor: "You invested in high-end encryption for all your digital wallets and devices.",
-    effect: { type: 'block_card', target: 'self', blocks: ["Defense Effect:", "Cyber Hack", "Bank Glitch"] },
-  },
-  {
     id: "def_top_tier_lawyer_on_retainer_172",
     name: "Top-Tier Lawyer on Retainer",
     type: 'defense',
@@ -2001,36 +2066,12 @@ export const DEFENSE_CARDS: GameCard[] = [
     effect: { type: 'block_card', target: 'self', blocks: ["Defense Effect:", "Tax Audit Trigger"] },
   },
   {
-    id: "def_premium_travel_insurance_180",
-    name: "Premium Travel Insurance",
-    type: 'defense',
-    tier: 'rare',
-    flavor: "Your credit card automatically insures all your flights and luggage.",
-    effect: { type: 'block_card', target: 'self', blocks: ["Defense Effect:", "Emergency Travel", "Baggage Loss"] },
-  },
-  {
-    id: "def_comprehensive_pet_insurance_181",
-    name: "Comprehensive Pet Insurance",
-    type: 'defense',
-    tier: 'rare',
-    flavor: "Your pet is fully covered for emergency surgeries and chronic conditions.",
-    effect: { type: 'block_card', target: 'self', blocks: ["Defense Effect:", "Pet Illness"] },
-  },
-  {
     id: "def_strong_password_manager_182",
     name: "Strong Password Manager",
     type: 'defense',
     tier: 'epic',
     flavor: "You use auto-generated 24-character passwords for every site you use.",
     effect: { type: 'block_card', target: 'self', blocks: ["Defense Effect:", "Identity Theft"] },
-  },
-  {
-    id: "def_diversified_portfolio_183",
-    name: "Diversified Portfolio",
-    type: 'defense',
-    tier: 'epic',
-    flavor: "You own index funds, real estate, and gold. You are not over-exposed to one sector.",
-    effect: { type: 'block_card', target: 'self', blocks: ["Defense Effect:", "Market Manipulation", "Severe Market Crash"] },
   },
   {
     id: "def_reputation_management_pr_firm_184",
@@ -2047,14 +2088,6 @@ export const DEFENSE_CARDS: GameCard[] = [
     tier: 'common',
     flavor: "Your 4K dashcam proves you didn't run the red light.",
     effect: { type: 'block_card', target: 'self', blocks: ["Defense Effect:", "Traffic Ticket"] },
-  },
-  {
-    id: "def_extended_manufacturer_warranty_186",
-    name: "Extended Manufacturer Warranty",
-    type: 'defense',
-    tier: 'common',
-    flavor: "Your expensive appliances are still under their 5-year replacement guarantee.",
-    effect: { type: 'block_card', target: 'self', blocks: ["Defense Effect:", "Broken Appliance"] },
   },
   {
     id: "def_multiple_income_streams_187",
@@ -2127,14 +2160,6 @@ export const DEFENSE_CARDS: GameCard[] = [
     tier: 'rare',
     flavor: "The bank values your business so much that they waive all late fees automatically.",
     effect: { type: 'block_card', target: 'self', blocks: ["Defense Effect:", "Hidden Bank Fees"] },
-  },
-  {
-    id: "def_home_security_cameras_196",
-    name: "Home Security Cameras",
-    type: 'defense',
-    tier: 'rare',
-    flavor: "Your high-definition cameras capture the face of the person keying your car, forcing them to pay for it.",
-    effect: { type: 'block_card', target: 'self', blocks: ["Defense Effect:", "Vandalism"] },
   },
   {
     id: "def_not_my_problem_clause_197",
@@ -2239,10 +2264,9 @@ export const ALL_CARDS: GameCard[] = [
 export function createGameDeck(): GameCard[] {
   const deck: GameCard[] = []
 
-  // 2 copies of each base card
+  // 1 copy of each base card
   for (const card of BASE_CARDS) {
-    deck.push({ ...card, id: `${card.id}_a` })
-    deck.push({ ...card, id: `${card.id}_b` })
+    deck.push({ ...card, id: `${card.id}_1` })
   }
 
   // 1 copy of each legendary (rare, exciting)
@@ -2268,16 +2292,14 @@ export function createLevelDeck(validCardIds: string[]): GameCard[] {
   // Valid situation cards
   const validSituations = LEVEL_SITUATION_CARDS.filter(c => validCardIds.includes(c.id))
 
-  // Add 2 of each valid situation card
+  // Add 1 of each valid situation card
   for (const card of validSituations) {
-    deck.push({ ...card, id: `${card.id}_a` })
-    deck.push({ ...card, id: `${card.id}_b` })
+    deck.push({ ...card, id: `${card.id}_1` })
   }
   
-  // Add 2 of each generic card
+  // Add 1 of each generic card
   for (const card of genericCards) {
-    deck.push({ ...card, id: `${card.id}_a` })
-    deck.push({ ...card, id: `${card.id}_b` })
+    deck.push({ ...card, id: `${card.id}_1` })
   }
   
   // Shuffle

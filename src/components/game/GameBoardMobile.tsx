@@ -35,10 +35,10 @@ export function GameBoardMobile({
   }
 
   return (
-    <div className="game-board-layout" style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '12px 16px', gap: 16, width: '100%' }}>
+    <div className="game-board-layout" style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '12px 16px', gap: 16, width: '100%', height: 'calc(100vh - 60px)', overflow: 'hidden' }}>
       
       {/* TOP/MAIN CONTENT: Players & Action */}
-      <div className="game-left-col" style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+      <div className="game-left-col" style={{ display: 'flex', flexDirection: 'column', gap: 16, overflowY: 'auto', paddingBottom: 16, flex: 1 }}>
         {/* Players */}
         <div className="grid grid-cols-3 gap-2 sm:gap-3">
           {displayPlayers.map((player) => {
@@ -239,7 +239,7 @@ export function GameBoardMobile({
       </div>
 
       {/* BOTTOM COLUMN: Game Log */}
-      <div className="game-right-col" style={{ width: '100%', marginTop: 8 }}>
+      <div className="game-right-col" style={{ width: '100%', marginTop: 8, flexShrink: 0 }}>
         <GameLog log={gameState.log} mobileCompact={true} />
       </div>
     </div>

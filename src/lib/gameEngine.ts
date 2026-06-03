@@ -119,17 +119,26 @@ export function initLevelGame(humanPlayer: { id: string; name: string }, level: 
 }
 
 function refillDeck(state: GameState): GameState {
-  if (state.deck.length > 0) return state
+  const onlyDefenseLeftInDeck = state.deck.length > 0 && state.deck.every(c => c.type === 'defense')
+  
+  if (state.deck.length > 0 && !onlyDefenseLeftInDeck) return state
+
   if (state.discardPile.length > 0) {
-    const shuffled = [...state.discardPile]
+    const shuffled = [...state.deck, ...state.discardPile]
     for (let i = shuffled.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1))
       ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
     }
-    return { ...state, deck: shuffled, discardPile: [], log: ['Deck reshuffled.', ...state.log].slice(0, 20) }
+    
+    // Check if the reshuffled deck still only has defense cards
+    const stillOnlyDefense = shuffled.every(c => c.type === 'defense')
+    if (!stillOnlyDefense) {
+      return { ...state, deck: shuffled, discardPile: [], log: ['Deck reshuffled.', ...state.log].slice(0, 20) }
+    }
   }
-  // Both empty — create a completely fresh deck
-  return { ...state, deck: createGameDeck() }
+  
+  // Create a completely fresh deck to guarantee action/decision cards
+  return { ...state, deck: createGameDeck(), discardPile: [], log: ['Fresh deck created.', ...state.log].slice(0, 20) }
 }
 
 function drawCard(state: GameState, playerIndex: number): { state: GameState; card: GameCard | null } {
