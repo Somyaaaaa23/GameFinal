@@ -77,7 +77,7 @@ export function GameCard({ card, onClick, selected, disabled, compact, faceDown 
           flexShrink: 0,
         }}
       >
-        <IndianRupee className="text-yellow-400" size={compact ? 24 : 40} />
+        <IndianRupee className="text-yellow-400" size={compact ? 16 : 40} />
       </motion.div>
     )
   }
@@ -144,7 +144,7 @@ export function GameCard({ card, onClick, selected, disabled, compact, faceDown 
         justifyContent: 'center',
         background: tier.color,
         color: '#fff',
-        fontSize: compact ? 9 : 10,
+        fontSize: compact ? 8 : 10,
         fontWeight: 800,
         padding: compact ? '4px 6px' : '4px 8px',
         borderRadius: 8,
@@ -162,8 +162,8 @@ export function GameCard({ card, onClick, selected, disabled, compact, faceDown 
       {/* Icon Area */}
       <div style={{
         marginTop: compact ? 8 : 12,
-        width: compact ? 36 : 48,
-        height: compact ? 36 : 48,
+        width: compact ? 24 : 48,
+        height: compact ? 24 : 48,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -172,12 +172,12 @@ export function GameCard({ card, onClick, selected, disabled, compact, faceDown 
         borderRadius: 8,
         boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.05)',
       }}>
-        <Icon size={compact ? 20 : 24} />
+        <Icon size={compact ? 14 : 24} />
       </div>
 
       {/* Title */}
       <div style={{
-        fontSize: compact ? 12 : 15,
+        fontSize: compact ? 10 : 15,
         fontWeight: 800,
         color: '#1f2937',
         textAlign: 'center',

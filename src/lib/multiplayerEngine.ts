@@ -137,6 +137,7 @@ export function buildInitialGameState(players: RoomPlayer[]): GameState {
     isBot: false,
     wealth: STARTING_WEALTH,
     hand: [],
+    activeDefenses: [],
     skippedTurns: 0,
     pendingGains: [],
     wealthFloor: 0,

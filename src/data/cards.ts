@@ -2039,7 +2039,7 @@ export const DEFENSE_CARDS: GameCard[] = [
     type: 'defense',
     tier: 'rare',
     flavor: "Your car is fully insured against acts of God, vandalism, and accidents.",
-    effect: { type: 'block_card', target: 'self', blocks: ["Defense Effect:", "Property Damage (Car)", "Vandalism"] },
+    effect: { type: 'block_card', target: 'self', blocks: ["Defense Effect:", "Property Damage", "Vandalism"] },
   },
   {
     id: "def_two_factor_authentication_2fa_177",
@@ -2191,7 +2191,7 @@ export const DEFENSE_CARDS: GameCard[] = [
     type: 'defense',
     tier: 'epic',
     flavor: "You secure a massive, zero-interest emergency grant from an angel investor or family trust.",
-    effect: { type: 'block_card', target: 'self', blocks: ["Defense Effect:", "ANY single  of any value."] },
+    effect: { type: 'block_card', target: 'self', blocks: ["any"] },
   },
 ]
 
@@ -2283,26 +2283,75 @@ export function createGameDeck(): GameCard[] {
   return deck
 }
 
-export function createLevelDeck(validCardIds: string[]): GameCard[] {
+export function createLevelDeck(levelIndex: number, botDifficulty: 'easy' | 'medium' | 'hard'): GameCard[] {
   const deck: GameCard[] = []
   
-  // Base pool of generic action/defense cards
-  const genericCards = [...ACTION_CARDS, ...DEFENSE_CARDS]
-  
-  // Valid situation cards
-  const validSituations = LEVEL_SITUATION_CARDS.filter(c => validCardIds.includes(c.id))
+  // 1. SELECT 36 DECISION CARDS
+  let decisionCards: GameCard[] = []
+  if (levelIndex === 0) { // Level 1
+    decisionCards = [
+      ...LEVEL_SITUATION_CARDS.slice(0, 15),
+      ...DECISION_CARDS.slice(0, 21)
+    ]
+  } else if (levelIndex === 1) { // Level 2
+    decisionCards = [
+      ...LEVEL_SITUATION_CARDS.slice(10, 15), // 5 overlap
+      ...LEVEL_SITUATION_CARDS.slice(15, 35), // 20 new
+      ...DECISION_CARDS.slice(21, 32)         // 11 standard
+    ]
+  } else if (levelIndex === 2) { // Level 3
+    decisionCards = [
+      ...LEVEL_SITUATION_CARDS.slice(30, 35), // 5 overlap
+      ...LEVEL_SITUATION_CARDS.slice(35, 58), // 23 new
+      ...DECISION_CARDS.slice(32, 40)         // 8 standard
+    ]
+  } else { // Level 4
+    decisionCards = [
+      ...LEVEL_SITUATION_CARDS.slice(53, 58), // 5 overlap
+      ...LEVEL_SITUATION_CARDS.slice(58, 83), // 25 new
+      ...DECISION_CARDS.slice(40, 46)         // 6 standard
+    ]
+  }
 
-  // Add 1 of each valid situation card
-  for (const card of validSituations) {
-    deck.push({ ...card, id: `${card.id}_1` })
+  // Add them to deck with unique instance ID
+  decisionCards.forEach((card, i) => {
+    deck.push({ ...card, id: `${card.id}_lvl_${i}` })
+  })
+
+  // 2. SELECT 22 ACTION CARDS based on difficulty
+  let actionPool = [...ACTION_CARDS]
+  if (botDifficulty === 'easy') {
+    actionPool = actionPool.filter(c => c.tier === 'common' || c.tier === 'rare')
+  } else if (botDifficulty === 'hard') {
+    actionPool = actionPool.filter(c => c.tier === 'rare' || c.tier === 'epic')
   }
+  // Fallback if filter is too aggressive
+  if (actionPool.length < 22) actionPool = [...ACTION_CARDS];
   
-  // Add 1 of each generic card
-  for (const card of genericCards) {
-    deck.push({ ...card, id: `${card.id}_1` })
-  }
-  
-  // Shuffle
+  // Shuffle pool to randomly pick 22
+  actionPool.sort(() => Math.random() - 0.5)
+  const selectedActions = actionPool.slice(0, 22)
+  selectedActions.forEach((card, i) => {
+    deck.push({ ...card, id: `${card.id}_act_${i}` })
+  })
+
+  // 3. SELECT 17 DEFENSE CARDS
+  let defensePool = [...DEFENSE_CARDS]
+  defensePool.sort(() => Math.random() - 0.5)
+  const selectedDefense = defensePool.slice(0, 17)
+  selectedDefense.forEach((card, i) => {
+    deck.push({ ...card, id: `${card.id}_def_${i}` })
+  })
+
+  // 4. SELECT 5 LEGENDARY CARDS
+  let legendaryPool = [...LEGENDARY_CARDS]
+  legendaryPool.sort(() => Math.random() - 0.5)
+  const selectedLegendary = legendaryPool.slice(0, 5)
+  selectedLegendary.forEach((card, i) => {
+    deck.push({ ...card, id: `${card.id}_leg_${i}` })
+  })
+
+  // Shuffle the final 80 card deck
   for (let i = deck.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
     ;[deck[i], deck[j]] = [deck[j], deck[i]]

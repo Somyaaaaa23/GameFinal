@@ -297,11 +297,25 @@ export function MultiplayerGame() {
       // Don't push — decision hasn't been made yet
     } else if (card.type === 'action') {
       if (card.effect?.target === 'target') {
-        const updated = { ...gs, pendingTarget: { card, playerIndex: myPlayerIndex, effect: card.effect } }
-        setGameState(updated)
-        gameStateRef.current = updated
-        setPhase('targeting')
-        // Don't push — target not picked yet
+        const activeOpponents = gs.players.map((p, i) => ({p, i})).filter(x => x.i !== myPlayerIndex && !x.p.hasForfeited)
+        if (activeOpponents.length === 1) {
+          const targetIndex = activeOpponents[0].i
+          const next = processAction(gs, myPlayerIndex, card, targetIndex)
+          const final = next.phase !== 'game_over' ? advanceTurn(next) : next
+          setGameState(final)
+          gameStateRef.current = final
+          setPhase(final.phase === 'game_over' ? 'result' : 'playing')
+          await pushState(final)
+          playSound('attack')
+          if (final.phase === 'game_over') saveResult(final)
+          notify(`${card.name} hit ${gs.players[targetIndex].name}!`)
+        } else {
+          const updated = { ...gs, pendingTarget: { card, playerIndex: myPlayerIndex, effect: card.effect } }
+          setGameState(updated)
+          gameStateRef.current = updated
+          setPhase('targeting')
+          // Don't push — target not picked yet
+        }
       } else {
         // AoE or self action — apply immediately
         const next = processAction(gs, myPlayerIndex, card, myPlayerIndex)
@@ -315,11 +329,11 @@ export function MultiplayerGame() {
         notify(`Played ${card.name}!`)
       }
     } else if (card.type === 'defense') {
-      // Playing defense as regular turn action — discard it and end turn
-      const discard = [...gs.discardPile, card]
+      // Playing defense as regular turn action — equip it for future protection
+      const activeDefenses = [...gs.players[myPlayerIndex].activeDefenses, card]
       const hand = gs.players[myPlayerIndex].hand.filter(c => c.id !== card.id)
-      const players = gs.players.map((p, i) => i === myPlayerIndex ? { ...p, hand } : p)
-      const next = advanceTurn({ ...gs, players, discardPile: discard })
+      const players = gs.players.map((p, i) => i === myPlayerIndex ? { ...p, hand, activeDefenses } : p)
+      const next = advanceTurn({ ...gs, players })
       setGameState(next)
       gameStateRef.current = next
       setPhase(next.phase === 'game_over' ? 'result' : 'playing')

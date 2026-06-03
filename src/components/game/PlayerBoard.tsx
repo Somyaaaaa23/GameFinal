@@ -32,27 +32,7 @@ function getAvatar(player: PlayerState, seatIndex: number): string {
   return AVATARS[seatIndex % AVATARS.length]
 }
 
-// Rupee shield icon (SVG inline as component)
-function RupeeShield({ color }: { color: string }) {
-  return (
-    <div style={{
-      width: 32, height: 34,
-      display: 'flex', alignItems: 'center', justifyContent: 'center',
-      position: 'relative',
-    }}>
-      {/* Shield shape */}
-      <svg width="32" height="34" viewBox="0 0 32 34" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M16 2L3 8V17C3 24.18 8.64 30.88 16 32C23.36 30.88 29 24.18 29 17V8L16 2Z"
-          fill={color + '33'} stroke={color} strokeWidth="1.5" />
-      </svg>
-      <span style={{
-        position: 'absolute', fontSize: 13, fontWeight: 800,
-        color: color, fontFamily: 'Space Grotesk, sans-serif',
-        lineHeight: 1, marginTop: 2,
-      }}>₹</span>
-    </div>
-  )
-}
+
 
 export function PlayerBoard({ player, isCurrent, isMe, isTarget, isOffline, wealthGoal, seatIndex = 0, onClick, compact }: PlayerBoardProps) {
   const wealthPct = Math.min(100, (player.wealth / wealthGoal) * 100)
@@ -79,9 +59,6 @@ export function PlayerBoard({ player, isCurrent, isMe, isTarget, isOffline, weal
     return () => { if (timeoutId) clearTimeout(timeoutId) }
   }, [player.wealth, prevWealth])
 
-  // How many cards to show as shield icons (capped at 5 to keep layout clean)
-  const shieldCount = Math.min(player.hand.length, 5)
-  const extraCards = player.hand.length > 5 ? player.hand.length - 5 : 0
 
   return (
     <motion.div
@@ -228,8 +205,7 @@ export function PlayerBoard({ player, isCurrent, isMe, isTarget, isOffline, weal
       </div>
 
       {/* Wealth Row */}
-      <div style={{ background: 'rgba(0,0,0,0.2)', borderRadius: 12, padding: 'clamp(6px, 2vw, 10px)', display: 'flex', alignItems: 'center', gap: 8, border: '1px solid rgba(255,255,255,0.05)' }}>
-        <RupeeShield color={theme.accent} />
+      <div style={{ background: 'rgba(0,0,0,0.2)', borderRadius: 12, padding: 'clamp(6px, 2vw, 10px)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, border: '1px solid rgba(255,255,255,0.05)' }}>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <span style={{ fontSize: 'clamp(18px, 4.5vw, 22px)', fontWeight: 800, fontFamily: 'Space Grotesk, sans-serif', color: theme.accent, lineHeight: 1 }}>
             {formatWealth(player.wealth)}
@@ -255,23 +231,13 @@ export function PlayerBoard({ player, isCurrent, isMe, isTarget, isOffline, weal
         </div>
       )}
 
-      {/* Card shields */}
+      {/* Defense card count */}
       {!compact && (
-        <div style={{ display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap' }}>
-          {Array.from({ length: shieldCount }).map((_, i) => (
-            <RupeeShield key={i} color={theme.accent} />
-          ))}
-          {extraCards > 0 && (
-            <div style={{
-              fontSize: 11, fontWeight: 700, color: theme.accent,
-              marginLeft: 2, opacity: 0.8,
-            }}>
-              +{extraCards}
-            </div>
-          )}
-          {player.hand.length === 0 && (
-            <div style={{ fontSize: 12, color: '#475569', fontStyle: 'italic' }}>No cards</div>
-          )}
+        <div style={{ 
+          fontSize: 12, fontWeight: 700, color: theme.accent, 
+          textAlign: 'center', opacity: 0.9, marginTop: 4 
+        }}>
+          Defense Cards: {player.activeDefenses.length}
         </div>
       )}
     </motion.div>

@@ -13,8 +13,6 @@ export interface LevelConfig {
   description: string
   mechanicName: string
   mechanicDescription: string
-  // Array of valid card IDs for this level
-  validCardIds: string[]
   bossSpecialAttackTrigger?: (state: any) => boolean
 }
 

@@ -305,17 +305,17 @@ input, textarea, select {
 }
 
 .game-card-compact {
-  width: 90px !important;
-  height: 120px !important;
-  padding: 8px !important;
-  gap: 4px !important;
-  border-radius: 12px !important;
+  width: 70px !important;
+  height: 95px !important;
+  padding: 4px !important;
+  gap: 2px !important;
+  border-radius: 10px !important;
 }
 
 .player-board-wrapper {
   min-width: 165px !important;
   max-width: 210px !important;
-  padding: 16px 12px !important;
+  padding: 10px 12px !important;
 }
 .player-board-avatar {
   font-size: 28px !important;
@@ -419,9 +419,9 @@ input, textarea, select {
     gap: 4px !important;
   }
   .game-card-compact {
-    width: 80px !important;
-    height: 110px !important;
-    padding: 6px !important;
+    width: 60px !important;
+    height: 85px !important;
+    padding: 4px !important;
   }
   .player-board-wrapper {
     min-width: 115px !important;

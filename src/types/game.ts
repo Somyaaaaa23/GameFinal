@@ -44,6 +44,7 @@ export interface PlayerState {
   isBot: boolean
   wealth: number
   hand: GameCard[]
+  activeDefenses: GameCard[]
   skippedTurns: number
   pendingGains: { amount: number; triggerAt: 'next_turn' | 'end_game'; cardId: string }[]
   wealthFloor: number

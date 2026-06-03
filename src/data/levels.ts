@@ -16,7 +16,6 @@ export const ARTHA_YATRA_LEVELS: LevelConfig[] = [
     description: 'You are starting your financial journey as a student. Control unnecessary spending and learn the value of money.',
     mechanicName: 'Desire Meter',
     mechanicDescription: 'The Desire Meter increases when you SPEND. High desire leads to bad decisions. Keep it low by SAVING and INVESTING.',
-    validCardIds: Array.from({ length: 15 }, (_, i) => `dc_s-${String(i + 1).padStart(3, '0')}`),
     bossSpecialAttackTrigger: (state: any) => state.corpus >= 1000000
   },
   {
@@ -34,7 +33,6 @@ export const ARTHA_YATRA_LEVELS: LevelConfig[] = [
     description: 'College life begins. Build saving habits while avoiding confusion, subscriptions, and fake offers.',
     mechanicName: 'Saving Streak',
     mechanicDescription: 'Build your saving habit by consistently choosing SAVE. Longer streaks yield bigger bonuses!',
-    validCardIds: Array.from({ length: 20 }, (_, i) => `dc_s-${String(i + 16).padStart(3, '0')}`),
     bossSpecialAttackTrigger: (state: any) => state.savingStreak >= 3 || state.corpus >= 1800000
   },
   {
@@ -52,7 +50,6 @@ export const ARTHA_YATRA_LEVELS: LevelConfig[] = [
     description: 'Your first job! Income arrives, but so does lifestyle creep and ego. Convert income into investments before it disappears.',
     mechanicName: 'Investment Slots & Lifestyle Creep',
     mechanicDescription: 'Unlock slots to hold active investments that grow over time. Beware: excessive spending triggers Lifestyle Creep, draining your wealth!',
-    validCardIds: Array.from({ length: 23 }, (_, i) => `dc_s-${String(i + 36).padStart(3, '0')}`),
     bossSpecialAttackTrigger: (state: any) => state.corpus >= 3000000 || state.activeInvestments?.length >= 2
   },
   {
@@ -70,7 +67,6 @@ export const ARTHA_YATRA_LEVELS: LevelConfig[] = [
     description: 'Family life brings new responsibilities. Protect your wealth from sudden shocks while maintaining growth.',
     mechanicName: 'Risk Mitigation',
     mechanicDescription: 'Random life events will test your emergency fund and insurance coverage.',
-    validCardIds: [], // To be implemented later
     bossSpecialAttackTrigger: () => false
   }
 ]

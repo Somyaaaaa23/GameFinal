@@ -216,8 +216,18 @@ export function Game() {
     } else if (card.type === 'action') {
       const needsTarget = card.effect?.target === 'target'
       if (needsTarget) {
-        setGameState({ ...currentState, pendingTarget: { card, playerIndex: humanPlayerIndex, effect: card.effect! } })
-        setUiPhase('targeting')
+        const activeOpponents = currentState.players.map((p, i) => ({p, i})).filter(x => x.i !== humanPlayerIndex && !x.p.hasForfeited)
+        if (activeOpponents.length === 1) {
+          const targetIndex = activeOpponents[0].i
+          const newState = processAction(currentState, humanPlayerIndex, card, targetIndex)
+          const finalState = newState.phase !== 'game_over' ? advanceTurn(newState) : newState
+          if (finalState.phase === 'game_over') { handleGameOver(finalState) } else { setGameState(finalState) }
+          playSound('attack')
+          notify(`${card.name} hit ${currentState.players[targetIndex].name}!`)
+        } else {
+          setGameState({ ...currentState, pendingTarget: { card, playerIndex: humanPlayerIndex, effect: card.effect! } })
+          setUiPhase('targeting')
+        }
       } else {
         const newState = processAction(currentState, humanPlayerIndex, card, humanPlayerIndex)
         const finalState = newState.phase !== 'game_over' ? advanceTurn(newState) : newState
@@ -226,13 +236,13 @@ export function Game() {
         notify(`Played ${card.name}!`)
       }
     } else if (card.type === 'defense') {
-      const discard = [...currentState.discardPile, card]
+      const activeDefenses = [...currentState.players[humanPlayerIndex].activeDefenses, card]
       const hand = currentState.players[humanPlayerIndex].hand.filter(c => c.id !== card.id)
-      const updatedPlayers = currentState.players.map((p, i) => i === humanPlayerIndex ? { ...p, hand } : p)
-      const newState = advanceTurn({ ...currentState, players: updatedPlayers, discardPile: discard })
+      const updatedPlayers = currentState.players.map((p, i) => i === humanPlayerIndex ? { ...p, hand, activeDefenses } : p)
+      const newState = advanceTurn({ ...currentState, players: updatedPlayers })
       if (newState.phase === 'game_over') { handleGameOver(newState) } else { setGameState(newState) }
       playSound('play')
-      notify('Discarded defense card to end turn.')
+      notify('Equipped defense card!')
     }
   }
 

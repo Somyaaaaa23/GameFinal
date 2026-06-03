@@ -17,6 +17,7 @@ function createPlayer(id: string, name: string, isBot: boolean, rankPoints?: num
     isBot,
     wealth: STARTING_WEALTH,
     hand: [],
+    activeDefenses: [],
     skippedTurns: 0,
     pendingGains: [],
     wealthFloor: 0,
@@ -36,12 +37,6 @@ export function initGame(humanPlayer: { id: string; name: string }, botCount: nu
 
   const hands: GameCard[][] = players.map(() => [])
   const remaining = [...deck]
-  for (let i = 0; i < 3; i++) {
-    for (let p = 0; p < players.length; p++) {
-      const card = remaining.shift()
-      if (card) hands[p].push(card)
-    }
-  }
 
   const newPlayers = players.map((p, i) => ({ ...p, hand: hands[i] }))
 
@@ -67,7 +62,8 @@ export function initGame(humanPlayer: { id: string; name: string }, botCount: nu
 }
 
 export function initLevelGame(humanPlayer: { id: string; name: string }, level: LevelConfig): GameState {
-  const deck = createLevelDeck(level.validCardIds)
+  const levelIndex = parseInt(level.id.replace('level_', '')) - 1
+  const deck = createLevelDeck(levelIndex, level.botDifficulty)
   const players: PlayerState[] = [createPlayer(humanPlayer.id, humanPlayer.name, false)]
   for (let i = 0; i < level.botCount; i++) {
     const diffMap: Record<string, number> = { easy: 1000, medium: 2000, hard: 3000 }
@@ -78,12 +74,6 @@ export function initLevelGame(humanPlayer: { id: string; name: string }, level: 
 
   const hands: GameCard[][] = players.map(() => [])
   const remaining = [...deck]
-  for (let i = 0; i < 3; i++) {
-    for (let p = 0; p < players.length; p++) {
-      const card = remaining.shift()
-      if (card) hands[p].push(card)
-    }
-  }
 
   const newPlayers = players.map((p, i) => ({ ...p, hand: hands[i] }))
 
@@ -352,7 +342,7 @@ export function processAction(state: GameState, playerIndex: number, card: GameC
 
   if (card.effect.target === 'target') {
     const target = state.players[targetIndex]
-    const defCard = target.hand.find(c => {
+    const defCard = target.activeDefenses.find(c => {
       if (c.type !== 'defense') return false
       const effect = c.effect
       if (!effect || effect.type !== 'block_card') return false
@@ -362,8 +352,8 @@ export function processAction(state: GameState, playerIndex: number, card: GameC
       isDefended = true
       // Consume the defense card
       discardPile.push(defCard)
-      const newHand = target.hand.filter(c => c.id !== defCard.id)
-      updatedPlayersForDefense[targetIndex] = { ...target, hand: newHand }
+      const newDefenses = target.activeDefenses.filter(c => c.id !== defCard.id)
+      updatedPlayersForDefense[targetIndex] = { ...target, activeDefenses: newDefenses }
     }
   }
 
@@ -463,6 +453,19 @@ function processPendingGains(state: GameState, playerIndex: number): GameState {
 }
 
 export function advanceTurn(state: GameState): GameState {
+  // Discard all cards from the current player's hand since they have finished their play phase
+  const currentPlayer = state.players[state.currentPlayerIndex]
+  if (!currentPlayer.hasForfeited) {
+    const unplayedCards = [...currentPlayer.hand]
+    
+    const updatedCurrentPlayer = { ...currentPlayer, hand: [] }
+    state = { 
+      ...state, 
+      players: state.players.map((p, i) => i === state.currentPlayerIndex ? updatedCurrentPlayer : p),
+      discardPile: [...state.discardPile, ...unplayedCards]
+    }
+  }
+
   // FIND NEXT ACTIVE PLAYER FIRST
   let nextIndex = (state.currentPlayerIndex + 1) % state.players.length
   let loopCount = 0
@@ -558,7 +561,7 @@ export function doBotTurn(state: GameState): { state: GameState; delay: number }
   const botIndex = state.currentPlayerIndex
   const bot = state.players[botIndex]
 
-  const { state: drawnState } = drawCard(state, botIndex)
+  const { state: drawnState } = startDrawPhase(state, botIndex)
   const hand = drawnState.players[botIndex].hand
 
   if (!hand.length) {
@@ -604,24 +607,27 @@ export function doBotTurn(state: GameState): { state: GameState; delay: number }
   } else if (aoeAction && rand > 0.4) {
     finalState = processAction(drawnState, botIndex, aoeAction, botIndex)
   } else if (defenseCard && rand > 0.6) {
-    // Occasionally proactively discard a defense card to free hand space
-    const discard = [...drawnState.discardPile, defenseCard]
+    // Equip a defense card
+    const updatedDefenses = [...drawnState.players[botIndex].activeDefenses, defenseCard]
     const updatedHand = hand.filter(c => c.id !== defenseCard.id)
     const updatedPlayers = drawnState.players.map((p, i) =>
-      i === botIndex ? { ...p, hand: updatedHand } : p,
+      i === botIndex ? { ...p, hand: updatedHand, activeDefenses: updatedDefenses } : p,
     )
-    finalState = { ...drawnState, players: updatedPlayers, discardPile: discard }
+    finalState = { ...drawnState, players: updatedPlayers }
   } else {
-    // PREVENT HOARDING: Bots should prioritize discarding defense cards in single-player
-    // because they don't have a reaction phase to use them.
-    // If they have no defense cards to discard, they discard their first card.
-    const toDiscard = hand.find(c => c.type === 'defense') ?? hand[0]
-    const discard = [...drawnState.discardPile, toDiscard]
-    const updatedHand = hand.filter(c => c.id !== toDiscard.id)
-    const updatedPlayers = drawnState.players.map((p, i) =>
-      i === botIndex ? { ...p, hand: updatedHand } : p,
-    )
-    finalState = { ...drawnState, players: updatedPlayers, discardPile: discard }
+    // If they have no good moves, just discard a card (which advanceTurn does anyway)
+    // But since the old logic explicitly discarded something, we can just play nothing and let advanceTurn clean up.
+    // Or we can equip a defense card if they have one.
+    if (defenseCard) {
+      const updatedDefenses = [...drawnState.players[botIndex].activeDefenses, defenseCard]
+      const updatedHand = hand.filter(c => c.id !== defenseCard.id)
+      const updatedPlayers = drawnState.players.map((p, i) =>
+        i === botIndex ? { ...p, hand: updatedHand, activeDefenses: updatedDefenses } : p,
+      )
+      finalState = { ...drawnState, players: updatedPlayers }
+    } else {
+      finalState = drawnState
+    }
   }
 
   if (finalState.phase === 'game_over') return { state: finalState, delay: 800 }
@@ -632,18 +638,12 @@ export function startDrawPhase(state: GameState, playerIndex: number): { state: 
   let currentState = state;
   let lastDrawnCard = null;
   
-  // Only draw if hand size is less than 4
-  if (currentState.players[playerIndex].hand.length < 4) {
+  // Draw exactly 4 new cards every turn, ignoring what is currently stored in hand
+  for (let i = 0; i < 4; i++) {
     const res = drawCard(currentState, playerIndex);
     currentState = res.state;
+    if (!res.card) break;
     lastDrawnCard = res.card;
-
-    while (currentState.players[playerIndex].hand.length < 4) {
-      const r = drawCard(currentState, playerIndex);
-      currentState = r.state;
-      if (!r.card) break;
-      lastDrawnCard = r.card;
-    }
   }
   
   return { state: currentState, card: lastDrawnCard };
