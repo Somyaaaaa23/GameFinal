@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import React, { Component } from 'react'
+import React from 'react'
 import { Suspense, lazy } from 'react'
 import { AuthProvider, useAuth } from './hooks/useAuth'
 
