@@ -60,7 +60,7 @@ export interface Profile {
   username: string
   avatar_url: string | null
   rank_points: number
-  daanik_coins: number
+  daank_coins: number
   total_xp: number
   games_played: number
   games_won: number

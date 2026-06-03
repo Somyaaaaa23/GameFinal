@@ -73,7 +73,7 @@ export function Dashboard() {
   }
 
   const rp = profile?.rank_points ?? 0
-  const coins = profile?.daanik_coins ?? 100
+  const coins = profile?.daank_coins ?? 100
   const currentSeason = SEASONS[0]
 
 
@@ -602,7 +602,7 @@ function ProfileTab() {
       <h3 className="text-xl sm:text-2xl font-bold" style={{ color: 'var(--text-dark)', marginBottom: 20, fontFamily: 'Space Grotesk, sans-serif' }}>Career Stats</h3>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4" style={{ marginBottom: 40 }}>
         {[
-          { label: 'DAANIK Coins', value: `${(profile?.daanik_coins ?? 0).toLocaleString()}`, icon: '🪙', color: '#f59e0b', bg: 'rgba(245,158,11,0.1)' },
+          { label: 'DAANIK Coins', value: `${(profile?.daank_coins ?? 0).toLocaleString()}`, icon: '🪙', color: '#f59e0b', bg: 'rgba(245,158,11,0.1)' },
           { label: 'Win Rate', value: `${winRate}%`, icon: '🎯', color: winRate >= 50 ? '#10b981' : '#f43f5e', bg: winRate >= 50 ? 'rgba(16,185,129,0.1)' : 'rgba(244,63,94,0.1)' },
           { label: 'Games Won', value: (profile?.games_won ?? 0).toString(), icon: '🏆', color: '#3b82f6', bg: 'rgba(59,130,246,0.1)' },
           { label: 'Games Played', value: (profile?.games_played ?? 0).toString(), icon: '🎮', color: '#8b5cf6', bg: 'rgba(139,92,246,0.1)' },

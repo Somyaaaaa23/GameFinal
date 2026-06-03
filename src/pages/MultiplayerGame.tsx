@@ -421,7 +421,7 @@ export function MultiplayerGame() {
         // Record loss and deduct 25 coins
         if (profile) {
           await saveGameResult(profile.id, profile.username, false, 0, gs.players.length, gs.players.length, profile.win_streak ?? 0)
-          await supabase.from('profiles').update({ daanik_coins: Math.max(0, (profile.daanik_coins || 0) - 25) }).eq('id', profile.id)
+          await supabase.from('profiles').update({ daank_coins: Math.max(0, (profile.daank_coins || 0) - 25) }).eq('id', profile.id)
         }
       } catch (e) {
         console.error(e)
