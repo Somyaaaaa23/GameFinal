@@ -10,7 +10,7 @@ export const TURN_TIME_LIMIT_MS = 60000 // 60 seconds per turn
 
 const BOT_NAMES = ['Rahul AI', 'Priya Bot', 'Arjun AI', 'Sneha Bot', 'Vikram AI']
 
-function createPlayer(id: string, name: string, isBot: boolean, rankPoints?: number, avatarUrl?: string | null): PlayerState {
+function createPlayer(id: string, name: string, isBot: boolean, rankPoints?: number, avatarUrl?: string | null, diffMultiplier?: number): PlayerState {
   return {
     id,
     name,
@@ -24,6 +24,7 @@ function createPlayer(id: string, name: string, isBot: boolean, rankPoints?: num
     doubleInvestActive: false,
     investChoices: 0,
     emiDamageTaken: false,
+    diffMultiplier,
     profile: isBot ? { rank_points: rankPoints ?? 1500, avatar_url: null } : { rank_points: 0, avatar_url: avatarUrl ?? null },
   }
 }
@@ -67,7 +68,8 @@ export function initLevelGame(humanPlayer: { id: string; name: string; avatar_ur
   const players: PlayerState[] = [createPlayer(humanPlayer.id, humanPlayer.name, false, undefined, humanPlayer.avatar_url)]
   for (let i = 0; i < level.botCount; i++) {
     const diffMap: Record<string, number> = { easy: 1000, medium: 2000, hard: 3000 }
-    players.push(createPlayer(`bot_${i}`, BOT_NAMES[i] ?? `Bot ${i + 1}`, true, diffMap[level.botDifficulty]))
+    const multMap: Record<string, number> = { easy: 0.8, medium: 1.0, hard: 1.2 }
+    players.push(createPlayer(`bot_${i}`, BOT_NAMES[i] ?? `Bot ${i + 1}`, true, diffMap[level.botDifficulty], null, multMap[level.botDifficulty]))
   }
   
   players.forEach(p => p.wealth = level.startingCorpus)
@@ -202,8 +204,9 @@ function applyEffect(state: GameState, effect: CardEffect, sourcePlayerIndex: nu
         newWealth = newFloor
         newFloor = 0 // Shield breaks!
       }
+      const actualLoss = target.wealth - newWealth
       players[targetPlayerIndex] = { ...target, wealth: Math.max(0, newWealth), wealthFloor: newFloor }
-      players[sourcePlayerIndex] = { ...source, wealth: source.wealth + amount }
+      players[sourcePlayerIndex] = { ...source, wealth: source.wealth + actualLoss }
       break
     }
     case 'attack_all_pct': {
@@ -241,7 +244,7 @@ function applyEffect(state: GameState, effect: CardEffect, sourcePlayerIndex: nu
       break
     }
     case 'wealth_floor': {
-      players[sourcePlayerIndex] = { ...source, wealthFloor: effect.value ?? 0 }
+      players[sourcePlayerIndex] = { ...source, wealthFloor: Math.max(source.wealthFloor, effect.value ?? 0) }
       break
     }
     case 'double_invest': {
@@ -503,6 +506,8 @@ export function advanceTurn(state: GameState): GameState {
     phase: 'draw',
     drawnCard: null,
     playedCard: null,
+    pendingDecision: null,
+    pendingTarget: null,
     turnStartTime: Date.now(),
   }
 }
@@ -572,6 +577,7 @@ export function doBotTurn(state: GameState): { state: GameState; delay: number }
   // Priority: targeted action > decision > AoE action > defense discard > discard
   // Randomize to be less predictable
   const rand = Math.random()
+  const diffMult = bot.diffMultiplier ?? 1.0
 
   const targetedAction = hand.find(c => c.type === 'action' && c.effect?.target === 'target')
   const aoeAction = hand.find(c => c.type === 'action' && c.effect?.target === 'others')
@@ -586,7 +592,7 @@ export function doBotTurn(state: GameState): { state: GameState; delay: number }
 
   let finalState: GameState
 
-  if (targetedAction && rand > 0.25) {
+  if (targetedAction && rand > (0.25 / diffMult)) {
     // 75% chance to use a targeted attack when available
     finalState = processAction(drawnState, botIndex, targetedAction, mostDangerousOtherIndex)
   } else if (decision) {
@@ -596,12 +602,12 @@ export function doBotTurn(state: GameState): { state: GameState; delay: number }
     if (wealthRatio < 0.5) {
       // Low on funds: always save (bot is risk-averse when losing)
       choice = 'save'
-    } else if (wealthRatio > 2.0 && rand > 0.3) {
+    } else if (wealthRatio > 2.0 && rand > (0.3 / diffMult)) {
       // Doing well: invest with 70% probability, otherwise save
-      choice = rand > 0.3 ? 'invest' : 'save'
+      choice = rand > (0.3 / diffMult) ? 'invest' : 'save'
     } else {
       // Middle ground: 50/50 invest vs save
-      choice = rand > 0.5 ? 'invest' : 'save'
+      choice = rand > (0.5 / diffMult) ? 'invest' : 'save'
     }
     finalState = processDecision(drawnState, botIndex, choice, decision)
   } else if (aoeAction && rand > 0.4) {
@@ -650,7 +656,7 @@ export function startDrawPhase(state: GameState, playerIndex: number): { state: 
 }
 
 export function calculateRPChange(placement: number, totalPlayers: number, winStreak: number): number {
-  const baseGain = [80, 50, 30, 15, 0, -10]
+  const baseGain = [15, 30, 50, 80, 100, 120]
   const baseLoss = [0, 0, -15, -25, -30, -35]
   const base = placement === 1 ? (baseGain[Math.min(totalPlayers - 1, 5)] ?? 30) : (baseLoss[Math.min(placement - 1, 5)] ?? -15)
   const streakMultiplier = placement === 1 ? Math.min(1 + winStreak * 0.2, 2.0) : 1.0

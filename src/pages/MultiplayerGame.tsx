@@ -134,16 +134,6 @@ export function MultiplayerGame() {
         })
         setOnlinePlayers(onlineIds)
       })
-      .on(
-        'postgres_changes',
-        { event: 'UPDATE', schema: 'public', table: 'multiplayer_rooms', filter: `id=eq.${roomId}` },
-        (payload) => {
-          const updated = payload.new as { game_state: GameState | null }
-          if (updated.game_state && shouldApplyRemoteState(updated.game_state)) {
-            applyRemoteState(updated.game_state)
-          }
-        },
-      )
       .on('broadcast', { event: 'game_state_changed' }, (payload) => {
         const updated = payload.payload as { game_state: GameState | null }
         if (updated.game_state && shouldApplyRemoteState(updated.game_state)) {
@@ -202,8 +192,9 @@ export function MultiplayerGame() {
     const gs = gameStateRef.current
     if (!gs || gs.phase === 'game_over' || !roomId || !myPlayerId) return
     
-    // Only the host manages the auto-forfeit to prevent race conditions
-    const isHost = gs.players[0]?.id === myPlayerId
+    // Find the first active player in the lobby to assume host duties if original host drops
+    const firstActivePlayer = gs.players.find(p => !p.hasForfeited && onlinePlayers.has(p.id))
+    const isHost = firstActivePlayer?.id === myPlayerId
     if (!isHost) return
 
     // Find players who are in the game but not in onlinePlayers
