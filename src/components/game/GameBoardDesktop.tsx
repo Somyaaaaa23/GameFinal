@@ -239,13 +239,13 @@ export function GameBoardDesktop({
         )}
 
         {/* Action card targeting phase (Select opponent) */}
-        {uiPhase === 'targeting' && gameState.playedCard && (
+        {uiPhase === 'targeting' && gameState.pendingTarget && (
           <div style={{ textAlign: 'center', padding: '12px 0' }}>
             <div style={{ fontSize: 22, marginBottom: 12 }}>🎯</div>
-            <div style={{ fontSize: 18, color: '#f1f5f9', fontWeight: 700, marginBottom: 8 }}>
-              Select a target for {gameState.playedCard.name}
+            <div style={{ fontSize: 18, color: '#1e293b', fontWeight: 800, marginBottom: 8 }}>
+              Select a target for {gameState.pendingTarget.card.name}
             </div>
-            <div style={{ fontSize: 15, color: '#94a3b8', marginBottom: 20 }}>
+            <div style={{ fontSize: 15, color: '#475569', marginBottom: 20 }}>
               Click on an opponent's panel above to target them.
             </div>
             <Button variant="secondary" onClick={onCancelTargeting}>Cancel</Button>

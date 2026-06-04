@@ -134,11 +134,11 @@ export function GameBoardMobile({
 
 
         {/* Action card targeting phase (Select opponent) */}
-        {uiPhase === 'targeting' && gameState.playedCard && (
-          <div style={{ textAlign: 'center', padding: '12px 0' }}>
-            <div style={{ fontSize: 22, marginBottom: 12 }}>🎯</div>
-            <div style={{ fontSize: 18, color: '#f1f5f9', fontWeight: 700, marginBottom: 8 }}>
-              Select a target for {gameState.playedCard.name}
+        {uiPhase === 'targeting' && gameState.pendingTarget && (
+          <div style={{ textAlign: 'center', padding: '16px', background: 'rgba(15,23,42,0.6)', borderRadius: 12, margin: '0 12px' }}>
+            <div style={{ fontSize: 22, marginBottom: 8 }}>🎯</div>
+            <div style={{ fontSize: 16, color: '#f1f5f9', fontWeight: 700, marginBottom: 4 }}>
+              Select a target for {gameState.pendingTarget.card.name}
             </div>
             <div style={{ fontSize: 15, color: '#94a3b8', marginBottom: 20 }}>
               Click on an opponent's panel above to target them.
