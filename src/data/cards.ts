@@ -2251,6 +2251,7 @@ const BASE_CARDS: GameCard[] = [
   ...DECISION_CARDS,
   ...ACTION_CARDS,
   ...DEFENSE_CARDS,
+  ...LEVEL_SITUATION_CARDS,
 ]
 
 export const ALL_CARDS: GameCard[] = [

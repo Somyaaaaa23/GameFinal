@@ -147,12 +147,6 @@ export function buildInitialGameState(players: RoomPlayer[]): GameState {
   }))
 
   const remaining = [...deck]
-  for (let i = 0; i < 3; i++) {
-    for (let p = 0; p < playerStates.length; p++) {
-      const card = remaining.shift()
-      if (card) playerStates[p].hand.push(card)
-    }
-  }
 
   return {
     id: crypto.randomUUID(),
