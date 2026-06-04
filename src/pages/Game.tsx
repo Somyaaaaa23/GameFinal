@@ -318,7 +318,7 @@ export function Game() {
           ← End Game
         </button>
         <div className="desktop-only" style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 800, fontSize: 20, color: '#f59e0b', position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
-          PAISA WAR
+          BHAO
         </div>
         <div style={{ display: 'flex', gap: 20, alignItems: 'center' }}>
           {mode === 'ranked' && (

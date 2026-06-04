@@ -101,7 +101,7 @@ export function Dashboard() {
           >
             ☰
           </button>
-          <div style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: 'clamp(18px, 5vw, 23px)', color: 'var(--green-primary)' }}>PAISA WAR</div>
+          <div style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: 'clamp(18px, 5vw, 23px)', color: 'var(--green-primary)' }}>BHAO</div>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(8px, 2vw, 16px)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 4, background: 'rgba(0,0,0,0.05)', border: '1px solid rgba(0,0,0,0.1)', borderRadius: 8, padding: '5px clamp(6px, 2vw, 12px)' }}>

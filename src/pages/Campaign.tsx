@@ -47,7 +47,7 @@ export function Campaign() {
               <span style={{ fontSize: 14 }}>💰</span>
             </div>
             <div>
-              <h1 style={{ margin: 0, fontWeight: 700, color: '#064e3b', fontSize: 14 }}>Paisa War</h1>
+              <h1 style={{ margin: 0, fontWeight: 700, color: '#064e3b', fontSize: 14 }}>BHAO</h1>
               <p style={{ margin: 0, fontSize: 10, color: '#047857' }}>It's your turn</p>
             </div>
           </div>
@@ -60,7 +60,7 @@ export function Campaign() {
       {/* Progress Bar */}
       <div style={{ position: 'relative', zIndex: 10, background: 'rgba(255, 255, 255, 0.8)', backdropFilter: 'blur(4px)', padding: '8px 16px', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 }}>
-          <span style={{ color: '#065f46', fontSize: 12, fontWeight: 600 }}>Active Paisa Progress</span>
+          <span style={{ color: '#065f46', fontSize: 12, fontWeight: 600 }}>Active BHAO Progress</span>
           <span style={{ color: '#047857', fontSize: 12 }}>{completedCount}/{totalLevels} Complete</span>
         </div>
         <div style={{ height: 8, background: '#e5e7eb', borderRadius: 9999, overflow: 'hidden' }}>

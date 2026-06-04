@@ -28,7 +28,7 @@ export function TutorialModal({ onClose }: TutorialModalProps) {
         {/* Header */}
         <div style={{ padding: '24px 32px', borderBottom: '1px solid rgba(0,0,0,0.1)' }}>
           <h2 style={{ fontSize: 30, fontWeight: 800, color: 'var(--text-dark)', fontFamily: 'Space Grotesk, sans-serif' }}>
-            {step === 1 && "Welcome to Paisa War! 🎯"}
+            {step === 1 && "Welcome to BHAO! 🎯"}
             {step === 2 && "The Cards 🃏"}
             {step === 3 && "How to Play ⚔️"}
           </h2>
@@ -40,7 +40,7 @@ export function TutorialModal({ onClose }: TutorialModalProps) {
           {step === 1 && (
             <div style={{ animation: 'slideUp 0.3s ease' }}>
               <p style={{ fontSize: 20, color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: 20 }}>
-                Paisa War is a turn-based financial strategy game. 
+                BHAO is a turn-based financial strategy game. 
               </p>
               <div style={{ padding: 20, borderRadius: 16, background: 'rgba(245,158,11,0.1)', border: '1px solid rgba(245,158,11,0.2)' }}>
                 <h3 style={{ fontSize: 20, fontWeight: 700, color: '#d97706', marginBottom: 8 }}>The Goal</h3>
@@ -96,7 +96,7 @@ export function TutorialModal({ onClose }: TutorialModalProps) {
               <div style={{ padding: 20, borderRadius: 16, background: 'rgba(37,99,235,0.1)', border: '1px solid rgba(37,99,235,0.2)' }}>
                 <h3 style={{ fontSize: 19, fontWeight: 700, color: 'var(--blue-deep)', marginBottom: 8 }}>Winning & Rewards</h3>
                 <p style={{ fontSize: 18, color: 'var(--text-dark)', lineHeight: 1.5 }}>
-                  Winning matches earns you <strong>Rank Points (RP)</strong> and <strong>DAANIK Coins</strong>. Climb the leaderboard to become a Paisa Mogul!
+                  Winning matches earns you <strong>Rank Points (RP)</strong> and <strong>DAANIK Coins</strong>. Climb the leaderboard to become a BHAO Mogul!
                 </p>
               </div>
             </div>

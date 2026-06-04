@@ -34,7 +34,7 @@ export function Landing() {
         borderBottom: '1px solid var(--green-primary)',
       }}>
         <div style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: 24, color: 'var(--green-primary)', letterSpacing: '-0.02em' }}>
-          PAISA WAR
+          BHAO
         </div>
         <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
           <Link to="/auth" style={{ color: 'var(--text-dark)', textDecoration: 'none', fontSize: 18, fontWeight: 500 }}>Sign In</Link>
@@ -129,7 +129,7 @@ export function Landing() {
 
       {/* Features */}
       <section style={{ padding: '80px 24px', maxWidth: 1100, margin: '0 auto' }}>
-        <h2 style={{ textAlign: 'center', fontSize: 45, fontFamily: 'var(--font-display)', color: 'var(--green-primary)', marginBottom: 8 }}>Why Paisa War?</h2>
+        <h2 style={{ textAlign: 'center', fontSize: 45, fontFamily: 'var(--font-display)', color: 'var(--green-primary)', marginBottom: 8 }}>Why BHAO?</h2>
         <p style={{ textAlign: 'center', color: 'var(--text-muted)', marginBottom: 56, fontSize: 18 }}>Everything you love about competitive card games, built around Indian financial life.</p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 20 }}>
           {FEATURE_CARDS.map(f => (
@@ -160,7 +160,7 @@ export function Landing() {
 
       {/* Footer */}
       <footer style={{ padding: '32px 24px', borderTop: '1px solid var(--green-primary)', textAlign: 'center', color: 'var(--text-muted)', fontSize: 18 }}>
-        <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, color: 'var(--orange-dark)', marginBottom: 8 }}>PAISA WAR</div>
+        <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, color: 'var(--orange-dark)', marginBottom: 8 }}>BHAO</div>
         <div>The Money Decision Game — For entertainment & financial literacy purposes.</div>
       </footer>
     </div>

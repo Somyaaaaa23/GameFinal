@@ -527,7 +527,7 @@ export function MultiplayerGame() {
           ← LEAVE
         </button>
         <div className="desktop-only" style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: 22, color: '#0f172a', position: 'absolute', left: '50%', transform: 'translateX(-50%)', letterSpacing: '-0.02em' }}>
-          PAISA<span style={{ color: '#10b981' }}>WAR</span>
+          BH<span style={{ color: '#10b981' }}>AO</span>
         </div>
         <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '4px 10px', borderRadius: 20, background: '#f0fdf4', border: '1px solid #bbf7d0' }}>
