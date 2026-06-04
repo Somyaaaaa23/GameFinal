@@ -539,7 +539,7 @@ export function checkWinCondition(state: GameState): GameState {
       log: [`🏆 Everyone else forfeited! ${remainingWinner.name} WINS!`, ...state.log].slice(0, 20),
     }
   }
-  if (state.levelConfig && state.turn > state.levelConfig.turnLimit) {
+  if (state.levelConfig && state.turn > state.levelConfig.turnLimit * state.players.length) {
     // Campaign time/turn out - Did human reach the goal?
     const human = state.players[0]
     if (human.wealth >= state.wealthGoal) {
