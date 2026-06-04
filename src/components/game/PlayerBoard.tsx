@@ -183,7 +183,7 @@ export function PlayerBoard({ player, isCurrent, isTarget, isOffline, wealthGoal
             {isTarget ? (
               <span style={{ fontSize: 24 }}>🎯</span>
             ) : (
-              avatar.startsWith('/') ? <img src={avatar} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : avatar
+              (avatar.startsWith('/') || avatar.startsWith('http')) ? <img src={avatar} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : avatar
             )}
           </motion.div>
         )}
