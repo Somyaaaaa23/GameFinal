@@ -183,6 +183,10 @@ export function GameCard({ card, onClick, selected, disabled, compact, faceDown 
         textAlign: 'center',
         lineHeight: 1.1,
         marginTop: 4,
+        display: '-webkit-box',
+        WebkitLineClamp: 2,
+        WebkitBoxOrient: 'vertical',
+        overflow: 'hidden',
       }}>
         {card.name}
       </div>
@@ -196,6 +200,11 @@ export function GameCard({ card, onClick, selected, disabled, compact, faceDown 
           lineHeight: 1.3,
           padding: '0 8px',
           width: '100%',
+          display: '-webkit-box',
+          WebkitLineClamp: 4,
+          WebkitBoxOrient: 'vertical',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
         }}>
           {card.flavor}
         </div>

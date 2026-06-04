@@ -11,6 +11,8 @@ import {
 } from '../lib/gameEngine'
 import { ARTHA_YATRA_LEVELS } from '../data/levels'
 import { saveGameResult } from '../lib/auth'
+import { getAvatar } from '../lib/avatarUtils'
+import { ALL_CARDS } from '../data/cards'
 import { playSound } from '../lib/audio'
 import Confetti from 'react-confetti'
 import { GameBoard, UIPhase } from '../components/game/GameBoard'
@@ -58,7 +60,7 @@ export function Game() {
   const [animating, setAnimating] = useState(false)
   const [notification, setNotification] = useState<string | null>(null)
   const [showForfeitModal, setShowForfeitModal] = useState(false)
-  const [popupInfo, setPopupInfo] = useState<{ reason: string, amountStr: string, isGain: boolean } | null>(null)
+  const [popupInfo, setPopupInfo] = useState<{ reason: string, sourceName?: string, isSelf?: boolean, description?: string, amountStr: string, isGain: boolean } | null>(null)
   const handlePopupContinue = useCallback(() => setPopupInfo(null), [])
   const botTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const prevWealthRef = useRef(500000)
@@ -142,13 +144,30 @@ export function Game() {
     // Only show popup during active gameplay
     if (wealthDiff !== 0 && uiPhase !== 'setup' && uiPhase !== 'result' && gameState.phase !== 'game_over') {
       let reason = gameState.log[0] || 'Wealth updated'
+      let description = ''
+      let sourceName = ''
+      let isSelf = false
+
+      const sourceMatch = gameState.log[0]?.match(/^(.*?) played/)
+      if (sourceMatch && sourceMatch[1]) {
+        sourceName = sourceMatch[1]
+        isSelf = sourceName === humanPlayer.username
+      }
+
       const match = reason.match(/played (.*?) (?:→|—)/)
       if (match && match[1]) {
         reason = match[1]
+        const card = ALL_CARDS.find(c => c.name === reason)
+        if (card) {
+          description = card.flavor
+        }
       }
 
       setPopupInfo({
         reason,
+        sourceName,
+        isSelf,
+        description,
         amountStr: wealthDiff > 0 ? `+₹${Math.abs(wealthDiff).toLocaleString()}` : `-₹${Math.abs(wealthDiff).toLocaleString()}`,
         isGain: wealthDiff > 0
       })
@@ -378,7 +397,7 @@ export function Game() {
   )
 }
 
-function EventPopup({ info, onContinue }: { info: { reason: string, amountStr: string, isGain: boolean }, onContinue: () => void }) {
+function EventPopup({ info, onContinue }: { info: { reason: string, sourceName?: string, isSelf?: boolean, description?: string, amountStr: string, isGain: boolean }, onContinue: () => void }) {
   useEffect(() => {
     const timer = setTimeout(() => {
       onContinue()
@@ -404,11 +423,21 @@ function EventPopup({ info, onContinue }: { info: { reason: string, amountStr: s
         animation: 'slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1)'
       }}>
         <div style={{ fontSize: 14, color: 'var(--text-muted)', marginBottom: 12, textTransform: 'uppercase', letterSpacing: 1.5, fontWeight: 800 }}>
-          Game Event
+          {info.isGain 
+            ? 'Wealth Gained!' 
+            : (info.sourceName && !info.isSelf && info.sourceName !== 'Game' 
+                ? `${info.sourceName} attacked!` 
+                : 'Wealth Lost!')}
         </div>
-        <h3 style={{ fontSize: 26, color: 'var(--text-dark)', marginBottom: 28, lineHeight: 1.3, fontWeight: 800, fontFamily: 'Space Grotesk, sans-serif' }}>
+        <h3 style={{ fontSize: 26, color: 'var(--text-dark)', marginBottom: info.description ? 12 : 28, lineHeight: 1.3, fontWeight: 800, fontFamily: 'Space Grotesk, sans-serif' }}>
           {info.reason}
         </h3>
+        
+        {info.description && (
+          <div style={{ fontSize: 16, color: '#4b5563', marginBottom: 28, fontStyle: 'italic', padding: '0 20px' }}>
+            "{info.description}"
+          </div>
+        )}
         
         <div style={{ 
           fontSize: 52, fontWeight: 800, fontFamily: 'Space Grotesk, sans-serif',
