@@ -513,11 +513,11 @@ input, textarea, select {
   }
 
   .player-board-wrapper {
-    flex: 0 0 82% !important;
-    min-width: 82% !important;
-    max-width: 82% !important;
+    flex: 1 1 140px !important;
+    min-width: 140px !important;
+    max-width: 170px !important;
     scroll-snap-align: center;
-    border-radius: 20px !important;
+    border-radius: 16px !important;
     padding: 8px !important;
   }
 
@@ -526,9 +526,10 @@ input, textarea, select {
   ========================================= */
 
   .game-card-normal {
-    width: 145px !important;
-    height: 205px !important;
-    border-radius: 16px !important;
+    width: 125px !important;
+    height: 175px !important;
+    border-radius: 14px !important;
+    padding: 8px !important;
   }
 
   .hand-container {

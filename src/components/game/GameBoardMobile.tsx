@@ -40,7 +40,7 @@ export function GameBoardMobile({
       {/* TOP/MAIN CONTENT: Players & Action */}
       <div className="game-left-col" style={{ display: 'flex', flexDirection: 'column', gap: 16, overflowY: 'auto', paddingBottom: 16, flex: 1 }}>
         {/* Players */}
-        <div className="grid grid-cols-3 gap-2 sm:gap-3">
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', justifyContent: 'center' }}>
           {displayPlayers.map((player) => {
             const originalIndex = gameState.players.findIndex(p => p.id === player.id)
             return (
@@ -123,7 +123,7 @@ export function GameBoardMobile({
                 {gameState.drawnCard ? `Drew "${gameState.drawnCard.name}" — pick a card to play:` : 'Pick a card to play:'}
               </p>
             </div>
-            <div className="grid grid-cols-2 gap-3" style={{ justifyItems: 'center' }}>
+            <div className="grid grid-cols-2 gap-2" style={{ justifyItems: 'center' }}>
               {myPlayer?.hand.map(card => (
                 <GameCardComponent key={card.id} card={card} onClick={() => onPlayCard(card)} />
               ))}
@@ -131,95 +131,7 @@ export function GameBoardMobile({
           </div>
         )}
 
-        {/* Decision card POPUP */}
-        {uiPhase === 'decision' && gameState.pendingDecision && (
-          <div style={{
-            position: 'fixed', inset: 0, zIndex: 100,
-            background: 'rgba(0, 0, 0, 0.6)', backdropFilter: 'blur(4px)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            padding: 20
-          }}>
-            <div style={{
-              background: '#ffffff', borderRadius: 24, width: '100%', maxWidth: 360,
-              padding: '20px 16px', position: 'relative',
-              boxShadow: '0 20px 40px rgba(0,0,0,0.2)'
-            }}>
-              {/* Close button */}
-              <button 
-                onClick={onCancelTargeting}
-                style={{
-                  position: 'absolute', top: 14, right: 14,
-                  background: 'transparent', border: 'none',
-                  fontSize: 18, color: '#94a3b8', cursor: 'pointer', padding: 4
-                }}
-              >
-                ✕
-              </button>
 
-              <div style={{ textAlign: 'center', marginBottom: 16 }}>
-                <h3 style={{ fontSize: 22, fontWeight: 800, color: '#0f172a', fontFamily: 'var(--font-display)', marginBottom: 4 }}>
-                  {gameState.pendingDecision.card.name}
-                </h3>
-                <p style={{ color: '#0ea5e9', fontSize: 15, fontWeight: 600 }}>{gameState.pendingDecision.card.flavor}</p>
-              </div>
-              
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-                {gameState.pendingDecision.card.options?.map(opt => {
-                  const colors = {
-                    spend: { bg: '#fff1f2', border: '#fda4af', labelColor: '#e11d48', labelBg: '#ffe4e6' },
-                    save: { bg: '#f0fdf4', border: '#86efac', labelColor: '#16a34a', labelBg: '#dcfce7' },
-                    invest: { bg: '#eff6ff', border: '#93c5fd', labelColor: '#2563eb', labelBg: '#dbeafe' }
-                  }
-                  const c = colors[opt.type as keyof typeof colors] || colors.save
-                  let effectVal = opt.effect.value ?? 0
-                  if (opt.effect.type === 'wealth_pct' && myPlayer) {
-                    effectVal = Math.floor(myPlayer.wealth * (effectVal / 100))
-                  }
-                  const sign = effectVal >= 0 ? '+' : ''
-                  
-                  let failVal = opt.failEffect?.value ?? 0
-                  if (opt.failEffect?.type === 'wealth_pct' && myPlayer) {
-                    failVal = Math.floor(myPlayer.wealth * (failVal / 100))
-                  }
-                  
-                  return (
-                    <button
-                      key={opt.type}
-                      onClick={() => onDecision(opt.type as any)}
-                      style={{
-                        padding: '10px 14px', borderRadius: 16,
-                        background: c.bg, border: `2px solid ${c.border}`,
-                        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                        color: 'var(--text-dark)', cursor: 'pointer', textAlign: 'left',
-                        fontFamily: 'inherit', width: '100%'
-                      }}
-                    >
-                      <div>
-                        <div style={{ 
-                          display: 'inline-block', fontSize: 12, fontWeight: 800, 
-                          color: c.labelColor, background: c.labelBg, 
-                          padding: '2px 8px', borderRadius: 8, marginBottom: 4 
-                        }}>
-                          {opt.label}
-                        </div>
-                        <div style={{ fontSize: 14, color: '#475569', fontWeight: 600 }}>{opt.description}</div>
-                        {opt.investRisk && opt.failEffect && (
-                          <div style={{ fontSize: 11, color: '#dc2626', fontWeight: 700, marginTop: 4, background: 'rgba(220, 38, 38, 0.1)', padding: '2px 6px', borderRadius: 4, display: 'inline-block' }}>
-                          ⚠️ {opt.investRisk}% Risk: {failVal < 0 ? '-' : '+'}{formatWealth(Math.abs(failVal))}
-                        </div>
-                        )}
-                      </div>
-                      
-                      <div style={{ fontSize: 22, fontWeight: 800, color: effectVal >= 0 ? '#16a34a' : '#e11d48', fontFamily: 'var(--font-display)', textAlign: 'right' }}>
-                        {sign}{formatWealth(Math.abs(effectVal))}
-                      </div>
-                    </button>
-                  )
-                })}
-              </div>
-            </div>
-          </div>
-        )}
 
         {/* Action card targeting phase (Select opponent) */}
         {uiPhase === 'targeting' && gameState.playedCard && (
@@ -242,6 +154,97 @@ export function GameBoardMobile({
       <div className="game-right-col" style={{ width: '100%', marginTop: 8, flexShrink: 0 }}>
         <GameLog log={gameState.log} mobileCompact={true} />
       </div>
+
+      {/* Decision card POPUP (Moved outside left-col to fix z-index overlapping) */}
+      {uiPhase === 'decision' && gameState.pendingDecision && (
+        <div style={{
+          position: 'fixed', inset: 0, zIndex: 9999,
+          background: 'rgba(0, 0, 0, 0.6)', backdropFilter: 'blur(4px)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          padding: 20
+        }}>
+          <div style={{
+            background: '#ffffff', borderRadius: 24, width: '100%', maxWidth: 360,
+            padding: '20px 16px', position: 'relative',
+            boxShadow: '0 20px 40px rgba(0,0,0,0.2)'
+          }}>
+            {/* Close button */}
+            <button 
+              onClick={onCancelTargeting}
+              style={{
+                position: 'absolute', top: 14, right: 14,
+                background: 'transparent', border: 'none',
+                fontSize: 18, color: '#94a3b8', cursor: 'pointer', padding: 4
+              }}
+            >
+              ✕
+            </button>
+
+            <div style={{ textAlign: 'center', marginBottom: 16 }}>
+              <h3 style={{ fontSize: 22, fontWeight: 800, color: '#0f172a', fontFamily: 'var(--font-display)', marginBottom: 4 }}>
+                {gameState.pendingDecision.card.name}
+              </h3>
+              <p style={{ color: '#0ea5e9', fontSize: 15, fontWeight: 600 }}>{gameState.pendingDecision.card.flavor}</p>
+            </div>
+            
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              {gameState.pendingDecision.card.options?.map(opt => {
+                const colors = {
+                  spend: { bg: '#fff1f2', border: '#fda4af', labelColor: '#e11d48', labelBg: '#ffe4e6' },
+                  save: { bg: '#f0fdf4', border: '#86efac', labelColor: '#16a34a', labelBg: '#dcfce7' },
+                  invest: { bg: '#eff6ff', border: '#93c5fd', labelColor: '#2563eb', labelBg: '#dbeafe' }
+                }
+                const c = colors[opt.type as keyof typeof colors] || colors.save
+                let effectVal = opt.effect.value ?? 0
+                if (opt.effect.type === 'wealth_pct' && myPlayer) {
+                  effectVal = Math.floor(myPlayer.wealth * (effectVal / 100))
+                }
+                const sign = effectVal >= 0 ? '+' : ''
+                
+                let failVal = opt.failEffect?.value ?? 0
+                if (opt.failEffect?.type === 'wealth_pct' && myPlayer) {
+                  failVal = Math.floor(myPlayer.wealth * (failVal / 100))
+                }
+                
+                return (
+                  <button
+                    key={opt.type}
+                    onClick={() => onDecision(opt.type as any)}
+                    style={{
+                      padding: '10px 14px', borderRadius: 16,
+                      background: c.bg, border: `2px solid ${c.border}`,
+                      display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                      color: 'var(--text-dark)', cursor: 'pointer', textAlign: 'left',
+                      fontFamily: 'inherit', width: '100%'
+                    }}
+                  >
+                    <div>
+                      <div style={{ 
+                        display: 'inline-block', fontSize: 12, fontWeight: 800, 
+                        color: c.labelColor, background: c.labelBg, 
+                        padding: '2px 8px', borderRadius: 8, marginBottom: 4 
+                      }}>
+                        {opt.label}
+                      </div>
+                      <div style={{ fontSize: 14, color: '#475569', fontWeight: 600 }}>{opt.description}</div>
+                      {opt.investRisk && opt.failEffect && (
+                        <div style={{ fontSize: 11, color: '#dc2626', fontWeight: 700, marginTop: 4, background: 'rgba(220, 38, 38, 0.1)', padding: '2px 6px', borderRadius: 4, display: 'inline-block' }}>
+                        ⚠️ {opt.investRisk}% Risk: {failVal < 0 ? '-' : '+'}{formatWealth(Math.abs(failVal))}
+                      </div>
+                      )}
+                    </div>
+                    
+                    <div style={{ fontSize: 22, fontWeight: 800, color: effectVal >= 0 ? '#16a34a' : '#e11d48', fontFamily: 'var(--font-display)', textAlign: 'right' }}>
+                      {sign}{formatWealth(Math.abs(effectVal))}
+                    </div>
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   )
 }

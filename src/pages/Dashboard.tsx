@@ -67,7 +67,6 @@ export function Dashboard() {
       .from('leaderboard')
       .select('*')
       .order('wins', { ascending: false })
-      .limit(50)
     setLeaderboard(data ?? [])
     setLeaderboardLoading(false)
   }
@@ -322,6 +321,9 @@ function HomeTab({ navigate, profile, currentSeason, onlineUsers }: { navigate: 
 }
 
 function LeaderboardTab({ leaderboard, loading, profile, onRefresh }: { leaderboard: LeaderboardEntry[]; loading: boolean; profile: ReturnType<typeof useAuth>['profile']; onRefresh: () => void }) {
+  const [showAll, setShowAll] = useState(false)
+  const displayData = showAll ? leaderboard : leaderboard.slice(0, 12)
+  
   return (
     <div style={{ maxWidth: 700, width: '100%', margin: '0 auto' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
@@ -352,7 +354,7 @@ function LeaderboardTab({ leaderboard, loading, profile, onRefresh }: { leaderbo
               </tr>
             </thead>
             <tbody>
-              {leaderboard.map((player, i) => {
+              {displayData.map((player, i) => {
                 const isMe = player.username === profile?.username
                 const winRate = player.total_games > 0 ? Math.round((player.wins / player.total_games) * 100) : 0
                 return (
@@ -372,6 +374,27 @@ function LeaderboardTab({ leaderboard, loading, profile, onRefresh }: { leaderbo
               })}
             </tbody>
             </table>
+            
+            {!showAll && leaderboard.length > 12 && (
+              <div style={{ padding: 20, textAlign: 'center' }}>
+                <button 
+                  onClick={() => setShowAll(true)}
+                  style={{
+                    background: 'var(--orange-primary)',
+                    color: '#fff',
+                    border: 'none',
+                    borderRadius: 8,
+                    padding: '10px 24px',
+                    fontSize: 16,
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    boxShadow: '0 4px 12px rgba(245, 158, 11, 0.2)'
+                  }}
+                >
+                  Load More
+                </button>
+              </div>
+            )}
           </div>
         )}
       </Card>

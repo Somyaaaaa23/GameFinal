@@ -457,7 +457,7 @@ function SetupScreen({ botCount, setBotCount, onStart, onBack, levelId }: { botC
         <div className="glass-panel" style={{ padding: '14px 16px', marginBottom: 24, fontSize: 16, color: 'var(--text-muted)', borderRadius: 12, boxShadow: 'none' }}>
           <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
             <div>🎯 Race to <span style={{ color: 'var(--orange-dark)', fontWeight: 700 }}>{wealthGoalText}</span></div>
-            <div>⏱ <span style={{ color: 'var(--text-dark)', fontWeight: 600 }}>25 min</span> time limit</div>
+
           </div>
         </div>
 

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { Button } from '../components/ui/Button'
+import { FloatingBackground } from '../components/FloatingBackground'
 
 const FEATURE_CARDS = [
   { icon: '🎴', title: 'Real Indian Money Decisions', desc: 'Every card puts you in a situation you might face in real life. SIPs, EMIs, Tax Raids, IPOs — your choices decide your fate.' },
@@ -19,7 +20,8 @@ const PREVIEW_CARDS = [
 
 export function Landing() {
   return (
-    <div style={{ minHeight: '100vh', overflowX: 'hidden' }}>
+    <div style={{ minHeight: '100vh', overflowX: 'hidden', position: 'relative', zIndex: 1 }}>
+      <FloatingBackground />
       {/* Navbar */}
       <nav style={{
         position: 'fixed', top: 0, left: 0, right: 0,
