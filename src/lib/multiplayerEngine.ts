@@ -9,7 +9,11 @@ const TIME_LIMIT_MS = 15 * 60 * 1000  // 15 minutes per game
 function generateRoomCode(): string {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'
   let code = ''
-  for (let i = 0; i < 6; i++) code += chars[Math.floor(Math.random() * chars.length)]
+  const array = new Uint32Array(6)
+  crypto.getRandomValues(array)
+  for (let i = 0; i < 6; i++) {
+    code += chars[array[i] % chars.length]
+  }
   return code
 }
 

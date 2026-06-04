@@ -142,6 +142,7 @@ export function Dashboard() {
                 cursor: 'pointer', fontSize: 16, fontWeight: 600, fontFamily: 'inherit',
                 textAlign: 'left', width: '100%',
                 transition: 'all 0.15s',
+                boxShadow: tab === item.id ? 'inset 4px 0 0 var(--green-primary)' : 'none'
               }}
             >
               <span style={{ fontSize: 20 }}>{item.icon}</span>
@@ -155,8 +156,8 @@ export function Dashboard() {
               style={{
                 display: 'flex', alignItems: 'center', gap: 10,
                 padding: '12px 16px', borderRadius: 12,
-                background: 'rgba(224,80,32,0.05)', border: '1px solid var(--orange-primary)',
-                color: 'var(--orange-primary)',
+                background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.05)',
+                color: 'var(--text-dark)',
                 cursor: 'pointer', fontSize: 16, fontWeight: 700, fontFamily: 'inherit',
                 textAlign: 'left', width: '100%', marginBottom: 16,
                 transition: 'all 0.15s',
@@ -250,47 +251,55 @@ function HomeTab({ navigate, profile, currentSeason, onlineUsers }: { navigate: 
               Welcome, {profile?.username ?? 'Mogul'} 👋
             </h1>
             <p style={{ color: 'var(--text-muted)', fontSize: 18 }}>Ready to build your empire?</p>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 14, color: '#10b981', fontWeight: 700, letterSpacing: '0.02em', marginTop: 12 }}>
-              <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#10b981', boxShadow: '0 0 8px rgba(16, 185, 129, 0.8)', animation: 'pulse 2s infinite' }} />
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 18, color: '#10b981', fontWeight: 700, letterSpacing: '0.02em', marginTop: 12 }}>
+              <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#10b981', boxShadow: '0 0 8px rgba(16, 185, 129, 0.8)', animation: 'pulse 2s infinite' }} />
               {onlineUsers} Players Online Now
             </div>
           </div>
           <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-            <Button variant="gold" size="lg" onClick={() => navigate('/multiplayer')}>Play Online</Button>
+            <Button variant="primary" size="lg" onClick={() => navigate('/campaign')}>Your Journey</Button>
+            <Button variant="secondary" size="lg" onClick={() => navigate('/multiplayer')} style={{ border: '2px solid var(--orange-dark)', color: 'var(--orange-dark)', background: 'transparent' }}>Play Online</Button>
           </div>
         </div>
       </div>
 
-      {/* Stats Row */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4">
-        {[
-          { label: 'Games Played', value: (profile?.games_played ?? 0).toString(), icon: '🎮', color: 'var(--blue-deep)' },
-          { label: 'Games Won', value: (profile?.games_won ?? 0).toString(), icon: '🏆', color: 'var(--green-primary)' },
-          { label: 'Win Streak', value: `${profile?.win_streak ?? 0}`, icon: '🔥', color: 'var(--orange-dark)' },
-          { label: 'Total XP', value: (profile?.total_xp ?? 0).toLocaleString(), icon: '⭐', color: 'var(--orange-dark)' },
-        ].map(stat => (
-          <Card key={stat.label} className="p-2 sm:p-4">
-            <div className="text-xl sm:text-2xl" style={{ marginBottom: 6 }}>{stat.icon}</div>
-            <div className="text-lg sm:text-2xl font-bold" style={{ color: stat.color, fontFamily: 'var(--font-display)' }}>{stat.value}</div>
-            <div className="text-xs sm:text-sm" style={{ color: 'var(--text-muted)', marginTop: 2 }}>{stat.label}</div>
-          </Card>
-        ))}
-      </div>
+      {profile?.games_played === 0 ? (
+        <Card style={{ padding: '24px', textAlign: 'center', background: 'rgba(59,130,246,0.05)', borderColor: 'rgba(59,130,246,0.2)' }}>
+          <h3 style={{ fontSize: 20, fontWeight: 700, color: 'var(--blue-deep)', marginBottom: 8 }}>Welcome to BHAO!</h3>
+          <p style={{ fontSize: 16, color: 'var(--text-muted)', marginBottom: 16 }}>Play your first game to start tracking your stats.</p>
+          <Button variant="primary" onClick={() => navigate('/campaign')}>Play your first game →</Button>
+        </Card>
+      ) : (
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4">
+          {[
+            { label: 'Games Played', value: (profile?.games_played ?? 0).toString(), icon: '🎮', color: 'var(--blue-deep)' },
+            { label: 'Games Won', value: (profile?.games_won ?? 0).toString(), icon: '🏆', color: 'var(--green-primary)' },
+            { label: 'Win Streak', value: `${profile?.win_streak ?? 0}`, icon: '🔥', color: 'var(--orange-dark)' },
+            { label: 'Total XP', value: (profile?.total_xp ?? 0).toLocaleString(), icon: '⭐', color: 'var(--orange-dark)' },
+          ].map(stat => (
+            <Card key={stat.label} className="p-2 sm:p-4">
+              <div className="text-xl sm:text-2xl" style={{ marginBottom: 6 }}>{stat.icon}</div>
+              <div className="text-lg sm:text-2xl font-bold" style={{ color: stat.color, fontFamily: 'var(--font-display)' }}>{stat.value}</div>
+              <div className="text-xs sm:text-sm" style={{ color: 'var(--text-muted)', marginTop: 2 }}>{stat.label}</div>
+            </Card>
+          ))}
+        </div>
+      )}
 
       {/* Career Journey Banner */}
       <Card glow="green" style={{ padding: 20 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
           <div>
             <div style={{ fontSize: 15, color: 'var(--green-primary)', fontWeight: 700, letterSpacing: '0.05em', marginBottom: 6, textTransform: 'uppercase' }}>
-              {ARTHA_YATRA_LEVELS.find(l => l.id === 'level_3')?.name || 'ARTHA YATRA'}
+              {(ARTHA_YATRA_LEVELS.find(l => l.id === 'level_3')?.name || 'ARTHA YATRA').toUpperCase()}
             </div>
             <h2 style={{ fontSize: 25, fontWeight: 800, color: 'var(--text-dark)', fontFamily: 'var(--font-display)', marginBottom: 4 }}>
-              Start your journey
+              Continue your journey
             </h2>
             <p style={{ color: 'var(--text-muted)', fontSize: 16 }}>Play through the levels and master personal finance.</p>
           </div>
           <div style={{ textAlign: 'right' }}>
-            <Button variant="primary" size="lg" onClick={() => navigate('/campaign')}>  Your Journey</Button>
+            <Button variant="primary" size="lg" onClick={() => navigate('/campaign')}>Continue →</Button>
           </div>
         </div>
       </Card>
@@ -310,7 +319,7 @@ function HomeTab({ navigate, profile, currentSeason, onlineUsers }: { navigate: 
           </div>
           <div style={{ textAlign: 'right' }}>
             <div style={{ fontSize: 16, color: 'var(--text-muted)', marginBottom: 4 }}>Season ends in</div>
-            <div style={{ fontSize: 35, fontWeight: 800, color: 'var(--orange-dark)', fontFamily: 'var(--font-display)' }}>{seasonTimeLeft}</div>
+            <div style={{ fontSize: 35, fontWeight: 800, color: 'var(--orange-dark)', fontFamily: 'var(--font-display)', animation: 'pulse 2s infinite' }}>{seasonTimeLeft}</div>
           </div>
         </div>
       </Card>
@@ -322,17 +331,43 @@ function HomeTab({ navigate, profile, currentSeason, onlineUsers }: { navigate: 
 
 function LeaderboardTab({ leaderboard, loading, profile, onRefresh }: { leaderboard: LeaderboardEntry[]; loading: boolean; profile: ReturnType<typeof useAuth>['profile']; onRefresh: () => void }) {
   const [showAll, setShowAll] = useState(false)
-  const displayData = showAll ? leaderboard : leaderboard.slice(0, 12)
+  const [sortField, setSortField] = useState<'wins' | 'winRate' | 'highest_net_worth'>('wins')
+  const [sortAsc, setSortAsc] = useState(false)
+
+  const handleSort = (field: 'wins' | 'winRate' | 'highest_net_worth') => {
+    if (sortField === field) setSortAsc(!sortAsc)
+    else { setSortField(field); setSortAsc(false) }
+  }
+
+  const enrichedLeaderboard = leaderboard.map(p => ({
+    ...p,
+    winRate: p.total_games > 0 ? Math.round((p.wins / p.total_games) * 100) : 0
+  }))
+
+  const sortedLeaderboard = [...enrichedLeaderboard].sort((a, b) => {
+    let diff = 0
+    if (sortField === 'wins') diff = a.wins - b.wins
+    if (sortField === 'winRate') diff = a.winRate - b.winRate
+    if (sortField === 'highest_net_worth') diff = a.highest_net_worth - b.highest_net_worth
+    return sortAsc ? diff : -diff
+  })
+
+  // Pre-calculate ranks before pinning
+  const rankedLeaderboard = sortedLeaderboard.map((p, index) => ({ ...p, rank: index + 1 }))
   
+  const myEntry = rankedLeaderboard.find(p => p.username === profile?.username)
+  const others = rankedLeaderboard.filter(p => p.username !== profile?.username)
+  const displayData = showAll ? others : others.slice(0, 12)
+
   return (
-    <div style={{ maxWidth: 700, width: '100%', margin: '0 auto' }}>
+    <div style={{ maxWidth: 800, width: '100%', margin: '0 auto' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
         <h2 style={{ fontSize: 28, fontWeight: 800, color: 'var(--text-dark)', fontFamily: 'Space Grotesk, sans-serif' }}>Leaderboard</h2>
-        <button onClick={onRefresh} style={{ background: 'rgba(0,0,0,0.05)', border: '1px solid rgba(0,0,0,0.1)', borderRadius: 8, padding: '6px 14px', color: 'var(--text-muted)', cursor: 'pointer', fontSize: 16, fontFamily: 'inherit' }}>
+        <button onClick={onRefresh} style={{ background: 'var(--green-primary)', border: 'none', borderRadius: 8, padding: '6px 14px', color: '#fff', cursor: 'pointer', fontSize: 16, fontFamily: 'inherit', fontWeight: 600 }}>
           Refresh
         </button>
       </div>
-      <Card>
+      <Card style={{ overflow: 'hidden', padding: 0 }}>
         {loading ? (
           <div style={{ textAlign: 'center', padding: '40px 0', color: 'var(--text-muted)' }}>
             <div style={{ width: 28, height: 28, border: '2px solid rgba(0,0,0,0.1)', borderTopColor: 'var(--orange-primary)', borderRadius: '50%', animation: 'spin 0.8s linear infinite', margin: '0 auto 12px' }} />
@@ -345,37 +380,60 @@ function LeaderboardTab({ leaderboard, loading, profile, onRefresh }: { leaderbo
           </div>
         ) : (
           <div className="scroll-x" style={{ width: '100%' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 600 }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 650 }}>
             <thead>
-              <tr style={{ borderBottom: '1px solid rgba(0,0,0,0.1)' }}>
-                {['Rank', 'Player', 'Wins', 'Games', 'Win %', 'Best Wealth'].map(h => (
-                  <th key={h} style={{ padding: 'clamp(8px, 2vw, 12px)', textAlign: 'left', fontSize: 15, color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{h}</th>
+              <tr style={{ borderBottom: '2px solid rgba(0,0,0,0.1)', background: 'rgba(0,0,0,0.02)' }}>
+                {['Rank', 'Player'].map(h => (
+                  <th key={h} style={{ padding: '12px 16px', textAlign: 'left', fontSize: 13, color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{h}</th>
                 ))}
+                <th onClick={() => handleSort('wins')} style={{ cursor: 'pointer', padding: '12px 16px', textAlign: 'left', fontSize: 13, color: sortField === 'wins' ? 'var(--green-primary)' : 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Wins {sortField === 'wins' && (sortAsc ? '↑' : '↓')}</th>
+                <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: 13, color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Games</th>
+                <th onClick={() => handleSort('winRate')} style={{ cursor: 'pointer', padding: '12px 16px', textAlign: 'left', fontSize: 13, color: sortField === 'winRate' ? 'var(--green-primary)' : 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Win % {sortField === 'winRate' && (sortAsc ? '↑' : '↓')}</th>
+                <th onClick={() => handleSort('highest_net_worth')} style={{ cursor: 'pointer', minWidth: 140, padding: '12px 16px', textAlign: 'left', fontSize: 13, color: sortField === 'highest_net_worth' ? 'var(--green-primary)' : 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Best Wealth {sortField === 'highest_net_worth' && (sortAsc ? '↑' : '↓')}</th>
               </tr>
             </thead>
             <tbody>
+              {myEntry && (
+                <tr style={{ background: 'rgba(32,160,96,0.12)', borderBottom: '2px solid var(--green-primary)' }}>
+                  <td style={{ padding: '14px 16px', fontSize: 16, fontWeight: 800, color: 'var(--green-deep)' }}>
+                    {myEntry.rank === 1 ? '🥇' : myEntry.rank === 2 ? '🥈' : myEntry.rank === 3 ? '🥉' : `#${myEntry.rank}`}
+                  </td>
+                  <td style={{ padding: '14px 16px', display: 'flex', alignItems: 'center', gap: 10 }}>
+                    <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'var(--green-primary)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, fontWeight: 700 }}>
+                      {myEntry.username[0].toUpperCase()}
+                    </div>
+                    <span style={{ fontSize: 16, color: 'var(--text-dark)', fontWeight: 800 }}>{myEntry.username} (you)</span>
+                  </td>
+                  <td style={{ padding: '14px 16px', fontSize: 16, fontWeight: 800, color: 'var(--green-deep)' }}>{myEntry.wins}</td>
+                  <td style={{ padding: '14px 16px', fontSize: 15, color: 'var(--green-deep)' }}>{myEntry.total_games}</td>
+                  <td style={{ padding: '14px 16px', fontSize: 15, color: myEntry.winRate > 60 ? 'var(--green-deep)' : 'var(--text-dark)' }}>{myEntry.winRate}%</td>
+                  <td style={{ padding: '14px 16px', fontSize: 15, color: 'var(--orange-dark)', fontWeight: 800 }}>{formatWealth(myEntry.highest_net_worth)}</td>
+                </tr>
+              )}
               {displayData.map((player, i) => {
-                const isMe = player.username === profile?.username
-                const winRate = player.total_games > 0 ? Math.round((player.wins / player.total_games) * 100) : 0
+                const isEven = i % 2 === 0
                 return (
-                  <tr key={player.id} style={{ borderBottom: '1px solid rgba(0,0,0,0.05)', background: isMe ? 'rgba(32,160,96,0.08)' : 'transparent' }}>
-                    <td style={{ padding: 'clamp(8px, 2vw, 12px)', fontSize: 'clamp(15px, 4vw, 18px)', fontWeight: 700, color: i === 0 ? 'var(--orange-dark)' : i === 1 ? 'var(--text-muted)' : i === 2 ? 'var(--orange-primary)' : 'var(--text-muted)' }}>
-                      {i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `#${i + 1}`}
+                  <tr key={player.id} style={{ borderBottom: '1px solid rgba(0,0,0,0.05)', background: isEven ? 'transparent' : 'rgba(0,0,0,0.02)', transition: 'background 0.2s' }} onMouseEnter={e => e.currentTarget.style.background = 'rgba(0,0,0,0.05)'} onMouseLeave={e => e.currentTarget.style.background = isEven ? 'transparent' : 'rgba(0,0,0,0.02)'}>
+                    <td style={{ padding: '12px 16px', fontSize: 16, fontWeight: 700, color: player.rank === 1 ? 'var(--orange-dark)' : player.rank === 2 ? '#64748b' : player.rank === 3 ? 'var(--orange-primary)' : 'var(--text-muted)' }}>
+                      {player.rank === 1 ? '🥇' : player.rank === 2 ? '🥈' : player.rank === 3 ? '🥉' : `#${player.rank}`}
                     </td>
-                    <td style={{ padding: 'clamp(8px, 2vw, 12px)', fontSize: 'clamp(15px, 4vw, 18px)', color: 'var(--text-dark)', fontWeight: isMe ? 700 : 400 }}>
-                      {player.username} {isMe && <span style={{ fontSize: 14, color: 'var(--green-primary)', marginLeft: 6 }}>(you)</span>}
+                    <td style={{ padding: '12px 16px', display: 'flex', alignItems: 'center', gap: 10 }}>
+                      <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'rgba(0,0,0,0.1)', color: 'var(--text-dark)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, fontWeight: 700 }}>
+                        {player.username[0].toUpperCase()}
+                      </div>
+                      <span style={{ fontSize: 16, color: 'var(--text-dark)', fontWeight: 600 }}>{player.username}</span>
                     </td>
-                    <td style={{ padding: 'clamp(8px, 2vw, 12px)', fontSize: 'clamp(15px, 4vw, 18px)', fontWeight: 700, color: 'var(--green-primary)' }}>{player.wins}</td>
-                    <td style={{ padding: 'clamp(8px, 2vw, 12px)', fontSize: 'clamp(14px, 3.5vw, 16px)', color: 'var(--text-muted)' }}>{player.total_games}</td>
-                    <td style={{ padding: 'clamp(8px, 2vw, 12px)', fontSize: 'clamp(14px, 3.5vw, 16px)', color: winRate > 60 ? 'var(--green-primary)' : 'var(--text-muted)' }}>{winRate}%</td>
-                    <td style={{ padding: 'clamp(8px, 2vw, 12px)', fontSize: 'clamp(14px, 3.5vw, 16px)', color: 'var(--orange-dark)', fontWeight: 600 }}>{formatWealth(player.highest_net_worth)}</td>
+                    <td style={{ padding: '12px 16px', fontSize: 16, fontWeight: 700, color: 'var(--green-primary)' }}>{player.wins}</td>
+                    <td style={{ padding: '12px 16px', fontSize: 15, color: 'var(--text-muted)' }}>{player.total_games}</td>
+                    <td style={{ padding: '12px 16px', fontSize: 15, color: player.winRate > 60 ? 'var(--green-primary)' : 'var(--text-muted)' }}>{player.winRate}%</td>
+                    <td style={{ padding: '12px 16px', fontSize: 15, color: 'var(--orange-dark)', fontWeight: 600 }}>{formatWealth(player.highest_net_worth)}</td>
                   </tr>
                 )
               })}
             </tbody>
             </table>
             
-            {!showAll && leaderboard.length > 12 && (
+            {!showAll && others.length > 12 && (
               <div style={{ padding: 20, textAlign: 'center' }}>
                 <button 
                   onClick={() => setShowAll(true)}
@@ -566,35 +624,41 @@ function ProfileTab() {
 
       <Card style={{ padding: 0, overflow: 'hidden', marginBottom: 32, border: '1px solid rgba(0,0,0,0.1)' }}>
         {/* Banner */}
-        <div style={{ height: 140, background: 'linear-gradient(135deg, var(--green-primary), var(--green-deep))', position: 'relative' }}>
-           <div style={{ position: 'absolute', bottom: -45, left: 32, display: 'flex', alignItems: 'flex-end', gap: 20 }}>
-             <div 
-               onClick={() => setIsEditingAvatar(!isEditingAvatar)}
-               style={{ width: 100, height: 100, borderRadius: '50%', background: 'var(--card-paper)', border: '4px solid var(--gold)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 50, cursor: 'pointer', position: 'relative', boxShadow: '0 8px 16px rgba(0,0,0,0.15)', transition: 'transform 0.2s' }}
-               onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.05)'}
-               onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
-             >
-               {avatar.startsWith('/') ? <img src={avatar} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} /> : avatar}
-               <div style={{ position: 'absolute', bottom: 0, right: 0, background: 'var(--orange-primary)', width: 32, height: 32, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, border: '3px solid var(--card-paper)', color: '#fff' }}>
-                 ✎
-               </div>
-             </div>
-           </div>
+        <div style={{ height: 140, background: 'linear-gradient(135deg, var(--green-primary), var(--green-deep))', position: 'relative', overflow: 'hidden' }}>
+           {/* Subtle pattern or badge watermark */}
+           <div style={{ position: 'absolute', top: -20, right: -20, opacity: 0.1, fontSize: 180, transform: 'rotate(15deg)' }}>🏆</div>
         </div>
 
         {/* Profile Info */}
-        <div style={{ padding: '60px clamp(16px, 4vw, 32px) 32px' }}>
+        <div style={{ padding: '0 clamp(16px, 4vw, 32px) 32px' }}>
+          <div style={{ marginTop: -50, marginBottom: 16, display: 'flex' }}>
+            <div 
+              onClick={() => setIsEditingAvatar(!isEditingAvatar)}
+              style={{ width: 100, height: 100, borderRadius: '50%', background: 'var(--card-paper)', border: '4px solid #fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 50, cursor: 'pointer', position: 'relative', boxShadow: '0 8px 16px rgba(0,0,0,0.15)', transition: 'transform 0.2s', zIndex: 10 }}
+              onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.05)'}
+              onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+            >
+              {avatar.startsWith('/') ? <img src={avatar} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} /> : avatar}
+              <div style={{ position: 'absolute', bottom: 0, right: 0, background: '#fff', width: 32, height: 32, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, border: '1px solid rgba(0,0,0,0.1)', color: '#64748b', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
+                ✎
+              </div>
+            </div>
+          </div>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 16 }}>
-            <div style={{ minWidth: 0, flex: 1 }}>
-              <h2 style={{ fontSize: 'clamp(24px, 6vw, 36px)', fontWeight: 800, color: 'var(--text-dark)', fontFamily: 'Space Grotesk, sans-serif', marginBottom: 8, letterSpacing: '-0.02em', wordBreak: 'break-all' }}>
-                {profile?.username ?? 'Unknown Player'}
-              </h2>
-              <RankBadge rp={rp} showProgress />
+            <div style={{ minWidth: 0, flex: 1, display: 'flex', alignItems: 'center', gap: 20 }}>
+              <div>
+                <h2 style={{ fontSize: 'clamp(24px, 6vw, 36px)', fontWeight: 800, color: 'var(--text-dark)', fontFamily: 'Space Grotesk, sans-serif', marginBottom: 8, letterSpacing: '-0.02em', wordBreak: 'break-all' }}>
+                  {profile?.username ?? 'Unknown Player'}
+                </h2>
+                <div style={{ maxWidth: 300 }}>
+                  <RankBadge rp={rp} showProgress />
+                </div>
+              </div>
             </div>
             
-            <div style={{ textAlign: 'right', background: 'rgba(0,0,0,0.03)', padding: '12px 20px', borderRadius: 12, border: '1px solid rgba(0,0,0,0.05)' }}>
-              <div style={{ fontSize: 13, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 4, fontWeight: 700 }}>Total XP</div>
-              <div style={{ fontSize: 26, fontWeight: 800, color: 'var(--orange-dark)', fontFamily: 'Space Grotesk, sans-serif' }}>{(profile?.total_xp ?? 0).toLocaleString()} <span style={{fontSize:18}}>⭐</span></div>
+            <div style={{ textAlign: 'right', background: 'rgba(32,160,96,0.05)', padding: '12px 20px', borderRadius: 12, border: '1px solid rgba(32,160,96,0.1)', alignSelf: 'center' }}>
+              <div style={{ fontSize: 13, color: 'var(--green-primary)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 4, fontWeight: 700 }}>Total XP</div>
+              <div style={{ fontSize: 26, fontWeight: 800, color: 'var(--green-deep)', fontFamily: 'Space Grotesk, sans-serif' }}>{(profile?.total_xp ?? 0).toLocaleString()} <span style={{fontSize:18}}>⭐</span></div>
             </div>
           </div>
 
@@ -625,19 +689,19 @@ function ProfileTab() {
       <h3 className="text-xl sm:text-2xl font-bold" style={{ color: 'var(--text-dark)', marginBottom: 20, fontFamily: 'Space Grotesk, sans-serif' }}>Career Stats</h3>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4" style={{ marginBottom: 40 }}>
         {[
-          { label: 'DAANIK Coins', value: `${(profile?.daank_coins ?? 0).toLocaleString()}`, icon: '🪙', color: '#f59e0b', bg: 'rgba(245,158,11,0.1)' },
-          { label: 'Win Rate', value: `${winRate}%`, icon: '🎯', color: winRate >= 50 ? '#10b981' : '#f43f5e', bg: winRate >= 50 ? 'rgba(16,185,129,0.1)' : 'rgba(244,63,94,0.1)' },
-          { label: 'Games Won', value: (profile?.games_won ?? 0).toString(), icon: '🏆', color: '#3b82f6', bg: 'rgba(59,130,246,0.1)' },
-          { label: 'Games Played', value: (profile?.games_played ?? 0).toString(), icon: '🎮', color: '#8b5cf6', bg: 'rgba(139,92,246,0.1)' },
-          { label: 'Best Win Streak', value: `${profile?.max_win_streak ?? 0}`, icon: '🔥', color: '#ef4444', bg: 'rgba(239,68,68,0.1)' },
-          { label: 'Current Streak', value: `${profile?.win_streak ?? 0}`, icon: '⚡', color: '#14b8a6', bg: 'rgba(20,184,166,0.1)' },
+          { label: 'DAANIK Coins', value: `${(profile?.daank_coins ?? 0).toLocaleString()}`, icon: '🪙' },
+          { label: 'Win Rate', value: `${winRate}%`, icon: '🎯' },
+          { label: 'Games Won', value: (profile?.games_won ?? 0).toString(), icon: '🏆' },
+          { label: 'Games Played', value: (profile?.games_played ?? 0).toString(), icon: '🎮' },
+          { label: 'Best Win Streak', value: `${profile?.max_win_streak ?? 0}`, icon: '🔥' },
+          { label: 'Current Streak', value: `${profile?.win_streak ?? 0}`, icon: '⚡' },
         ].map(stat => (
-          <Card key={stat.label} className="p-3 sm:p-4 flex" style={{ alignItems: 'center', gap: '12px', background: 'var(--card-paper)', border: '1px solid rgba(0,0,0,0.08)' }}>
-            <div style={{ width: '48px', height: '48px', borderRadius: 16, background: stat.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, flexShrink: 0 }}>
+          <Card key={stat.label} className="p-3 sm:p-4 flex" style={{ alignItems: 'center', gap: '12px', background: 'var(--card-paper)', border: '1px solid rgba(32,160,96,0.2)', boxShadow: '0 4px 12px rgba(32,160,96,0.05)' }}>
+            <div style={{ width: '48px', height: '48px', borderRadius: 16, background: 'rgba(32,160,96,0.1)', color: 'var(--green-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, flexShrink: 0 }}>
               {stat.icon}
             </div>
             <div>
-              <div className="text-xs sm:text-sm font-bold" style={{ color: 'var(--text-muted)', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{stat.label}</div>
+              <div className="text-xs sm:text-sm font-bold" style={{ color: 'var(--green-deep)', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{stat.label}</div>
               <div className="text-xl sm:text-2xl font-bold" style={{ color: 'var(--text-dark)', fontFamily: 'Space Grotesk, sans-serif' }}>{stat.value}</div>
             </div>
           </Card>

@@ -24,16 +24,19 @@ export function RankBadge({ rp, showProgress, size = 'md' }: RankBadgeProps) {
         <span style={{ fontSize: fontSize - 2, color: 'var(--text-muted)' }}>{rp.toLocaleString()} RP</span>
       </div>
       {showProgress && (
-        <div style={{ height: 4, background: 'rgba(0,0,0,0.1)', borderRadius: 2, overflow: 'hidden' }}>
-          <div style={{
-            height: '100%', borderRadius: 2, background: rank.color,
-            width: `${Math.min(100, progress)}%`,
-            transition: 'width 0.5s ease',
-          }} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 4 }}>
+          <div style={{ flex: 1, height: 8, background: 'rgba(0,0,0,0.06)', borderRadius: 4, overflow: 'hidden', boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.1)' }}>
+            <div style={{
+              height: '100%', borderRadius: 4, background: `linear-gradient(90deg, ${rank.color}, #10b981)`,
+              width: `${Math.max(2, Math.min(100, progress))}%`,
+              transition: 'width 0.5s ease',
+            }} />
+          </div>
+          <span style={{ fontSize: 12, fontWeight: 700, color: rank.color }}>{Math.round(progress)}%</span>
         </div>
       )}
       {showProgress && nextRank && (
-        <div style={{ fontSize: 14, color: 'var(--text-muted)' }}>{rank.maxRP - rp} RP to next rank</div>
+        <div style={{ fontSize: 12, color: 'var(--text-muted)', textAlign: 'right' }}>{rank.maxRP - rp + 1} RP to next rank</div>
       )}
     </div>
   )

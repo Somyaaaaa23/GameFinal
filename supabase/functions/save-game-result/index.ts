@@ -37,7 +37,7 @@ serve(async (req) => {
     )
 
     const body = await req.json()
-    const {
+    let {
       username,
       won,
       finalWealth,
@@ -46,6 +46,19 @@ serve(async (req) => {
       winStreak = 0,
       stats = { investChoices: 0, emiDamageTaken: false }
     } = body
+
+    if (typeof finalWealth !== 'number' || finalWealth < 0 || finalWealth > 100000000) {
+      throw new Error('Invalid finalWealth value');
+    }
+    if (typeof placement !== 'number' || placement < 1 || placement > 6) {
+      throw new Error('Invalid placement value');
+    }
+    if (typeof totalPlayers !== 'number' || totalPlayers < 1 || totalPlayers > 6) {
+      throw new Error('Invalid totalPlayers value');
+    }
+    if (typeof winStreak !== 'number' || winStreak < 0 || winStreak > 100) {
+      throw new Error('Invalid winStreak value');
+    }
 
     const userId = user.id
 
@@ -89,7 +102,7 @@ serve(async (req) => {
     let awardedDc = 0;
     const { data: profile } = await supabaseAdmin
       .from('profiles')
-      .select('games_played, games_won, win_streak, max_win_streak, rank_points, total_xp, daanik_coins')
+      .select('games_played, games_won, win_streak, max_win_streak, rank_points, total_xp, daank_coins')
       .eq('id', userId)
       .maybeSingle()
 
@@ -161,7 +174,7 @@ serve(async (req) => {
           if (awardedDc > 0) {
             await supabaseAdmin
               .from('profiles')
-              .update({ daanik_coins: (profile.daanik_coins || 0) + awardedDc })
+              .update({ daank_coins: (profile.daank_coins || 0) + awardedDc })
               .eq('id', userId);
           }
         }

@@ -25,10 +25,10 @@ export function Campaign() {
     }}>
       {/* Mountain Silhouettes Background */}
       <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none' }}>
-        <svg style={{ position: 'absolute', bottom: 0, left: 0, right: 0, width: '100%', height: 256, opacity: 0.2 }} viewBox="0 0 1440 320" preserveAspectRatio="none">
+        <svg style={{ position: 'absolute', bottom: -40, left: 0, right: 0, width: '100%', height: 256, opacity: 0.2 }} viewBox="0 0 1440 320" preserveAspectRatio="none">
           <path fill="#10b981" d="M0,96L48,112C96,128,192,160,288,165.3C384,171,480,149,576,133.3C672,117,768,107,864,122.7C960,139,1056,181,1152,181.3C1248,181,1344,139,1392,117.3L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
         </svg>
-        <svg style={{ position: 'absolute', bottom: 0, left: 0, right: 0, width: '100%', height: 192, opacity: 0.15 }} viewBox="0 0 1440 320" preserveAspectRatio="none">
+        <svg style={{ position: 'absolute', bottom: -10, left: 0, right: 0, width: '100%', height: 192, opacity: 0.15 }} viewBox="0 0 1440 320" preserveAspectRatio="none">
           <path fill="#14b8a6" d="M0,224L48,208C96,192,192,160,288,154.7C384,149,480,171,576,165.3C672,160,768,128,864,128C960,128,1056,160,1152,165.3C1248,171,1344,149,1392,138.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
         </svg>
       </div>
@@ -65,7 +65,7 @@ export function Campaign() {
         </div>
         <div style={{ height: 8, background: '#e5e7eb', borderRadius: 9999, overflow: 'hidden' }}>
           <div
-            style={{ height: '100%', background: 'linear-gradient(to right, #facc15, #fb923c)', borderRadius: 9999, transition: 'all 1s', width: `${progressPercentage}%` }}
+            style={{ height: '100%', background: 'linear-gradient(to right, #10b981, #059669)', borderRadius: 9999, transition: 'all 1s', width: `${progressPercentage}%` }}
           />
         </div>
       </div>
@@ -145,8 +145,6 @@ function LeaderboardCard({ level, position, status, onClick }: { level: any, pos
     ? `Level ${position} ~ Completed!` 
     : 'Not Yet Unlocked';
 
-  const progressText = status === 'current' ? 'Target 95%' : status === 'completed' ? 'Target Reached' : 'Locked';
-
   return (
     <div 
       onClick={isClickable ? onClick : undefined}
@@ -174,20 +172,18 @@ function LeaderboardCard({ level, position, status, onClick }: { level: any, pos
 
       {/* Info */}
       <div style={{ flex: 1, minWidth: 0 }}>
-        <h3 style={{ fontWeight: 700, fontSize: 14, color: style.textColor, margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{level.name}</h3>
-        <p style={{ fontSize: 12, color: '#4b5563', margin: '2px 0 0', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+        <h3 style={{ fontWeight: 800, fontSize: 16, color: style.textColor, margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{level.name}</h3>
+        <p style={{ fontSize: 13, fontWeight: 600, color: style.textColor, opacity: 0.8, margin: '4px 0 0', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
           {reqText}
         </p>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 4 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-            <span style={{ fontSize: 10 }}>📈</span>
-            <span style={{ fontSize: 10, color: '#4b5563' }}>{level.mainLearning || 'Learning'}</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 8, flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 4, background: 'rgba(0,0,0,0.06)', padding: '2px 8px', borderRadius: 6 }}>
+            <span style={{ fontSize: 11 }}>📈</span>
+            <span style={{ fontSize: 11, color: style.textColor, fontWeight: 700 }}>{level.mainLearning || 'Learning'}</span>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-            <span style={{ fontSize: 10 }}>💰</span>
-            <span style={{ fontSize: 10, color: '#4b5563' }}>
-              {progressText}
-            </span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 4, background: 'rgba(0,0,0,0.06)', padding: '2px 8px', borderRadius: 6 }}>
+            <span style={{ fontSize: 11 }}>⭐</span>
+            <span style={{ fontSize: 11, color: style.textColor, fontWeight: 700 }}>+150 XP</span>
           </div>
         </div>
       </div>
@@ -196,15 +192,17 @@ function LeaderboardCard({ level, position, status, onClick }: { level: any, pos
       <button
         disabled={!isClickable}
         style={{ 
-          width: 40, height: 40, minWidth: 40, minHeight: 40, borderRadius: '50%', backgroundColor: style.buttonBg,
-          display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+          height: 38, borderRadius: 19, backgroundColor: style.buttonBg,
+          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, flexShrink: 0,
           border: 'none', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
           cursor: isClickable ? 'pointer' : 'not-allowed',
-          opacity: isClickable ? 1 : 0.5,
-          padding: 0
+          opacity: isClickable ? 1 : 0.6,
+          padding: '0 16px',
+          fontWeight: 700, color: '#fff', fontSize: 14
         }}
       >
-        <span style={{ color: 'white', fontSize: 16, lineHeight: 1, marginLeft: isClickable ? 3 : 0, marginTop: 1 }}>{isClickable ? '▶️' : '🔒'}</span>
+        <span style={{ fontSize: 14, marginLeft: -4 }}>{isClickable ? '▶️' : '🔒'}</span>
+        {isClickable ? 'Play' : 'Locked'}
       </button>
     </div>
   )
