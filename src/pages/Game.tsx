@@ -11,7 +11,6 @@ import {
 } from '../lib/gameEngine'
 import { ARTHA_YATRA_LEVELS } from '../data/levels'
 import { saveGameResult } from '../lib/auth'
-import { getAvatar } from '../lib/avatarUtils'
 import { ALL_CARDS } from '../data/cards'
 import { playSound } from '../lib/audio'
 import Confetti from 'react-confetti'
@@ -151,7 +150,7 @@ export function Game() {
       const sourceMatch = gameState.log[0]?.match(/^(.*?) played/)
       if (sourceMatch && sourceMatch[1]) {
         sourceName = sourceMatch[1]
-        isSelf = sourceName === humanPlayer.username
+        isSelf = sourceName === humanPlayer.name
       }
 
       const match = reason.match(/played (.*?) (?:→|—)/)
