@@ -14,6 +14,7 @@ import { saveGameResult } from '../lib/auth'
 import { playSound } from '../lib/audio'
 import Confetti from 'react-confetti'
 import { GameBoard, UIPhase } from '../components/game/GameBoard'
+import { motion } from 'framer-motion'
 import { supabase } from '../lib/supabase'
 
 type GamePhaseUI = 'setup' | UIPhase | 'result'
@@ -473,15 +474,38 @@ function ResultScreen({ isWinner, placement, finalWealth, rpChange, players, mod
   const sorted = [...players].sort((a, b) => b.wealth - a.wealth)
 
   return (
-    <div style={{ minHeight: '100vh', background: 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
-      {isWinner && <Confetti width={window.innerWidth} height={window.innerHeight} recycle={false} numberOfPieces={500} colors={['#f59e0b', '#10b981', '#3b82f6', '#ec4899', '#f1f5f9']} />}
-      <div style={{ width: '100%', maxWidth: 500, textAlign: 'center', animation: 'slideUp 0.4s ease', zIndex: 10 }}>
-        <div style={{ fontSize: 'clamp(50px, 15vw, 80px)', marginBottom: 16 }}>
-          {isWinner ? '🏆' : placement === 2 ? '🥈' : placement === 3 ? '🥉' : '💪'}
-        </div>
-        <h1 style={{ fontSize: 'clamp(28px, 8vw, 40px)', fontWeight: 800, fontFamily: 'Space Grotesk, sans-serif', color: isWinner ? 'var(--orange-dark)' : nearMiss ? 'var(--orange-primary)' : 'var(--text-dark)', marginBottom: 8 }}>
-          {isWinner ? 'Victory!' : nearMiss ? 'So Close! 😤' : `${placement === 2 ? '2nd' : placement === 3 ? '3rd' : `${placement}th`} Place`}
-        </h1>
+    <div style={{ minHeight: '100vh', background: 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24, position: 'relative' }}>
+      {/* Epic background dim */}
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }} style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at center, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.9) 100%)', zIndex: 0 }} />
+      
+      {isWinner && <Confetti width={window.innerWidth} height={window.innerHeight} recycle={false} numberOfPieces={800} gravity={0.15} initialVelocityY={20} colors={['#f59e0b', '#10b981', '#3b82f6', '#ec4899', '#f1f5f9']} />}
+      
+      <div style={{ width: '100%', maxWidth: 500, textAlign: 'center', zIndex: 10, position: 'relative' }}>
+        {/* Massive Text Stamp */}
+        <motion.div
+          initial={{ scale: 3, opacity: 0, rotate: isWinner ? 0 : -15 }}
+          animate={{ scale: 1, opacity: 1, rotate: isWinner ? 0 : -5 }}
+          transition={{ type: 'spring', damping: 12, stiffness: 100 }}
+          style={{ marginBottom: 24 }}
+        >
+          <div style={{ 
+            fontSize: 'clamp(60px, 15vw, 100px)', 
+            fontWeight: 900, 
+            fontFamily: 'Space Grotesk, sans-serif', 
+            color: isWinner ? '#f59e0b' : '#64748b',
+            textTransform: 'uppercase',
+            textShadow: isWinner ? '0 0 40px rgba(245,158,11,0.6), 0 0 100px rgba(245,158,11,0.4)' : '0 10px 20px rgba(0,0,0,0.8)',
+            lineHeight: 1,
+            letterSpacing: '-0.05em'
+          }}>
+            {isWinner ? 'YOU WIN' : 'BANKRUPT'}
+          </div>
+          {!isWinner && (
+            <div style={{ color: '#94a3b8', fontSize: 24, fontWeight: 700, marginTop: 8 }}>
+              {nearMiss ? 'So Close! 😤' : `${placement === 1 ? '1st' : placement === 2 ? '2nd' : placement === 3 ? '3rd' : `${placement}th`} Place`}
+            </div>
+          )}
+        </motion.div>
         {nearMiss && wealthGap !== undefined && (
           <p style={{ color: 'var(--orange-primary)', fontSize: 18, fontWeight: 600, marginBottom: 8 }}>
             You were just {formatWealth(wealthGap)} away from winning!

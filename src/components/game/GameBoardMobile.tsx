@@ -152,7 +152,7 @@ export function GameBoardMobile({
 
       {/* BOTTOM COLUMN: Game Log */}
       <div className="game-right-col" style={{ width: '100%', marginTop: 8, flexShrink: 0 }}>
-        <GameLog log={gameState.log} mobileCompact={true} />
+        <GameLog log={gameState.log} mobileCompact={true} playerName={myPlayer?.name} />
       </div>
 
       {/* Decision card POPUP (Moved outside left-col to fix z-index overlapping) */}

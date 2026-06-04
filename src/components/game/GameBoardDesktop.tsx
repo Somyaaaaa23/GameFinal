@@ -257,7 +257,7 @@ export function GameBoardDesktop({
 
       {/* RIGHT COLUMN: Game Log & Deck (Desktop only if space tight) */}
       <div className="game-right-col" style={{ flex: '0 0 320px', display: 'flex', flexDirection: 'column', gap: 16, overflowY: 'auto', paddingRight: 8, paddingBottom: 32 }}>
-      <GameLog log={gameState.log} />
+      <GameLog log={gameState.log} playerName={myPlayer?.name} />
       </div>
     </div>
   )

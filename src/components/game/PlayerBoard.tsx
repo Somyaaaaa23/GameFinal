@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { PlayerState } from '../../types/game'
 import { formatWealth } from '../../types/game'
+import { AnimatedNumber } from '../AnimatedNumber'
+import { ParticleBurst } from '../ParticleBurst'
 
 interface PlayerBoardProps {
   player: PlayerState
@@ -34,7 +36,7 @@ function getAvatar(player: PlayerState, seatIndex: number): string {
 
 
 
-export function PlayerBoard({ player, isCurrent, isMe, isTarget, isOffline, wealthGoal, seatIndex = 0, onClick, compact }: PlayerBoardProps) {
+export function PlayerBoard({ player, isCurrent, isTarget, isOffline, wealthGoal, seatIndex = 0, onClick, compact }: PlayerBoardProps) {
   const wealthPct = Math.min(100, (player.wealth / wealthGoal) * 100)
   const theme = SEAT_THEMES[seatIndex % SEAT_THEMES.length]
   const avatar = getAvatar(player, seatIndex)
@@ -113,9 +115,11 @@ export function PlayerBoard({ player, isCurrent, isMe, isTarget, isOffline, weal
             onAnimationComplete={() => setFloatingText(prev => prev.filter(item => item.id !== ft.id))}
           >
             {ft.diff > 0 ? '+' : ''}₹{Math.abs(ft.diff).toLocaleString()}
+            <ParticleBurst diff={ft.diff} />
           </motion.div>
         ))}
       </AnimatePresence>
+
 
       {/* Absolutely positioned inner badges */}
       <div style={{ position: 'absolute', top: 6, left: 6, right: 6, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', pointerEvents: 'none' }}>
@@ -145,20 +149,6 @@ export function PlayerBoard({ player, isCurrent, isMe, isTarget, isOffline, weal
               OFFLINE
             </div>
           )}
-          {isTarget && (
-            <motion.div
-              animate={{ scale: [1, 1.1, 1] }}
-              transition={{ repeat: Infinity, duration: 0.7 }}
-              style={{
-                background: 'rgba(239,68,68,0.2)', border: '1px solid #ef4444',
-                borderRadius: 20, padding: '2px 6px',
-                fontSize: 8, fontWeight: 800, color: '#f87171',
-                letterSpacing: '0.08em', pointerEvents: 'auto'
-              }}
-            >
-              ⚡ TARGET
-            </motion.div>
-          )}
         </div>
 
         {/* Seat number badge */}
@@ -178,15 +168,24 @@ export function PlayerBoard({ player, isCurrent, isMe, isTarget, isOffline, weal
       {/* Avatar + Name row */}
       <div style={{ display: 'flex', flexDirection: compact ? 'column' : 'row', alignItems: 'center', gap: compact ? 2 : 10, marginBottom: compact ? 6 : 10, textAlign: compact ? 'center' : 'left' }}>
         {!compact && (
-          <div className="player-board-avatar" style={{
+          <motion.div 
+            animate={isTarget ? { scale: [1, 1.1, 1], boxShadow: ['0 0 10px rgba(239,68,68,0.5)', '0 0 20px rgba(239,68,68,0.8)', '0 0 10px rgba(239,68,68,0.5)'] } : {}}
+            transition={{ repeat: Infinity, duration: 1 }}
+            className="player-board-avatar" style={{
             width: '2.5em', height: '2.5em', borderRadius: '50%',
-            background: 'rgba(255,255,255,0.1)', border: `2px solid ${theme.accent}`,
+            background: isTarget ? 'rgba(239, 68, 68, 0.2)' : 'rgba(255,255,255,0.1)', 
+            border: `2px solid ${isTarget ? '#ef4444' : theme.accent}`,
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             boxShadow: `0 4px 12px rgba(0,0,0,0.3)`,
-            overflow: 'hidden'
+            overflow: 'hidden',
+            flexShrink: 0
           }}>
-            {avatar.startsWith('/') ? <img src={avatar} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : avatar}
-          </div>
+            {isTarget ? (
+              <span style={{ fontSize: 24 }}>🎯</span>
+            ) : (
+              avatar.startsWith('/') ? <img src={avatar} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : avatar
+            )}
+          </motion.div>
         )}
         <div style={{ flex: 1, minWidth: 0, width: '100%' }}>
           <div style={{ fontSize: compact ? 'clamp(15px, 4vw, 17px)' : 'clamp(14px, 3.5vw, 16px)', fontWeight: 800, color: '#f1f5f9', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
@@ -209,7 +208,7 @@ export function PlayerBoard({ player, isCurrent, isMe, isTarget, isOffline, weal
       <div style={{ background: 'rgba(0,0,0,0.2)', borderRadius: 12, padding: 'clamp(6px, 2vw, 10px)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, border: '1px solid rgba(255,255,255,0.05)' }}>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <span style={{ fontSize: 'clamp(18px, 4.5vw, 22px)', fontWeight: 800, fontFamily: 'Space Grotesk, sans-serif', color: theme.accent, lineHeight: 1 }}>
-            {formatWealth(player.wealth)}
+            <AnimatedNumber value={player.wealth} formatFn={formatWealth} duration={1200} />
           </span>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, useMotionValue, useSpring } from 'framer-motion'
 
 interface Particle {
   id: number;
@@ -36,6 +36,25 @@ export function FloatingBackground() {
     setParticles(newParticles)
   }, [])
 
+  const mouseX = useMotionValue(0)
+  const mouseY = useMotionValue(0)
+  
+  // Smooth out mouse movement for the parallax effect
+  const springX = useSpring(mouseX, { stiffness: 40, damping: 20 })
+  const springY = useSpring(mouseY, { stiffness: 40, damping: 20 })
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      // Calculate offset from center (-1 to 1), and multiply by max shift in px
+      const x = (e.clientX / window.innerWidth - 0.5) * -40 
+      const y = (e.clientY / window.innerHeight - 0.5) * -40
+      mouseX.set(x)
+      mouseY.set(y)
+    }
+    window.addEventListener('mousemove', handleMouseMove)
+    return () => window.removeEventListener('mousemove', handleMouseMove)
+  }, [mouseX, mouseY])
+
   return (
     <div style={{
       position: 'fixed',
@@ -47,6 +66,10 @@ export function FloatingBackground() {
       zIndex: 0,
       overflow: 'hidden',
     }}>
+      <motion.div style={{ 
+        position: 'absolute', inset: -50, 
+        x: springX, y: springY 
+      }}>
       {particles.map((p) => (
         <motion.div
           key={p.id}
@@ -74,6 +97,7 @@ export function FloatingBackground() {
           {p.icon}
         </motion.div>
       ))}
+      </motion.div>
       
       {/* Optional Gaming Grid overlay (subtle scanlines) */}
       <div style={{
