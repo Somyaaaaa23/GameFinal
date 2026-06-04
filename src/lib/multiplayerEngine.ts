@@ -127,7 +127,7 @@ export async function getRoom(roomId: string): Promise<Room | null> {
   return data
 }
 
-export function buildInitialGameState(players: RoomPlayer[]): GameState {
+export function buildInitialGameState(players: (RoomPlayer & { avatar_url?: string; rank_points?: number })[]): GameState {
   const deck = createGameDeck()
   const sorted = [...players].sort((a, b) => a.seat_order - b.seat_order)
 
@@ -135,6 +135,7 @@ export function buildInitialGameState(players: RoomPlayer[]): GameState {
     id: p.player_id,
     name: p.username,
     isBot: false,
+    profile: p.avatar_url || p.rank_points !== undefined ? { avatar_url: p.avatar_url || null, rank_points: p.rank_points || 0 } : undefined,
     wealth: STARTING_WEALTH,
     hand: [],
     activeDefenses: [],
@@ -170,7 +171,19 @@ export function buildInitialGameState(players: RoomPlayer[]): GameState {
 }
 
 export async function startGame(roomId: string, players: RoomPlayer[]): Promise<void> {
-  const gameState = buildInitialGameState(players)
+  const playerIds = players.map(p => p.player_id)
+  const { data: profiles } = await supabase.from('profiles').select('id, avatar_url, rank_points').in('id', playerIds)
+
+  const playersWithAvatars = players.map(p => {
+    const prof = profiles?.find(pr => pr.id === p.player_id)
+    return {
+      ...p,
+      avatar_url: prof?.avatar_url,
+      rank_points: prof?.rank_points,
+    }
+  })
+
+  const gameState = buildInitialGameState(playersWithAvatars)
   const currentPlayerId = players.find(p => p.seat_order === 0)?.player_id ?? null
 
   const { error } = await supabase
