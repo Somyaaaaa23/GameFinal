@@ -3,14 +3,35 @@ import React from 'react'
 import { Suspense, lazy } from 'react'
 import { AuthProvider, useAuth } from './hooks/useAuth'
 
+// Automatically reload the page if a dynamically imported chunk fails to load 
+// (which happens when a new version is deployed to Vercel while a user has the app open)
+const retryLazy = (componentImport: () => Promise<any>) =>
+  lazy(async () => {
+    const pageHasAlreadyBeenForceRefreshed = JSON.parse(
+      window.sessionStorage.getItem('page-has-been-force-refreshed') || 'false'
+    )
+    try {
+      const component = await componentImport()
+      window.sessionStorage.setItem('page-has-been-force-refreshed', 'false')
+      return component
+    } catch (error: any) {
+      if (!pageHasAlreadyBeenForceRefreshed && (error.message?.includes('Failed to fetch dynamically imported module') || error.message?.includes('Importing a module script failed'))) {
+        window.sessionStorage.setItem('page-has-been-force-refreshed', 'true')
+        window.location.reload()
+        return { default: () => <PageLoader /> } // Return empty while reloading
+      }
+      throw error
+    }
+  })
+
 // Lazy loaded pages to reduce initial bundle size
-const Landing = lazy(() => import('./pages/Landing').then(m => ({ default: m.Landing })))
-const Auth = lazy(() => import('./pages/Auth').then(m => ({ default: m.Auth })))
-const Dashboard = lazy(() => import('./pages/Dashboard').then(m => ({ default: m.Dashboard })))
-const Game = lazy(() => import('./pages/Game').then(m => ({ default: m.Game })))
-const Lobby = lazy(() => import('./pages/Lobby').then(m => ({ default: m.Lobby })))
-const MultiplayerGame = lazy(() => import('./pages/MultiplayerGame').then(m => ({ default: m.MultiplayerGame })))
-const Campaign = lazy(() => import('./pages/Campaign').then(m => ({ default: m.Campaign })))
+const Landing = retryLazy(() => import('./pages/Landing').then(m => ({ default: m.Landing })))
+const Auth = retryLazy(() => import('./pages/Auth').then(m => ({ default: m.Auth })))
+const Dashboard = retryLazy(() => import('./pages/Dashboard').then(m => ({ default: m.Dashboard })))
+const Game = retryLazy(() => import('./pages/Game').then(m => ({ default: m.Game })))
+const Lobby = retryLazy(() => import('./pages/Lobby').then(m => ({ default: m.Lobby })))
+const MultiplayerGame = retryLazy(() => import('./pages/MultiplayerGame').then(m => ({ default: m.MultiplayerGame })))
+const Campaign = retryLazy(() => import('./pages/Campaign').then(m => ({ default: m.Campaign })))
 
 import * as Sentry from '@sentry/react'
 
