@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState, useCallback } from 'react'
 import type { User } from '@supabase/supabase-js'
 import { supabase } from '../lib/supabase'
-import { getProfile, signIn, signOut, signUp } from '../lib/auth'
+import { getProfile, signIn, signOut, signUp, signInWithGoogle } from '../lib/auth'
 import type { Profile } from '../types/database'
 
 interface AuthState {
@@ -12,6 +12,7 @@ interface AuthState {
 
 interface AuthContextValue extends AuthState {
   login: (email: string, password: string) => Promise<void>
+  loginWithGoogle: () => Promise<void>
   register: (email: string, password: string, username: string) => Promise<void>
   logout: () => Promise<void>
   refreshProfile: () => Promise<void>
@@ -78,6 +79,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     await signIn(email, password)
   }
 
+  const loginWithGoogle = async () => {
+    await signInWithGoogle()
+  }
+
   const register = async (email: string, password: string, username: string) => {
     await signUp(email, password, username)
   }
@@ -94,7 +99,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{ ...state, login, register, logout, refreshProfile }}>
+    <AuthContext.Provider value={{ ...state, login, loginWithGoogle, register, logout, refreshProfile }}>
       {children}
     </AuthContext.Provider>
   )
