@@ -36,7 +36,7 @@ function getAvatar(player: PlayerState, seatIndex: number): string {
 
 
 
-export function PlayerBoard({ player, isCurrent, isTarget, isOffline, wealthGoal, seatIndex = 0, onClick, compact }: PlayerBoardProps) {
+export function PlayerBoard({ player, isCurrent, isMe, isTarget, isOffline, wealthGoal, seatIndex = 0, onClick, compact }: PlayerBoardProps) {
   const wealthPct = Math.min(100, (player.wealth / wealthGoal) * 100)
   const theme = SEAT_THEMES[seatIndex % SEAT_THEMES.length]
   const avatar = getAvatar(player, seatIndex)
@@ -189,8 +189,7 @@ export function PlayerBoard({ player, isCurrent, isTarget, isOffline, wealthGoal
         )}
         <div style={{ flex: 1, minWidth: 0, width: '100%' }}>
           <div style={{ fontSize: compact ? 'clamp(15px, 4vw, 17px)' : 'clamp(14px, 3.5vw, 16px)', fontWeight: 800, color: '#f1f5f9', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-            {player.name}
-
+            {player.name} {isMe && <span style={{ opacity: 0.7, fontSize: '0.85em' }}>(you)</span>}
           </div>
           {player.skippedTurns > 0 && (
             <div style={{

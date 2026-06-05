@@ -482,10 +482,12 @@ const PodiumTopper = ({ rank }: { rank: 1|2|3 }) => {
   );
 }
 
-const PodiumStep = ({ rank, player }: { rank: 1|2|3; player?: any }) => {
+const PodiumStep = ({ rank, player, profile }: { rank: 1|2|3; player?: any; profile?: any }) => {
   if (!player) return <div style={{ width: '30%', minWidth: 100 }} />
 
   const is1 = rank === 1;
+  const isMe = player.user_id === profile?.id;
+  const displayUsername = isMe && profile?.username ? profile.username : player.username;
 
   const colors = {
     1: { bg: '#FFFDF0', border: '#EAB308' },
@@ -522,7 +524,7 @@ const PodiumStep = ({ rank, player }: { rank: 1|2|3; player?: any }) => {
         zIndex: 1
       }}>
         <div style={{ fontWeight: 800, fontSize: is1 ? 16 : 14, color: '#1f2937', marginBottom: 4, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-          {player.username}
+          {displayUsername}
         </div>
         <div style={{ fontWeight: 900, fontSize: is1 ? 22 : 18, color: '#111827' }}>
           {formatWealth(player.highest_net_worth)}
@@ -586,9 +588,9 @@ function LeaderboardTab({ leaderboard, loading, profile, onRefresh }: { leaderbo
           <div style={{ width: '100%' }}>
             {top3.length > 0 && (
               <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-end', gap: 16, padding: '32px 20px 40px', background: 'transparent' }}>
-                <PodiumStep rank={2} player={top3[1]} />
-                <PodiumStep rank={1} player={top3[0]} />
-                <PodiumStep rank={3} player={top3[2]} />
+                <PodiumStep rank={2} player={top3[1]} profile={profile} />
+                <PodiumStep rank={1} player={top3[0]} profile={profile} />
+                <PodiumStep rank={3} player={top3[2]} profile={profile} />
               </div>
             )}
             
@@ -600,14 +602,13 @@ function LeaderboardTab({ leaderboard, loading, profile, onRefresh }: { leaderbo
                     <th key={h} style={{ padding: '12px 16px', textAlign: 'left', fontSize: 13, color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{h}</th>
                   ))}
                   <th onClick={() => handleSort('wins')} style={{ cursor: 'pointer', padding: '12px 16px', textAlign: 'left', fontSize: 13, color: sortField === 'wins' ? 'var(--green-primary)' : 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Wins {sortField === 'wins' && (sortAsc ? '↑' : '↓')}</th>
-                  <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: 13, color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Games</th>
-                  <th onClick={() => handleSort('winRate')} style={{ cursor: 'pointer', padding: '12px 16px', textAlign: 'left', fontSize: 13, color: sortField === 'winRate' ? 'var(--green-primary)' : 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Win % {sortField === 'winRate' && (sortAsc ? '↑' : '↓')}</th>
                   <th onClick={() => handleSort('highest_net_worth')} style={{ cursor: 'pointer', minWidth: 140, padding: '12px 16px', textAlign: 'left', fontSize: 13, color: sortField === 'highest_net_worth' ? 'var(--green-primary)' : 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Best Wealth {sortField === 'highest_net_worth' && (sortAsc ? '↑' : '↓')}</th>
                 </tr>
               </thead>
               <tbody>
                 {displayData.map((player) => {
-                  const isMe = player.username === profile?.username
+                  const isMe = player.user_id === profile?.id
+                  const displayUsername = isMe && profile?.username ? profile.username : player.username
                   return (
                     <tr key={player.id} style={{ 
                       borderBottom: '1px solid rgba(0,0,0,0.05)', 
@@ -621,13 +622,11 @@ function LeaderboardTab({ leaderboard, loading, profile, onRefresh }: { leaderbo
                       </td>
                       <td style={{ padding: '14px 16px', display: 'flex', alignItems: 'center', gap: 10 }}>
                         <div style={{ width: 32, height: 32, borderRadius: '50%', background: isMe ? 'var(--green-primary)' : 'rgba(0,0,0,0.1)', color: isMe ? '#fff' : 'var(--text-dark)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, fontWeight: 800 }}>
-                          {player.username[0].toUpperCase()}
+                          {displayUsername[0]?.toUpperCase() || '?'}
                         </div>
-                        <span style={{ fontSize: 16, color: 'var(--text-dark)', fontWeight: isMe ? 800 : 600 }}>{player.username} {isMe && '(you)'}</span>
+                        <span style={{ fontSize: 16, color: 'var(--text-dark)', fontWeight: isMe ? 800 : 600 }}>{displayUsername} {isMe && '(you)'}</span>
                       </td>
                       <td style={{ padding: '14px 16px', fontSize: 16, fontWeight: 700, color: isMe ? 'var(--green-primary)' : 'var(--green-primary)' }}>{player.wins}</td>
-                      <td style={{ padding: '14px 16px', fontSize: 15, color: isMe ? 'var(--green-primary)' : 'var(--text-muted)' }}>{player.total_games}</td>
-                      <td style={{ padding: '14px 16px', fontSize: 15, color: player.winRate > 60 ? 'var(--green-primary)' : 'var(--text-muted)' }}>{player.winRate}%</td>
                       <td style={{ padding: '14px 16px', fontSize: 15, color: 'var(--orange-dark)', fontWeight: 700 }}>{formatWealth(player.highest_net_worth)}</td>
                     </tr>
                   )
@@ -828,6 +827,7 @@ function ProfileTab() {
     }
     setUpdating(true)
     await supabase.from('profiles').update({ username: newName.trim() }).eq('id', profile.id)
+    await supabase.from('leaderboard').update({ username: newName.trim() }).eq('user_id', profile.id)
     await refreshProfile()
     setIsEditingName(false)
     setUpdating(false)
