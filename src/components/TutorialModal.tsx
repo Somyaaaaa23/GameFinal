@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react'
-import { useAuth } from '../hooks/useAuth'
+import { useState } from 'react'
 
 interface TutorialModalProps {
   onClose: () => void
@@ -8,7 +7,6 @@ interface TutorialModalProps {
 export function TutorialModal({ onClose }: TutorialModalProps) {
   const [step, setStep] = useState(1)
   const [isAnimating, setIsAnimating] = useState(false)
-  const { profile } = useAuth()
 
   const handleNext = () => {
     setIsAnimating(true)

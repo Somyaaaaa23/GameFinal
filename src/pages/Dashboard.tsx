@@ -114,16 +114,17 @@ export function Dashboard() {
 
       <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
         {/* Sidebar (Desktop) */}
-        {isSidebarOpen && (
         <aside className="glass-panel desktop-flex" style={{
-          width: 220, flexShrink: 0,
+          width: isSidebarOpen ? 220 : 80, 
+          flexShrink: 0,
           borderTop: 'none', borderLeft: 'none', borderBottom: 'none',
-          padding: '24px 16px',
+          padding: isSidebarOpen ? '24px 16px' : '24px 12px',
           flexDirection: 'column', gap: 6,
           position: 'sticky', top: 60, height: 'calc(100vh - 60px)',
-          overflowY: 'auto',
+          overflowY: 'auto', overflowX: 'hidden',
           borderRadius: 0,
           borderRight: '1px solid var(--green-primary)',
+          transition: 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s ease'
         }}>
           {([
             { id: 'home', label: 'Home', icon: '🏠' },
@@ -134,8 +135,11 @@ export function Dashboard() {
             <button
               key={item.id}
               onClick={() => setTab(item.id)}
+              title={item.label}
               style={{
-                display: 'flex', alignItems: 'center', gap: 10,
+                display: 'flex', alignItems: 'center', 
+                justifyContent: isSidebarOpen ? 'flex-start' : 'center',
+                gap: 10,
                 padding: '12px 16px', borderRadius: 12, border: 'none',
                 background: tab === item.id ? 'rgba(0,0,0,0.05)' : 'transparent',
                 color: tab === item.id ? 'var(--green-primary)' : 'var(--text-muted)',
@@ -146,15 +150,18 @@ export function Dashboard() {
               }}
             >
               <span style={{ fontSize: 20 }}>{item.icon}</span>
-              {item.label}
+              {isSidebarOpen && <span>{item.label}</span>}
             </button>
           ))}
 
           <div style={{ marginTop: 'auto', padding: '12px 0', borderTop: '1px solid var(--green-primary)' }}>
             <button
               onClick={() => setShowTutorial(true)}
+              title="How to Play"
               style={{
-                display: 'flex', alignItems: 'center', gap: 10,
+                display: 'flex', alignItems: 'center', 
+                justifyContent: isSidebarOpen ? 'flex-start' : 'center',
+                gap: 10,
                 padding: '12px 16px', borderRadius: 12,
                 background: 'rgba(0,0,0,0.03)', border: '1px solid rgba(0,0,0,0.05)',
                 color: 'var(--text-dark)',
@@ -164,12 +171,11 @@ export function Dashboard() {
               }}
             >
               <span style={{ fontSize: 20 }}>📖</span>
-              How to Play
+              {isSidebarOpen && <span style={{ whiteSpace: 'nowrap' }}>How to Play</span>}
             </button>
-            {profile && <RankBadge rp={rp} showProgress size="sm" />}
+            {profile && isSidebarOpen && <RankBadge rp={rp} showProgress size="sm" />}
           </div>
         </aside>
-        )}
 
         {/* Main Content */}
         <main style={{ flex: 1, minWidth: 0, padding: 'clamp(12px, 3vw, 24px)', overflowY: 'auto', animation: 'fadeIn 0.3s ease', paddingBottom: '90px' }}>
@@ -784,6 +790,8 @@ function ContractsTab() {
 function ProfileTab() {
   const { profile, logout, refreshProfile } = useAuth()
   const [isEditingAvatar, setIsEditingAvatar] = useState(false)
+  const [isEditingName, setIsEditingName] = useState(false)
+  const [newName, setNewName] = useState(profile?.username || '')
   const [updating, setUpdating] = useState(false)
 
   const rp = profile?.rank_points ?? 0
@@ -812,6 +820,25 @@ function ProfileTab() {
     setIsEditingAvatar(false)
     setUpdating(false)
   }
+
+  const handleUpdateName = async () => {
+    if (!profile || !newName.trim() || newName === profile.username) {
+      setIsEditingName(false)
+      return
+    }
+    setUpdating(true)
+    await supabase.from('profiles').update({ username: newName.trim() }).eq('id', profile.id)
+    await refreshProfile()
+    setIsEditingName(false)
+    setUpdating(false)
+  }
+
+  // Update local input state if profile updates externally
+  useEffect(() => {
+    if (profile?.username && !isEditingName) {
+      setNewName(profile.username)
+    }
+  }, [profile?.username, isEditingName])
 
   return (
     <div style={{ maxWidth: 750, width: '100%', margin: '0 auto' }}>
@@ -844,9 +871,31 @@ function ProfileTab() {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 16 }}>
             <div style={{ minWidth: 0, flex: 1, display: 'flex', alignItems: 'center', gap: 20 }}>
               <div>
-                <h2 style={{ fontSize: 'clamp(24px, 6vw, 36px)', fontWeight: 800, color: 'var(--text-dark)', fontFamily: 'Space Grotesk, sans-serif', marginBottom: 8, letterSpacing: '-0.02em', wordBreak: 'break-all' }}>
-                  {profile?.username ?? 'Unknown Player'}
-                </h2>
+                {isEditingName ? (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8, flexWrap: 'wrap' }}>
+                    <input 
+                      autoFocus
+                      type="text" 
+                      value={newName} 
+                      onChange={e => setNewName(e.target.value)}
+                      onKeyDown={e => e.key === 'Enter' && handleUpdateName()}
+                      style={{ fontSize: 24, fontWeight: 800, padding: '4px 12px', borderRadius: 8, border: '2px solid var(--green-primary)', outline: 'none', fontFamily: 'Space Grotesk, sans-serif', width: '100%', maxWidth: 250 }}
+                    />
+                    <button onClick={handleUpdateName} disabled={updating} style={{ background: 'var(--green-primary)', color: 'white', border: 'none', borderRadius: 8, padding: '8px 16px', fontWeight: 700, cursor: 'pointer' }}>
+                      {updating ? 'Saving...' : 'Save'}
+                    </button>
+                    <button onClick={() => { setIsEditingName(false); setNewName(profile?.username || '') }} disabled={updating} style={{ background: 'transparent', color: 'var(--text-muted)', border: 'none', cursor: 'pointer', fontSize: 14 }}>
+                      Cancel
+                    </button>
+                  </div>
+                ) : (
+                  <h2 style={{ fontSize: 'clamp(24px, 6vw, 36px)', fontWeight: 800, color: 'var(--text-dark)', fontFamily: 'Space Grotesk, sans-serif', marginBottom: 8, letterSpacing: '-0.02em', wordBreak: 'break-all', display: 'flex', alignItems: 'center', gap: 12 }}>
+                    {profile?.username ?? 'Unknown Player'}
+                    <button onClick={() => setIsEditingName(true)} style={{ background: 'rgba(0,0,0,0.05)', border: 'none', borderRadius: '50%', width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'var(--text-muted)' }} title="Edit Username">
+                      ✎
+                    </button>
+                  </h2>
+                )}
                 <div style={{ maxWidth: 300 }}>
                   <RankBadge rp={rp} showProgress />
                 </div>
