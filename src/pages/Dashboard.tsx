@@ -8,7 +8,7 @@ import { SEASONS } from '../data/mockData'
 import { formatWealth } from '../types/game'
 import { supabase } from '../lib/supabase'
 import { TutorialModal } from '../components/TutorialModal'
-import { ARTHA_YATRA_LEVELS } from '../data/levels'
+
 
 type Tab = 'home' | 'leaderboard' | 'contracts' | 'profile'
 
@@ -287,19 +287,78 @@ function HomeTab({ navigate, profile, currentSeason, onlineUsers }: { navigate: 
       )}
 
       {/* Career Journey Banner */}
-      <Card glow="green" style={{ padding: 20 }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
-          <div>
-            <div style={{ fontSize: 15, color: 'var(--green-primary)', fontWeight: 700, letterSpacing: '0.05em', marginBottom: 6, textTransform: 'uppercase' }}>
-              {(ARTHA_YATRA_LEVELS.find(l => l.id === 'level_3')?.name || 'ARTHA YATRA').toUpperCase()}
+      <Card style={{ padding: '24px', background: '#08543b', borderRadius: 16, border: 'none', position: 'relative', overflow: 'hidden' }}>
+        {/* Subtle Background Arrow Graphic */}
+        <svg width="240" height="240" viewBox="0 0 24 24" style={{ position: 'absolute', right: '10%', top: '50%', transform: 'translateY(-50%)', opacity: 0.1, zIndex: 0 }} fill="none" stroke="#10B981" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M23 6l-9.5 9.5-5-5L1 18"/>
+          <path d="M17 6h6v6"/>
+        </svg>
+
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 24, position: 'relative', zIndex: 1 }}>
+          {/* Left Section: Avatar & Info */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
+            {/* Avatar Circle */}
+            <div style={{ width: 80, height: 80, borderRadius: '50%', background: '#fff', overflow: 'hidden', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <img src={profile?.avatar_url || '/avatars/1.png'} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
-            <h2 style={{ fontSize: 25, fontWeight: 800, color: 'var(--text-dark)', fontFamily: 'var(--font-display)', marginBottom: 4 }}>
-              Continue your journey
-            </h2>
-            <p style={{ color: 'var(--text-muted)', fontSize: 16 }}>Play through the levels and master personal finance.</p>
+
+            {/* Info */}
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+                <span style={{ fontSize: 16 }}>🌱</span>
+                <span style={{ color: '#fff', fontSize: 14, fontWeight: 600, fontFamily: 'var(--font-display)' }}>Rookie Investor</span>
+              </div>
+              
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, marginBottom: 8 }}>
+                <h2 style={{ fontSize: 32, fontWeight: 800, color: '#fff', margin: 0, fontFamily: 'var(--font-display)', letterSpacing: '-0.02em' }}>
+                  Level 3
+                </h2>
+                <span style={{ color: '#FBBF24', fontSize: 16, fontWeight: 700 }}>
+                  ↑ 150 XP
+                </span>
+              </div>
+
+              {/* Progress Bar Container */}
+              <div style={{ width: '100%', minWidth: 200, maxWidth: 280 }}>
+                <div style={{ width: '100%', height: 8, background: 'rgba(255,255,255,0.15)', borderRadius: 4, overflow: 'hidden' }}>
+                  <div style={{ width: '37.5%', height: '100%', background: '#10B981', borderRadius: 4 }}></div>
+                </div>
+                <div style={{ textAlign: 'right', color: '#E5E7EB', fontSize: 12, marginTop: 6, fontWeight: 500 }}>
+                  150 / 400 XP
+                </div>
+              </div>
+            </div>
           </div>
-          <div style={{ textAlign: 'right' }}>
-            <Button variant="primary" size="lg" onClick={() => navigate('/campaign')}>Continue →</Button>
+
+          {/* Right Section: Button */}
+          <div style={{ display: 'flex', flexGrow: 1, justifyContent: 'flex-end', minWidth: 160 }}>
+            <button onClick={() => navigate('/campaign')} style={{ 
+              background: '#065e43', 
+              border: '2px solid #FBBF24', 
+              borderRadius: 12, 
+              padding: '12px 28px', 
+              color: '#FBBF24', 
+              fontSize: 20, 
+              fontWeight: 700, 
+              cursor: 'pointer',
+              fontFamily: 'var(--font-display)',
+              position: 'relative',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 4,
+              width: '100%',
+              maxWidth: 200,
+              justifyContent: 'center'
+            }}
+            onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.02)'} 
+            onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}>
+              {/* Sparkles */}
+              <span style={{ position: 'absolute', top: 6, left: 8, fontSize: 12 }}>✨</span>
+              <span style={{ position: 'absolute', bottom: 6, right: 8, fontSize: 12 }}>✨</span>
+              
+              Continue <span style={{ marginLeft: 2 }}>→</span>
+            </button>
           </div>
         </div>
       </Card>
@@ -347,64 +406,121 @@ function HomeTab({ navigate, profile, currentSeason, onlineUsers }: { navigate: 
   )
 }
 
-const CrownIcon = ({ color }: { color: string }) => (
-  <svg width="36" height="36" viewBox="0 0 24 24" fill={color} style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))' }}>
-    <path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zM19 19c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14v1z"/>
-  </svg>
-)
+const PodiumTopper = ({ rank }: { rank: 1|2|3 }) => {
+  const defs = (
+    <defs>
+      <linearGradient id={`grad-main-${rank}`} x1="0%" y1="0%" x2="0%" y2="100%">
+        {rank === 1 ? (
+          <><stop offset="0%" stopColor="#FDE047"/><stop offset="50%" stopColor="#EAB308"/><stop offset="100%" stopColor="#A16207"/></>
+        ) : rank === 2 ? (
+          <><stop offset="0%" stopColor="#F1F5F9"/><stop offset="50%" stopColor="#94A3B8"/><stop offset="100%" stopColor="#475569"/></>
+        ) : (
+          <><stop offset="0%" stopColor="#FDBA74"/><stop offset="50%" stopColor="#D97706"/><stop offset="100%" stopColor="#78350F"/></>
+        )}
+      </linearGradient>
+      <linearGradient id={`grad-dark-${rank}`} x1="0%" y1="0%" x2="0%" y2="100%">
+        {rank === 1 ? (
+          <><stop offset="0%" stopColor="#CA8A04"/><stop offset="100%" stopColor="#713F12"/></>
+        ) : rank === 2 ? (
+          <><stop offset="0%" stopColor="#64748B"/><stop offset="100%" stopColor="#334155"/></>
+        ) : (
+          <><stop offset="0%" stopColor="#B45309"/><stop offset="100%" stopColor="#451A03"/></>
+        )}
+      </linearGradient>
+      <linearGradient id={`grad-light-${rank}`} x1="0%" y1="0%" x2="0%" y2="100%">
+        {rank === 1 ? (
+           <><stop offset="0%" stopColor="#FEF08A"/><stop offset="100%" stopColor="#FACC15"/></>
+        ) : rank === 2 ? (
+           <><stop offset="0%" stopColor="#FFFFFF"/><stop offset="100%" stopColor="#CBD5E1"/></>
+        ) : (
+           <><stop offset="0%" stopColor="#FDE68A"/><stop offset="100%" stopColor="#F59E0B"/></>
+        )}
+      </linearGradient>
+      <filter id={`drop-shadow-${rank}`} x="-20%" y="-20%" width="140%" height="140%">
+        <feDropShadow dx="0" dy="6" stdDeviation="4" floodColor="#000" floodOpacity="0.25" />
+      </filter>
+    </defs>
+  );
+
+  return (
+    <svg width="100%" viewBox="0 0 200 130" style={{ zIndex: 2, position: 'relative', overflow: 'visible', filter: 'drop-shadow(0 10px 15px rgba(0,0,0,0.2))' }}>
+      {defs}
+      <g>
+        {/* Decorative side elements (wings/laurels) */}
+        <path d="M 60 60 L 20 55 L 30 75 L 10 80 L 40 95 L 60 90 Z" fill={`url(#grad-dark-${rank})`} />
+        <path d="M 140 60 L 180 55 L 170 75 L 190 80 L 160 95 L 140 90 Z" fill={`url(#grad-dark-${rank})`} />
+
+        {/* Base Block / Pedestal */}
+        <path d="M 0 100 L 200 100 L 200 120 L 0 120 Z" fill={`url(#grad-main-${rank})`} />
+        <path d="M 10 90 L 190 90 L 200 100 L 0 100 Z" fill={`url(#grad-light-${rank})`} />
+        <path d="M 0 120 L 200 120 L 190 130 L 10 130 Z" fill={`url(#grad-dark-${rank})`} />
+
+        {/* Central Shield */}
+        <path d="M 60 40 L 70 30 L 130 30 L 140 40 L 140 70 C 140 100, 100 120, 100 120 C 100 120, 60 100, 60 70 Z" fill={`url(#grad-main-${rank})`} filter={`url(#drop-shadow-${rank})`} />
+        <path d="M 68 44 L 74 38 L 126 38 L 132 44 L 132 68 C 132 92, 100 108, 100 108 C 100 108, 68 92, 68 68 Z" fill={`url(#grad-light-${rank})`} />
+        
+        {/* Crown */}
+        <g filter={`url(#drop-shadow-${rank})`}>
+          <path d="M 75 35 L 70 10 L 85 20 L 100 0 L 115 20 L 130 10 L 125 35 Q 100 40 75 35 Z" fill={`url(#grad-main-${rank})`} />
+          <circle cx="70" cy="10" r="5" fill={`url(#grad-light-${rank})`} />
+          <circle cx="100" cy="0" r="6" fill={`url(#grad-light-${rank})`} />
+          <circle cx="130" cy="10" r="5" fill={`url(#grad-light-${rank})`} />
+        </g>
+        
+        {/* Rank Number */}
+        <text x="100" y="85" fontSize="38" fontWeight="900" fontFamily="system-ui, -apple-system, sans-serif" fill="#FFFFFF" textAnchor="middle" filter={`url(#drop-shadow-${rank})`}>
+          {rank}
+        </text>
+      </g>
+    </svg>
+  );
+}
 
 const PodiumStep = ({ rank, player }: { rank: 1|2|3; player?: any }) => {
-  if (!player) return <div style={{ width: '30%' }} />
+  if (!player) return <div style={{ width: '30%', minWidth: 100 }} />
 
   const is1 = rank === 1;
-  const is2 = rank === 2;
-  const height = is1 ? 64 : is2 ? 48 : 36;
-  const gradient = is1 ? 'linear-gradient(180deg, #FBBF24, #D97706)' : 
-                   is2 ? 'linear-gradient(180deg, #cbd5e1, #94a3b8)' : 
-                         'linear-gradient(180deg, #d97706, #92400e)';
-  const shadow = is1 ? '0 0 20px rgba(217,119,6,0.3)' : is2 ? '0 0 20px rgba(148,163,184,0.3)' : '0 0 20px rgba(146,64,14,0.3)';
-  const crownColor = is1 ? '#FBBF24' : is2 ? '#e2e8f0' : '#d97706';
-  
+
+  const colors = {
+    1: { bg: '#FFFDF0', border: '#EAB308' },
+    2: { bg: '#F8FAFC', border: '#94A3B8' },
+    3: { bg: '#FFFBEB', border: '#D97706' }
+  }[rank];
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '30%', position: 'relative', zIndex: is1 ? 10 : 1 }}>
-      {/* Crown */}
-      <div style={{ marginBottom: -12, zIndex: 2, position: 'relative' }}>
-        <CrownIcon color={crownColor} />
-      </div>
-      
-      {/* Colored Top Block */}
+    <div style={{
+      display: 'flex', flexDirection: 'column', alignItems: 'center',
+      width: is1 ? '28%' : '24%',
+      minWidth: is1 ? 140 : 120,
+      maxWidth: is1 ? 220 : 190,
+      position: 'relative',
+      zIndex: is1 ? 10 : 1,
+      marginTop: is1 ? 0 : 20,
+      transition: 'transform 0.3s',
+      cursor: 'default'
+    }} onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-5px)'} onMouseLeave={e => e.currentTarget.style.transform = 'none'}>
+      <PodiumTopper rank={rank} />
+
       <div style={{
-        background: gradient,
+        background: colors.bg,
         width: '100%',
-        height: height,
-        borderTopLeftRadius: 16,
-        borderTopRightRadius: 16,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        boxShadow: shadow,
-        position: 'relative',
-        overflow: 'hidden',
-        border: '1px solid rgba(255,255,255,0.4)',
-        borderBottom: 'none'
-      }}>
-        {is1 && <div style={{ position: 'absolute', top: 5, right: 10, fontSize: 16 }}>✨</div>}
-        <span style={{ fontSize: is1 ? 32 : 24, fontWeight: 900, color: '#fff', textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}>{rank}</span>
-      </div>
-      
-      {/* White Bottom Block */}
-      <div style={{
-        background: '#fff',
-        width: '100%',
-        borderBottomLeftRadius: 12,
-        borderBottomRightRadius: 12,
-        padding: '16px 8px',
+        border: `2px solid ${colors.border}`,
+        borderTop: 'none',
+        borderBottomLeftRadius: 16,
+        borderBottomRightRadius: 16,
+        padding: is1 ? '20px 8px 16px' : '16px 8px 12px',
         textAlign: 'center',
-        boxShadow: '0 8px 16px rgba(0,0,0,0.08)',
-        border: '1px solid rgba(0,0,0,0.05)'
+        boxShadow: `0 10px 25px rgba(0,0,0,0.1)`,
+        marginTop: -2,
+        position: 'relative',
+        zIndex: 1
       }}>
-        <div style={{ fontWeight: 800, fontSize: 15, color: '#1f2937', marginBottom: 4, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{player.username}</div>
-        <div style={{ fontWeight: 800, fontSize: is1 ? 22 : 18, color: '#111827' }}>{formatWealth(player.highest_net_worth)}</div>
+        <div style={{ fontWeight: 800, fontSize: is1 ? 16 : 14, color: '#1f2937', marginBottom: 4, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+          {player.username}
+        </div>
+        <div style={{ fontWeight: 900, fontSize: is1 ? 22 : 18, color: '#111827' }}>
+          {formatWealth(player.highest_net_worth)}
+        </div>
       </div>
     </div>
   )
