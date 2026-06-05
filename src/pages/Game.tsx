@@ -455,8 +455,23 @@ function SetupScreen({ botCount, setBotCount, onStart, onBack, levelId }: { botC
   const levelConfig = levelId ? ARTHA_YATRA_LEVELS.find(l => l.id === levelId) : null;
   const wealthGoalText = levelConfig ? formatWealth(levelConfig.targetCorpus) : '₹50 Lakhs';
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24, background: '#d1fae5' }}>
-      <div className="glass-card" style={{ width: '100%', maxWidth: 480, animation: 'slideUp 0.4s ease', background: '#eef8ef', padding: '24px 32px', borderRadius: 24, border: '1px solid rgba(255,255,255,0.8)', position: 'relative', overflow: 'hidden' }}>
+    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24, background: '#d1fae5', position: 'relative', overflow: 'hidden' }}>
+      
+      <style>{`
+        @keyframes float1 { 0%, 100% { transform: translateY(0) rotate(-15deg); } 50% { transform: translateY(-20px) rotate(-12deg); } }
+        @keyframes float2 { 0%, 100% { transform: translateY(0) rotate(10deg); } 50% { transform: translateY(-15px) rotate(13deg); } }
+        @keyframes float3 { 0%, 100% { transform: translateY(0) rotate(25deg); } 50% { transform: translateY(-25px) rotate(20deg); } }
+        @keyframes float4 { 0%, 100% { transform: translateY(0) rotate(-20deg); } 50% { transform: translateY(-18px) rotate(-25deg); } }
+      `}</style>
+
+      {/* Subtle Background Elements */}
+      <div style={{ position: 'absolute', top: '10%', left: '10%', fontSize: 160, opacity: 0.04, animation: 'float1 8s ease-in-out infinite', pointerEvents: 'none' }}>📈</div>
+      <div style={{ position: 'absolute', bottom: '10%', right: '10%', fontSize: 200, opacity: 0.04, animation: 'float2 10s ease-in-out infinite', pointerEvents: 'none' }}>🏦</div>
+      <div style={{ position: 'absolute', top: '20%', right: '15%', fontSize: 100, opacity: 0.05, animation: 'float3 7s ease-in-out infinite', pointerEvents: 'none' }}>🪙</div>
+      <div style={{ position: 'absolute', bottom: '25%', left: '15%', fontSize: 120, opacity: 0.05, animation: 'float4 9s ease-in-out infinite', pointerEvents: 'none' }}>💰</div>
+      <div style={{ position: 'absolute', top: '50%', left: '50%', width: '100vw', height: '100vw', background: 'radial-gradient(circle, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 60%)', transform: 'translate(-50%, -50%)', pointerEvents: 'none' }}></div>
+
+      <div className="glass-card" style={{ width: '100%', maxWidth: 480, animation: 'slideUp 0.4s ease', background: '#eef8ef', padding: '24px 32px', borderRadius: 24, border: '1px solid rgba(255,255,255,0.8)', position: 'relative', overflow: 'hidden', zIndex: 1, boxShadow: '0 20px 40px rgba(0,0,0,0.08)' }}>
 
         {/* Decorative background elements (Confetti & Coins) */}
         <div style={{ position: 'absolute', top: 30, right: 120, width: 8, height: 8, background: '#3b82f6', transform: 'rotate(45deg)' }}></div>
