@@ -139,7 +139,7 @@ export function Game() {
     if (!humanPlayer) return
 
     const wealthDiff = humanPlayer.wealth - prevWealthRef.current
-    
+
     // Only show popup during active gameplay
     if (wealthDiff !== 0 && uiPhase !== 'setup' && uiPhase !== 'result' && gameState.phase !== 'game_over') {
       let reason = gameState.log[0] || 'Wealth updated'
@@ -171,7 +171,7 @@ export function Game() {
         isGain: wealthDiff > 0
       })
     }
-    
+
     prevWealthRef.current = humanPlayer.wealth
   }, [gameState, uiPhase])
 
@@ -235,7 +235,7 @@ export function Game() {
     } else if (card.type === 'action') {
       const needsTarget = card.effect?.target === 'target'
       if (needsTarget) {
-        const activeOpponents = currentState.players.map((p, i) => ({p, i})).filter(x => x.i !== humanPlayerIndex && !x.p.hasForfeited)
+        const activeOpponents = currentState.players.map((p, i) => ({ p, i })).filter(x => x.i !== humanPlayerIndex && !x.p.hasForfeited)
         if (activeOpponents.length === 1) {
           const targetIndex = activeOpponents[0].i
           const newState = processAction(currentState, humanPlayerIndex, card, targetIndex)
@@ -355,7 +355,7 @@ export function Game() {
 
 
       {showForfeitModal && (
-        <ForfeitModal 
+        <ForfeitModal
           onCancel={() => setShowForfeitModal(false)}
           onConfirm={handleForfeit}
         />
@@ -405,7 +405,7 @@ function EventPopup({ info, onContinue }: { info: { reason: string, sourceName?:
   }, [onContinue])
 
   return (
-    <div 
+    <div
       onClick={onContinue}
       style={{
         position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
@@ -422,23 +422,23 @@ function EventPopup({ info, onContinue }: { info: { reason: string, sourceName?:
         animation: 'slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1)'
       }}>
         <div style={{ fontSize: 14, color: 'var(--text-muted)', marginBottom: 12, textTransform: 'uppercase', letterSpacing: 1.5, fontWeight: 800 }}>
-          {info.isGain 
-            ? 'Wealth Gained!' 
-            : (info.sourceName && !info.isSelf && info.sourceName !== 'Game' 
-                ? `${info.sourceName} attacked!` 
-                : 'Wealth Lost!')}
+          {info.isGain
+            ? 'Wealth Gained!'
+            : (info.sourceName && !info.isSelf && info.sourceName !== 'Game'
+              ? `${info.sourceName} attacked!`
+              : 'Wealth Lost!')}
         </div>
         <h3 style={{ fontSize: 26, color: 'var(--text-dark)', marginBottom: info.description ? 12 : 28, lineHeight: 1.3, fontWeight: 800, fontFamily: 'Space Grotesk, sans-serif' }}>
           {info.reason}
         </h3>
-        
+
         {info.description && (
           <div style={{ fontSize: 16, color: '#4b5563', marginBottom: 28, fontStyle: 'italic', padding: '0 20px' }}>
             "{info.description}"
           </div>
         )}
-        
-        <div style={{ 
+
+        <div style={{
           fontSize: 52, fontWeight: 800, fontFamily: 'Space Grotesk, sans-serif',
           color: info.isGain ? 'var(--green-bright, #10b981)' : '#ef4444',
           marginBottom: 12,
@@ -456,43 +456,114 @@ function SetupScreen({ botCount, setBotCount, onStart, onBack, levelId }: { botC
   const wealthGoalText = levelConfig ? formatWealth(levelConfig.targetCorpus) : '₹50 Lakhs';
   return (
     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24, background: '#d1fae5' }}>
-      <div style={{ width: '100%', maxWidth: 480, animation: 'slideUp 0.4s ease' }}>
-        <button onClick={onBack} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: 16, fontFamily: 'inherit', marginBottom: 24, display: 'flex', alignItems: 'center', gap: 6 }}>
+      <div className="glass-card" style={{ width: '100%', maxWidth: 480, animation: 'slideUp 0.4s ease', background: '#eef8ef', padding: '24px 32px', borderRadius: 24, border: '1px solid rgba(255,255,255,0.8)', position: 'relative', overflow: 'hidden' }}>
+
+        {/* Decorative background elements (Confetti & Coins) */}
+        <div style={{ position: 'absolute', top: 30, right: 120, width: 8, height: 8, background: '#3b82f6', transform: 'rotate(45deg)' }}></div>
+        <div style={{ position: 'absolute', top: 50, right: 150, width: 8, height: 8, background: '#10b981', transform: 'rotate(15deg)' }}></div>
+        <div style={{ position: 'absolute', top: 80, right: 100, width: 10, height: 10, background: '#f59e0b', transform: 'rotate(30deg)' }}></div>
+        <div style={{ position: 'absolute', top: 40, right: 80, width: 6, height: 6, background: '#ef4444', transform: 'rotate(60deg)' }}></div>
+        <div style={{ position: 'absolute', top: 20, right: 180, width: 8, height: 8, background: '#f59e0b', transform: 'rotate(20deg)' }}></div>
+
+        {/* Small floating coins */}
+        <div style={{ position: 'absolute', top: 25, right: 140, width: 28, height: 28, background: 'linear-gradient(135deg, #FCD34D, #F59E0B)', borderRadius: '50%', boxShadow: '0 4px 8px rgba(245,158,11,0.3)', border: '2px solid #FEF3C7', display: 'flex', alignItems: 'center', justifyContent: 'center', transform: 'rotate(-10deg)' }}>
+          <span style={{ fontSize: 14, color: '#D97706', fontWeight: 900 }}>$</span>
+        </div>
+        <div style={{ position: 'absolute', top: 70, right: 110, width: 18, height: 18, background: 'linear-gradient(135deg, #FCD34D, #F59E0B)', borderRadius: '50%', boxShadow: '0 2px 4px rgba(245,158,11,0.3)', border: '1px solid #FEF3C7', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <span style={{ fontSize: 9, color: '#D97706', fontWeight: 900 }}>$</span>
+        </div>
+
+        {/* Large Gold Coin */}
+        <div style={{
+          position: 'absolute', top: 20, right: -10,
+          width: 90, height: 90,
+          background: 'linear-gradient(135deg, #FBBF24, #D97706)',
+          borderRadius: '50%',
+          boxShadow: '0 8px 16px rgba(217,119,6,0.4), inset 0 4px 8px rgba(255,255,255,0.4), inset 0 -4px 8px rgba(0,0,0,0.2)',
+          border: '4px solid #FEF3C7',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          transform: 'rotate(-15deg)'
+        }}>
+          <div style={{ width: 64, height: 64, borderRadius: '50%', border: '2px solid rgba(255,255,255,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <span style={{ fontSize: 36, color: '#FEF3C7', fontWeight: 800, textShadow: '0 2px 4px rgba(217,119,6,0.8)' }}>S</span>
+          </div>
+        </div>
+
+        <button onClick={onBack} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: 14, fontFamily: 'inherit', marginBottom: 12, display: 'flex', alignItems: 'center', gap: 6, position: 'relative', zIndex: 10 }}>
           ← Back
         </button>
-        <h1 style={{ fontSize: 35, fontWeight: 800, color: 'var(--text-dark)', fontFamily: 'Space Grotesk, sans-serif', marginBottom: 28 }}>New Game</h1>
+        <h1 style={{ fontSize: 32, fontWeight: 800, color: '#002020', fontFamily: 'Space Grotesk, sans-serif', marginBottom: 28, position: 'relative', zIndex: 10 }}>New Game</h1>
 
-        <div className="glass-panel" style={{ borderRadius: 16, padding: 28, marginBottom: 20 }}>
-          <h3 style={{ fontSize: 19, fontWeight: 700, color: 'var(--text-dark)', marginBottom: 16 }}>AI Opponents</h3>
+        <div style={{ background: 'rgba(255,255,255,0.7)', borderRadius: 16, padding: 24, marginBottom: 16, border: '1px solid rgba(255,255,255,0.9)', boxShadow: '0 4px 12px rgba(0,0,0,0.02)' }}>
+          <h3 style={{ fontSize: 17, fontWeight: 700, color: 'var(--green-deep)', marginBottom: 16 }}>AI Opponents</h3>
           <div style={{ display: 'flex', gap: 10 }}>
             {[1, 2, 3].map(n => (
               <button
                 key={n}
                 onClick={() => setBotCount(n)}
                 style={{
-                  width: 48, height: 48, borderRadius: 10, border: `2px solid ${botCount === n ? 'var(--blue-primary)' : 'rgba(0,0,0,0.1)'}`,
-                  background: botCount === n ? 'rgba(37,99,235,0.1)' : 'transparent',
-                  color: botCount === n ? 'var(--blue-deep)' : 'var(--text-muted)', fontWeight: 700, fontSize: 20,
+                  width: 52, height: 52, borderRadius: 12,
+                  border: botCount === n ? '2px solid #3b82f6' : '1px solid rgba(0,0,0,0.08)',
+                  background: botCount === n ? '#eff6ff' : '#ffffff',
+                  color: botCount === n ? '#1d4ed8' : '#4b5563',
+                  fontWeight: 700, fontSize: 20,
                   cursor: 'pointer', transition: 'all 0.15s', fontFamily: 'inherit',
+                  boxShadow: botCount === n ? '0 2px 8px rgba(59,130,246,0.15)' : 'none'
                 }}
               >
                 {n}
               </button>
             ))}
           </div>
-          <p style={{ fontSize: 15, color: 'var(--text-muted)', marginTop: 10 }}>Playing against {botCount} AI opponent{botCount > 1 ? 's' : ''} ({botCount + 1} players total)</p>
+          <p style={{ fontSize: 14, color: '#6b7280', marginTop: 16 }}>Playing against {botCount} AI opponent{botCount > 1 ? 's' : ''} ({botCount + 1} players total)</p>
         </div>
 
-        <div className="glass-panel" style={{ padding: '14px 16px', marginBottom: 24, fontSize: 16, color: 'var(--text-muted)', borderRadius: 12, boxShadow: 'none' }}>
-          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-            <div>🎯 Race to <span style={{ color: 'var(--orange-dark)', fontWeight: 700 }}>{wealthGoalText}</span></div>
+        <div style={{ background: 'rgba(255,255,255,0.7)', borderRadius: 12, padding: '16px 20px', marginBottom: 16, border: '1px solid rgba(255,255,255,0.9)', display: 'flex', alignItems: 'center', gap: 12, boxShadow: '0 4px 12px rgba(0,0,0,0.02)' }}>
+          <span style={{ fontSize: 20 }}>🎯</span>
+          <span style={{ fontSize: 15, color: '#4b5563', fontWeight: 500 }}>
+            Race to <span style={{ color: '#d97706', fontWeight: 800 }}>{wealthGoalText}</span>
+          </span>
+        </div>
 
+        <div style={{ background: 'rgba(255,255,255,0.7)', borderRadius: 16, padding: '20px', marginBottom: 24, border: '1px solid rgba(255,255,255,0.9)', display: 'flex', alignItems: 'center', gap: 20, boxShadow: '0 4px 12px rgba(0,0,0,0.02)', position: 'relative', overflow: 'hidden' }}>
+
+          {/* Stacked Coins Image */}
+          <img src="/avatars/WhatsApp_Image_2026-06-05_at_12.31.06-removebg-preview.png" alt="Entry Reward Coins" style={{ width: 80, height: 80, objectFit: 'contain', filter: 'drop-shadow(0 8px 12px rgba(217,119,6,0.3))', flexShrink: 0 }} />
+
+          <div>
+            <h4 style={{ fontSize: 15, fontWeight: 700, color: 'var(--green-deep)', marginBottom: 4 }}>Entry Reward</h4>
+            <div style={{ fontSize: 14, color: '#6b7280', marginBottom: 4 }}>Win the game to earn</div>
+            <div style={{ fontSize: 20, fontWeight: 800, color: 'var(--green-bright)' }}>+100 DC</div>
           </div>
         </div>
 
-        <Button size="lg" variant="gold" onClick={onStart} style={{ width: '100%' }}>
+        <button
+          onClick={onStart}
+          style={{
+            width: '100%',
+            background: 'var(--green-forest)',
+            color: 'white',
+            borderRadius: 12,
+            padding: '16px',
+            fontSize: 17,
+            fontWeight: 700,
+            border: 'none',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-start',
+            gap: 12,
+            cursor: 'pointer',
+            boxShadow: '0 8px 20px rgba(0,48,32,0.3)',
+            transition: 'transform 0.15s, box-shadow 0.15s'
+          }}
+          onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 12px 24px rgba(0,48,32,0.4)' }}
+          onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 8px 20px rgba(0,48,32,0.3)' }}
+        >
+          <div style={{ background: 'white', color: 'var(--green-forest)', borderRadius: '50%', width: 28, height: 28, display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: 8 }}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
+          </div>
           Start Game
-        </Button>
+        </button>
       </div>
     </div>
   )
@@ -505,9 +576,9 @@ function ResultScreen({ isWinner, placement, finalWealth, rpChange, players, mod
     <div style={{ minHeight: '100vh', background: 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24, position: 'relative' }}>
       {/* Epic background dim */}
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }} style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at center, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.9) 100%)', zIndex: 0 }} />
-      
+
       {isWinner && <Confetti width={window.innerWidth} height={window.innerHeight} recycle={false} numberOfPieces={800} gravity={0.15} initialVelocityY={20} colors={['#f59e0b', '#10b981', '#3b82f6', '#ec4899', '#f1f5f9']} />}
-      
+
       <div style={{ width: '100%', maxWidth: 500, textAlign: 'center', zIndex: 10, position: 'relative' }}>
         {/* Massive Text Stamp */}
         <motion.div
@@ -516,10 +587,10 @@ function ResultScreen({ isWinner, placement, finalWealth, rpChange, players, mod
           transition={{ type: 'spring', damping: 12, stiffness: 100 }}
           style={{ marginBottom: 24 }}
         >
-          <div style={{ 
-            fontSize: 'clamp(60px, 15vw, 100px)', 
-            fontWeight: 900, 
-            fontFamily: 'Space Grotesk, sans-serif', 
+          <div style={{
+            fontSize: 'clamp(60px, 15vw, 100px)',
+            fontWeight: 900,
+            fontFamily: 'Space Grotesk, sans-serif',
             color: isWinner ? '#f59e0b' : '#64748b',
             textTransform: 'uppercase',
             textShadow: isWinner ? '0 0 40px rgba(245,158,11,0.6), 0 0 100px rgba(245,158,11,0.4)' : '0 10px 20px rgba(0,0,0,0.8)',

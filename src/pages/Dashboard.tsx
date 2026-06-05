@@ -77,7 +77,7 @@ export function Dashboard() {
 
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+    <div style={{ height: '100vh', background: 'transparent', display: 'flex', flexDirection: 'column', color: 'var(--text-dark)', overflow: 'hidden' }}>
       {showTutorial && (
         <TutorialModal onClose={() => {
           setShowTutorial(false)
@@ -112,7 +112,7 @@ export function Dashboard() {
         </div>
       </nav>
 
-      <div style={{ display: 'flex', flex: 1 }}>
+      <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
         {/* Sidebar (Desktop) */}
         {isSidebarOpen && (
         <aside className="glass-panel desktop-flex" style={{
@@ -305,26 +305,107 @@ function HomeTab({ navigate, profile, currentSeason, onlineUsers }: { navigate: 
       </Card>
 
       {/* Season Banner */}
-      <Card glow="gold" style={{ padding: 20 }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
+      {/* Season Banner */}
+      <Card style={{ padding: 0, overflow: 'hidden', display: 'flex', alignItems: 'stretch', background: 'linear-gradient(to right, #022c22 0%, #047857 40%, #d1fae5 100%)', border: '1px solid rgba(0,0,0,0.08)' }}>
+        <div style={{ width: 260, position: 'relative', flexShrink: 0 }}>
+          
+          {/* Decorations */}
+          <div style={{ position: 'absolute', top: 20, left: 25, fontSize: 18, filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))' }}>✨</div>
+          <div style={{ position: 'absolute', top: 45, right: 60, fontSize: 16, filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))' }}>✨</div>
+          <div style={{ position: 'absolute', bottom: 30, right: 50, fontSize: 18, filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))' }}>🪙</div>
+          <div style={{ position: 'absolute', bottom: 20, left: 35, fontSize: 16, filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))' }}>🪙</div>
+          
+          {/* Trophy */}
+          <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+             <span style={{ fontSize: 80, filter: 'drop-shadow(0 10px 15px rgba(0,0,0,0.5))', transform: 'translateY(-2px)' }}>🏆</span>
+          </div>
+        </div>
+
+        <div style={{ flex: 1, padding: '24px 24px 24px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 20 }}>
           <div>
-            <div style={{ fontSize: 15, color: 'var(--orange-dark)', fontWeight: 700, letterSpacing: '0.05em', marginBottom: 6 }}>ACTIVE SEASON</div>
-            <h2 style={{ fontSize: 25, fontWeight: 800, color: 'var(--text-dark)', fontFamily: 'var(--font-display)', marginBottom: 4 }}>
+            <div style={{ fontSize: 13, color: '#d97706', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 4 }}>ACTIVE SEASON</div>
+            <h2 style={{ fontSize: 26, fontWeight: 900, color: '#ffffff', marginBottom: 6, fontFamily: 'var(--font-display)', textShadow: '0 2px 4px rgba(0,0,0,0.2)' }}>
               Season {currentSeason.number}: {currentSeason.name}
             </h2>
-            <p style={{ color: 'var(--text-muted)', fontSize: 16 }}>{currentSeason.theme}</p>
-            <div style={{ marginTop: 8, padding: '4px 10px', borderRadius: 6, background: 'rgba(224,80,32,0.08)', border: '1px solid var(--orange-dark)', display: 'inline-block', fontSize: 15, color: 'var(--orange-dark)', fontWeight: 600 }}>
-              ⚡ {currentSeason.special_rule}
-            </div>
+            <p style={{ color: '#f8fafc', fontSize: 15, marginBottom: 12, fontWeight: 500, textShadow: '0 1px 2px rgba(0,0,0,0.1)' }}>{currentSeason.theme}</p>
+
           </div>
-          <div style={{ textAlign: 'right' }}>
-            <div style={{ fontSize: 16, color: 'var(--text-muted)', marginBottom: 4 }}>Season ends in</div>
-            <div style={{ fontSize: 35, fontWeight: 800, color: 'var(--orange-dark)', fontFamily: 'var(--font-display)', animation: 'pulse 2s infinite' }}>{seasonTimeLeft}</div>
+          <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 12 }}>
+            <div>
+              <div style={{ fontSize: 13, color: '#4b5563', marginBottom: 4 }}>Season ends in</div>
+              <div style={{ fontSize: 26, fontWeight: 800, color: '#dc2626', fontFamily: 'var(--font-display)' }}>{seasonTimeLeft}</div>
+            </div>
+            <button style={{ background: '#047857', color: '#fff', border: 'none', borderRadius: 8, padding: '10px 24px', fontSize: 15, fontWeight: 700, cursor: 'pointer', boxShadow: '0 4px 6px -1px rgba(4, 120, 87, 0.4)' }}>
+              View Rewards
+            </button>
           </div>
         </div>
       </Card>
 
 
+    </div>
+  )
+}
+
+const CrownIcon = ({ color }: { color: string }) => (
+  <svg width="36" height="36" viewBox="0 0 24 24" fill={color} style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))' }}>
+    <path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zM19 19c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14v1z"/>
+  </svg>
+)
+
+const PodiumStep = ({ rank, player }: { rank: 1|2|3; player?: any }) => {
+  if (!player) return <div style={{ width: '30%' }} />
+
+  const is1 = rank === 1;
+  const is2 = rank === 2;
+  const height = is1 ? 64 : is2 ? 48 : 36;
+  const gradient = is1 ? 'linear-gradient(180deg, #FBBF24, #D97706)' : 
+                   is2 ? 'linear-gradient(180deg, #cbd5e1, #94a3b8)' : 
+                         'linear-gradient(180deg, #d97706, #92400e)';
+  const shadow = is1 ? '0 0 20px rgba(217,119,6,0.3)' : is2 ? '0 0 20px rgba(148,163,184,0.3)' : '0 0 20px rgba(146,64,14,0.3)';
+  const crownColor = is1 ? '#FBBF24' : is2 ? '#e2e8f0' : '#d97706';
+  
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '30%', position: 'relative', zIndex: is1 ? 10 : 1 }}>
+      {/* Crown */}
+      <div style={{ marginBottom: -12, zIndex: 2, position: 'relative' }}>
+        <CrownIcon color={crownColor} />
+      </div>
+      
+      {/* Colored Top Block */}
+      <div style={{
+        background: gradient,
+        width: '100%',
+        height: height,
+        borderTopLeftRadius: 16,
+        borderTopRightRadius: 16,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        boxShadow: shadow,
+        position: 'relative',
+        overflow: 'hidden',
+        border: '1px solid rgba(255,255,255,0.4)',
+        borderBottom: 'none'
+      }}>
+        {is1 && <div style={{ position: 'absolute', top: 5, right: 10, fontSize: 16 }}>✨</div>}
+        <span style={{ fontSize: is1 ? 32 : 24, fontWeight: 900, color: '#fff', textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}>{rank}</span>
+      </div>
+      
+      {/* White Bottom Block */}
+      <div style={{
+        background: '#fff',
+        width: '100%',
+        borderBottomLeftRadius: 12,
+        borderBottomRightRadius: 12,
+        padding: '16px 8px',
+        textAlign: 'center',
+        boxShadow: '0 8px 16px rgba(0,0,0,0.08)',
+        border: '1px solid rgba(0,0,0,0.05)'
+      }}>
+        <div style={{ fontWeight: 800, fontSize: 15, color: '#1f2937', marginBottom: 4, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{player.username}</div>
+        <div style={{ fontWeight: 800, fontSize: is1 ? 22 : 18, color: '#111827' }}>{formatWealth(player.highest_net_worth)}</div>
+      </div>
     </div>
   )
 }
@@ -355,9 +436,10 @@ function LeaderboardTab({ leaderboard, loading, profile, onRefresh }: { leaderbo
   // Pre-calculate ranks before pinning
   const rankedLeaderboard = sortedLeaderboard.map((p, index) => ({ ...p, rank: index + 1 }))
   
-  const myEntry = rankedLeaderboard.find(p => p.username === profile?.username)
-  const others = rankedLeaderboard.filter(p => p.username !== profile?.username)
-  const displayData = showAll ? others : others.slice(0, 12)
+  const top3 = rankedLeaderboard.slice(0, 3)
+  const remaining = rankedLeaderboard.slice(3)
+
+  const displayData = showAll ? remaining : remaining.slice(0, 9)
 
   return (
     <div style={{ maxWidth: 800, width: '100%', margin: '0 auto' }}>
@@ -367,7 +449,7 @@ function LeaderboardTab({ leaderboard, loading, profile, onRefresh }: { leaderbo
           Refresh
         </button>
       </div>
-      <Card style={{ overflow: 'hidden', padding: 0 }}>
+      <Card style={{ overflow: 'hidden', padding: 0, background: '#f0fdf4' }}>
         {loading ? (
           <div style={{ textAlign: 'center', padding: '40px 0', color: 'var(--text-muted)' }}>
             <div style={{ width: 28, height: 28, border: '2px solid rgba(0,0,0,0.1)', borderTopColor: 'var(--orange-primary)', borderRadius: '50%', animation: 'spin 0.8s linear infinite', margin: '0 auto 12px' }} />
@@ -379,61 +461,60 @@ function LeaderboardTab({ leaderboard, loading, profile, onRefresh }: { leaderbo
             No entries yet. Be the first to play!
           </div>
         ) : (
-          <div className="scroll-x" style={{ width: '100%' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 650 }}>
-            <thead>
-              <tr style={{ borderBottom: '2px solid rgba(0,0,0,0.1)', background: 'rgba(0,0,0,0.02)' }}>
-                {['Rank', 'Player'].map(h => (
-                  <th key={h} style={{ padding: '12px 16px', textAlign: 'left', fontSize: 13, color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{h}</th>
-                ))}
-                <th onClick={() => handleSort('wins')} style={{ cursor: 'pointer', padding: '12px 16px', textAlign: 'left', fontSize: 13, color: sortField === 'wins' ? 'var(--green-primary)' : 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Wins {sortField === 'wins' && (sortAsc ? '↑' : '↓')}</th>
-                <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: 13, color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Games</th>
-                <th onClick={() => handleSort('winRate')} style={{ cursor: 'pointer', padding: '12px 16px', textAlign: 'left', fontSize: 13, color: sortField === 'winRate' ? 'var(--green-primary)' : 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Win % {sortField === 'winRate' && (sortAsc ? '↑' : '↓')}</th>
-                <th onClick={() => handleSort('highest_net_worth')} style={{ cursor: 'pointer', minWidth: 140, padding: '12px 16px', textAlign: 'left', fontSize: 13, color: sortField === 'highest_net_worth' ? 'var(--green-primary)' : 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Best Wealth {sortField === 'highest_net_worth' && (sortAsc ? '↑' : '↓')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {myEntry && (
-                <tr style={{ background: 'rgba(32,160,96,0.12)', borderBottom: '2px solid var(--green-primary)' }}>
-                  <td style={{ padding: '14px 16px', fontSize: 16, fontWeight: 800, color: 'var(--green-deep)' }}>
-                    {myEntry.rank === 1 ? '🥇' : myEntry.rank === 2 ? '🥈' : myEntry.rank === 3 ? '🥉' : `#${myEntry.rank}`}
-                  </td>
-                  <td style={{ padding: '14px 16px', display: 'flex', alignItems: 'center', gap: 10 }}>
-                    <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'var(--green-primary)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, fontWeight: 700 }}>
-                      {myEntry.username[0].toUpperCase()}
-                    </div>
-                    <span style={{ fontSize: 16, color: 'var(--text-dark)', fontWeight: 800 }}>{myEntry.username} (you)</span>
-                  </td>
-                  <td style={{ padding: '14px 16px', fontSize: 16, fontWeight: 800, color: 'var(--green-deep)' }}>{myEntry.wins}</td>
-                  <td style={{ padding: '14px 16px', fontSize: 15, color: 'var(--green-deep)' }}>{myEntry.total_games}</td>
-                  <td style={{ padding: '14px 16px', fontSize: 15, color: myEntry.winRate > 60 ? 'var(--green-deep)' : 'var(--text-dark)' }}>{myEntry.winRate}%</td>
-                  <td style={{ padding: '14px 16px', fontSize: 15, color: 'var(--orange-dark)', fontWeight: 800 }}>{formatWealth(myEntry.highest_net_worth)}</td>
-                </tr>
-              )}
-              {displayData.map((player, i) => {
-                const isEven = i % 2 === 0
-                return (
-                  <tr key={player.id} style={{ borderBottom: '1px solid rgba(0,0,0,0.05)', background: isEven ? 'transparent' : 'rgba(0,0,0,0.02)', transition: 'background 0.2s' }} onMouseEnter={e => e.currentTarget.style.background = 'rgba(0,0,0,0.05)'} onMouseLeave={e => e.currentTarget.style.background = isEven ? 'transparent' : 'rgba(0,0,0,0.02)'}>
-                    <td style={{ padding: '12px 16px', fontSize: 16, fontWeight: 700, color: player.rank === 1 ? 'var(--orange-dark)' : player.rank === 2 ? '#64748b' : player.rank === 3 ? 'var(--orange-primary)' : 'var(--text-muted)' }}>
-                      {player.rank === 1 ? '🥇' : player.rank === 2 ? '🥈' : player.rank === 3 ? '🥉' : `#${player.rank}`}
-                    </td>
-                    <td style={{ padding: '12px 16px', display: 'flex', alignItems: 'center', gap: 10 }}>
-                      <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'rgba(0,0,0,0.1)', color: 'var(--text-dark)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, fontWeight: 700 }}>
-                        {player.username[0].toUpperCase()}
-                      </div>
-                      <span style={{ fontSize: 16, color: 'var(--text-dark)', fontWeight: 600 }}>{player.username}</span>
-                    </td>
-                    <td style={{ padding: '12px 16px', fontSize: 16, fontWeight: 700, color: 'var(--green-primary)' }}>{player.wins}</td>
-                    <td style={{ padding: '12px 16px', fontSize: 15, color: 'var(--text-muted)' }}>{player.total_games}</td>
-                    <td style={{ padding: '12px 16px', fontSize: 15, color: player.winRate > 60 ? 'var(--green-primary)' : 'var(--text-muted)' }}>{player.winRate}%</td>
-                    <td style={{ padding: '12px 16px', fontSize: 15, color: 'var(--orange-dark)', fontWeight: 600 }}>{formatWealth(player.highest_net_worth)}</td>
-                  </tr>
-                )
-              })}
-            </tbody>
-            </table>
+          <div style={{ width: '100%' }}>
+            {top3.length > 0 && (
+              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-end', gap: 16, padding: '32px 20px 40px', background: 'transparent' }}>
+                <PodiumStep rank={2} player={top3[1]} />
+                <PodiumStep rank={1} player={top3[0]} />
+                <PodiumStep rank={3} player={top3[2]} />
+              </div>
+            )}
             
-            {!showAll && others.length > 12 && (
+            <div className="scroll-x">
+              <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 650 }}>
+              <thead>
+                <tr style={{ borderBottom: '2px solid rgba(0,0,0,0.1)', background: 'transparent' }}>
+                  {['Rank', 'Player'].map(h => (
+                    <th key={h} style={{ padding: '12px 16px', textAlign: 'left', fontSize: 13, color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{h}</th>
+                  ))}
+                  <th onClick={() => handleSort('wins')} style={{ cursor: 'pointer', padding: '12px 16px', textAlign: 'left', fontSize: 13, color: sortField === 'wins' ? 'var(--green-primary)' : 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Wins {sortField === 'wins' && (sortAsc ? '↑' : '↓')}</th>
+                  <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: 13, color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Games</th>
+                  <th onClick={() => handleSort('winRate')} style={{ cursor: 'pointer', padding: '12px 16px', textAlign: 'left', fontSize: 13, color: sortField === 'winRate' ? 'var(--green-primary)' : 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Win % {sortField === 'winRate' && (sortAsc ? '↑' : '↓')}</th>
+                  <th onClick={() => handleSort('highest_net_worth')} style={{ cursor: 'pointer', minWidth: 140, padding: '12px 16px', textAlign: 'left', fontSize: 13, color: sortField === 'highest_net_worth' ? 'var(--green-primary)' : 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Best Wealth {sortField === 'highest_net_worth' && (sortAsc ? '↑' : '↓')}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {displayData.map((player) => {
+                  const isMe = player.username === profile?.username
+                  return (
+                    <tr key={player.id} style={{ 
+                      borderBottom: '1px solid rgba(0,0,0,0.05)', 
+                      background: isMe ? 'rgba(32,160,96,0.1)' : 'transparent',
+                      border: isMe ? '1px solid var(--green-primary)' : 'none',
+                      borderRadius: isMe ? 8 : 0,
+                      transition: 'background 0.2s' 
+                    }} onMouseEnter={e => e.currentTarget.style.background = isMe ? 'rgba(32,160,96,0.15)' : 'rgba(0,0,0,0.05)'} onMouseLeave={e => e.currentTarget.style.background = isMe ? 'rgba(32,160,96,0.1)' : 'transparent'}>
+                      <td style={{ padding: '14px 16px', fontSize: 16, fontWeight: 700, color: 'var(--text-muted)' }}>
+                        {player.rank}
+                      </td>
+                      <td style={{ padding: '14px 16px', display: 'flex', alignItems: 'center', gap: 10 }}>
+                        <div style={{ width: 32, height: 32, borderRadius: '50%', background: isMe ? 'var(--green-primary)' : 'rgba(0,0,0,0.1)', color: isMe ? '#fff' : 'var(--text-dark)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, fontWeight: 800 }}>
+                          {player.username[0].toUpperCase()}
+                        </div>
+                        <span style={{ fontSize: 16, color: 'var(--text-dark)', fontWeight: isMe ? 800 : 600 }}>{player.username} {isMe && '(you)'}</span>
+                      </td>
+                      <td style={{ padding: '14px 16px', fontSize: 16, fontWeight: 700, color: isMe ? 'var(--green-primary)' : 'var(--green-primary)' }}>{player.wins}</td>
+                      <td style={{ padding: '14px 16px', fontSize: 15, color: isMe ? 'var(--green-primary)' : 'var(--text-muted)' }}>{player.total_games}</td>
+                      <td style={{ padding: '14px 16px', fontSize: 15, color: player.winRate > 60 ? 'var(--green-primary)' : 'var(--text-muted)' }}>{player.winRate}%</td>
+                      <td style={{ padding: '14px 16px', fontSize: 15, color: 'var(--orange-dark)', fontWeight: 700 }}>{formatWealth(player.highest_net_worth)}</td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+              </table>
+            </div>
+            
+            {!showAll && remaining.length > 9 && (
               <div style={{ padding: 20, textAlign: 'center' }}>
                 <button 
                   onClick={() => setShowAll(true)}
