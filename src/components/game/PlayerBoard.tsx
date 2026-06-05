@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { PlayerState } from '../../types/game'
 import { formatWealth } from '../../types/game'
@@ -41,17 +41,17 @@ export function PlayerBoard({ player, isCurrent, isTarget, isOffline, wealthGoal
   const theme = SEAT_THEMES[seatIndex % SEAT_THEMES.length]
   const avatar = getAvatar(player, seatIndex)
 
-  const [prevWealth, setPrevWealth] = useState(player.wealth)
-  const [floatingText, setFloatingText] = useState<{ id: number; diff: number }[]>([])
+  const prevWealthRef = useRef(player.wealth)
+  const [floatingText, setFloatingText] = useState<{ id: string; diff: number }[]>([])
   const [isShaking, setIsShaking] = useState(false)
 
   useEffect(() => {
     let timeoutId: ReturnType<typeof setTimeout> | undefined
-    if (player.wealth !== prevWealth) {
-      const diff = player.wealth - prevWealth
-      setPrevWealth(player.wealth)
+    if (player.wealth !== prevWealthRef.current) {
+      const diff = player.wealth - prevWealthRef.current
+      prevWealthRef.current = player.wealth
       if (diff !== 0) {
-        setFloatingText(prev => [...prev, { id: Date.now(), diff }])
+        setFloatingText(prev => [...prev, { id: Math.random().toString(), diff }])
         if (diff < 0) {
           setIsShaking(true)
           timeoutId = setTimeout(() => setIsShaking(false), 500)
@@ -59,7 +59,7 @@ export function PlayerBoard({ player, isCurrent, isTarget, isOffline, wealthGoal
       }
     }
     return () => { if (timeoutId) clearTimeout(timeoutId) }
-  }, [player.wealth, prevWealth])
+  }, [player.wealth])
 
 
   return (

@@ -252,6 +252,7 @@ export function MultiplayerGame() {
         gameStateRef.current = forfeitState
         await pushState(forfeitState)
         if (forfeitState.phase === 'game_over') {
+          setPhase('result')
           saveResult(forfeitState)
         }
       }
