@@ -22,8 +22,18 @@ function playTone(freq: number, type: OscillatorType, duration: number, vol = 0.
   osc.stop(audioCtx.currentTime + duration)
 }
 
+export let isSoundEnabled = typeof window !== 'undefined' ? localStorage.getItem('bhao_sound') !== 'false' : true
+
+export function toggleSound() {
+  isSoundEnabled = !isSoundEnabled
+  if (typeof window !== 'undefined') {
+    localStorage.setItem('bhao_sound', String(isSoundEnabled))
+  }
+  return isSoundEnabled
+}
+
 export function playSound(effect: 'draw' | 'play' | 'attack' | 'defend' | 'win' | 'lose') {
-  if (!audioCtx) return
+  if (!audioCtx || !isSoundEnabled) return
 
   switch (effect) {
     case 'draw':

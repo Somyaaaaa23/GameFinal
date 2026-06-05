@@ -8,6 +8,7 @@ import { SEASONS } from '../data/mockData'
 import { formatWealth } from '../types/game'
 import { supabase } from '../lib/supabase'
 import { TutorialModal } from '../components/TutorialModal'
+import { isSoundEnabled, toggleSound } from '../lib/audio'
 
 
 type Tab = 'home' | 'leaderboard' | 'contracts' | 'profile'
@@ -32,6 +33,7 @@ export function Dashboard() {
   const [showTutorial, setShowTutorial] = useState(false)
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
   const [onlineUsers, setOnlineUsers] = useState(() => Math.floor(Math.random() * 301) + 200)
+  const [soundOn, setSoundOn] = useState(isSoundEnabled)
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -108,6 +110,16 @@ export function Dashboard() {
             <span style={{ fontSize: 'clamp(14px, 4vw, 18px)' }}>🪙</span>
             <span style={{ fontSize: 'clamp(14px, 4vw, 18px)', fontWeight: 700, color: 'var(--orange-dark)', whiteSpace: 'nowrap' }}>{coins.toLocaleString()} DC</span>
           </div>
+          <button 
+            onClick={() => setSoundOn(toggleSound())} 
+            title={soundOn ? "Mute Sound" : "Enable Sound"}
+            style={{ 
+              background: 'none', border: 'none', cursor: 'pointer', 
+              fontSize: 'clamp(18px, 4vw, 22px)', display: 'flex', alignItems: 'center', padding: 4, opacity: soundOn ? 1 : 0.5
+            }}
+          >
+            {soundOn ? '🔊' : '🔇'}
+          </button>
           <button onClick={handleLogout} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: 'clamp(14px, 4vw, 16px)', fontFamily: 'inherit', whiteSpace: 'nowrap' }}>Sign Out</button>
         </div>
       </nav>
