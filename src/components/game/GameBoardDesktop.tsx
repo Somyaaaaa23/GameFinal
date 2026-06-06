@@ -2,7 +2,6 @@ import { GameCard as GameCardComponent } from '../GameCard'
 import { Button } from '../ui/Button'
 import { PlayerBoard } from './PlayerBoard'
 import { GameLog } from './GameLog'
-import { TurnTimer } from './TurnTimer'
 
 import { formatWealth } from '../../types/game'
 import { TURN_TIME_LIMIT_MS } from '../../lib/gameEngine'
@@ -19,7 +18,6 @@ export function GameBoardDesktop({
   onPlayCard,
   onTargetSelect,
   onDecision,
-  onTimeout,
   onCancelTargeting,
 }: GameBoardProps) {
   const myPlayerIndex = gameState.players.findIndex(p => p.id === myPlayerId)

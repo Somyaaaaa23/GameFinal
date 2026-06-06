@@ -36,7 +36,7 @@ function getAvatar(player: PlayerState, seatIndex: number): string {
   return AVATARS[seatIndex % AVATARS.length]
 }
 
-function CardTimer({ turnStartTime, timeLimit, type }: { turnStartTime: number; timeLimit: number; type: 'bar' | 'ring' }) {
+function CardTimer({ turnStartTime, timeLimit, type }: { turnStartTime: number; timeLimit: number; type: 'ring' | 'card-border' }) {
   const [timeLeft, setTimeLeft] = useState(timeLimit)
 
   useEffect(() => {
