@@ -54,6 +54,8 @@ export function GameBoardDesktop({
                   wealthGoal={gameState.wealthGoal}
                   seatIndex={originalIndex}
                   onClick={() => onTargetSelect(originalIndex)}
+                  turnStartTime={gameState.turnStartTime}
+                  timeLimit={TURN_TIME_LIMIT_MS}
                 />
               </div>
             )
@@ -76,18 +78,7 @@ export function GameBoardDesktop({
           <div style={{ fontSize: 15, color: '#475569', fontWeight: 700 }}>TURN {gameState.turn}</div>
         </div>
         
-        <TurnTimer 
-          turnStartTime={gameState.turnStartTime} 
-          timeLimit={TURN_TIME_LIMIT_MS} 
-          active={
-            gameState.phase !== 'game_over' && (
-              isMyTurn || 
-              (!isMultiplayer && gameState.players[0].id === myPlayerId) || 
-              (isMultiplayer && gameState.players[0].id === myPlayerId && !onlinePlayers.has(gameState.players[gameState.currentPlayerIndex]?.id))
-            )
-          }
-          onTimeout={onTimeout} 
-        />
+        
 
         {/* Not my turn */}
         {!isMyTurn && uiPhase === 'playing' && (

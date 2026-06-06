@@ -15,6 +15,26 @@ import { ForfeitModal } from '../components/ForfeitModal'
 import { playSound } from '../lib/audio'
 import { GameBoard, UIPhase } from '../components/game/GameBoard'
 
+function GameClock({ startTime, timeLimit }: { startTime: number; timeLimit: number }) {
+  const [now, setNow] = useState(Date.now())
+
+  useEffect(() => {
+    const interval = setInterval(() => setNow(Date.now()), 1000)
+    return () => clearInterval(interval)
+  }, [])
+
+  const elapsed = now - startTime
+  const remaining = Math.max(0, timeLimit - elapsed)
+  const minutesLeft = Math.floor(remaining / 60000)
+  const secondsLeft = Math.floor((remaining % 60000) / 1000)
+
+  return (
+    <div style={{ fontSize: 14, color: minutesLeft < 5 ? '#ef4444' : '#64748b', fontWeight: minutesLeft < 5 ? 700 : 600, display: 'flex', alignItems: 'center', gap: 4 }}>
+      ⏱ {minutesLeft}:{secondsLeft.toString().padStart(2, '0')}
+    </div>
+  )
+}
+
 type PagePhase = UIPhase | 'loading' | 'result'
 
 export function MultiplayerGame() {
@@ -531,6 +551,7 @@ export function MultiplayerGame() {
           BH<span style={{ color: '#10b981' }}>AO</span>
         </div>
         <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
+          <GameClock startTime={gameState.startTime} timeLimit={gameState.timeLimit} />
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '4px 10px', borderRadius: 20, background: '#f0fdf4', border: '1px solid #bbf7d0' }}>
             <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#22c55e', boxShadow: '0 0 8px #22c55e' }} />
             <span style={{ color: '#16a34a', fontSize: 12, fontWeight: 700 }}>ONLINE</span>

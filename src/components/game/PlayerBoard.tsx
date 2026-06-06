@@ -15,6 +15,8 @@ interface PlayerBoardProps {
   seatIndex?: number
   onClick?: () => void
   compact?: boolean
+  turnStartTime?: number
+  timeLimit?: number
 }
 
 // Distinct color themes per seat — matching the screenshot's green, purple, red, gold palette
@@ -34,9 +36,65 @@ function getAvatar(player: PlayerState, seatIndex: number): string {
   return AVATARS[seatIndex % AVATARS.length]
 }
 
+function CardTimer({ turnStartTime, timeLimit, type }: { turnStartTime: number; timeLimit: number; type: 'bar' | 'ring' }) {
+  const [timeLeft, setTimeLeft] = useState(timeLimit)
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft(Math.max(0, timeLimit - (Date.now() - turnStartTime)))
+    }, 1000)
+    setTimeLeft(Math.max(0, timeLimit - (Date.now() - turnStartTime)))
+    return () => clearInterval(timer)
+  }, [turnStartTime, timeLimit])
+
+  const pct = Math.max(0, Math.min(100, (timeLeft / timeLimit) * 100))
+  const isDanger = timeLeft <= 10000
+
+  if (type === 'ring') {
+    const dash = 2 * Math.PI * 25 // r=25
+    return (
+      <svg style={{ position: 'absolute', top: -4, left: -4, width: 'calc(100% + 8px)', height: 'calc(100% + 8px)', pointerEvents: 'none', transform: 'rotate(-90deg)', zIndex: 10 }}>
+        <circle cx="50%" cy="50%" r="25" fill="none" 
+          stroke={isDanger ? '#ef4444' : '#22c55e'} 
+          strokeWidth="3" 
+          strokeDasharray={dash} 
+          strokeDashoffset={dash * (1 - pct/100)}
+          style={{ transition: 'stroke-dashoffset 1s linear' }}
+        />
+      </svg>
+    )
+  }
+
+  if (type === 'card-border') {
+    return (
+      <svg style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 20 }}>
+        <rect x="0" y="0" width="100%" height="100%" rx="16" fill="none" 
+          stroke={isDanger ? '#ef4444' : '#22c55e'} 
+          strokeWidth="6" 
+          pathLength="100"
+          strokeDasharray="100" 
+          strokeDashoffset={100 * (1 - pct/100)}
+          style={{ transition: 'stroke-dashoffset 1s linear' }}
+        />
+      </svg>
+    )
+  }
+
+  return (
+    <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 4, background: 'rgba(0,0,0,0.2)' }}>
+      <div style={{
+        height: '100%',
+        width: `${pct}%`,
+        background: isDanger ? '#ef4444' : '#22c55e',
+        transition: 'width 1s linear, background-color 0.3s'
+      }} />
+    </div>
+  )
+}
 
 
-export function PlayerBoard({ player, isCurrent, isMe, isTarget, isOffline, wealthGoal, seatIndex = 0, onClick, compact }: PlayerBoardProps) {
+
+export function PlayerBoard({ player, isCurrent, isMe, isTarget, isOffline, wealthGoal, seatIndex = 0, onClick, compact, turnStartTime, timeLimit }: PlayerBoardProps) {
   const wealthPct = Math.min(100, (player.wealth / wealthGoal) * 100)
   const theme = SEAT_THEMES[seatIndex % SEAT_THEMES.length]
   const avatar = getAvatar(player, seatIndex)
@@ -163,6 +221,11 @@ export function PlayerBoard({ player, isCurrent, isMe, isTarget, isOffline, weal
         alignItems: compact ? 'center' : 'initial',
       }}
     >
+      {/* FULL CARD BORDER TIMER */}
+      {isCurrent && turnStartTime && timeLimit && (
+        <CardTimer turnStartTime={turnStartTime} timeLimit={timeLimit} type="card-border" />
+      )}
+
       {/* Floating wealth change text */}
       <AnimatePresence>
         {floatingText.map(ft => (
@@ -235,24 +298,26 @@ export function PlayerBoard({ player, isCurrent, isMe, isTarget, isOffline, weal
       {/* Avatar + Name row */}
       <div style={{ display: 'flex', flexDirection: compact ? 'column' : 'row', alignItems: 'center', gap: compact ? 2 : 10, marginBottom: compact ? 6 : 10, textAlign: compact ? 'center' : 'left' }}>
         {!compact && (
-          <motion.div 
-            animate={isTarget ? { scale: [1, 1.1, 1], boxShadow: ['0 0 10px rgba(239,68,68,0.5)', '0 0 20px rgba(239,68,68,0.8)', '0 0 10px rgba(239,68,68,0.5)'] } : {}}
-            transition={{ repeat: Infinity, duration: 1 }}
-            className="player-board-avatar" style={{
-            width: '2.5em', height: '2.5em', borderRadius: '50%',
-            background: isTarget ? 'rgba(239, 68, 68, 0.2)' : 'rgba(255,255,255,0.1)', 
-            border: `2px solid ${isTarget ? '#ef4444' : theme.accent}`,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            boxShadow: `0 4px 12px rgba(0,0,0,0.3)`,
-            overflow: 'hidden',
-            flexShrink: 0
-          }}>
-            {isTarget ? (
-              <span style={{ fontSize: 24 }}>🎯</span>
-            ) : (
-              (avatar.startsWith('/') || avatar.startsWith('http')) ? <img src={avatar} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : avatar
-            )}
-          </motion.div>
+          <div style={{ position: 'relative' }}>
+            <motion.div 
+              animate={isTarget ? { scale: [1, 1.1, 1], boxShadow: ['0 0 10px rgba(239,68,68,0.5)', '0 0 20px rgba(239,68,68,0.8)', '0 0 10px rgba(239,68,68,0.5)'] } : {}}
+              transition={{ repeat: Infinity, duration: 1 }}
+              className="player-board-avatar" style={{
+              width: '2.5em', height: '2.5em', borderRadius: '50%',
+              background: isTarget ? 'rgba(239, 68, 68, 0.2)' : 'rgba(255,255,255,0.1)', 
+              border: `2px solid ${isTarget ? '#ef4444' : theme.accent}`,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              boxShadow: `0 4px 12px rgba(0,0,0,0.3)`,
+              overflow: 'hidden',
+              flexShrink: 0
+            }}>
+              {isTarget ? (
+                <span style={{ fontSize: 24 }}>🎯</span>
+              ) : (
+                (avatar.startsWith('/') || avatar.startsWith('http')) ? <img src={avatar} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : avatar
+              )}
+            </motion.div>
+          </div>
         )}
         <div style={{ flex: 1, minWidth: 0, width: '100%' }}>
           <div style={{ fontSize: compact ? 'clamp(15px, 4vw, 17px)' : 'clamp(14px, 3.5vw, 16px)', fontWeight: 800, color: '#f1f5f9', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>

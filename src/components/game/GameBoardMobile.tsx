@@ -59,6 +59,8 @@ export function GameBoardMobile({
                   seatIndex={originalIndex}
                   onClick={() => onTargetSelect(originalIndex)}
                   compact={true}
+                  turnStartTime={gameState.turnStartTime}
+                  timeLimit={TURN_TIME_LIMIT_MS}
                 />
               </div>
             )
@@ -81,19 +83,6 @@ export function GameBoardMobile({
           <div className="mobile-action-turn">TURN {gameState.turn}</div>
         </div>
         
-        <TurnTimer 
-          turnStartTime={gameState.turnStartTime} 
-          timeLimit={TURN_TIME_LIMIT_MS} 
-          active={
-            gameState.phase !== 'game_over' && (
-              isMyTurn || 
-              (!isMultiplayer && gameState.players[0].id === myPlayerId) || 
-              (isMultiplayer && gameState.players[0].id === myPlayerId && !onlinePlayers.has(gameState.players[gameState.currentPlayerIndex]?.id))
-            )
-          }
-          onTimeout={onTimeout} 
-        />
-
         {/* Not my turn */}
         {!isMyTurn && uiPhase === 'playing' && (
           <div className="mobile-wait-state">
