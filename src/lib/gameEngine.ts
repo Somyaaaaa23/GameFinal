@@ -5,7 +5,7 @@ import { SEASONS } from '../data/mockData'
 
 export const STARTING_WEALTH = 500000   // ₹5 Lakhs
 export const WEALTH_GOAL = 5000000      // ₹50 Lakhs
-export const TIME_LIMIT_MS = 15 * 60 * 1000  // 15 minutes per game limit
+export const TIME_LIMIT_MS = 30 * 60 * 1000  // 30 minutes per game limit
 export const TURN_TIME_LIMIT_MS = 60000 // 60 seconds per turn
 
 const BOT_NAMES = ['Rahul AI', 'Priya Bot', 'Arjun AI', 'Sneha Bot', 'Vikram AI']
