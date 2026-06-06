@@ -400,7 +400,7 @@ function EventPopup({ info, onContinue }: { info: { reason: string, sourceName?:
   useEffect(() => {
     const timer = setTimeout(() => {
       onContinue()
-    }, 3000)
+    }, 7000)
     return () => clearTimeout(timer)
   }, [onContinue])
 
