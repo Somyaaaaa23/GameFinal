@@ -43,7 +43,6 @@ serve(async (req) => {
       finalWealth,
       placement = 1,
       totalPlayers = 2,
-      winStreak = 0,
       stats = { investChoices: 0, emiDamageTaken: false }
     } = body
 
@@ -55,9 +54,6 @@ serve(async (req) => {
     }
     if (typeof totalPlayers !== 'number' || totalPlayers < 1 || totalPlayers > 6) {
       throw new Error('Invalid totalPlayers value');
-    }
-    if (typeof winStreak !== 'number' || winStreak < 0 || winStreak > 100) {
-      throw new Error('Invalid winStreak value');
     }
 
     const userId = user.id
@@ -102,7 +98,7 @@ serve(async (req) => {
     let awardedDc = 0;
     const { data: profile } = await supabaseAdmin
       .from('profiles')
-      .select('games_played, games_won, win_streak, max_win_streak, rank_points, total_xp, daank_coins')
+      .select('games_played, games_won, win_streak, max_win_streak, rank_points, total_xp, daanik_coins')
       .eq('id', userId)
       .maybeSingle()
 
@@ -115,7 +111,7 @@ serve(async (req) => {
       const currentTotalXp = profile.total_xp || 0;
       
       const newStreak = won ? currentWinStreak + 1 : 0
-      const rpGain = calculateRPChange(placement, totalPlayers, winStreak)
+      const rpGain = calculateRPChange(placement, totalPlayers, currentWinStreak)
       
       await supabaseAdmin
         .from('profiles')
@@ -183,7 +179,7 @@ serve(async (req) => {
           if (awardedDc > 0) {
             await supabaseAdmin
               .from('profiles')
-              .update({ daank_coins: (profile.daank_coins || 0) + awardedDc })
+              .update({ daanik_coins: (profile.daanik_coins || 0) + awardedDc })
               .eq('id', userId);
           }
         }

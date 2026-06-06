@@ -75,7 +75,7 @@ export function Dashboard() {
   }
 
   const rp = profile?.rank_points ?? 0
-  const coins = profile?.daank_coins ?? 100
+  const coins = profile?.daanik_coins ?? 100
   const currentSeason = SEASONS[0]
 
 
@@ -832,7 +832,7 @@ function ProfileTab() {
   const handleUpdateAvatar = async (newAvatar: string) => {
     if (!profile) return
     setUpdating(true)
-    await supabase.from('profiles').update({ avatar_url: newAvatar }).eq('id', profile.id)
+    await supabase.rpc('update_my_profile', { p_username: profile.username, p_avatar_url: newAvatar })
     await refreshProfile()
     setIsEditingAvatar(false)
     setUpdating(false)
@@ -844,8 +844,7 @@ function ProfileTab() {
       return
     }
     setUpdating(true)
-    await supabase.from('profiles').update({ username: newName.trim() }).eq('id', profile.id)
-    await supabase.from('leaderboard').update({ username: newName.trim() }).eq('user_id', profile.id)
+    await supabase.rpc('update_my_profile', { p_username: newName.trim(), p_avatar_url: profile.avatar_url })
     await refreshProfile()
     setIsEditingName(false)
     setUpdating(false)
@@ -953,7 +952,7 @@ function ProfileTab() {
       <h3 className="text-xl sm:text-2xl font-bold" style={{ color: 'var(--text-dark)', marginBottom: 20, fontFamily: 'Space Grotesk, sans-serif' }}>Career Stats</h3>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4" style={{ marginBottom: 40 }}>
         {[
-          { label: 'DAANIK Coins', value: `${(profile?.daank_coins ?? 0).toLocaleString()}`, icon: '🪙' },
+          { label: 'DAANIK Coins', value: `${(profile?.daanik_coins ?? 0).toLocaleString()}`, icon: '🪙' },
           { label: 'Win Rate', value: `${winRate}%`, icon: '🎯' },
           { label: 'Games Won', value: (profile?.games_won ?? 0).toString(), icon: '🏆' },
           { label: 'Games Played', value: (profile?.games_played ?? 0).toString(), icon: '🎮' },
