@@ -61,6 +61,73 @@ export function PlayerBoard({ player, isCurrent, isMe, isTarget, isOffline, weal
     return () => { if (timeoutId) clearTimeout(timeoutId) }
   }, [player.wealth])
 
+  if (compact) {
+    return (
+      <div 
+        onClick={isTarget ? onClick : undefined}
+        style={{ 
+          display: 'flex', flexDirection: 'column', alignItems: 'center', 
+          opacity: isOffline ? 0.55 : 1, cursor: isTarget ? 'pointer' : 'default',
+          position: 'relative'
+        }}
+      >
+        {/* Floating wealth change text */}
+        <AnimatePresence>
+          {floatingText.map(ft => (
+            <motion.div
+              key={ft.id}
+              initial={{ opacity: 1, y: 0, scale: 1 }}
+              animate={{ opacity: 0, y: -40, scale: 1.2 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1.5, ease: 'easeOut' }}
+              style={{
+                position: 'absolute', top: -20, left: '50%', x: '-50%', zIndex: 50,
+                fontSize: 16, fontWeight: 900, fontFamily: 'Space Grotesk, sans-serif',
+                color: ft.diff > 0 ? '#4ade80' : '#f87171',
+                pointerEvents: 'none',
+                textShadow: '0 2px 8px rgba(0,0,0,0.7)',
+              }}
+              onAnimationComplete={() => setFloatingText(prev => prev.filter(item => item.id !== ft.id))}
+            >
+              {ft.diff > 0 ? '+' : ''}₹{Math.abs(ft.diff).toLocaleString()}
+            </motion.div>
+          ))}
+        </AnimatePresence>
+
+        <motion.div 
+          animate={isTarget ? { scale: [1, 1.1, 1], boxShadow: ['0 0 10px rgba(239,68,68,0.5)', '0 0 20px rgba(239,68,68,0.8)', '0 0 10px rgba(239,68,68,0.5)'] } : {}}
+          transition={{ repeat: Infinity, duration: 1 }}
+          style={{
+            width: 52, height: 52, borderRadius: '50%',
+            background: isTarget ? 'rgba(239, 68, 68, 0.2)' : theme.nameBg, 
+            border: `2px solid ${isTarget ? '#ef4444' : isCurrent ? '#fef08a' : theme.accent}`,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            boxShadow: `0 4px 12px rgba(0,0,0,0.4)`,
+            overflow: 'hidden', flexShrink: 0, zIndex: 2
+          }}
+        >
+          {isTarget ? (
+            <span style={{ fontSize: 24 }}>🎯</span>
+          ) : (
+            (avatar.startsWith('/') || avatar.startsWith('http')) ? <img src={avatar} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <span style={{ fontSize: 28 }}>{avatar}</span>
+          )}
+        </motion.div>
+        
+        {/* Money Pill */}
+        <div style={{
+          marginTop: -6, zIndex: 3,
+          background: '#0f172a', borderRadius: 12, padding: '2px 8px',
+          border: `1px solid ${isCurrent ? '#fef08a' : theme.accent}`,
+          boxShadow: `0 2px 8px rgba(0,0,0,0.5)`,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+        }}>
+          <span style={{ fontSize: 11, fontWeight: 800, fontFamily: 'Space Grotesk, sans-serif', color: isCurrent ? '#fef08a' : theme.accent, lineHeight: 1 }}>
+            <AnimatedNumber value={player.wealth} formatFn={formatWealth} duration={1200} />
+          </span>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <motion.div

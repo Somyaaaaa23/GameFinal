@@ -612,7 +612,7 @@ function ResultScreen({ isWinner, placement, finalWealth, rpChange, players, mod
             lineHeight: 1,
             letterSpacing: '-0.05em'
           }}>
-            {isWinner ? 'YOU WIN' : 'BANKRUPT'}
+            {isWinner ? 'YOU WIN' : 'BETTER LUCK NEXT TIME'}
           </div>
           {!isWinner && (
             <div style={{ color: '#94a3b8', fontSize: 24, fontWeight: 700, marginTop: 8 }}>

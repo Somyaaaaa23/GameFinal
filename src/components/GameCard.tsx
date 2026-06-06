@@ -22,18 +22,18 @@ const TYPE_CONFIG = {
     glowColor: '255, 70, 70', // Red
   },
   defense: {
-    bgTop: '#063f2b', bgBottom: '#092b22',
+    bgTop: '#15274e', bgBottom: '#172141',
     icon: Shield,
     btnClass: 'defense-btn',
     btnText: 'Defense Card',
-    glowColor: '60, 255, 170', // Green
+    glowColor: '36, 119, 242', // Blue
   },
   decision: {
-    bgTop: '#15274e', bgBottom: '#172141',
+    bgTop: '#063f2b', bgBottom: '#092b22',
     icon: FileWarning,
     btnClass: '', // no explicit class for decision in template, we'll use inline
     btnText: 'Decision Card',
-    glowColor: '141, 61, 242', // Purple/Blue
+    glowColor: '60, 255, 170', // Green
   }
 }
 

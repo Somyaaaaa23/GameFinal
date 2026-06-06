@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { GameCard as GameCardComponent } from '../GameCard'
 import { Button } from '../ui/Button'
 import { PlayerBoard } from './PlayerBoard'
@@ -8,6 +9,7 @@ import { formatWealth } from '../../types/game'
 import { TURN_TIME_LIMIT_MS } from '../../lib/gameEngine'
 import type { GameBoardProps } from './GameBoard'
 import { LevelHUD } from './LevelHUD'
+import './GameBoardMobile.css'
 
 export function GameBoardMobile({
   gameState,
@@ -22,6 +24,8 @@ export function GameBoardMobile({
   onTimeout,
   onCancelTargeting,
 }: GameBoardProps) {
+  const [previewCard, setPreviewCard] = useState<any>(null)
+
   const myPlayerIndex = gameState.players.findIndex(p => p.id === myPlayerId)
   const isMyTurn = gameState.players[gameState.currentPlayerIndex]?.id === myPlayerId
   const myPlayer = myPlayerIndex >= 0 ? gameState.players[myPlayerIndex] : null
@@ -35,12 +39,12 @@ export function GameBoardMobile({
   }
 
   return (
-    <div className="game-board-layout" style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '12px 16px', gap: 16, width: '100%', height: 'calc(100vh - 60px)', overflow: 'hidden' }}>
+    <div className="mobile-board-wrapper">
       
       {/* TOP/MAIN CONTENT: Players & Action */}
-      <div className="game-left-col" style={{ display: 'flex', flexDirection: 'column', gap: 16, overflowY: 'auto', paddingBottom: 16, flex: 1 }}>
+      <div className="mobile-left-col">
         {/* Players */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', justifyContent: 'center' }}>
+        <div className="mobile-players-grid">
           {displayPlayers.map((player) => {
             const originalIndex = gameState.players.findIndex(p => p.id === player.id)
             return (
@@ -63,20 +67,18 @@ export function GameBoardMobile({
 
         {/* Level HUD (if campaign level is active) */}
         {gameState.levelState && (
-          <div style={{ padding: '0 16px', marginBottom: 16 }}>
+          <div className="mobile-level-hud-container">
             <LevelHUD levelState={gameState.levelState} />
           </div>
         )}
 
         {/* Action panel */}
-        <div className="glass-panel" style={{
-          borderRadius: 20, padding: '24px', boxShadow: 'none'
-        }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
-          <h2 style={{ margin: 0, fontSize: 23, color: 'var(--text-dark)', fontWeight: 700 }}>
+        <div className="glass-panel mobile-action-panel">
+        <div className="mobile-action-header">
+          <h2 className="mobile-action-title">
             {isMyTurn ? <span style={{ color: '#60a5fa' }}>Your Turn</span> : <span>{currentPlayer?.name}'s Turn</span>}
           </h2>
-          <div style={{ fontSize: 15, color: '#475569', fontWeight: 700 }}>TURN {gameState.turn}</div>
+          <div className="mobile-action-turn">TURN {gameState.turn}</div>
         </div>
         
         <TurnTimer 
@@ -94,7 +96,7 @@ export function GameBoardMobile({
 
         {/* Not my turn */}
         {!isMyTurn && uiPhase === 'playing' && (
-          <div style={{ textAlign: 'center', padding: '36px 0' }}>
+          <div className="mobile-wait-state">
             <div style={{ fontSize: 40, marginBottom: 12 }}>⏳</div>
             <div style={{ fontSize: 19, fontWeight: 600, color: '#94a3b8', marginBottom: 4 }}>
               Waiting for {currentPlayer?.name}...
@@ -105,7 +107,7 @@ export function GameBoardMobile({
 
         {/* Draw phase */}
         {isMyTurn && gameState.phase === 'draw' && (
-          <div style={{ textAlign: 'center', padding: '28px 0' }}>
+          <div className="mobile-draw-state">
             <div style={{ fontSize: 16, color: '#94a3b8', marginBottom: 18 }}>
               Your turn! Draw a card to start.
             </div>
@@ -123,9 +125,9 @@ export function GameBoardMobile({
                 {gameState.drawnCard ? `Drew "${gameState.drawnCard.name}" — pick a card to play:` : 'Pick a card to play:'}
               </p>
             </div>
-            <div className="grid grid-cols-2 gap-2" style={{ justifyItems: 'center' }}>
+            <div className="mobile-hand-grid">
               {myPlayer?.hand.map(card => (
-                <GameCardComponent key={card.id} card={card} onClick={() => onPlayCard(card)} />
+                <GameCardComponent key={card.id} card={card} onClick={() => setPreviewCard(card)} />
               ))}
             </div>
           </div>
@@ -135,7 +137,7 @@ export function GameBoardMobile({
 
         {/* Action card targeting phase (Select opponent) */}
         {uiPhase === 'targeting' && gameState.pendingTarget && (
-          <div style={{ textAlign: 'center', padding: '16px', background: 'rgba(15,23,42,0.6)', borderRadius: 12, margin: '0 12px' }}>
+          <div className="mobile-targeting-state">
             <div style={{ fontSize: 22, marginBottom: 8 }}>🎯</div>
             <div style={{ fontSize: 16, color: '#f1f5f9', fontWeight: 700, marginBottom: 4 }}>
               Select a target for {gameState.pendingTarget.card.name}
@@ -151,43 +153,30 @@ export function GameBoardMobile({
       </div>
 
       {/* BOTTOM COLUMN: Game Log */}
-      <div className="game-right-col" style={{ width: '100%', marginTop: 8, flexShrink: 0 }}>
+      <div className="mobile-right-col">
         <GameLog log={gameState.log} mobileCompact={true} playerName={myPlayer?.name} />
       </div>
 
       {/* Decision card POPUP (Moved outside left-col to fix z-index overlapping) */}
       {uiPhase === 'decision' && gameState.pendingDecision && (
-        <div style={{
-          position: 'fixed', inset: 0, zIndex: 9999,
-          background: 'rgba(0, 0, 0, 0.6)', backdropFilter: 'blur(4px)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          padding: 20
-        }}>
-          <div style={{
-            background: '#ffffff', borderRadius: 24, width: '100%', maxWidth: 360,
-            padding: '20px 16px', position: 'relative',
-            boxShadow: '0 20px 40px rgba(0,0,0,0.2)'
-          }}>
+        <div className="mobile-decision-overlay">
+          <div className="mobile-decision-modal">
             {/* Close button */}
             <button 
               onClick={onCancelTargeting}
-              style={{
-                position: 'absolute', top: 14, right: 14,
-                background: 'transparent', border: 'none',
-                fontSize: 18, color: '#94a3b8', cursor: 'pointer', padding: 4
-              }}
+              className="mobile-decision-close"
             >
               ✕
             </button>
 
-            <div style={{ textAlign: 'center', marginBottom: 16 }}>
-              <h3 style={{ fontSize: 22, fontWeight: 800, color: '#0f172a', fontFamily: 'var(--font-display)', marginBottom: 4 }}>
+            <div className="mobile-decision-header">
+              <h3 className="mobile-decision-title">
                 {gameState.pendingDecision.card.name}
               </h3>
               <p style={{ color: '#0ea5e9', fontSize: 15, fontWeight: 600 }}>{gameState.pendingDecision.card.flavor}</p>
             </div>
             
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <div className="mobile-decision-options">
               {gameState.pendingDecision.card.options?.map(opt => {
                 const colors = {
                   spend: { bg: '#fff1f2', border: '#fda4af', labelColor: '#e11d48', labelBg: '#ffe4e6' },
@@ -210,19 +199,14 @@ export function GameBoardMobile({
                   <button
                     key={opt.type}
                     onClick={() => onDecision(opt.type as any)}
+                    className="mobile-decision-btn"
                     style={{
-                      padding: '10px 14px', borderRadius: 16,
-                      background: c.bg, border: `2px solid ${c.border}`,
-                      display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                      color: 'var(--text-dark)', cursor: 'pointer', textAlign: 'left',
-                      fontFamily: 'inherit', width: '100%'
+                      background: c.bg, border: `2px solid ${c.border}`
                     }}
                   >
                     <div>
-                      <div style={{ 
-                        display: 'inline-block', fontSize: 12, fontWeight: 800, 
-                        color: c.labelColor, background: c.labelBg, 
-                        padding: '2px 8px', borderRadius: 8, marginBottom: 4 
+                      <div className="mobile-decision-badge" style={{ 
+                        color: c.labelColor, background: c.labelBg 
                       }}>
                         {opt.label}
                       </div>
@@ -240,6 +224,36 @@ export function GameBoardMobile({
                   </button>
                 )
               })}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Preview Card POPUP */}
+      {previewCard && (
+        <div className="mobile-preview-overlay">
+          <div className="mobile-preview-modal">
+            {/* Close button */}
+            <button 
+              onClick={() => setPreviewCard(null)}
+              className="mobile-decision-close"
+            >
+              ✕
+            </button>
+            <div className="mobile-preview-title">Preview Card</div>
+            <div className="mobile-preview-card-wrapper">
+              <GameCardComponent card={previewCard} />
+            </div>
+            <div style={{ marginTop: 20, display: 'flex', gap: 12 }}>
+              <Button variant="secondary" onClick={() => setPreviewCard(null)} style={{ flex: 1 }}>
+                Cancel
+              </Button>
+              <Button variant="primary" onClick={() => {
+                onPlayCard(previewCard)
+                setPreviewCard(null)
+              }} style={{ flex: 1 }}>
+                Play Card
+              </Button>
             </div>
           </div>
         </div>
