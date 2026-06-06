@@ -5,7 +5,7 @@ import { Button } from '../components/ui/Button'
 import { Card } from '../components/ui/Card'
 import {
   createRoom, joinRoom, leaveRoom, setReady, startGame,
-  subscribeToRoom, getRoomPlayers, broadcastPlayersChanged, getRoom,
+  subscribeToRoom, getRoomPlayers, broadcastPlayersChanged,
   type Room, type RoomPlayer,
 } from '../lib/multiplayerEngine'
 import type { RealtimeChannel } from '@supabase/supabase-js'
@@ -25,7 +25,6 @@ export function Lobby() {
   const [room, setRoom] = useState<Room | null>(null)
   const [roomPlayers, setRoomPlayers] = useState<RoomPlayer[]>([])
   const channelRef = useRef<RealtimeChannel | null>(null)
-  const pollRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
   const isHost = room?.host_id === profile?.id
   const myPlayer = roomPlayers.find(p => p.player_id === profile?.id)
@@ -35,35 +34,18 @@ export function Lobby() {
   const allReady = roomPlayers.length >= 2 && nonHostPlayers.length > 0 && nonHostPlayers.every(p => p.is_ready)
   const canStart = isHost && allReady
 
-  const startPolling = useCallback((roomId: string) => {
-    if (pollRef.current) clearInterval(pollRef.current)
-    pollRef.current = setInterval(async () => {
-      const players = await getRoomPlayers(roomId)
-      setRoomPlayers(players)
-      // Also poll the room state to catch status changes (e.g. game start)
-      const r = await getRoom(roomId)
-      if (r) setRoom(r)
-    }, 3000)
-  }, [])
-
-  const stopPolling = useCallback(() => {
-    if (pollRef.current) { clearInterval(pollRef.current); pollRef.current = null }
-  }, [])
-
   useEffect(() => {
     return () => {
       channelRef.current?.unsubscribe()
-      stopPolling()
     }
-  }, [stopPolling])
+  }, [])
 
   // Watch for game start — redirect non-host players too
   useEffect(() => {
     if (room?.status === 'in_progress' && room.game_state) {
-      stopPolling()
       navigate(`/multiplayer/${room.id}`)
     }
-  }, [room?.status, room?.id, navigate, stopPolling]) // eslint-disable-line
+  }, [room?.status, room?.id, navigate]) // eslint-disable-line
 
   const enterRoom = useCallback((newRoom: Room) => {
     setRoom(newRoom)
@@ -76,10 +58,7 @@ export function Lobby() {
       (updatedRoom) => setRoom(updatedRoom as Room),
       (players) => setRoomPlayers(players),
     )
-
-    // Also poll as fallback
-    startPolling(newRoom.id)
-  }, [startPolling])
+  }, [])
 
   const handleCreate = async () => {
     if (!profile) {
@@ -153,7 +132,6 @@ export function Lobby() {
     await leaveRoom(room.id, profile.id)
     await broadcastPlayersChanged(room.id)
     channelRef.current?.unsubscribe()
-    stopPolling()
     setRoom(null)
     setRoomPlayers([])
     setView('menu')

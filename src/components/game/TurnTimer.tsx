@@ -22,7 +22,7 @@ export function TurnTimer({ turnStartTime, timeLimit, onTimeout, active }: TurnT
       setTimeLeft(remaining)
       
       // Play a ticking sound when time is running out (under 5 seconds)
-      if (remaining > 0 && remaining <= 5000 && remaining % 1000 < 100) {
+      if (remaining > 0 && remaining <= 5000) {
         playSound('play') // tick
       }
 
@@ -31,7 +31,7 @@ export function TurnTimer({ turnStartTime, timeLimit, onTimeout, active }: TurnT
       }
     }
 
-    const timer = setInterval(checkTime, 100)
+    const timer = setInterval(checkTime, 1000)
     checkTime()
     return () => clearInterval(timer)
   }, [turnStartTime, timeLimit, active, onTimeout])
@@ -63,7 +63,7 @@ export function TurnTimer({ turnStartTime, timeLimit, onTimeout, active }: TurnT
             backgroundColor: isDanger ? '#ef4444' : '#10b981',
             boxShadow: isDanger ? '0 0 8px rgba(239,68,68,0.5)' : 'none'
           }}
-          transition={{ duration: 0.1, ease: 'linear' }}
+          transition={{ duration: 1, ease: 'linear' }}
           style={{ height: '100%', borderRadius: 3 }}
         />
       </div>

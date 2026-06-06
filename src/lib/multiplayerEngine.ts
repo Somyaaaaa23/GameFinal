@@ -219,13 +219,24 @@ export async function pushGameState(roomId: string, gameState: GameState): Promi
   if (error) throw error
 
   // Manually broadcast state change to avoid relying on postgres_changes
-  await supabase
-    .channel(`game-${roomId}`)
-    .send({
+  const channels = supabase.getChannels()
+  const existing = channels.find(c => c.topic === `realtime:game-${roomId}`)
+  
+  if (existing) {
+    await existing.send({
       type: 'broadcast',
       event: 'game_state_changed',
       payload: { game_state: gameState }
     })
+  } else {
+    const channel = supabase.channel(`game-broadcast-${roomId}`)
+    channel.subscribe(async (status) => {
+      if (status === 'SUBSCRIBED') {
+        await channel.send({ type: 'broadcast', event: 'game_state_changed', payload: { game_state: gameState } })
+        supabase.removeChannel(channel)
+      }
+    })
+  }
 }
 
 // Single unified subscription. Uses a named broadcast channel on the room so that
@@ -266,7 +277,18 @@ export function subscribeToRoom(
 
 // Call this after any room_players mutation so all subscribers get a fresh list
 export async function broadcastPlayersChanged(roomId: string): Promise<void> {
-  await supabase
-    .channel(`room-${roomId}`, { config: { broadcast: { self: true } } })
-    .send({ type: 'broadcast', event: 'players_changed', payload: {} })
+  const channels = supabase.getChannels()
+  const existing = channels.find(c => c.topic === `realtime:room-${roomId}`)
+  
+  if (existing) {
+    await existing.send({ type: 'broadcast', event: 'players_changed', payload: {} })
+  } else {
+    const channel = supabase.channel(`room-broadcast-${roomId}`, { config: { broadcast: { self: true } } })
+    channel.subscribe(async (status) => {
+      if (status === 'SUBSCRIBED') {
+        await channel.send({ type: 'broadcast', event: 'players_changed', payload: {} })
+        supabase.removeChannel(channel)
+      }
+    })
+  }
 }

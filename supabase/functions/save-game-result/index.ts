@@ -138,6 +138,17 @@ serve(async (req) => {
           .gte('contract_date', new Date().toISOString().split('T')[0])
 
         if (activeContracts && activeContracts.length > 0) {
+          // Fetch existing player contracts in bulk
+          const activeContractIds = activeContracts.map((c: any) => c.id)
+          const { data: pContractsData } = await supabaseAdmin
+            .from('player_contracts')
+            .select('*')
+            .eq('player_id', userId)
+            .in('contract_id', activeContractIds)
+
+          const pContractsMap = new Map((pContractsData || []).map((pc: any) => [pc.contract_id, pc]))
+          const upserts = []
+
           for (const contract of activeContracts) {
             let increment = 0;
             if (contract.requirement_type === 'wins' && won) increment = 1;
@@ -146,29 +157,27 @@ serve(async (req) => {
             if (contract.requirement_type === 'no_emi_win' && won && !stats.emiDamageTaken) increment = 1;
 
             if (increment > 0) {
-              const { data: pContract } = await supabaseAdmin
-                .from('player_contracts')
-                .select('*')
-                .eq('player_id', userId)
-                .eq('contract_id', contract.id)
-                .maybeSingle();
-
+              const pContract = pContractsMap.get(contract.id)
               const currentProgress = pContract ? pContract.progress : 0;
               const newProgress = currentProgress + increment;
               const isNewlyCompleted = !pContract?.completed && newProgress >= contract.requirement_value;
 
-              await supabaseAdmin.from('player_contracts').upsert({
+              upserts.push({
                 player_id: userId,
                 contract_id: contract.id,
                 progress: newProgress,
                 completed: isNewlyCompleted || (pContract?.completed ?? false),
                 completed_at: isNewlyCompleted ? new Date().toISOString() : pContract?.completed_at,
-              });
+              })
 
               if (isNewlyCompleted) {
                 awardedDc += contract.reward_dc;
               }
             }
+          }
+
+          if (upserts.length > 0) {
+            await supabaseAdmin.from('player_contracts').upsert(upserts)
           }
 
           if (awardedDc > 0) {

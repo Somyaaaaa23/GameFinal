@@ -69,6 +69,7 @@ export function Dashboard() {
       .from('leaderboard')
       .select('*')
       .order('wins', { ascending: false })
+      .limit(50)
     setLeaderboard(data ?? [])
     setLeaderboardLoading(false)
   }
@@ -691,19 +692,24 @@ function ContractsTab() {
           .select('*')
           .gte('contract_date', new Date().toISOString().split('T')[0])
         
-        if (activeContracts) setContracts(activeContracts)
+        if (activeContracts) {
+          setContracts(activeContracts)
+          if (activeContracts.length > 0) {
+            const contractIds = activeContracts.map(c => c.id)
+            const { data: pContracts } = await supabase
+              .from('player_contracts')
+              .select('*')
+              .eq('player_id', profile.id)
+              .in('contract_id', contractIds)
 
-        const { data: pContracts } = await supabase
-          .from('player_contracts')
-          .select('*')
-          .eq('player_id', profile.id)
-
-        if (pContracts) {
-          const pMap: Record<string, { progress: number, completed: boolean }> = {}
-          for (const pc of pContracts) {
-            pMap[pc.contract_id] = { progress: pc.progress, completed: pc.completed }
+            if (pContracts) {
+              const pMap: Record<string, { progress: number, completed: boolean }> = {}
+              for (const pc of pContracts) {
+                pMap[pc.contract_id] = { progress: pc.progress, completed: pc.completed }
+              }
+              setProgressData(pMap)
+            }
           }
-          setProgressData(pMap)
         }
       } catch (err) {
         console.error('Error fetching contracts:', err)
