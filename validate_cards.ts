@@ -1,7 +1,7 @@
 import { ALL_CARDS } from './src/data/cards';
 import { LEVEL_SITUATION_CARDS } from './src/data/levelCards';
 
-let errors = [];
+const errors = [];
 const allCardsCombined = [...ALL_CARDS, ...LEVEL_SITUATION_CARDS];
 
 // 1. Check for Duplicate IDs

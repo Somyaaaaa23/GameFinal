@@ -340,8 +340,8 @@ export function processAction(state: GameState, playerIndex: number, card: GameC
   // --- Auto-Defense Mechanic (Single Player) ---
   // In single player, there is no async reaction phase. We auto-defend if the target has a defense card.
   let isDefended = false
-  let updatedPlayersForDefense = [...state.players]
-  let discardPile = [...state.discardPile]
+  const updatedPlayersForDefense = [...state.players]
+  const discardPile = [...state.discardPile]
 
   if (card.effect.target === 'target') {
     const target = state.players[targetIndex]

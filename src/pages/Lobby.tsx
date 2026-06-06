@@ -45,7 +45,7 @@ export function Lobby() {
     if (room?.status === 'in_progress' && room.game_state) {
       navigate(`/multiplayer/${room.id}`)
     }
-  }, [room?.status, room?.id, navigate]) // eslint-disable-line
+  }, [room?.status, room?.id, navigate])  
 
   const enterRoom = useCallback((newRoom: Room) => {
     setRoom(newRoom)

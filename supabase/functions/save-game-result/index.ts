@@ -37,7 +37,7 @@ serve(async (req) => {
     )
 
     const body = await req.json()
-    let {
+    const {
       username,
       won,
       finalWealth,

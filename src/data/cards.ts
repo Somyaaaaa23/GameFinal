@@ -2337,7 +2337,7 @@ export function createLevelDeck(levelIndex: number, botDifficulty: 'easy' | 'med
   })
 
   // 3. SELECT 17 DEFENSE CARDS
-  let defensePool = [...DEFENSE_CARDS]
+  const defensePool = [...DEFENSE_CARDS]
   defensePool.sort(() => Math.random() - 0.5)
   const selectedDefense = defensePool.slice(0, 17)
   selectedDefense.forEach((card, i) => {
@@ -2345,7 +2345,7 @@ export function createLevelDeck(levelIndex: number, botDifficulty: 'easy' | 'med
   })
 
   // 4. SELECT 5 LEGENDARY CARDS
-  let legendaryPool = [...LEGENDARY_CARDS]
+  const legendaryPool = [...LEGENDARY_CARDS]
   legendaryPool.sort(() => Math.random() - 0.5)
   const selectedLegendary = legendaryPool.slice(0, 5)
   selectedLegendary.forEach((card, i) => {

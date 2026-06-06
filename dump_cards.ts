@@ -43,7 +43,7 @@ These decision cards are exclusive to Campaign Mode levels.
 `;
 
 LEVEL_SITUATION_CARDS.forEach(card => {
-  let featureStr = card.options?.map(o => `**${o.label}**: ${formatEffect(o.effect)}${o.investRisk ? ` (Risk: ${o.investRisk}%)` : ''}`).join(' <br> ') || '';
+  const featureStr = card.options?.map(o => `**${o.label}**: ${formatEffect(o.effect)}${o.investRisk ? ` (Risk: ${o.investRisk}%)` : ''}`).join(' <br> ') || '';
   
   let level = "Unknown";
   const num = parseInt(card.id.replace('dc_s-', ''));

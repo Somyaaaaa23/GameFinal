@@ -160,7 +160,7 @@ export function MultiplayerGame() {
       })
 
     return () => { channel.unsubscribe() }
-  }, [roomId, shouldApplyRemoteState]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [roomId, shouldApplyRemoteState])
 
   const handleTimeout = useCallback(async () => {
     const gs = gameStateRef.current
