@@ -487,7 +487,7 @@ const PodiumTopper = ({ rank }: { rank: 1|2|3 }) => {
         </g>
         
         {/* Rank Number */}
-        <text x="100" y="85" fontSize="38" fontWeight="900" fontFamily="system-ui, -apple-system, sans-serif" fill="#FFFFFF" textAnchor="middle" filter={`url(#drop-shadow-${rank})`}>
+        <text x="100" y="85" fontSize="38" fontWeight="900" fontFamily="system-ui, -apple-system, sans-serif" fill="#000000" textAnchor="middle" filter={`url(#drop-shadow-${rank})`}>
           {rank}
         </text>
       </g>

@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import type { GameCard as GameCardType } from '../types/game'
 import { FileWarning, Shield, Zap, IndianRupee } from 'lucide-react'
+import './GameCard.css'
 
 interface GameCardProps {
   card: GameCardType
@@ -11,220 +12,130 @@ interface GameCardProps {
   faceDown?: boolean
 }
 
-const TYPE_COLORS = {
+// Map card types to background themes and button labels
+const TYPE_CONFIG = {
   action: {
-    bg: 'linear-gradient(180deg, #fef2f2 0%, #fee2e2 100%)',
-    border: '#fca5a5',
-    borderHover: '#ef4444',
-    badge: '#ef4444',
-    iconBg: '#fee2e2',
-    iconColor: '#dc2626',
+    bgTop: '#4c1115', bgBottom: '#271315',
     icon: Zap,
-  },
-  decision: {
-    bg: 'linear-gradient(180deg, #f0fdf4 0%, #dcfce7 100%)',
-    border: '#86efac',
-    borderHover: '#22c55e',
-    badge: '#22c55e',
-    iconBg: '#dcfce7',
-    iconColor: '#16a34a',
-    icon: FileWarning,
+    btnClass: 'action-btn',
+    btnText: 'Action Card',
+    glowColor: '255, 70, 70', // Red
   },
   defense: {
-    bg: 'linear-gradient(180deg, #eff6ff 0%, #dbeafe 100%)',
-    border: '#93c5fd',
-    borderHover: '#3b82f6',
-    badge: '#3b82f6',
-    iconBg: '#dbeafe',
-    iconColor: '#2563eb',
+    bgTop: '#063f2b', bgBottom: '#092b22',
     icon: Shield,
+    btnClass: 'defense-btn',
+    btnText: 'Defense Card',
+    glowColor: '60, 255, 170', // Green
   },
+  decision: {
+    bgTop: '#15274e', bgBottom: '#172141',
+    icon: FileWarning,
+    btnClass: '', // no explicit class for decision in template, we'll use inline
+    btnText: 'Decision Card',
+    glowColor: '141, 61, 242', // Purple/Blue
+  }
 }
 
-// Per-tier visual configuration
-const TIER_CONFIG: Record<string, {
-  color: string
-  glow: string
-  shimmer: boolean
-  frameLabel: string
-}> = {
-  common:    { color: '#6b7280', glow: 'none', shimmer: false, frameLabel: 'COMMON' },
-  rare:      { color: '#3b82f6', glow: '0 4px 14px rgba(59,130,246,0.2)', shimmer: false, frameLabel: 'RARE' },
-  epic:      { color: '#a855f7', glow: '0 6px 20px rgba(168,85,247,0.3)', shimmer: true, frameLabel: 'EPIC' },
-  legendary: { color: '#eab308', glow: '0 8px 30px rgba(234,179,8,0.45)', shimmer: true, frameLabel: 'LEGENDARY' },
+// Map tiers to border/accent colors
+const TIER_CONFIG = {
+  common: {
+    accent: 'rgba(255, 255, 255, 0.4)',
+    light: 'rgba(255, 255, 255, 0.8)',
+    glowOpacity: 0.1,
+  },
+  rare: {
+    accent: '#2477f2',
+    light: '#61a0ff',
+    glowOpacity: 0.35,
+  },
+  epic: {
+    accent: '#8d3df2',
+    light: '#b867ff',
+    glowOpacity: 0.45,
+  },
+  legendary: {
+    accent: '#eab308', // Gold
+    light: '#fde047',
+    glowOpacity: 0.5,
+  }
 }
 
 export function GameCard({ card, onClick, selected, disabled, compact, faceDown }: GameCardProps) {
-  const colors = TYPE_COLORS[card.type] ?? TYPE_COLORS.decision
-  const tier = TIER_CONFIG[card.tier] ?? TIER_CONFIG.common
-  const isLegendary = card.tier === 'legendary'
-  const Icon = colors.icon
+  const typeCfg = TYPE_CONFIG[card.type] ?? TYPE_CONFIG.decision
+  const tierCfg = TIER_CONFIG[card.tier] ?? TIER_CONFIG.common
+  const Icon = typeCfg.icon
 
   if (faceDown) {
     return (
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
-        className={compact ? 'game-card-compact' : 'game-card-normal'}
+        className={`game-card-premium ${compact ? 'compact' : ''}`}
         style={{
-          borderRadius: compact ? 12 : 16,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
           background: 'linear-gradient(135deg, #004030, #002020)',
           border: '3px dashed #FFD050',
+          alignItems: 'center',
+          justifyContent: 'center',
           boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
-          flexShrink: 0,
         }}
       >
-        <IndianRupee className="text-yellow-400" size={compact ? 16 : 40} />
+        <IndianRupee style={{ color: '#facc15' }} size={compact ? 24 : 48} />
       </motion.div>
     )
   }
 
-  // Base dimensions and padding are now handled by CSS classes
+  // Construct CSS Variables
+  const cssVars = {
+    '--bg-top': typeCfg.bgTop,
+    '--bg-bottom': typeCfg.bgBottom,
+    '--accent': selected ? '#eab308' : tierCfg.accent,
+    '--accent-light': selected ? '#fef08a' : tierCfg.light,
+    '--accent-glow': selected ? 'rgba(234, 179, 8, 0.6)' : `rgba(${typeCfg.glowColor}, ${tierCfg.glowOpacity})`,
+    '--icon-glow-inner': `rgba(${typeCfg.glowColor}, 0.15)`,
+    '--icon-glow-outer': `rgba(${typeCfg.glowColor}, 0.25)`,
+    '--icon-glow-outer2': `rgba(${typeCfg.glowColor}, 0.15)`,
+  } as React.CSSProperties
+
+  const classNames = [
+    'game-card-premium',
+    compact ? 'compact' : '',
+    selected ? 'is-selected' : '',
+    disabled ? 'disabled' : ''
+  ].filter(Boolean).join(' ')
 
   return (
     <motion.button
       layoutId={card.id}
       initial={{ opacity: 0, y: 20, scale: 0.9 }}
-      animate={{
-        opacity: disabled ? 0.5 : 1,
-        y: selected ? -10 : 0,
-        scale: selected ? 1.05 : 1,
-      }}
-      whileHover={onClick && !disabled && !selected ? { y: -5, scale: 1.05, boxShadow: '0 12px 24px rgba(0,0,0,0.15)' } : {}}
-      whileTap={onClick && !disabled ? { scale: 0.95 } : {}}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
       onClick={!disabled ? onClick : undefined}
-      className={compact ? 'game-card-compact' : 'game-card-normal'}
-      style={{
-        background: colors.bg,
-        border: `2px solid ${selected ? '#eab308' : colors.border}`,
-        borderRadius: compact ? 12 : 16,
-        cursor: onClick && !disabled ? 'pointer' : 'default',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        boxShadow: selected ? '0 0 0 2px #fef08a, 0 8px 16px rgba(0,0,0,0.1)' : '0 4px 6px -1px rgba(0,0,0,0.1)',
-        flexShrink: 0,
-        position: 'relative',
-        overflow: 'hidden',
-        transition: 'border-color 0.2s ease',
-      }}
-      onMouseEnter={(e) => {
-        if (onClick && !disabled && !selected) {
-          e.currentTarget.style.borderColor = colors.borderHover
-        }
-      }}
-      onMouseLeave={(e) => {
-        if (!selected) {
-          e.currentTarget.style.borderColor = colors.border
-        }
-      }}
+      className={classNames}
+      style={cssVars}
     >
-      {/* Top shimmer bar for epic/legendary */}
-      {tier.shimmer && (
-        <div style={{
-          position: 'absolute', top: 0, left: 0, right: 0,
-          height: isLegendary ? 4 : 3,
-          background: isLegendary
-            ? 'linear-gradient(90deg, transparent, #fde047, #fef08a, #fde047, transparent)'
-            : 'linear-gradient(90deg, transparent, #d8b4fe, #e9d5ff, #d8b4fe, transparent)',
-          animation: 'shimmer 2.5s linear infinite',
-        }} />
-      )}
+      <div className="rarity">{card.tier}</div>
 
-      {/* Tier Badge */}
-      <div style={{
-        position: 'absolute',
-        top: -4,
-        left: -4,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: tier.color,
-        color: '#fff',
-        fontSize: compact ? 8 : 10,
-        fontWeight: 800,
-        padding: compact ? '4px 6px' : '4px 8px',
-        borderRadius: 8,
-        boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
-        zIndex: 10,
-      }}>
-        {compact ? tier.frameLabel[0] : tier.frameLabel}
+      <div className="icon-circle">
+        <Icon className="card-icon" />
       </div>
 
-      {/* Rupee decoration */}
-      <div style={{ position: 'absolute', top: 8, right: 8, opacity: 0.5 }}>
-        <IndianRupee size={12} color="#ca8a04" />
-      </div>
+      <h2 className="card-title">{card.name}</h2>
 
-      {/* Icon Area */}
-      <div style={{
-        marginTop: compact ? 8 : 12,
-        width: compact ? 24 : 48,
-        height: compact ? 24 : 48,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: colors.iconBg,
-        color: colors.iconColor,
-        borderRadius: 8,
-        boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.05)',
-      }}>
-        <Icon size={compact ? 14 : 24} />
-      </div>
+      <p className="card-desc">
+        {card.flavor}
+      </p>
 
-      {/* Title */}
-      <div style={{
-        fontSize: compact ? 10 : 15,
-        fontWeight: 800,
-        color: '#1f2937',
-        textAlign: 'center',
-        lineHeight: 1.1,
-        marginTop: 4,
-        display: '-webkit-box',
-        WebkitLineClamp: 2,
-        WebkitBoxOrient: 'vertical',
-        overflow: 'hidden',
-      }}>
-        {card.name}
-      </div>
-
-      {/* Description */}
-      {!compact && (
-        <div style={{
-          fontSize: 11,
-          color: '#4b5563',
-          textAlign: 'center',
-          lineHeight: 1.3,
-          padding: '0 8px',
-          width: '100%',
-          display: '-webkit-box',
-          WebkitLineClamp: 4,
-          WebkitBoxOrient: 'vertical',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-        }}>
-          {card.flavor}
-        </div>
-      )}
-
-      {/* Invest options indicator (only for full view) */}
-      {!compact && card.type === 'decision' && card.options && (
-        <div style={{ marginTop: 'auto', display: 'flex', gap: 2, width: '100%', padding: '0 4px' }}>
+      {/* Bottom element depends on card type & features */}
+      {card.type === 'decision' && card.options ? (
+        <div className="bottom-bars">
           {card.options.map(opt => {
-            const optColor = opt.type === 'save' ? '#22c55e' : opt.type === 'invest' ? '#3b82f6' : '#ef4444'
-            return (
-              <div key={opt.type} style={{
-                flex: 1,
-                height: 4,
-                background: optColor,
-                borderRadius: 2,
-                opacity: 0.7
-              }} />
-            )
+             const optColor = opt.type === 'save' ? 'bar-green' : opt.type === 'invest' ? 'bar-blue' : 'bar-red'
+             return <span key={opt.type} className={optColor}></span>
           })}
+        </div>
+      ) : (
+        <div className={`card-button ${typeCfg.btnClass}`}>
+          {typeCfg.btnText}
         </div>
       )}
     </motion.button>
