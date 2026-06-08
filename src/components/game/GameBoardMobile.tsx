@@ -22,6 +22,8 @@ export function GameBoardMobile({
   onTargetSelect,
   onDecision,
   onCancelTargeting,
+  daanikCoins,
+  onBuyExtraCard,
 }: GameBoardProps) {
   const { i18n } = useTranslation()
   const [previewCard, setPreviewCard] = useState<any>(null)
@@ -113,6 +115,15 @@ export function GameBoardMobile({
               <p style={{ fontSize: 16, color: '#94a3b8' }}>
                 {gameState.drawnCard ? `Drew "${gameState.drawnCard.name}" — pick a card to play:` : 'Pick a card to play:'}
               </p>
+              <Button
+                variant="gold"
+                size="sm"
+                onClick={onBuyExtraCard}
+                disabled={daanikCoins < 25}
+                title="Draw an extra card for 25 DAANIK coins"
+              >
+                Extra Card (25 🪙)
+              </Button>
             </div>
             <div className="mobile-hand-grid">
               {myPlayer?.hand.map(card => (

@@ -7,7 +7,7 @@ import type { GameState, PlayerState, GameCard as GameCardType } from '../types/
 import { formatWealth } from '../types/game'
 import {
   initGame, initLevelGame, startDrawPhase, processDecision, processAction,
-  advanceTurn, doBotTurn, calculateRPChange, forceSkipTurn
+  advanceTurn, doBotTurn, calculateRPChange, forceSkipTurn, drawCard
 } from '../lib/gameEngine'
 import { ARTHA_YATRA_LEVELS } from '../data/levels'
 import { saveGameResult } from '../lib/auth'
@@ -223,6 +223,32 @@ export function Game() {
     playSound('draw')
   }
 
+  const handleBuyExtraCard = async () => {
+    if (!gameState || animating) return
+    if (gameState.phase !== 'play') return
+    if (gameState.currentPlayerIndex !== humanPlayerIndex) return
+
+    const currentCoins = profile?.daank_coins ?? 0
+    if (currentCoins < 25) return
+
+    // Deduct coins locally first for immediate feedback
+    if (profile) {
+      profile.daank_coins = currentCoins - 25
+    }
+
+    // Call Supabase to deduct
+    if (profile?.id) {
+      await supabase.from('profiles').update({ daank_coins: Math.max(0, currentCoins - 25) }).eq('id', profile.id)
+      await refreshProfile()
+    }
+
+    // Draw card
+    const { state: newState } = drawCard(gameState, humanPlayerIndex)
+    setGameState(newState)
+    playSound('draw')
+    notify('Extra card drawn! -25 🪙')
+  }
+
 
   const handlePlayCard = (card: GameCardType) => {
     if (!gameState || animating) return
@@ -397,6 +423,8 @@ export function Game() {
           setGameState({ ...gameState, pendingTarget: null })
           setUiPhase('playing')
         }}
+        daanikCoins={profile?.daank_coins ?? 0}
+        onBuyExtraCard={handleBuyExtraCard}
       />
 
       {popupInfo && (

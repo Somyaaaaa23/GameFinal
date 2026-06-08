@@ -17,6 +17,8 @@ export interface GameBoardProps {
   onDecision: (type: 'spend' | 'save' | 'invest') => void
   onTimeout: () => void
   onCancelTargeting: () => void
+  daanikCoins: number
+  onBuyExtraCard: () => void
 }
 
 export function GameBoard(props: GameBoardProps) {

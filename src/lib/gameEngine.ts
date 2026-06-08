@@ -133,7 +133,7 @@ function refillDeck(state: GameState): GameState {
   return { ...state, deck: createGameDeck(), discardPile: [], log: ['Fresh deck created.', ...state.log].slice(0, 20) }
 }
 
-function drawCard(state: GameState, playerIndex: number): { state: GameState; card: GameCard | null } {
+export function drawCard(state: GameState, playerIndex: number): { state: GameState; card: GameCard | null } {
   const ready = refillDeck(state)
   const deck = [...ready.deck]
   const card = deck.shift() ?? null

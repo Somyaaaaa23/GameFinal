@@ -20,6 +20,8 @@ export function GameBoardDesktop({
   onTargetSelect,
   onDecision,
   onCancelTargeting,
+  daanikCoins,
+  onBuyExtraCard,
 }: GameBoardProps) {
   const { t, i18n } = useTranslation()
   const myPlayerIndex = gameState.players.findIndex(p => p.id === myPlayerId)
@@ -133,6 +135,15 @@ export function GameBoardDesktop({
               <p style={{ fontSize: 16, color: '#94a3b8' }}>
                 {gameState.drawnCard ? `${t('game.drew')} "${i18n.language === 'hi' && gameState.drawnCard.nameHi ? gameState.drawnCard.nameHi : gameState.drawnCard.name}" — ${t('game.pickCard')}` : t('game.pickCard')}
               </p>
+              <Button
+                variant="gold"
+                size="sm"
+                onClick={onBuyExtraCard}
+                disabled={daanikCoins < 25}
+                title="Draw an extra card for 25 DAANIK coins"
+              >
+                Buy Extra Card (25 🪙)
+              </Button>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3" style={{ justifyItems: 'center' }}>
               {myPlayer?.hand.map(card => (

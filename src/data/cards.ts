@@ -2058,7 +2058,7 @@ export const ACTION_CARDS: GameCard[] = [
     tier: 'rare',
     flavor: "You hire a hacker to breach your opponent's poorly secured digital wallet.",
     flavorHi: "आप अपने प्रतिद्वंद्वी के खराब सुरक्षित डिजिटल वॉलेट में सेंध लगाने के लिए एक हैकर को नियुक्त करते हैं।",
-    effect: { type: 'wealth_pct', value: -15, target: 'target' },
+    effect: { type: 'wealth_pct', value: -10, target: 'target' },
   },
   {
     id: "ac_identity_theft_142",
@@ -2068,7 +2068,7 @@ export const ACTION_CARDS: GameCard[] = [
     tier: 'epic',
     flavor: "Someone steals your opponent's identity and takes out loans in their name.",
     flavorHi: "कोई आपके प्रतिद्वंद्वी की पहचान चुरा लेता है और उनके नाम पर ऋण निकाल लेता है।",
-    effect: { type: 'wealth_pct', value: -25, target: 'target' },
+    effect: { type: 'wealth_pct', value: -15, target: 'target' },
   },
   {
     id: "ac_market_manipulation_143",
@@ -2078,7 +2078,7 @@ export const ACTION_CARDS: GameCard[] = [
     tier: 'rare',
     flavor: "You spread false rumors about the company your opponent invested in.",
     flavorHi: "आपने उस कंपनी के बारे में झूठी अफवाहें फैलाईं जिसमें आपके प्रतिद्वंद्वी ने निवेश किया था।",
-    effect: { type: 'wealth_pct', value: -15, target: 'target' },
+    effect: { type: 'wealth_pct', value: -10, target: 'target' },
   },
   {
     id: "ac_vexatious_lawsuit_144",
@@ -2088,7 +2088,7 @@ export const ACTION_CARDS: GameCard[] = [
     tier: 'epic',
     flavor: "You drag your opponent into a frivolous but expensive legal battle.",
     flavorHi: "आप अपने प्रतिद्वंद्वी को तुच्छ लेकिन महँगी कानूनी लड़ाई में घसीटते हैं।",
-    effect: { type: 'wealth_pct', value: -25, target: 'target' },
+    effect: { type: 'wealth_pct', value: -15, target: 'target' },
   },
   {
     id: "ac_tax_audit_trigger_145",
@@ -2098,7 +2098,7 @@ export const ACTION_CARDS: GameCard[] = [
     tier: 'epic',
     flavor: "You anonymously tip off the tax authorities about your opponent's freelance income.",
     flavorHi: "आप गुमनाम रूप से कर अधिकारियों को अपने प्रतिद्वंद्वी की फ्रीलांस आय के बारे में सूचित करते हैं।",
-    effect: { type: 'wealth_pct', value: -25, target: 'target' },
+    effect: { type: 'wealth_pct', value: -15, target: 'target' },
   },
   {
     id: "ac_property_damage_146",
@@ -2108,7 +2108,7 @@ export const ACTION_CARDS: GameCard[] = [
     tier: 'rare',
     flavor: "A massive tree branch falls directly onto your opponent's parked car.",
     flavorHi: "एक विशाल पेड़ की शाखा सीधे आपके प्रतिद्वंद्वी की खड़ी कार पर गिरती है।",
-    effect: { type: 'wealth_pct', value: -15, target: 'target' },
+    effect: { type: 'wealth_pct', value: -10, target: 'target' },
   },
   {
     id: "ac_phishing_scam_147",
@@ -2128,7 +2128,7 @@ export const ACTION_CARDS: GameCard[] = [
     tier: 'rare',
     flavor: "You poach the best-performing employee/client from your opponent's side hustle.",
     flavorHi: "आप अपने प्रतिद्वंद्वी की ओर से सबसे अच्छा प्रदर्शन करने वाले कर्मचारी/ग्राहक को पकड़ लेते हैं।",
-    effect: { type: 'wealth_pct', value: -15, target: 'target' },
+    effect: { type: 'wealth_pct', value: -10, target: 'target' },
   },
   {
     id: "ac_insurance_denial_149",
@@ -2138,7 +2138,7 @@ export const ACTION_CARDS: GameCard[] = [
     tier: 'epic',
     flavor: "You find a loophole in your opponent's insurance policy, causing their recent claim to be denied.",
     flavorHi: "आप अपने प्रतिद्वंद्वी की बीमा पॉलिसी में एक खामी पाते हैं, जिसके कारण उनका हालिया दावा अस्वीकार कर दिया जाता है।",
-    effect: { type: 'wealth_pct', value: -25, target: 'target' },
+    effect: { type: 'wealth_pct', value: -15, target: 'target' },
   },
   {
     id: "ac_supply_chain_disruption_150",
@@ -2148,7 +2148,7 @@ export const ACTION_CARDS: GameCard[] = [
     tier: 'rare',
     flavor: "You intercept a major delivery meant for your opponent's business.",
     flavorHi: "आप अपने प्रतिद्वंद्वी के व्यवसाय के लिए की गई एक बड़ी डिलीवरी को रोकते हैं।",
-    effect: { type: 'wealth_pct', value: -15, target: 'target' },
+    effect: { type: 'wealth_pct', value: -10, target: 'target' },
   },
   {
     id: "ac_car_towing_151",
@@ -2168,7 +2168,7 @@ export const ACTION_CARDS: GameCard[] = [
     tier: 'rare',
     flavor: "You \"accidentally\" let your opponent overhear you talking about a terrible stock.",
     flavorHi: "आपने \"संयोग से\" अपने प्रतिद्वंद्वी को एक भयानक स्टॉक के बारे में बात करते हुए सुन लिया।",
-    effect: { type: 'wealth_pct', value: -15, target: 'target' },
+    effect: { type: 'wealth_pct', value: -10, target: 'target' },
   },
   {
     id: "ac_medical_emergency_trigger_153",
@@ -2178,7 +2178,7 @@ export const ACTION_CARDS: GameCard[] = [
     tier: 'epic',
     flavor: "Your opponent slips on a wet floor and requires an immediate ER visit.",
     flavorHi: "आपका प्रतिद्वंद्वी गीले फर्श पर फिसल जाता है और उसे तत्काल ईआर विजिट की आवश्यकता होती है।",
-    effect: { type: 'wealth_pct', value: -25, target: 'target' },
+    effect: { type: 'wealth_pct', value: -15, target: 'target' },
   },
   {
     id: "ac_hidden_bank_fees_154",
@@ -2198,7 +2198,7 @@ export const ACTION_CARDS: GameCard[] = [
     tier: 'rare',
     flavor: "Your opponent's credit card is cloned at a sketchy gas station.",
     flavorHi: "आपके प्रतिद्वंद्वी का क्रेडिट कार्ड एक संदिग्ध गैस स्टेशन पर क्लोन किया गया है।",
-    effect: { type: 'wealth_pct', value: -15, target: 'target' },
+    effect: { type: 'wealth_pct', value: -10, target: 'target' },
   },
   {
     id: "ac_bounced_check_156",
@@ -2218,7 +2218,7 @@ export const ACTION_CARDS: GameCard[] = [
     tier: 'rare',
     flavor: "Your opponent is forced to book a last-minute, full-fare flight for a family emergency.",
     flavorHi: "आपके प्रतिद्वंद्वी को पारिवारिक आपात स्थिति के लिए अंतिम समय में पूर्ण किराया वाली उड़ान बुक करने के लिए मजबूर किया जाता है।",
-    effect: { type: 'wealth_pct', value: -15, target: 'target' },
+    effect: { type: 'wealth_pct', value: -10, target: 'target' },
   },
   {
     id: "ac_broken_appliance_158",
@@ -2238,7 +2238,7 @@ export const ACTION_CARDS: GameCard[] = [
     tier: 'epic',
     flavor: "A severe storm destroys the roof of your opponent's house.",
     flavorHi: "एक भयंकर तूफान आपके प्रतिद्वंद्वी के घर की छत को नष्ट कर देता है।",
-    effect: { type: 'wealth_pct', value: -25, target: 'target' },
+    effect: { type: 'wealth_pct', value: -15, target: 'target' },
   },
   {
     id: "ac_pet_illness_160",
@@ -2248,7 +2248,7 @@ export const ACTION_CARDS: GameCard[] = [
     tier: 'rare',
     flavor: "Your opponent's dog swallows a sock and requires surgery.",
     flavorHi: "आपके प्रतिद्वंद्वी का कुत्ता एक जुर्राब निगल लेता है और उसे सर्जरी की आवश्यकता होती है।",
-    effect: { type: 'wealth_pct', value: -15, target: 'target' },
+    effect: { type: 'wealth_pct', value: -10, target: 'target' },
   },
   {
     id: "ac_lost_valuables_161",
@@ -2258,7 +2258,7 @@ export const ACTION_CARDS: GameCard[] = [
     tier: 'rare',
     flavor: "Your opponent leaves their brand new laptop on the subway.",
     flavorHi: "आपका प्रतिद्वंद्वी अपना नया लैपटॉप सबवे पर छोड़ देता है।",
-    effect: { type: 'wealth_pct', value: -15, target: 'target' },
+    effect: { type: 'wealth_pct', value: -10, target: 'target' },
   },
   {
     id: "ac_unfair_dismissal_162",
@@ -2268,7 +2268,7 @@ export const ACTION_CARDS: GameCard[] = [
     tier: 'epic',
     flavor: "Your opponent is suddenly laid off due to \"corporate restructuring.\"",
     flavorHi: "आपके प्रतिद्वंद्वी को \"कॉर्पोरेट पुनर्गठन\" के कारण अचानक हटा दिया गया है।",
-    effect: { type: 'wealth_pct', value: -25, target: 'target' },
+    effect: { type: 'wealth_pct', value: -15, target: 'target' },
   },
   {
     id: "ac_baggage_loss_163",
@@ -2298,7 +2298,7 @@ export const ACTION_CARDS: GameCard[] = [
     tier: 'epic',
     flavor: "A global pandemic or economic crisis wipes out a huge chunk of the market.",
     flavorHi: "एक वैश्विक महामारी या आर्थिक संकट बाज़ार का एक बड़ा हिस्सा ख़त्म कर देता है।",
-    effect: { type: 'attack_all_pct', value: 25, target: 'all' },
+    effect: { type: 'attack_all_pct', value: 15, target: 'all' },
   },
   {
     id: "ac_subscription_trap_166",
@@ -2318,7 +2318,7 @@ export const ACTION_CARDS: GameCard[] = [
     tier: 'rare',
     flavor: "Someone keys your opponent's car overnight.",
     flavorHi: "कोई आपके प्रतिद्वंद्वी की कार में रातों-रात चाबी लगा देता है।",
-    effect: { type: 'wealth_pct', value: -15, target: 'target' },
+    effect: { type: 'wealth_pct', value: -10, target: 'target' },
   },
   {
     id: "ac_traffic_ticket_168",
@@ -2348,7 +2348,7 @@ export const ACTION_CARDS: GameCard[] = [
     tier: 'epic',
     flavor: "A larger company aggressively forces your opponent out of their prime business location.",
     flavorHi: "एक बड़ी कंपनी आक्रामक रूप से आपके प्रतिद्वंद्वी को उनके प्रमुख व्यावसायिक स्थान से बाहर कर देती है।",
-    effect: { type: 'wealth_pct', value: -25, target: 'target' },
+    effect: { type: 'wealth_pct', value: -15, target: 'target' },
   },
 ]
 
