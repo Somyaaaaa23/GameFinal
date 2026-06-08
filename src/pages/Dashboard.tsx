@@ -337,7 +337,7 @@ function HomeTab({ navigate, profile, currentSeason, onlineUsers }: { navigate: 
           <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
             {/* Avatar Circle */}
             <div style={{ width: 80, height: 80, borderRadius: '50%', background: '#fff', overflow: 'hidden', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <img src={profile?.avatar_url || '/avatars/1.png'} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              <img src={profile?.avatar_url || 'https://i.postimg.cc/htzdfgq1/avatar1.jpg'} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
 
             {/* Info */}
@@ -841,14 +841,14 @@ function ProfileTab() {
   const avatar = profile?.avatar_url || fallbackAvatar
 
   const AVATARS = [
-    '/avatars/avatar1.jpeg',
-    '/avatars/avatar2.jpeg',
-    '/avatars/avatar3.jpeg',
-    '/avatars/avatar4.jpeg',
-    '/avatars/avatar5.jpeg',
-    '/avatars/avatar6.jpeg',
-    '/avatars/avatar7.jpeg',
-    '/avatars/avatar8.jpeg',
+    'https://i.postimg.cc/htzdfgq1/avatar1.jpg',
+    'https://i.postimg.cc/D8PF88vR/avatar2.jpg',
+    'https://i.postimg.cc/MvmxvvZy/avatar3.jpg',
+    'https://i.postimg.cc/VJswMm5v/avatar4.jpg',
+    'https://i.postimg.cc/Ln3Rnn4j/avatar5.jpg',
+    'https://i.postimg.cc/sMfzSs11/avatar6.jpg',
+    'https://i.postimg.cc/4Y4Gtsnz/avatar7.jpg',
+    'https://i.postimg.cc/21jYvr3h/avatar8.jpg',
   ]
 
   const handleUpdateAvatar = async (newAvatar: string) => {
@@ -901,7 +901,7 @@ function ProfileTab() {
               onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.05)'}
               onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
             >
-              {avatar.startsWith('/') ? <img src={avatar} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} /> : avatar}
+              {(avatar.startsWith('/') || avatar.startsWith('http')) ? <img src={avatar} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} /> : avatar}
               <div style={{ position: 'absolute', bottom: 0, right: 0, background: '#fff', width: 32, height: 32, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, border: '1px solid rgba(0,0,0,0.1)', color: '#64748b', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
                 ✎
               </div>
@@ -961,7 +961,7 @@ function ProfileTab() {
                     onMouseEnter={e => { if (avatar !== a) e.currentTarget.style.background = 'rgba(255,255,255,0.1)' }}
                     onMouseLeave={e => { if (avatar !== a) e.currentTarget.style.background = 'rgba(255,255,255,0.05)' }}
                   >
-                    {a.startsWith('/') ? <img src={a} alt="Avatar option" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} /> : a}
+                    {(a.startsWith('/') || a.startsWith('http')) ? <img src={a} alt="Avatar option" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} /> : a}
                   </button>
                 ))}
               </div>
