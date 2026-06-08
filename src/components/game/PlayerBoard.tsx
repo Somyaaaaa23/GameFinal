@@ -4,6 +4,7 @@ import type { PlayerState } from '../../types/game'
 import { formatWealth } from '../../types/game'
 import { AnimatedNumber } from '../AnimatedNumber'
 import { ParticleBurst } from '../ParticleBurst'
+import { useTranslation } from 'react-i18next'
 
 interface PlayerBoardProps {
   player: PlayerState
@@ -95,6 +96,7 @@ function CardTimer({ turnStartTime, timeLimit, type }: { turnStartTime: number; 
 
 
 export function PlayerBoard({ player, isCurrent, isMe, isTarget, isOffline, wealthGoal, seatIndex = 0, onClick, compact, turnStartTime, timeLimit }: PlayerBoardProps) {
+  const { t } = useTranslation()
   const wealthPct = Math.min(100, (player.wealth / wealthGoal) * 100)
   const theme = SEAT_THEMES[seatIndex % SEAT_THEMES.length]
   const avatar = getAvatar(player, seatIndex)
@@ -321,7 +323,7 @@ export function PlayerBoard({ player, isCurrent, isMe, isTarget, isOffline, weal
         )}
         <div style={{ flex: 1, minWidth: 0, width: '100%' }}>
           <div style={{ fontSize: compact ? 'clamp(15px, 4vw, 17px)' : 'clamp(14px, 3.5vw, 16px)', fontWeight: 800, color: '#f1f5f9', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-            {player.name} {isMe && <span style={{ opacity: 0.7, fontSize: '0.85em' }}>(you)</span>}
+            {player.name} {isMe && <span style={{ opacity: 0.7, fontSize: '0.85em' }}>({t('common.you')})</span>}
           </div>
           {player.skippedTurns > 0 && (
             <div style={{
@@ -368,7 +370,7 @@ export function PlayerBoard({ player, isCurrent, isMe, isTarget, isOffline, weal
           fontSize: 12, fontWeight: 700, color: theme.accent, 
           textAlign: 'center', opacity: 0.9, marginTop: 4 
         }}>
-          Defense Cards: {player.activeDefenses.length}
+          {t('game.defenseCards')}: {player.hand.filter(c => c.type === 'defense').length}
         </div>
       )}
     </motion.div>

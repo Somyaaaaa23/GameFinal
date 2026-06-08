@@ -9,6 +9,7 @@ import { formatWealth } from '../types/game'
 import { supabase } from '../lib/supabase'
 import { TutorialModal } from '../components/TutorialModal'
 import { isSoundEnabled, toggleSound } from '../lib/audio'
+import { useTranslation } from 'react-i18next'
 
 
 type Tab = 'home' | 'leaderboard' | 'contracts' | 'profile'
@@ -34,6 +35,13 @@ export function Dashboard() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
   const [onlineUsers, setOnlineUsers] = useState(() => Math.floor(Math.random() * 301) + 200)
   const [soundOn, setSoundOn] = useState(isSoundEnabled)
+  const { t, i18n } = useTranslation()
+
+  const toggleLanguage = () => {
+    const nextLng = i18n.language === 'en' ? 'hi' : 'en'
+    i18n.changeLanguage(nextLng)
+    localStorage.setItem('language', nextLng)
+  }
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -121,6 +129,16 @@ export function Dashboard() {
           >
             {soundOn ? '🔊' : '🔇'}
           </button>
+          <button 
+            onClick={toggleLanguage}
+            title="Toggle Language"
+            style={{ 
+              background: 'rgba(0,0,0,0.05)', border: '1px solid rgba(0,0,0,0.1)', cursor: 'pointer', 
+              fontSize: 'clamp(12px, 3vw, 14px)', display: 'flex', alignItems: 'center', padding: '4px 8px', borderRadius: 6, fontWeight: 700
+            }}
+          >
+            {i18n.language === 'en' ? 'HI' : 'EN'}
+          </button>
           <button onClick={handleLogout} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: 'clamp(14px, 4vw, 16px)', fontFamily: 'inherit', whiteSpace: 'nowrap' }}>Sign Out</button>
         </div>
       </nav>
@@ -140,10 +158,10 @@ export function Dashboard() {
           transition: 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s ease'
         }}>
           {([
-            { id: 'home', label: 'Home', icon: '🏠' },
-            { id: 'leaderboard', label: 'Leaderboard', icon: '🏆' },
-            { id: 'contracts', label: 'Contracts', icon: '📋' },
-            { id: 'profile', label: 'Profile', icon: '👤' },
+            { id: 'home', label: t('dashboard.home'), icon: '🏠' },
+            { id: 'leaderboard', label: t('dashboard.leaderboard'), icon: '🏆' },
+            { id: 'contracts', label: t('dashboard.contracts'), icon: '📋' },
+            { id: 'profile', label: t('dashboard.profile'), icon: '👤' },
           ] as const).map(item => (
             <button
               key={item.id}
@@ -170,7 +188,7 @@ export function Dashboard() {
           <div style={{ marginTop: 'auto', padding: '12px 0', borderTop: '1px solid var(--green-primary)' }}>
             <button
               onClick={() => setShowTutorial(true)}
-              title="How to Play"
+              title={t('dashboard.howToPlay')}
               style={{
                 display: 'flex', alignItems: 'center', 
                 justifyContent: isSidebarOpen ? 'flex-start' : 'center',
@@ -184,7 +202,7 @@ export function Dashboard() {
               }}
             >
               <span style={{ fontSize: 20 }}>📖</span>
-              {isSidebarOpen && <span style={{ whiteSpace: 'nowrap' }}>How to Play</span>}
+              {isSidebarOpen && <span style={{ whiteSpace: 'nowrap' }}>{t('dashboard.howToPlay')}</span>}
             </button>
             {profile && isSidebarOpen && <RankBadge rp={rp} showProgress size="sm" />}
           </div>
@@ -210,10 +228,10 @@ export function Dashboard() {
         display: 'none', // Hidden by default, shown by .mobile-flex
       }}>
         {([
-          { id: 'home', label: 'Home', icon: '🏠' },
-          { id: 'leaderboard', label: 'Leaderboard', icon: '🏆' },
-          { id: 'contracts', label: 'Contracts', icon: '📋' },
-          { id: 'profile', label: 'Profile', icon: '👤' },
+          { id: 'home', label: t('dashboard.home'), icon: '🏠' },
+          { id: 'leaderboard', label: t('dashboard.leaderboard'), icon: '🏆' },
+          { id: 'contracts', label: t('dashboard.contracts'), icon: '📋' },
+          { id: 'profile', label: t('dashboard.profile'), icon: '👤' },
         ] as const).map(item => (
           <button
             key={item.id}
@@ -237,6 +255,7 @@ export function Dashboard() {
 }
 
 function HomeTab({ navigate, profile, currentSeason, onlineUsers }: { navigate: (path: string) => void; profile: ReturnType<typeof useAuth>['profile']; currentSeason: typeof SEASONS[0], onlineUsers: number }) {
+  const { t } = useTranslation()
   const [seasonTimeLeft, setSeasonTimeLeft] = useState('Calculating...')
 
   useEffect(() => {
@@ -267,17 +286,17 @@ function HomeTab({ navigate, profile, currentSeason, onlineUsers }: { navigate: 
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 16 }}>
           <div>
             <h1 style={{ fontSize: 30, fontWeight: 800, color: 'var(--text-dark)', fontFamily: 'var(--font-display)', marginBottom: 4 }}>
-              Welcome, {profile?.username ?? 'Mogul'} 👋
+              {t('dashboard.welcome')}, {profile?.username ?? 'Mogul'} 👋
             </h1>
-            <p style={{ color: 'var(--text-muted)', fontSize: 18 }}>Ready to build your empire?</p>
+            <p style={{ color: 'var(--text-muted)', fontSize: 18 }}>{t('dashboard.readyToBuild')}</p>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 18, color: '#10b981', fontWeight: 700, letterSpacing: '0.02em', marginTop: 12 }}>
               <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#10b981', boxShadow: '0 0 8px rgba(16, 185, 129, 0.8)', animation: 'pulse 2s infinite' }} />
-              {onlineUsers} Players Online Now
+              {onlineUsers} {t('dashboard.onlineNow')}
             </div>
           </div>
           <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-            <Button variant="primary" size="lg" onClick={() => navigate('/campaign')}>Your Journey</Button>
-            <Button variant="secondary" size="lg" onClick={() => navigate('/multiplayer')} style={{ border: '2px solid var(--orange-dark)', color: 'var(--orange-dark)', background: 'transparent' }}>Play Online</Button>
+            <Button variant="primary" size="lg" onClick={() => navigate('/campaign')}>{t('dashboard.campaign')}</Button>
+            <Button variant="secondary" size="lg" onClick={() => navigate('/multiplayer')} style={{ border: '2px solid var(--orange-dark)', color: 'var(--orange-dark)', background: 'transparent' }}>{t('dashboard.playOnline')}</Button>
           </div>
         </div>
       </div>
@@ -548,6 +567,7 @@ const PodiumStep = ({ rank, player, profile }: { rank: 1|2|3; player?: any; prof
 }
 
 function LeaderboardTab({ leaderboard, loading, profile, onRefresh }: { leaderboard: LeaderboardEntry[]; loading: boolean; profile: ReturnType<typeof useAuth>['profile']; onRefresh: () => void }) {
+  const { t } = useTranslation()
   const [showAll, setShowAll] = useState(false)
   const [sortField, setSortField] = useState<'wins' | 'winRate' | 'highest_net_worth'>('wins')
   const [sortAsc, setSortAsc] = useState(false)
@@ -581,21 +601,21 @@ function LeaderboardTab({ leaderboard, loading, profile, onRefresh }: { leaderbo
   return (
     <div style={{ maxWidth: 800, width: '100%', margin: '0 auto' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
-        <h2 style={{ fontSize: 28, fontWeight: 800, color: 'var(--text-dark)', fontFamily: 'Space Grotesk, sans-serif' }}>Leaderboard</h2>
+        <h2 style={{ fontSize: 28, fontWeight: 800, color: 'var(--text-dark)', fontFamily: 'Space Grotesk, sans-serif' }}>{t('leaderboard.title')}</h2>
         <button onClick={onRefresh} style={{ background: 'var(--green-primary)', border: 'none', borderRadius: 8, padding: '6px 14px', color: '#fff', cursor: 'pointer', fontSize: 16, fontFamily: 'inherit', fontWeight: 600 }}>
-          Refresh
+          {t('common.refresh')}
         </button>
       </div>
       <Card style={{ overflow: 'hidden', padding: 0, background: '#f0fdf4' }}>
         {loading ? (
           <div style={{ textAlign: 'center', padding: '40px 0', color: 'var(--text-muted)' }}>
             <div style={{ width: 28, height: 28, border: '2px solid rgba(0,0,0,0.1)', borderTopColor: 'var(--orange-primary)', borderRadius: '50%', animation: 'spin 0.8s linear infinite', margin: '0 auto 12px' }} />
-            Loading leaderboard...
+            {t('common.loading')}
           </div>
         ) : leaderboard.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '40px 0', color: 'var(--text-muted)' }}>
             <div style={{ fontSize: 40, marginBottom: 12 }}>🏆</div>
-            No entries yet. Be the first to play!
+            {t('leaderboard.empty')}
           </div>
         ) : (
           <div style={{ width: '100%' }}>
@@ -611,11 +631,11 @@ function LeaderboardTab({ leaderboard, loading, profile, onRefresh }: { leaderbo
               <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 650 }}>
               <thead>
                 <tr style={{ borderBottom: '2px solid rgba(0,0,0,0.1)', background: 'transparent' }}>
-                  {['Rank', 'Player'].map(h => (
+                  {[t('leaderboard.rank'), t('leaderboard.player')].map(h => (
                     <th key={h} style={{ padding: '12px 16px', textAlign: 'left', fontSize: 13, color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{h}</th>
                   ))}
-                  <th onClick={() => handleSort('wins')} style={{ cursor: 'pointer', padding: '12px 16px', textAlign: 'left', fontSize: 13, color: sortField === 'wins' ? 'var(--green-primary)' : 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Wins {sortField === 'wins' && (sortAsc ? '↑' : '↓')}</th>
-                  <th onClick={() => handleSort('highest_net_worth')} style={{ cursor: 'pointer', minWidth: 140, padding: '12px 16px', textAlign: 'left', fontSize: 13, color: sortField === 'highest_net_worth' ? 'var(--green-primary)' : 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Best Wealth {sortField === 'highest_net_worth' && (sortAsc ? '↑' : '↓')}</th>
+                  <th onClick={() => handleSort('wins')} style={{ cursor: 'pointer', padding: '12px 16px', textAlign: 'left', fontSize: 13, color: sortField === 'wins' ? 'var(--green-primary)' : 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{t('leaderboard.wins')} {sortField === 'wins' && (sortAsc ? '↑' : '↓')}</th>
+                  <th onClick={() => handleSort('highest_net_worth')} style={{ cursor: 'pointer', minWidth: 140, padding: '12px 16px', textAlign: 'left', fontSize: 13, color: sortField === 'highest_net_worth' ? 'var(--green-primary)' : 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{t('leaderboard.bestWealth')} {sortField === 'highest_net_worth' && (sortAsc ? '↑' : '↓')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -637,7 +657,7 @@ function LeaderboardTab({ leaderboard, loading, profile, onRefresh }: { leaderbo
                         <div style={{ width: 32, height: 32, borderRadius: '50%', background: isMe ? 'var(--green-primary)' : 'rgba(0,0,0,0.1)', color: isMe ? '#fff' : 'var(--text-dark)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, fontWeight: 800 }}>
                           {displayUsername[0]?.toUpperCase() || '?'}
                         </div>
-                        <span style={{ fontSize: 16, color: 'var(--text-dark)', fontWeight: isMe ? 800 : 600 }}>{displayUsername} {isMe && '(you)'}</span>
+                        <span style={{ fontSize: 16, color: 'var(--text-dark)', fontWeight: isMe ? 800 : 600 }}>{displayUsername} {isMe && `(${t('common.you')})`}</span>
                       </td>
                       <td style={{ padding: '14px 16px', fontSize: 16, fontWeight: 700, color: isMe ? 'var(--green-primary)' : 'var(--green-primary)' }}>{player.wins}</td>
                       <td style={{ padding: '14px 16px', fontSize: 15, color: 'var(--orange-dark)', fontWeight: 700 }}>{formatWealth(player.highest_net_worth)}</td>
@@ -664,7 +684,7 @@ function LeaderboardTab({ leaderboard, loading, profile, onRefresh }: { leaderbo
                     boxShadow: '0 4px 12px rgba(245, 158, 11, 0.2)'
                   }}
                 >
-                  Load More
+                  {t('common.loadMore')}
                 </button>
               </div>
             )}
@@ -677,6 +697,7 @@ function LeaderboardTab({ leaderboard, loading, profile, onRefresh }: { leaderbo
 
 
 function ContractsTab() {
+  const { t } = useTranslation()
   const { profile } = useAuth()
   const [contracts, setContracts] = useState<any[]>([])
   const [progressData, setProgressData] = useState<Record<string, { progress: number, completed: boolean }>>({})
@@ -740,23 +761,23 @@ function ContractsTab() {
   return (
     <div style={{ maxWidth: 700 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
-        <h2 style={{ fontSize: 28, fontWeight: 800, color: 'var(--text-dark)', fontFamily: 'Space Grotesk, sans-serif' }}>Daily Contracts</h2>
-        <div style={{ fontSize: 16, color: 'var(--text-muted)' }}>Resets in <span style={{ color: 'var(--orange-dark)', fontWeight: 700 }}>{resetTime}</span></div>
+        <h2 style={{ fontSize: 28, fontWeight: 800, color: 'var(--text-dark)', fontFamily: 'Space Grotesk, sans-serif' }}>{t('contracts.title')}</h2>
+        <div style={{ fontSize: 16, color: 'var(--text-muted)' }}>{t('contracts.resetsIn')} <span style={{ color: 'var(--orange-dark)', fontWeight: 700 }}>{resetTime}</span></div>
       </div>
 
       {loading ? (
-        <div style={{ textAlign: 'center', color: 'var(--text-muted)', padding: 40 }}>Loading active contracts...</div>
+        <div style={{ textAlign: 'center', color: 'var(--text-muted)', padding: 40 }}>{t('contracts.loading')}</div>
       ) : contracts.length === 0 ? (
         <Card style={{ padding: 24, textAlign: 'center', background: 'rgba(0,0,0,0.02)', borderColor: 'rgba(0,0,0,0.05)' }}>
-          <div style={{ color: 'var(--text-muted)' }}>No active contracts for today. Check back tomorrow!</div>
+          <div style={{ color: 'var(--text-muted)' }}>{t('contracts.empty')}</div>
         </Card>
       ) : (
         <>
           {Object.keys(progressData).length === 0 && (
             <Card style={{ padding: 24, textAlign: 'center', marginBottom: 20, background: 'rgba(59,130,246,0.05)', borderColor: 'rgba(59,130,246,0.2)' }}>
               <div style={{ fontSize: 30, marginBottom: 8 }}>🎮</div>
-              <h3 style={{ fontSize: 20, fontWeight: 700, color: 'var(--blue-deep)', marginBottom: 4 }}>Start Your Journey</h3>
-              <p style={{ fontSize: 18, color: 'var(--text-muted)' }}>Play a game to start earning contract progress and unlock rewards!</p>
+              <h3 style={{ fontSize: 20, fontWeight: 700, color: 'var(--blue-deep)', marginBottom: 4 }}>{t('contracts.startTitle')}</h3>
+              <p style={{ fontSize: 18, color: 'var(--text-muted)' }}>{t('contracts.startDesc')}</p>
             </Card>
           )}
 
@@ -773,10 +794,10 @@ function ContractsTab() {
                     <div style={{ flex: 1 }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
                         <span style={{ fontSize: 14, fontWeight: 700, padding: '2px 8px', borderRadius: 4, background: `${color}22`, color, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                          {contract.difficulty}
+                          {t(`difficulty.${contract.difficulty}`)}
                         </span>
-                        {contract.is_weekly && <span style={{ fontSize: 14, fontWeight: 700, padding: '2px 8px', borderRadius: 4, background: 'rgba(245,158,11,0.2)', color: '#d97706' }}>WEEKLY</span>}
-                        {completed && <span style={{ fontSize: 14, fontWeight: 700, color: '#059669' }}>✓ COMPLETE</span>}
+                        {contract.is_weekly && <span style={{ fontSize: 14, fontWeight: 700, padding: '2px 8px', borderRadius: 4, background: 'rgba(245,158,11,0.2)', color: '#d97706' }}>{t('contracts.weekly')}</span>}
+                        {completed && <span style={{ fontSize: 14, fontWeight: 700, color: '#059669' }}>✓ {t('contracts.complete')}</span>}
                       </div>
                       <div style={{ fontSize: 19, fontWeight: 700, color: 'var(--text-dark)', marginBottom: 4, fontFamily: 'Space Grotesk, sans-serif' }}>{contract.title}</div>
                       <div style={{ fontSize: 16, color: 'var(--text-muted)', marginBottom: 10 }}>{contract.description}</div>
@@ -790,7 +811,7 @@ function ContractsTab() {
                     <div style={{ textAlign: 'right', flexShrink: 0 }}>
                       <div style={{ fontSize: 23, fontWeight: 800, color: 'var(--orange-dark)', fontFamily: 'Space Grotesk, sans-serif' }}>🪙 {contract.reward_dc}</div>
                       {contract.reward_card_tier && (
-                        <div style={{ fontSize: 14, color: 'var(--text-muted)', marginTop: 2 }}>+ 1 {contract.reward_card_tier} card</div>
+                        <div style={{ fontSize: 14, color: 'var(--text-muted)', marginTop: 2 }}>+ 1 {contract.reward_card_tier} {t('contracts.card')}</div>
                       )}
                     </div>
                   </div>
@@ -805,6 +826,7 @@ function ContractsTab() {
 }
 
 function ProfileTab() {
+  const { t } = useTranslation()
   const { profile, logout, refreshProfile } = useAuth()
   const [isEditingAvatar, setIsEditingAvatar] = useState(false)
   const [isEditingName, setIsEditingName] = useState(false)
@@ -860,7 +882,7 @@ function ProfileTab() {
   return (
     <div style={{ maxWidth: 750, width: '100%', margin: '0 auto' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
-        <h2 style={{ fontSize: 28, fontWeight: 800, color: 'var(--text-dark)', fontFamily: 'Space Grotesk, sans-serif' }}>Player Profile</h2>
+        <h2 style={{ fontSize: 28, fontWeight: 800, color: 'var(--text-dark)', fontFamily: 'Space Grotesk, sans-serif' }}>{t('profile.title')}</h2>
       </div>
 
       <Card style={{ padding: 0, overflow: 'hidden', marginBottom: 32, border: '1px solid rgba(0,0,0,0.1)' }}>
@@ -899,16 +921,16 @@ function ProfileTab() {
                       style={{ fontSize: 24, fontWeight: 800, padding: '4px 12px', borderRadius: 8, border: '2px solid var(--green-primary)', outline: 'none', fontFamily: 'Space Grotesk, sans-serif', width: '100%', maxWidth: 250 }}
                     />
                     <button onClick={handleUpdateName} disabled={updating} style={{ background: 'var(--green-primary)', color: 'white', border: 'none', borderRadius: 8, padding: '8px 16px', fontWeight: 700, cursor: 'pointer' }}>
-                      {updating ? 'Saving...' : 'Save'}
+                      {updating ? t('common.saving') : t('common.save')}
                     </button>
                     <button onClick={() => { setIsEditingName(false); setNewName(profile?.username || '') }} disabled={updating} style={{ background: 'transparent', color: 'var(--text-muted)', border: 'none', cursor: 'pointer', fontSize: 14 }}>
-                      Cancel
+                      {t('common.cancel')}
                     </button>
                   </div>
                 ) : (
                   <h2 style={{ fontSize: 'clamp(24px, 6vw, 36px)', fontWeight: 800, color: 'var(--text-dark)', fontFamily: 'Space Grotesk, sans-serif', marginBottom: 8, letterSpacing: '-0.02em', wordBreak: 'break-all', display: 'flex', alignItems: 'center', gap: 12 }}>
-                    {profile?.username ?? 'Unknown Player'}
-                    <button onClick={() => setIsEditingName(true)} style={{ background: 'rgba(0,0,0,0.05)', border: 'none', borderRadius: '50%', width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'var(--text-muted)' }} title="Edit Username">
+                    {profile?.username ?? t('profile.unknownPlayer')}
+                    <button onClick={() => setIsEditingName(true)} style={{ background: 'rgba(0,0,0,0.05)', border: 'none', borderRadius: '50%', width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'var(--text-muted)' }} title={t('profile.editUsername')}>
                       ✎
                     </button>
                   </h2>

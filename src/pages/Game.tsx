@@ -11,6 +11,7 @@ import {
 } from '../lib/gameEngine'
 import { ARTHA_YATRA_LEVELS } from '../data/levels'
 import { saveGameResult } from '../lib/auth'
+import { useTranslation } from 'react-i18next'
 import { ALL_CARDS } from '../data/cards'
 import { playSound } from '../lib/audio'
 import Confetti from 'react-confetti'
@@ -41,6 +42,7 @@ function GameClock({ startTime, timeLimit }: { startTime: number; timeLimit: num
 }
 
 export function Game() {
+  const { i18n } = useTranslation()
   const [params] = useSearchParams()
   const { levelId } = useParams()
   const mode = levelId ? 'campaign' : (params.get('mode') ?? 'ranked')
@@ -59,7 +61,7 @@ export function Game() {
   const [animating, setAnimating] = useState(false)
   const [notification, setNotification] = useState<string | null>(null)
   const [showForfeitModal, setShowForfeitModal] = useState(false)
-  const [popupInfo, setPopupInfo] = useState<{ reason: string, sourceName?: string, isSelf?: boolean, description?: string, amountStr: string, isGain: boolean } | null>(null)
+  const [popupInfo, setPopupInfo] = useState<{ reason: string, reasonHi?: string, sourceName?: string, isSelf?: boolean, description?: string, descriptionHi?: string, amountStr: string, isGain: boolean } | null>(null)
   const handlePopupContinue = useCallback(() => setPopupInfo(null), [])
   const botTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const prevWealthRef = useRef(500000)
@@ -153,20 +155,26 @@ export function Game() {
         isSelf = sourceName === humanPlayer.name
       }
 
+      let reasonHi: string | undefined
+      let descriptionHi: string | undefined
       const match = reason.match(/played (.*?) (?:→|—)/)
       if (match && match[1]) {
         reason = match[1]
         const card = ALL_CARDS.find(c => c.name === reason)
         if (card) {
           description = card.flavor
+          reasonHi = card.nameHi
+          descriptionHi = card.flavorHi
         }
       }
 
       setPopupInfo({
         reason,
+        reasonHi,
         sourceName,
         isSelf,
         description,
+        descriptionHi,
         amountStr: wealthDiff > 0 ? `+₹${Math.abs(wealthDiff).toLocaleString()}` : `-₹${Math.abs(wealthDiff).toLocaleString()}`,
         isGain: wealthDiff > 0
       })
@@ -261,7 +269,9 @@ export function Game() {
       const newState = advanceTurn({ ...currentState, players: updatedPlayers })
       if (newState.phase === 'game_over') { handleGameOver(newState) } else { setGameState(newState) }
       playSound('play')
-      notify('Equipped defense card!')
+      if (newState.players[humanPlayerIndex].activeDefenses.length > currentState.players[humanPlayerIndex].activeDefenses.length) {
+        notify(i18n.language === 'hi' ? 'रक्षा कार्ड सुसज्जित!' : 'Equipped defense card!')
+      }
     }
   }
 
@@ -396,7 +406,8 @@ export function Game() {
   )
 }
 
-function EventPopup({ info, onContinue }: { info: { reason: string, sourceName?: string, isSelf?: boolean, description?: string, amountStr: string, isGain: boolean }, onContinue: () => void }) {
+function EventPopup({ info, onContinue }: { info: { reason: string, reasonHi?: string, sourceName?: string, isSelf?: boolean, description?: string, descriptionHi?: string, amountStr: string, isGain: boolean }, onContinue: () => void }) {
+  const { i18n } = useTranslation()
   useEffect(() => {
     const timer = setTimeout(() => {
       onContinue()
@@ -423,18 +434,18 @@ function EventPopup({ info, onContinue }: { info: { reason: string, sourceName?:
       }}>
         <div style={{ fontSize: 14, color: 'var(--text-muted)', marginBottom: 12, textTransform: 'uppercase', letterSpacing: 1.5, fontWeight: 800 }}>
           {info.isGain
-            ? 'Wealth Gained!'
+            ? (i18n.language === 'hi' ? 'धन प्राप्त हुआ!' : 'Wealth Gained!')
             : (info.sourceName && !info.isSelf && info.sourceName !== 'Game'
-              ? `${info.sourceName} attacked!`
-              : 'Wealth Lost!')}
+              ? (i18n.language === 'hi' ? `${info.sourceName} ने हमला किया!` : `${info.sourceName} attacked!`)
+              : (i18n.language === 'hi' ? 'धन की हानि!' : 'Wealth Lost!'))}
         </div>
         <h3 style={{ fontSize: 26, color: 'var(--text-dark)', marginBottom: info.description ? 12 : 28, lineHeight: 1.3, fontWeight: 800, fontFamily: 'Space Grotesk, sans-serif' }}>
-          {info.reason}
+          {i18n.language === 'hi' && info.reasonHi ? info.reasonHi : info.reason}
         </h3>
 
         {info.description && (
           <div style={{ fontSize: 16, color: '#4b5563', marginBottom: 28, fontStyle: 'italic', padding: '0 20px' }}>
-            "{info.description}"
+            "{i18n.language === 'hi' && info.descriptionHi ? info.descriptionHi : info.description}"
           </div>
         )}
 

@@ -3,6 +3,7 @@ import { GameCard as GameCardComponent } from '../GameCard'
 import { Button } from '../ui/Button'
 import { PlayerBoard } from './PlayerBoard'
 import { GameLog } from './GameLog'
+import { useTranslation } from 'react-i18next'
 
 import { formatWealth } from '../../types/game'
 import { TURN_TIME_LIMIT_MS } from '../../lib/gameEngine'
@@ -22,6 +23,7 @@ export function GameBoardMobile({
   onDecision,
   onCancelTargeting,
 }: GameBoardProps) {
+  const { i18n } = useTranslation()
   const [previewCard, setPreviewCard] = useState<any>(null)
 
   const myPlayerIndex = gameState.players.findIndex(p => p.id === myPlayerId)
@@ -158,9 +160,11 @@ export function GameBoardMobile({
 
             <div className="mobile-decision-header">
               <h3 className="mobile-decision-title">
-                {gameState.pendingDecision.card.name}
+                {i18n.language === 'hi' && gameState.pendingDecision.card.nameHi ? gameState.pendingDecision.card.nameHi : gameState.pendingDecision.card.name}
               </h3>
-              <p style={{ color: '#0ea5e9', fontSize: 15, fontWeight: 600 }}>{gameState.pendingDecision.card.flavor}</p>
+              <p style={{ color: '#0ea5e9', fontSize: 15, fontWeight: 600 }}>
+                {i18n.language === 'hi' && gameState.pendingDecision.card.flavorHi ? gameState.pendingDecision.card.flavorHi : gameState.pendingDecision.card.flavor}
+              </p>
             </div>
             
             <div className="mobile-decision-options">
@@ -195,9 +199,11 @@ export function GameBoardMobile({
                       <div className="mobile-decision-badge" style={{ 
                         color: c.labelColor, background: c.labelBg 
                       }}>
-                        {opt.label}
+                        {i18n.language === 'hi' && opt.labelHi ? opt.labelHi : (i18n.language === 'hi' && opt.label === 'Spend' ? 'खर्च करें' : i18n.language === 'hi' && opt.label === 'Save' ? 'बचत करें' : i18n.language === 'hi' && opt.label === 'Invest' ? 'निवेश करें' : opt.label)}
                       </div>
-                      <div style={{ fontSize: 14, color: '#475569', fontWeight: 600 }}>{opt.description}</div>
+                      <div style={{ fontSize: 14, color: '#475569', fontWeight: 600 }}>
+                        {i18n.language === 'hi' && opt.descriptionHi ? opt.descriptionHi : opt.description}
+                      </div>
                       {opt.investRisk && opt.failEffect && (
                         <div style={{ fontSize: 11, color: '#dc2626', fontWeight: 700, marginTop: 4, background: 'rgba(220, 38, 38, 0.1)', padding: '2px 6px', borderRadius: 4, display: 'inline-block' }}>
                         ⚠️ {opt.investRisk}% Risk: {failVal < 0 ? '-' : '+'}{formatWealth(Math.abs(failVal))}

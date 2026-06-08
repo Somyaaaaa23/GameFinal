@@ -2,6 +2,7 @@ import { GameCard as GameCardComponent } from '../GameCard'
 import { Button } from '../ui/Button'
 import { PlayerBoard } from './PlayerBoard'
 import { GameLog } from './GameLog'
+import { useTranslation } from 'react-i18next'
 
 import { formatWealth } from '../../types/game'
 import { TURN_TIME_LIMIT_MS } from '../../lib/gameEngine'
@@ -20,6 +21,7 @@ export function GameBoardDesktop({
   onDecision,
   onCancelTargeting,
 }: GameBoardProps) {
+  const { t, i18n } = useTranslation()
   const myPlayerIndex = gameState.players.findIndex(p => p.id === myPlayerId)
   const isMyTurn = gameState.players[gameState.currentPlayerIndex]?.id === myPlayerId
   const myPlayer = myPlayerIndex >= 0 ? gameState.players[myPlayerIndex] : null
@@ -71,9 +73,9 @@ export function GameBoardDesktop({
         }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
           <h2 style={{ margin: 0, fontSize: 23, color: 'var(--text-dark)', fontWeight: 700 }}>
-            {isMyTurn ? <span style={{ color: '#60a5fa' }}>Your Turn</span> : <span>{currentPlayer?.name}'s Turn</span>}
+            {isMyTurn ? <span style={{ color: '#60a5fa' }}>{t('game.yourTurn')}</span> : <span>{t('game.playerTurn', { name: currentPlayer?.name })}</span>}
           </h2>
-          <div style={{ fontSize: 15, color: '#475569', fontWeight: 700 }}>TURN {gameState.turn}</div>
+          <div style={{ fontSize: 15, color: '#475569', fontWeight: 700 }}>{t('game.turn').toUpperCase()} {gameState.turn}</div>
         </div>
         
         
@@ -83,14 +85,14 @@ export function GameBoardDesktop({
           <div style={{ textAlign: 'center', padding: '36px 0' }}>
             <div style={{ fontSize: 40, marginBottom: 12 }}>⏳</div>
             <div style={{ fontSize: 19, fontWeight: 600, color: '#94a3b8', marginBottom: 4 }}>
-              Waiting for {currentPlayer?.name}...
+              {t('game.waitingFor', { name: currentPlayer?.name })}
             </div>
-            <div style={{ fontSize: 16, color: '#475569' }}>Their turn to play</div>
+            <div style={{ fontSize: 16, color: '#475569' }}>{t('game.theirTurnToPlay')}</div>
             {/* Show my hand while waiting */}
             {myPlayer && myPlayer.hand.length > 0 && (
               <div style={{ marginTop: 20, borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: 16 }}>
                 <p style={{ fontSize: 15, color: '#475569', marginBottom: 10 }}>
-                  Your hand ({myPlayer.hand.length} cards):
+                  {t('game.yourHand', { count: myPlayer.hand.length })}
                 </p>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3" style={{ justifyItems: 'center' }}>
                   {myPlayer.hand.map(card => (
@@ -129,7 +131,7 @@ export function GameBoardDesktop({
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
               <p style={{ fontSize: 16, color: '#94a3b8' }}>
-                {gameState.drawnCard ? `Drew "${gameState.drawnCard.name}" — pick a card to play:` : 'Pick a card to play:'}
+                {gameState.drawnCard ? `${t('game.drew')} "${i18n.language === 'hi' && gameState.drawnCard.nameHi ? gameState.drawnCard.nameHi : gameState.drawnCard.name}" — ${t('game.pickCard')}` : t('game.pickCard')}
               </p>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3" style={{ justifyItems: 'center' }}>
@@ -147,9 +149,11 @@ export function GameBoardDesktop({
             <div style={{ flex: '1 1 200px' }}>
               <div style={{ marginBottom: 16, display: 'none' /* hidden for cleaner look */ }}>
                 <h3 style={{ fontSize: 21, fontWeight: 800, color: '#f1f5f9', fontFamily: 'Space Grotesk, sans-serif', marginBottom: 4 }}>
-                  {gameState.pendingDecision.card.name}
+                  {i18n.language === 'hi' && gameState.pendingDecision.card.nameHi ? gameState.pendingDecision.card.nameHi : gameState.pendingDecision.card.name}
                 </h3>
-                <p style={{ fontSize: 16, color: '#475569' }}>{gameState.pendingDecision.card.flavor}</p>
+                <p style={{ fontSize: 16, color: '#475569' }}>
+                  {i18n.language === 'hi' && gameState.pendingDecision.card.flavorHi ? gameState.pendingDecision.card.flavorHi : gameState.pendingDecision.card.flavor}
+                </p>
               </div>
               
               <div style={{ marginTop: 20, borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: 16 }}>
@@ -172,9 +176,11 @@ export function GameBoardDesktop({
             {/* Right Side: Decision Options */}
             <div style={{ flex: '1 1 240px', minWidth: 220, display: 'flex', flexDirection: 'column', gap: 8, borderLeft: '1px solid rgba(0,0,0,0.1)', paddingLeft: 24, animation: 'fadeIn 0.3s ease', paddingRight: 8 }}>
               <h3 style={{ fontSize: 22, fontWeight: 800, color: 'var(--text-dark)', marginBottom: 4, fontFamily: 'var(--font-display)' }}>
-                {gameState.pendingDecision.card.name}
+                {i18n.language === 'hi' && gameState.pendingDecision.card.nameHi ? gameState.pendingDecision.card.nameHi : gameState.pendingDecision.card.name}
               </h3>
-              <p style={{ color: 'var(--text-muted)', fontSize: 14, marginBottom: 12 }}>{gameState.pendingDecision.card.flavor}</p>
+              <p style={{ color: 'var(--text-muted)', fontSize: 14, marginBottom: 12 }}>
+                {i18n.language === 'hi' && gameState.pendingDecision.card.flavorHi ? gameState.pendingDecision.card.flavorHi : gameState.pendingDecision.card.flavor}
+              </p>
               
               {gameState.pendingDecision.card.options?.map(opt => {
                 const colors = {
@@ -207,9 +213,15 @@ export function GameBoardDesktop({
                     onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = c.hoverBg; (e.currentTarget as HTMLButtonElement).style.borderColor = c.borderFocus }}
                     onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = c.bg; (e.currentTarget as HTMLButtonElement).style.borderColor = c.border }}
                   >
-                    <div style={{ fontSize: 11, fontWeight: 800, color: c.labelColor, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 2 }}>{opt.type}</div>
-                    <div style={{ fontSize: 15, fontWeight: 700, marginBottom: 2 }}>{opt.label}</div>
-                    <div style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 4, lineHeight: 1.2 }}>{opt.description}</div>
+                    <div style={{ fontSize: 11, fontWeight: 800, color: c.labelColor, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 2 }}>
+                      {i18n.language === 'hi' && opt.type === 'spend' ? 'खर्च (Spend)' : i18n.language === 'hi' && opt.type === 'save' ? 'बचत (Save)' : i18n.language === 'hi' && opt.type === 'invest' ? 'निवेश (Invest)' : opt.type}
+                    </div>
+                    <div style={{ fontSize: 15, fontWeight: 700, marginBottom: 2 }}>
+                      {i18n.language === 'hi' && opt.labelHi ? opt.labelHi : (i18n.language === 'hi' && opt.label === 'Spend' ? 'खर्च करें' : i18n.language === 'hi' && opt.label === 'Save' ? 'बचत करें' : i18n.language === 'hi' && opt.label === 'Invest' ? 'निवेश करें' : opt.label)}
+                    </div>
+                    <div style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 4, lineHeight: 1.2 }}>
+                      {i18n.language === 'hi' && opt.descriptionHi ? opt.descriptionHi : opt.description}
+                    </div>
                     <div style={{ fontSize: 16, fontWeight: 800, color: effectVal >= 0 ? '#059669' : '#c2410c', fontFamily: 'var(--font-display)' }}>
                       {sign}{formatWealth(Math.abs(effectVal))}
                       {opt.effect.type === 'wealth_next_turn' && <span style={{ fontSize: 12, color: 'var(--text-muted)', fontWeight: 600, marginLeft: 4 }}>next turn</span>}

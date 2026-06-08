@@ -34,6 +34,13 @@ const TYPE_CONFIG = {
     btnClass: '', // no explicit class for decision in template, we'll use inline
     btnText: 'Decision Card',
     glowColor: '60, 255, 170', // Green
+  },
+  situation: {
+    bgTop: '#43290b', bgBottom: '#271705',
+    icon: FileWarning,
+    btnClass: '', 
+    btnText: 'Situation',
+    glowColor: '255, 150, 50', // Orange
   }
 }
 
@@ -61,7 +68,10 @@ const TIER_CONFIG = {
   }
 }
 
+import { useTranslation } from 'react-i18next'
+
 export function GameCard({ card, onClick, selected, disabled, compact, faceDown }: GameCardProps) {
+  const { t, i18n } = useTranslation()
   const typeCfg = TYPE_CONFIG[card.type] ?? TYPE_CONFIG.decision
   const tierCfg = TIER_CONFIG[card.tier] ?? TIER_CONFIG.common
   const Icon = typeCfg.icon
@@ -113,16 +123,16 @@ export function GameCard({ card, onClick, selected, disabled, compact, faceDown 
       className={classNames}
       style={cssVars}
     >
-      <div className="rarity">{card.tier}</div>
+      <div className="rarity">{t(`common.${card.tier}`, card.tier.toUpperCase())}</div>
 
       <div className="icon-circle">
         <Icon className="card-icon" />
       </div>
 
-      <h2 className="card-title">{card.name}</h2>
+      <h2 className="card-title">{i18n.language === 'hi' && card.nameHi ? card.nameHi : card.name}</h2>
 
       <p className="card-desc">
-        {card.flavor}
+        {i18n.language === 'hi' && card.flavorHi ? card.flavorHi : card.flavor}
       </p>
 
       {/* Bottom element depends on card type & features */}
@@ -135,7 +145,7 @@ export function GameCard({ card, onClick, selected, disabled, compact, faceDown 
         </div>
       ) : (
         <div className={`card-button ${typeCfg.btnClass}`}>
-          {typeCfg.btnText}
+          {t(`game.${card.type}Card`, typeCfg.btnText).toUpperCase()}
         </div>
       )}
     </motion.button>

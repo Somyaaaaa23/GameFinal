@@ -29,10 +29,10 @@ export function TutorialModal({ onClose }: TutorialModalProps) {
   const ProgressBar = () => (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 24 }}>
       <div style={{ fontSize: 13, fontWeight: 800, color: '#0D5C46', letterSpacing: '0.05em', marginBottom: 8 }}>
-        STEP {step} OF 3
+        STEP {step} OF 4
       </div>
       <div style={{ display: 'flex', gap: 8, width: 200 }}>
-        {[1, 2, 3].map(i => (
+        {[1, 2, 3, 4].map(i => (
           <div key={i} style={{ 
             height: 6, 
             borderRadius: 3, 
@@ -172,7 +172,7 @@ export function TutorialModal({ onClose }: TutorialModalProps) {
                 <div style={{ fontSize: 48, filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.1))' }}>🎯</div>
                 <div>
                   <div style={{ fontSize: 18, color: '#4b5563', lineHeight: 1.4, fontWeight: 500 }}>
-                    Reach <strong style={{color: '#0D5C46'}}>₹50 Lakhs</strong> before time runs out.
+                    Reach your <strong style={{color: '#0D5C46'}}>Wealth Goal</strong> before time runs out.
                   </div>
                 </div>
               </HoverCard>
@@ -204,7 +204,7 @@ export function TutorialModal({ onClose }: TutorialModalProps) {
           </div>
         )}
 
-        {step === 2 && (
+        {step === 3 && (
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <h2 style={{ textAlign: 'center', fontSize: 36, fontWeight: 900, color: '#0D5C46', marginBottom: 32, fontFamily: 'var(--font-display)', letterSpacing: '-0.02em' }}>
               KNOW YOUR CARDS
@@ -266,7 +266,7 @@ export function TutorialModal({ onClose }: TutorialModalProps) {
           </div>
         )}
 
-        {step === 3 && (
+        {step === 4 && (
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <h2 style={{ textAlign: 'center', fontSize: 36, fontWeight: 900, color: '#0D5C46', marginBottom: 8, fontFamily: 'var(--font-display)', letterSpacing: '-0.02em' }}>
               HOW TO WIN
@@ -313,9 +313,58 @@ export function TutorialModal({ onClose }: TutorialModalProps) {
               </HoverCard>
             </div>
 
-            <div style={{ width: '100%', maxWidth: 400 }}>
+            <div style={{ display: 'flex', gap: 16, width: '100%', maxWidth: 500 }}>
+              <AnimatedButton variant="secondary" onClick={handlePrev}>
+                Back
+              </AnimatedButton>
               <AnimatedButton variant="gold" onClick={onClose}>
                 Let's Play BHAO <span>→</span>
+              </AnimatedButton>
+            </div>
+          </div>
+        )}
+
+        {step === 2 && (
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <h2 style={{ textAlign: 'center', fontSize: 36, fontWeight: 900, color: '#0D5C46', marginBottom: 8, fontFamily: 'var(--font-display)', letterSpacing: '-0.02em' }}>
+              CHOOSE YOUR MODE
+            </h2>
+            <p style={{ textAlign: 'center', fontSize: 18, color: '#4b5563', marginBottom: 32, fontWeight: 500 }}>
+              Two ways to play, endless ways to win.
+            </p>
+
+            <div style={{ display: 'flex', gap: 20, width: '100%', marginBottom: 32, flexWrap: 'wrap', justifyContent: 'center' }}>
+              
+              {/* Campaign Mode */}
+              <HoverCard style={{ flex: '1 1 200px', maxWidth: 300, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', padding: '24px 16px', background: 'linear-gradient(to bottom, #ffffff, #fefce8)', border: '2px solid #fef08a' }}>
+                <div style={{ width: 80, height: 80, borderRadius: '50%', background: 'linear-gradient(135deg, #eab308, #a16207)', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '3px solid #fef08a', boxShadow: '0 8px 16px rgba(234,179,8,0.3)', marginBottom: 20 }}>
+                  <span style={{ fontSize: 40 }}>🗺️</span>
+                </div>
+                <div style={{ fontSize: 18, fontWeight: 900, color: '#ca8a04', marginBottom: 8 }}>LEVEL MODE</div>
+                <div style={{ fontSize: 14, color: '#4b5563', lineHeight: 1.5, fontWeight: 500 }}>
+                  Progress through increasingly challenging levels, complete life stages, and master financial objectives.
+                </div>
+              </HoverCard>
+
+              {/* Multiplayer Mode */}
+              <HoverCard style={{ flex: '1 1 200px', maxWidth: 300, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', padding: '24px 16px', background: 'linear-gradient(to bottom, #ffffff, #eff6ff)', border: '2px solid #bfdbfe' }}>
+                <div style={{ width: 80, height: 80, borderRadius: '50%', background: 'linear-gradient(135deg, #3b82f6, #1d4ed8)', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '3px solid #bfdbfe', boxShadow: '0 8px 16px rgba(59,130,246,0.3)', marginBottom: 20 }}>
+                  <span style={{ fontSize: 40 }}>🌍</span>
+                </div>
+                <div style={{ fontSize: 18, fontWeight: 900, color: '#2563eb', marginBottom: 8 }}>PLAY ONLINE</div>
+                <div style={{ fontSize: 14, color: '#4b5563', lineHeight: 1.5, fontWeight: 500 }}>
+                  Compete with friends in real-time matches. Sabotage rivals and prove who the real Tycoon is!
+                </div>
+              </HoverCard>
+
+            </div>
+
+            <div style={{ display: 'flex', gap: 16, width: '100%', maxWidth: 500 }}>
+              <AnimatedButton variant="secondary" onClick={handlePrev}>
+                Back
+              </AnimatedButton>
+              <AnimatedButton onClick={handleNext}>
+                Next <span>→</span>
               </AnimatedButton>
             </div>
           </div>

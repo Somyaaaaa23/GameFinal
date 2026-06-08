@@ -1,4 +1,4 @@
-export type CardType = 'decision' | 'action' | 'defense'
+export type CardType = 'decision' | 'action' | 'defense' | 'situation'
 export type CardTier = 'common' | 'rare' | 'epic' | 'legendary'
 export type DecisionChoice = 'spend' | 'save' | 'invest'
 export type MultiplayerMode = 'blitz' | 'standard' | 'epic'
@@ -14,7 +14,9 @@ export interface CardEffect {
 export interface DecisionOption {
   type: DecisionChoice
   label: string
+  labelHi?: string
   description: string
+  descriptionHi?: string
   effect: CardEffect
   /** 0-100: percentage chance that an INVEST choice will FAIL and apply failEffect instead */
   investRisk?: number
@@ -26,9 +28,11 @@ export interface DecisionOption {
 export interface GameCard {
   id: string
   name: string
+  nameHi?: string
   type: CardType
   tier: CardTier
   flavor: string
+  flavorHi?: string
   art?: string
   options?: DecisionOption[]
   effect?: CardEffect
