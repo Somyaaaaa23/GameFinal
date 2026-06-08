@@ -352,7 +352,7 @@ export function MultiplayerGame() {
       await pushState(next)
       playSound('defend')
       if (next.phase === 'game_over') saveResult(next)
-      notify('Discarded defense card.')
+      notify('Equipped defense card!')
     }
   }
 
