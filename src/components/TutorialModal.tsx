@@ -340,7 +340,7 @@ export function TutorialModal({ onClose }: TutorialModalProps) {
                 <div style={{ width: 80, height: 80, borderRadius: '50%', background: 'linear-gradient(135deg, #eab308, #a16207)', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '3px solid #fef08a', boxShadow: '0 8px 16px rgba(234,179,8,0.3)', marginBottom: 20 }}>
                   <span style={{ fontSize: 40 }}>🗺️</span>
                 </div>
-                <div style={{ fontSize: 18, fontWeight: 900, color: '#ca8a04', marginBottom: 8 }}>LEVEL MODE</div>
+                <div style={{ fontSize: 18, fontWeight: 900, color: '#ca8a04', marginBottom: 8 }}>YOUR JOURNEY MODE</div>
                 <div style={{ fontSize: 14, color: '#4b5563', lineHeight: 1.5, fontWeight: 500 }}>
                   Progress through increasingly challenging levels, complete life stages, and master financial objectives.
                 </div>
