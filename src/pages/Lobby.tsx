@@ -13,11 +13,14 @@ import type { RealtimeChannel } from '@supabase/supabase-js'
 
 type LobbyView = 'menu' | 'waiting'
 
+type MenuTab = 'choice' | 'create' | 'join'
+
 export function Lobby() {
   const { profile } = useAuth()
   const navigate = useNavigate()
 
   const [view, setView] = useState<LobbyView>('menu')
+  const [menuTab, setMenuTab] = useState<MenuTab>('choice')
   const [joinCode, setJoinCode] = useState('')
   const [maxPlayers, setMaxPlayers] = useState(2)
   const [gameMode, setGameMode] = useState<MultiplayerMode>('standard')
@@ -162,19 +165,22 @@ export function Lobby() {
     <div style={{ minHeight: '100vh', background: 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
       <div style={{ width: '100%', maxWidth: 480, animation: 'slideUp 0.4s ease' }}>
         <button
-          onClick={() => navigate('/dashboard')}
+          onClick={() => {
+            if (menuTab !== 'choice') setMenuTab('choice')
+            else navigate('/dashboard')
+          }}
           style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: 16, fontFamily: 'inherit', marginBottom: 28, display: 'flex', alignItems: 'center', gap: 6 }}
         >
-          ← Back to Dashboard
+          ← {menuTab === 'choice' ? 'Back to Dashboard' : 'Back'}
         </button>
 
         <div style={{ textAlign: 'center', marginBottom: 36 }}>
           <div style={{ fontSize: 50, marginBottom: 12 }}>🌐</div>
           <h1 style={{ fontSize: 35, fontWeight: 800, color: 'var(--text-dark)', fontFamily: 'var(--font-display)', marginBottom: 8 }}>
-            Play Online
+            {menuTab === 'choice' ? 'Play Online' : menuTab === 'create' ? 'Create a Room' : 'Join a Room'}
           </h1>
           <p style={{ color: 'var(--text-muted)', fontSize: 18 }}>
-            Create a room or join a friend's game with a code.
+            {menuTab === 'choice' ? 'Create a room or join a friend\'s game.' : 'Set up the match options.'}
           </p>
         </div>
 
@@ -184,99 +190,123 @@ export function Lobby() {
           </div>
         )}
 
-        {/* Create Room */}
-        <Card style={{ padding: 24, marginBottom: 16 }}>
-          <h2 style={{ fontSize: 21, fontWeight: 700, color: 'var(--text-dark)', fontFamily: 'var(--font-display)', marginBottom: 16 }}>
-            Create a Room
-          </h2>
-          <div style={{ marginBottom: 16 }}>
-            <div style={{ fontSize: 16, color: 'var(--text-muted)', marginBottom: 8, fontWeight: 500 }}>Max Players</div>
-            <div style={{ display: 'flex', gap: 8 }}>
-              {[2, 3, 4, 5, 6].map(n => (
-                <button
-                  key={n}
-                  onClick={() => setMaxPlayers(n)}
-                  style={{
-                    width: 44, height: 44, borderRadius: 8,
-                    border: `2px solid ${maxPlayers === n ? 'var(--blue-primary)' : 'rgba(0,0,0,0.1)'}`,
-                    background: maxPlayers === n ? 'rgba(16,112,192,0.1)' : 'transparent',
-                    color: maxPlayers === n ? 'var(--blue-deep)' : 'var(--text-muted)',
-                    fontWeight: 700, fontSize: 19, cursor: 'pointer',
-                    transition: 'all 0.15s', fontFamily: 'inherit',
-                  }}
-                >
-                  {n}
-                </button>
-              ))}
-            </div>
-          </div>
-          
-          <div style={{ marginBottom: 20 }}>
-            <div style={{ fontSize: 16, color: 'var(--text-muted)', marginBottom: 8, fontWeight: 500 }}>Game Mode</div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-              {[
-                { id: 'blitz', title: 'Blitz', desc: '15 Minutes • ₹15 Lakh Goal' },
-                { id: 'standard', title: 'Standard', desc: '25 Minutes • ₹35 Lakh Goal' },
-                { id: 'epic', title: 'Epic', desc: '40 Minutes • ₹50 Lakh Goal' }
-              ].map(m => (
-                <div
-                  key={m.id}
-                  onClick={() => setGameMode(m.id as MultiplayerMode)}
-                  style={{
-                    display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                    padding: '12px 16px', borderRadius: 10, cursor: 'pointer',
-                    border: `2px solid ${gameMode === m.id ? 'var(--orange-primary)' : 'rgba(0,0,0,0.08)'}`,
-                    background: gameMode === m.id ? 'rgba(224,80,32,0.08)' : 'transparent',
-                    transition: 'all 0.2s',
-                  }}
-                >
-                  <div>
-                    <div style={{ fontWeight: 800, fontSize: 16, color: gameMode === m.id ? 'var(--text-dark)' : 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{m.title}</div>
-                    <div style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 2, fontWeight: 500 }}>{m.desc}</div>
-                  </div>
-                  <div style={{
-                    width: 20, height: 20, borderRadius: '50%', border: `2px solid ${gameMode === m.id ? 'var(--orange-primary)' : 'rgba(0,0,0,0.2)'}`,
-                    display: 'flex', alignItems: 'center', justifyContent: 'center'
-                  }}>
-                    {gameMode === m.id && <div style={{ width: 10, height: 10, borderRadius: '50%', background: 'var(--orange-primary)' }} />}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <Button variant="gold" size="lg" loading={loading} onClick={handleCreate} style={{ width: '100%' }}>
-            Create Room
-          </Button>
-        </Card>
-
-        {/* Join Room */}
-        <Card style={{ padding: 24 }}>
-          <h2 style={{ fontSize: 21, fontWeight: 700, color: 'var(--text-dark)', fontFamily: 'var(--font-display)', marginBottom: 16 }}>
-            Join a Room
-          </h2>
-          <div style={{ display: 'flex', gap: 10 }}>
-            <input
-              value={joinCode}
-              onChange={e => setJoinCode(e.target.value.toUpperCase())}
-              placeholder="Enter room code..."
-              maxLength={6}
-              onKeyDown={e => e.key === 'Enter' && handleJoin()}
-              style={{
-                flex: 1, padding: '10px 14px', background: 'rgba(0,0,0,0.02)',
-                border: '1px solid rgba(0,0,0,0.1)', borderRadius: 10,
-                color: 'var(--text-dark)', fontSize: 20, fontWeight: 700,
-                letterSpacing: '0.15em', fontFamily: 'var(--font-display)',
-                outline: 'none',
-              }}
-              onFocus={e => { e.target.style.borderColor = 'var(--blue-primary)' }}
-              onBlur={e => { e.target.style.borderColor = 'rgba(0,0,0,0.1)' }}
-            />
-            <Button onClick={handleJoin} loading={loading} disabled={joinCode.length < 4}>
-              Join
+        {menuTab === 'choice' && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+            <Button size="lg" onClick={() => setMenuTab('create')} style={{ width: '100%', fontSize: 20, padding: 24 }}>
+              Create Room
+            </Button>
+            <Button size="lg" variant="secondary" onClick={() => setMenuTab('join')} style={{ width: '100%', fontSize: 20, padding: 24 }}>
+              Join Room
             </Button>
           </div>
-        </Card>
+        )}
+
+        {menuTab === 'create' && (
+          <Card style={{ padding: 24, marginBottom: 16, animation: 'slideUp 0.3s ease' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+              <h2 style={{ fontSize: 21, fontWeight: 700, color: 'var(--text-dark)', fontFamily: 'var(--font-display)' }}>
+                Room Options
+              </h2>
+              <button onClick={() => setMenuTab('choice')} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: 14 }}>
+                Cancel
+              </button>
+            </div>
+            
+            <div style={{ marginBottom: 16 }}>
+              <div style={{ fontSize: 16, color: 'var(--text-muted)', marginBottom: 8, fontWeight: 500 }}>Max Players</div>
+              <div style={{ display: 'flex', gap: 8 }}>
+                {[2, 3, 4, 5, 6].map(n => (
+                  <button
+                    key={n}
+                    onClick={() => setMaxPlayers(n)}
+                    style={{
+                      width: 44, height: 44, borderRadius: 8,
+                      border: `2px solid ${maxPlayers === n ? 'var(--blue-primary)' : 'rgba(0,0,0,0.1)'}`,
+                      background: maxPlayers === n ? 'rgba(16,112,192,0.1)' : 'transparent',
+                      color: maxPlayers === n ? 'var(--blue-deep)' : 'var(--text-muted)',
+                      fontWeight: 700, fontSize: 19, cursor: 'pointer',
+                      transition: 'all 0.15s', fontFamily: 'inherit',
+                    }}
+                  >
+                    {n}
+                  </button>
+                ))}
+              </div>
+            </div>
+            
+            <div style={{ marginBottom: 20 }}>
+              <div style={{ fontSize: 16, color: 'var(--text-muted)', marginBottom: 8, fontWeight: 500 }}>Game Mode</div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                {[
+                  { id: 'blitz', title: 'Blitz', desc: '15 Minutes • ₹15 Lakh Goal' },
+                  { id: 'standard', title: 'Standard', desc: '25 Minutes • ₹35 Lakh Goal' },
+                  { id: 'epic', title: 'Epic', desc: '40 Minutes • ₹50 Lakh Goal' }
+                ].map(m => (
+                  <div
+                    key={m.id}
+                    onClick={() => setGameMode(m.id as MultiplayerMode)}
+                    style={{
+                      display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                      padding: '12px 16px', borderRadius: 10, cursor: 'pointer',
+                      border: `2px solid ${gameMode === m.id ? 'var(--orange-primary)' : 'rgba(0,0,0,0.08)'}`,
+                      background: gameMode === m.id ? 'rgba(224,80,32,0.08)' : 'transparent',
+                      transition: 'all 0.2s',
+                    }}
+                  >
+                    <div>
+                      <div style={{ fontWeight: 800, fontSize: 16, color: gameMode === m.id ? 'var(--text-dark)' : 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{m.title}</div>
+                      <div style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 2, fontWeight: 500 }}>{m.desc}</div>
+                    </div>
+                    <div style={{
+                      width: 20, height: 20, borderRadius: '50%', border: `2px solid ${gameMode === m.id ? 'var(--orange-primary)' : 'rgba(0,0,0,0.2)'}`,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center'
+                    }}>
+                      {gameMode === m.id && <div style={{ width: 10, height: 10, borderRadius: '50%', background: 'var(--orange-primary)' }} />}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <Button variant="gold" size="lg" loading={loading} onClick={handleCreate} style={{ width: '100%' }}>
+              Create Room
+            </Button>
+          </Card>
+        )}
+
+        {menuTab === 'join' && (
+          <Card style={{ padding: 24, animation: 'slideUp 0.3s ease' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+              <h2 style={{ fontSize: 21, fontWeight: 700, color: 'var(--text-dark)', fontFamily: 'var(--font-display)' }}>
+                Enter Room Code
+              </h2>
+              <button onClick={() => setMenuTab('choice')} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: 14 }}>
+                Cancel
+              </button>
+            </div>
+            <div style={{ display: 'flex', gap: 10 }}>
+              <input
+                value={joinCode}
+                onChange={e => setJoinCode(e.target.value.toUpperCase())}
+                placeholder="CODE"
+                maxLength={6}
+                onKeyDown={e => e.key === 'Enter' && handleJoin()}
+                style={{
+                  flex: 1, padding: '10px 14px', background: 'rgba(0,0,0,0.02)',
+                  border: '1px solid rgba(0,0,0,0.1)', borderRadius: 10,
+                  color: 'var(--text-dark)', fontSize: 20, fontWeight: 700,
+                  letterSpacing: '0.15em', fontFamily: 'var(--font-display)',
+                  outline: 'none', textTransform: 'uppercase'
+                }}
+                onFocus={e => { e.target.style.borderColor = 'var(--blue-primary)' }}
+                onBlur={e => { e.target.style.borderColor = 'rgba(0,0,0,0.1)' }}
+              />
+              <Button onClick={handleJoin} loading={loading} disabled={joinCode.length < 4}>
+                Join
+              </Button>
+            </div>
+          </Card>
+        )}
       </div>
     </div>
   )
