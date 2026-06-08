@@ -48,7 +48,7 @@ export function MultiplayerGame() {
   const [showForfeitModal, setShowForfeitModal] = useState(false)
   const [onlinePlayers, setOnlinePlayers] = useState<Set<string>>(new Set())
   const [connectionStatus, setConnectionStatus] = useState<'connected' | 'disconnected'>('connected')
-  
+
   // Use a string representation for stable useEffect dependencies
   const onlinePlayersStr = Array.from(onlinePlayers).sort().join(',')
 
@@ -114,25 +114,25 @@ export function MultiplayerGame() {
   const shouldApplyRemoteState = useCallback((remoteState: GameState) => {
     const localState = gameStateRef.current
     if (!localState) return true
-    
+
     // Always accept if the remote state advanced to a newer turn
     if (remoteState.turn > localState.turn) return true
-    
+
     // Always accept if the number of active players decreased (someone forfeited)
     const remoteActiveCount = remoteState.players.filter(p => !p.hasForfeited).length
     const localActiveCount = localState.players.filter(p => !p.hasForfeited).length
     if (remoteActiveCount < localActiveCount) return true
-    
+
     // If it's NOT our turn, we must accept phase/log changes from the active player
     const isMyTurnLocally = localState.players[localState.currentPlayerIndex]?.id === myPlayerId
     if (!isMyTurnLocally) {
-      if (remoteState.phase !== localState.phase || 
-          remoteState.currentPlayerIndex !== localState.currentPlayerIndex ||
-          JSON.stringify(remoteState.log[0]) !== JSON.stringify(localState.log[0])) {
+      if (remoteState.phase !== localState.phase ||
+        remoteState.currentPlayerIndex !== localState.currentPlayerIndex ||
+        JSON.stringify(remoteState.log[0]) !== JSON.stringify(localState.log[0])) {
         return true
       }
     }
-    
+
     return false
   }, [myPlayerId])
 
@@ -164,7 +164,7 @@ export function MultiplayerGame() {
         if (status === 'SUBSCRIBED') {
           setConnectionStatus('connected')
           if (myPlayerId) await channel.track({ player_id: myPlayerId })
-          
+
           // Initial fetch after subscription is live — no missed updates
           const { data } = await supabase
             .from('multiplayer_rooms')
@@ -185,11 +185,11 @@ export function MultiplayerGame() {
   const handleTimeout = useCallback(async () => {
     const gs = gameStateRef.current
     if (!gs || gs.phase === 'game_over') return
-    
+
     const activePlayerId = gs.players[gs.currentPlayerIndex].id
     const isHost = gs.players[0].id === myPlayerId
     const isMe = activePlayerId === myPlayerId
-    
+
     // If we are not host or active player, only allow timeout if active player is offline
     if (!isHost && !isMe && onlinePlayers.has(activePlayerId)) return
 
@@ -211,7 +211,7 @@ export function MultiplayerGame() {
   useEffect(() => {
     const gs = gameStateRef.current
     if (!gs || gs.phase === 'game_over' || !roomId || !myPlayerId) return
-    
+
     // Find the first active player in the lobby to assume host duties if original host drops
     const firstActivePlayer = gs.players.find(p => !p.hasForfeited && onlinePlayers.has(p.id))
     const isHost = firstActivePlayer?.id === myPlayerId
@@ -230,14 +230,14 @@ export function MultiplayerGame() {
       // Re-evaluate after 15s using latest refs
       const currentGs = gameStateRef.current
       if (!currentGs || currentGs.phase === 'game_over') return
-      
+
       let forfeitState = { ...currentGs }
       let didForfeit = false
 
       offlinePlayerIds.forEach(offlineId => {
         if (!onlinePlayers.has(offlineId)) {
           // They are STILL offline after 15s, force forfeit
-          const updatedPlayers = forfeitState.players.map(p => 
+          const updatedPlayers = forfeitState.players.map(p =>
             p.id === offlineId ? { ...p, wealth: 0, hasForfeited: true } : p
           )
           const offlinePlayer = forfeitState.players.find(p => p.id === offlineId)
@@ -250,7 +250,7 @@ export function MultiplayerGame() {
 
           // Pass turn if it was their turn
           if (currentGs.players[currentGs.currentPlayerIndex].id === offlineId) {
-             forfeitState = advanceTurn(forfeitState)
+            forfeitState = advanceTurn(forfeitState)
           }
         }
       })
@@ -309,7 +309,7 @@ export function MultiplayerGame() {
       // Don't push — decision hasn't been made yet
     } else if (card.type === 'action') {
       if (card.effect?.target === 'target') {
-        const activeOpponents = gs.players.map((p, i) => ({p, i})).filter(x => x.i !== myPlayerIndex && !x.p.hasForfeited)
+        const activeOpponents = gs.players.map((p, i) => ({ p, i })).filter(x => x.i !== myPlayerIndex && !x.p.hasForfeited)
         if (activeOpponents.length === 1) {
           const targetIndex = activeOpponents[0].i
           const next = processAction(gs, myPlayerIndex, card, targetIndex)
@@ -395,7 +395,7 @@ export function MultiplayerGame() {
     const gs = gameStateRef.current
     if (!gs || !roomId || !myPlayerId) {
       if (roomId && myPlayerId) {
-        await leaveRoom(roomId, myPlayerId).catch(() => {})
+        await leaveRoom(roomId, myPlayerId).catch(() => { })
       }
       navigate('/dashboard')
       return
@@ -407,10 +407,10 @@ export function MultiplayerGame() {
       }
       return p
     })
-    
-    let forfeitState = { 
-      ...gs, 
-      players: updatedPlayers, 
+
+    let forfeitState = {
+      ...gs,
+      players: updatedPlayers,
       log: [`${myPlayer?.name} forfeited the match.`, ...gs.log].slice(0, 20)
     }
 
@@ -429,26 +429,26 @@ export function MultiplayerGame() {
         }
       }
     }
-    
+
     setGameState(forfeitState)
     gameStateRef.current = forfeitState
-    
+
     // Background the async tasks so navigation is instant
     Promise.resolve().then(async () => {
       try {
         await pushState(forfeitState)
-        await leaveRoom(roomId, myPlayerId).catch(() => {})
+        await leaveRoom(roomId, myPlayerId).catch(() => { })
 
         // Record loss and deduct 25 coins
         if (profile) {
           await saveGameResult(profile.id, profile.username, false, 0, gs.players.length, gs.players.length, profile.win_streak ?? 0)
-          await supabase.from('profiles').update({ daanik_coins: Math.max(0, (profile.daanik_coins || 0) - 25) }).eq('id', profile.id)
+          await supabase.from('profiles').update({ daank_coins: Math.max(0, (profile.daank_coins || 0) - 25) }).eq('id', profile.id)
         }
       } catch (e) {
         console.error(e)
       }
     })
-    
+
     navigate('/dashboard')
   }
 
@@ -523,7 +523,7 @@ export function MultiplayerGame() {
             <Button variant="gold" size="lg" onClick={() => navigate('/multiplayer')}>Play Again</Button>
             <Button variant="secondary" onClick={async () => {
               if (roomId && myPlayerId) {
-                await leaveRoom(roomId, myPlayerId).catch(() => {})
+                await leaveRoom(roomId, myPlayerId).catch(() => { })
               }
               navigate('/dashboard')
             }}>Dashboard</Button>
@@ -560,7 +560,7 @@ export function MultiplayerGame() {
       </div>
 
       {showForfeitModal && (
-        <ForfeitModal 
+        <ForfeitModal
           onCancel={() => setShowForfeitModal(false)}
           onConfirm={handleForfeit}
         />

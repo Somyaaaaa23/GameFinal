@@ -83,7 +83,7 @@ export function Dashboard() {
   }
 
   const rp = profile?.rank_points ?? 0
-  const coins = profile?.daanik_coins ?? 100
+  const coins = profile?.daank_coins ?? 100
   const currentSeason = SEASONS[0]
 
 
@@ -105,9 +105,9 @@ export function Dashboard() {
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <button 
+          <button
             className="desktop-only"
-            onClick={() => setIsSidebarOpen(!isSidebarOpen)} 
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
             style={{ background: 'transparent', border: 'none', color: 'var(--text-dark)', cursor: 'pointer', fontSize: 25, display: 'flex', alignItems: 'center', padding: 4 }}
           >
             ☰
@@ -119,21 +119,21 @@ export function Dashboard() {
             <span style={{ fontSize: 'clamp(14px, 4vw, 18px)' }}>🪙</span>
             <span style={{ fontSize: 'clamp(14px, 4vw, 18px)', fontWeight: 700, color: 'var(--orange-dark)', whiteSpace: 'nowrap' }}>{coins.toLocaleString()} DC</span>
           </div>
-          <button 
-            onClick={() => setSoundOn(toggleSound())} 
+          <button
+            onClick={() => setSoundOn(toggleSound())}
             title={soundOn ? "Mute Sound" : "Enable Sound"}
-            style={{ 
-              background: 'none', border: 'none', cursor: 'pointer', 
+            style={{
+              background: 'none', border: 'none', cursor: 'pointer',
               fontSize: 'clamp(18px, 4vw, 22px)', display: 'flex', alignItems: 'center', padding: 4, opacity: soundOn ? 1 : 0.5
             }}
           >
             {soundOn ? '🔊' : '🔇'}
           </button>
-          <button 
+          <button
             onClick={toggleLanguage}
             title="Toggle Language"
-            style={{ 
-              background: 'rgba(0,0,0,0.05)', border: '1px solid rgba(0,0,0,0.1)', cursor: 'pointer', 
+            style={{
+              background: 'rgba(0,0,0,0.05)', border: '1px solid rgba(0,0,0,0.1)', cursor: 'pointer',
               fontSize: 'clamp(12px, 3vw, 14px)', display: 'flex', alignItems: 'center', padding: '4px 8px', borderRadius: 6, fontWeight: 700
             }}
           >
@@ -146,7 +146,7 @@ export function Dashboard() {
       <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
         {/* Sidebar (Desktop) */}
         <aside className="glass-panel desktop-flex" style={{
-          width: isSidebarOpen ? 220 : 80, 
+          width: isSidebarOpen ? 220 : 80,
           flexShrink: 0,
           borderTop: 'none', borderLeft: 'none', borderBottom: 'none',
           padding: isSidebarOpen ? '24px 16px' : '24px 12px',
@@ -168,7 +168,7 @@ export function Dashboard() {
               onClick={() => setTab(item.id)}
               title={item.label}
               style={{
-                display: 'flex', alignItems: 'center', 
+                display: 'flex', alignItems: 'center',
                 justifyContent: isSidebarOpen ? 'flex-start' : 'center',
                 gap: 10,
                 padding: '12px 16px', borderRadius: 12, border: 'none',
@@ -190,7 +190,7 @@ export function Dashboard() {
               onClick={() => setShowTutorial(true)}
               title={t('dashboard.howToPlay')}
               style={{
-                display: 'flex', alignItems: 'center', 
+                display: 'flex', alignItems: 'center',
                 justifyContent: isSidebarOpen ? 'flex-start' : 'center',
                 gap: 10,
                 padding: '12px 16px', borderRadius: 12,
@@ -328,8 +328,8 @@ function HomeTab({ navigate, profile, currentSeason, onlineUsers }: { navigate: 
       <Card style={{ padding: '24px', background: '#08543b', borderRadius: 16, border: 'none', position: 'relative', overflow: 'hidden' }}>
         {/* Subtle Background Arrow Graphic */}
         <svg width="240" height="240" viewBox="0 0 24 24" style={{ position: 'absolute', right: '10%', top: '50%', transform: 'translateY(-50%)', opacity: 0.1, zIndex: 0 }} fill="none" stroke="#10B981" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M23 6l-9.5 9.5-5-5L1 18"/>
-          <path d="M17 6h6v6"/>
+          <path d="M23 6l-9.5 9.5-5-5L1 18" />
+          <path d="M17 6h6v6" />
         </svg>
 
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 24, position: 'relative', zIndex: 1 }}>
@@ -346,7 +346,7 @@ function HomeTab({ navigate, profile, currentSeason, onlineUsers }: { navigate: 
                 <span style={{ fontSize: 16 }}>🌱</span>
                 <span style={{ color: '#fff', fontSize: 14, fontWeight: 600, fontFamily: 'var(--font-display)' }}>Rookie Investor</span>
               </div>
-              
+
               <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, marginBottom: 8 }}>
                 <h2 style={{ fontSize: 32, fontWeight: 800, color: '#fff', margin: 0, fontFamily: 'var(--font-display)', letterSpacing: '-0.02em' }}>
                   Level 3
@@ -370,14 +370,14 @@ function HomeTab({ navigate, profile, currentSeason, onlineUsers }: { navigate: 
 
           {/* Right Section: Button */}
           <div style={{ display: 'flex', flexGrow: 1, justifyContent: 'flex-end', minWidth: 160 }}>
-            <button onClick={() => navigate('/campaign')} style={{ 
-              background: '#065e43', 
-              border: '2px solid #FBBF24', 
-              borderRadius: 12, 
-              padding: '12px 28px', 
-              color: '#FBBF24', 
-              fontSize: 20, 
-              fontWeight: 700, 
+            <button onClick={() => navigate('/campaign')} style={{
+              background: '#065e43',
+              border: '2px solid #FBBF24',
+              borderRadius: 12,
+              padding: '12px 28px',
+              color: '#FBBF24',
+              fontSize: 20,
+              fontWeight: 700,
               cursor: 'pointer',
               fontFamily: 'var(--font-display)',
               position: 'relative',
@@ -389,12 +389,12 @@ function HomeTab({ navigate, profile, currentSeason, onlineUsers }: { navigate: 
               maxWidth: 200,
               justifyContent: 'center'
             }}
-            onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.02)'} 
-            onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}>
+              onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.02)'}
+              onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}>
               {/* Sparkles */}
               <span style={{ position: 'absolute', top: 6, left: 8, fontSize: 12 }}>✨</span>
               <span style={{ position: 'absolute', bottom: 6, right: 8, fontSize: 12 }}>✨</span>
-              
+
               Continue <span style={{ marginLeft: 2 }}>→</span>
             </button>
           </div>
@@ -405,16 +405,16 @@ function HomeTab({ navigate, profile, currentSeason, onlineUsers }: { navigate: 
       {/* Season Banner */}
       <Card style={{ padding: 0, overflow: 'hidden', display: 'flex', alignItems: 'stretch', background: 'linear-gradient(to right, #022c22 0%, #047857 40%, #d1fae5 100%)', border: '1px solid rgba(0,0,0,0.08)' }}>
         <div style={{ width: 260, position: 'relative', flexShrink: 0 }}>
-          
+
           {/* Decorations */}
           <div style={{ position: 'absolute', top: 20, left: 25, fontSize: 18, filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))' }}>✨</div>
           <div style={{ position: 'absolute', top: 45, right: 60, fontSize: 16, filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))' }}>✨</div>
           <div style={{ position: 'absolute', bottom: 30, right: 50, fontSize: 18, filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))' }}>🪙</div>
           <div style={{ position: 'absolute', bottom: 20, left: 35, fontSize: 16, filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))' }}>🪙</div>
-          
+
           {/* Trophy */}
           <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-             <span style={{ fontSize: 80, filter: 'drop-shadow(0 10px 15px rgba(0,0,0,0.5))', transform: 'translateY(-2px)' }}>🏆</span>
+            <span style={{ fontSize: 80, filter: 'drop-shadow(0 10px 15px rgba(0,0,0,0.5))', transform: 'translateY(-2px)' }}>🏆</span>
           </div>
         </div>
 
@@ -444,34 +444,34 @@ function HomeTab({ navigate, profile, currentSeason, onlineUsers }: { navigate: 
   )
 }
 
-const PodiumTopper = ({ rank }: { rank: 1|2|3 }) => {
+const PodiumTopper = ({ rank }: { rank: 1 | 2 | 3 }) => {
   const defs = (
     <defs>
       <linearGradient id={`grad-main-${rank}`} x1="0%" y1="0%" x2="0%" y2="100%">
         {rank === 1 ? (
-          <><stop offset="0%" stopColor="#FDE047"/><stop offset="50%" stopColor="#EAB308"/><stop offset="100%" stopColor="#A16207"/></>
+          <><stop offset="0%" stopColor="#FDE047" /><stop offset="50%" stopColor="#EAB308" /><stop offset="100%" stopColor="#A16207" /></>
         ) : rank === 2 ? (
-          <><stop offset="0%" stopColor="#F1F5F9"/><stop offset="50%" stopColor="#94A3B8"/><stop offset="100%" stopColor="#475569"/></>
+          <><stop offset="0%" stopColor="#F1F5F9" /><stop offset="50%" stopColor="#94A3B8" /><stop offset="100%" stopColor="#475569" /></>
         ) : (
-          <><stop offset="0%" stopColor="#FDBA74"/><stop offset="50%" stopColor="#D97706"/><stop offset="100%" stopColor="#78350F"/></>
+          <><stop offset="0%" stopColor="#FDBA74" /><stop offset="50%" stopColor="#D97706" /><stop offset="100%" stopColor="#78350F" /></>
         )}
       </linearGradient>
       <linearGradient id={`grad-dark-${rank}`} x1="0%" y1="0%" x2="0%" y2="100%">
         {rank === 1 ? (
-          <><stop offset="0%" stopColor="#CA8A04"/><stop offset="100%" stopColor="#713F12"/></>
+          <><stop offset="0%" stopColor="#CA8A04" /><stop offset="100%" stopColor="#713F12" /></>
         ) : rank === 2 ? (
-          <><stop offset="0%" stopColor="#64748B"/><stop offset="100%" stopColor="#334155"/></>
+          <><stop offset="0%" stopColor="#64748B" /><stop offset="100%" stopColor="#334155" /></>
         ) : (
-          <><stop offset="0%" stopColor="#B45309"/><stop offset="100%" stopColor="#451A03"/></>
+          <><stop offset="0%" stopColor="#B45309" /><stop offset="100%" stopColor="#451A03" /></>
         )}
       </linearGradient>
       <linearGradient id={`grad-light-${rank}`} x1="0%" y1="0%" x2="0%" y2="100%">
         {rank === 1 ? (
-           <><stop offset="0%" stopColor="#FEF08A"/><stop offset="100%" stopColor="#FACC15"/></>
+          <><stop offset="0%" stopColor="#FEF08A" /><stop offset="100%" stopColor="#FACC15" /></>
         ) : rank === 2 ? (
-           <><stop offset="0%" stopColor="#FFFFFF"/><stop offset="100%" stopColor="#CBD5E1"/></>
+          <><stop offset="0%" stopColor="#FFFFFF" /><stop offset="100%" stopColor="#CBD5E1" /></>
         ) : (
-           <><stop offset="0%" stopColor="#FDE68A"/><stop offset="100%" stopColor="#F59E0B"/></>
+          <><stop offset="0%" stopColor="#FDE68A" /><stop offset="100%" stopColor="#F59E0B" /></>
         )}
       </linearGradient>
       <filter id={`drop-shadow-${rank}`} x="-20%" y="-20%" width="140%" height="140%">
@@ -496,7 +496,7 @@ const PodiumTopper = ({ rank }: { rank: 1|2|3 }) => {
         {/* Central Shield */}
         <path d="M 60 40 L 70 30 L 130 30 L 140 40 L 140 70 C 140 100, 100 120, 100 120 C 100 120, 60 100, 60 70 Z" fill={`url(#grad-main-${rank})`} filter={`url(#drop-shadow-${rank})`} />
         <path d="M 68 44 L 74 38 L 126 38 L 132 44 L 132 68 C 132 92, 100 108, 100 108 C 100 108, 68 92, 68 68 Z" fill={`url(#grad-light-${rank})`} />
-        
+
         {/* Crown */}
         <g filter={`url(#drop-shadow-${rank})`}>
           <path d="M 75 35 L 70 10 L 85 20 L 100 0 L 115 20 L 130 10 L 125 35 Q 100 40 75 35 Z" fill={`url(#grad-main-${rank})`} />
@@ -504,7 +504,7 @@ const PodiumTopper = ({ rank }: { rank: 1|2|3 }) => {
           <circle cx="100" cy="0" r="6" fill={`url(#grad-light-${rank})`} />
           <circle cx="130" cy="10" r="5" fill={`url(#grad-light-${rank})`} />
         </g>
-        
+
         {/* Rank Number */}
         <text x="100" y="85" fontSize="38" fontWeight="900" fontFamily="system-ui, -apple-system, sans-serif" fill="#000000" textAnchor="middle" filter={`url(#drop-shadow-${rank})`}>
           {rank}
@@ -514,7 +514,7 @@ const PodiumTopper = ({ rank }: { rank: 1|2|3 }) => {
   );
 }
 
-const PodiumStep = ({ rank, player, profile }: { rank: 1|2|3; player?: any; profile?: any }) => {
+const PodiumStep = ({ rank, player, profile }: { rank: 1 | 2 | 3; player?: any; profile?: any }) => {
   if (!player) return <div style={{ width: '30%', minWidth: 100 }} />
 
   const is1 = rank === 1;
@@ -592,7 +592,7 @@ function LeaderboardTab({ leaderboard, loading, profile, onRefresh }: { leaderbo
 
   // Pre-calculate ranks before pinning
   const rankedLeaderboard = sortedLeaderboard.map((p, index) => ({ ...p, rank: index + 1 }))
-  
+
   const top3 = rankedLeaderboard.slice(0, 3)
   const remaining = rankedLeaderboard.slice(3)
 
@@ -626,51 +626,51 @@ function LeaderboardTab({ leaderboard, loading, profile, onRefresh }: { leaderbo
                 <PodiumStep rank={3} player={top3[2]} profile={profile} />
               </div>
             )}
-            
+
             <div className="scroll-x">
               <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 650 }}>
-              <thead>
-                <tr style={{ borderBottom: '2px solid rgba(0,0,0,0.1)', background: 'transparent' }}>
-                  {[t('leaderboard.rank'), t('leaderboard.player')].map(h => (
-                    <th key={h} style={{ padding: '12px 16px', textAlign: 'left', fontSize: 13, color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{h}</th>
-                  ))}
-                  <th onClick={() => handleSort('wins')} style={{ cursor: 'pointer', padding: '12px 16px', textAlign: 'left', fontSize: 13, color: sortField === 'wins' ? 'var(--green-primary)' : 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{t('leaderboard.wins')} {sortField === 'wins' && (sortAsc ? '↑' : '↓')}</th>
-                  <th onClick={() => handleSort('highest_net_worth')} style={{ cursor: 'pointer', minWidth: 140, padding: '12px 16px', textAlign: 'left', fontSize: 13, color: sortField === 'highest_net_worth' ? 'var(--green-primary)' : 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{t('leaderboard.bestWealth')} {sortField === 'highest_net_worth' && (sortAsc ? '↑' : '↓')}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {displayData.map((player) => {
-                  const isMe = player.user_id === profile?.id
-                  const displayUsername = isMe && profile?.username ? profile.username : player.username
-                  return (
-                    <tr key={player.id} style={{ 
-                      borderBottom: '1px solid rgba(0,0,0,0.05)', 
-                      background: isMe ? 'rgba(32,160,96,0.1)' : 'transparent',
-                      border: isMe ? '1px solid var(--green-primary)' : 'none',
-                      borderRadius: isMe ? 8 : 0,
-                      transition: 'background 0.2s' 
-                    }} onMouseEnter={e => e.currentTarget.style.background = isMe ? 'rgba(32,160,96,0.15)' : 'rgba(0,0,0,0.05)'} onMouseLeave={e => e.currentTarget.style.background = isMe ? 'rgba(32,160,96,0.1)' : 'transparent'}>
-                      <td style={{ padding: '14px 16px', fontSize: 16, fontWeight: 700, color: 'var(--text-muted)' }}>
-                        {player.rank}
-                      </td>
-                      <td style={{ padding: '14px 16px', display: 'flex', alignItems: 'center', gap: 10 }}>
-                        <div style={{ width: 32, height: 32, borderRadius: '50%', background: isMe ? 'var(--green-primary)' : 'rgba(0,0,0,0.1)', color: isMe ? '#fff' : 'var(--text-dark)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, fontWeight: 800 }}>
-                          {displayUsername[0]?.toUpperCase() || '?'}
-                        </div>
-                        <span style={{ fontSize: 16, color: 'var(--text-dark)', fontWeight: isMe ? 800 : 600 }}>{displayUsername} {isMe && `(${t('common.you')})`}</span>
-                      </td>
-                      <td style={{ padding: '14px 16px', fontSize: 16, fontWeight: 700, color: isMe ? 'var(--green-primary)' : 'var(--green-primary)' }}>{player.wins}</td>
-                      <td style={{ padding: '14px 16px', fontSize: 15, color: 'var(--orange-dark)', fontWeight: 700 }}>{formatWealth(player.highest_net_worth)}</td>
-                    </tr>
-                  )
-                })}
-              </tbody>
+                <thead>
+                  <tr style={{ borderBottom: '2px solid rgba(0,0,0,0.1)', background: 'transparent' }}>
+                    {[t('leaderboard.rank'), t('leaderboard.player')].map(h => (
+                      <th key={h} style={{ padding: '12px 16px', textAlign: 'left', fontSize: 13, color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{h}</th>
+                    ))}
+                    <th onClick={() => handleSort('wins')} style={{ cursor: 'pointer', padding: '12px 16px', textAlign: 'left', fontSize: 13, color: sortField === 'wins' ? 'var(--green-primary)' : 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{t('leaderboard.wins')} {sortField === 'wins' && (sortAsc ? '↑' : '↓')}</th>
+                    <th onClick={() => handleSort('highest_net_worth')} style={{ cursor: 'pointer', minWidth: 140, padding: '12px 16px', textAlign: 'left', fontSize: 13, color: sortField === 'highest_net_worth' ? 'var(--green-primary)' : 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{t('leaderboard.bestWealth')} {sortField === 'highest_net_worth' && (sortAsc ? '↑' : '↓')}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {displayData.map((player) => {
+                    const isMe = player.user_id === profile?.id
+                    const displayUsername = isMe && profile?.username ? profile.username : player.username
+                    return (
+                      <tr key={player.id} style={{
+                        borderBottom: '1px solid rgba(0,0,0,0.05)',
+                        background: isMe ? 'rgba(32,160,96,0.1)' : 'transparent',
+                        border: isMe ? '1px solid var(--green-primary)' : 'none',
+                        borderRadius: isMe ? 8 : 0,
+                        transition: 'background 0.2s'
+                      }} onMouseEnter={e => e.currentTarget.style.background = isMe ? 'rgba(32,160,96,0.15)' : 'rgba(0,0,0,0.05)'} onMouseLeave={e => e.currentTarget.style.background = isMe ? 'rgba(32,160,96,0.1)' : 'transparent'}>
+                        <td style={{ padding: '14px 16px', fontSize: 16, fontWeight: 700, color: 'var(--text-muted)' }}>
+                          {player.rank}
+                        </td>
+                        <td style={{ padding: '14px 16px', display: 'flex', alignItems: 'center', gap: 10 }}>
+                          <div style={{ width: 32, height: 32, borderRadius: '50%', background: isMe ? 'var(--green-primary)' : 'rgba(0,0,0,0.1)', color: isMe ? '#fff' : 'var(--text-dark)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, fontWeight: 800 }}>
+                            {displayUsername[0]?.toUpperCase() || '?'}
+                          </div>
+                          <span style={{ fontSize: 16, color: 'var(--text-dark)', fontWeight: isMe ? 800 : 600 }}>{displayUsername} {isMe && `(${t('common.you')})`}</span>
+                        </td>
+                        <td style={{ padding: '14px 16px', fontSize: 16, fontWeight: 700, color: isMe ? 'var(--green-primary)' : 'var(--green-primary)' }}>{player.wins}</td>
+                        <td style={{ padding: '14px 16px', fontSize: 15, color: 'var(--orange-dark)', fontWeight: 700 }}>{formatWealth(player.highest_net_worth)}</td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
               </table>
             </div>
-            
+
             {!showAll && remaining.length > 9 && (
               <div style={{ padding: 20, textAlign: 'center' }}>
-                <button 
+                <button
                   onClick={() => setShowAll(true)}
                   style={{
                     background: 'var(--orange-primary)',
@@ -712,7 +712,7 @@ function ContractsTab() {
           .from('daily_contracts')
           .select('*')
           .gte('contract_date', new Date().toISOString().split('T')[0])
-        
+
         if (activeContracts) {
           setContracts(activeContracts)
           if (activeContracts.length > 0) {
@@ -835,7 +835,7 @@ function ProfileTab() {
 
   const rp = profile?.rank_points ?? 0
   const winRate = profile && profile.games_played > 0 ? Math.round((profile.games_won / profile.games_played) * 100) : 0
-  
+
   // Use first character of username if no avatar is set, or generic fallback
   const fallbackAvatar = profile?.username ? profile.username[0].toUpperCase() : '👤'
   const avatar = profile?.avatar_url || fallbackAvatar
@@ -888,14 +888,14 @@ function ProfileTab() {
       <Card style={{ padding: 0, overflow: 'hidden', marginBottom: 32, border: '1px solid rgba(0,0,0,0.1)' }}>
         {/* Banner */}
         <div style={{ height: 140, background: 'linear-gradient(135deg, var(--green-primary), var(--green-deep))', position: 'relative', overflow: 'hidden' }}>
-           {/* Subtle pattern or badge watermark */}
-           <div style={{ position: 'absolute', top: -20, right: -20, opacity: 0.1, fontSize: 180, transform: 'rotate(15deg)' }}>🏆</div>
+          {/* Subtle pattern or badge watermark */}
+          <div style={{ position: 'absolute', top: -20, right: -20, opacity: 0.1, fontSize: 180, transform: 'rotate(15deg)' }}>🏆</div>
         </div>
 
         {/* Profile Info */}
         <div style={{ padding: '0 clamp(16px, 4vw, 32px) 32px' }}>
           <div style={{ marginTop: -50, marginBottom: 16, display: 'flex' }}>
-            <div 
+            <div
               onClick={() => setIsEditingAvatar(!isEditingAvatar)}
               style={{ width: 100, height: 100, borderRadius: '50%', background: 'var(--card-paper)', border: '4px solid #fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 50, cursor: 'pointer', position: 'relative', boxShadow: '0 8px 16px rgba(0,0,0,0.15)', transition: 'transform 0.2s', zIndex: 10 }}
               onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.05)'}
@@ -912,10 +912,10 @@ function ProfileTab() {
               <div>
                 {isEditingName ? (
                   <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8, flexWrap: 'wrap' }}>
-                    <input 
+                    <input
                       autoFocus
-                      type="text" 
-                      value={newName} 
+                      type="text"
+                      value={newName}
                       onChange={e => setNewName(e.target.value)}
                       onKeyDown={e => e.key === 'Enter' && handleUpdateName()}
                       style={{ fontSize: 24, fontWeight: 800, padding: '4px 12px', borderRadius: 8, border: '2px solid var(--green-primary)', outline: 'none', fontFamily: 'Space Grotesk, sans-serif', width: '100%', maxWidth: 250 }}
@@ -940,10 +940,10 @@ function ProfileTab() {
                 </div>
               </div>
             </div>
-            
+
             <div style={{ textAlign: 'right', background: 'rgba(32,160,96,0.05)', padding: '12px 20px', borderRadius: 12, border: '1px solid rgba(32,160,96,0.1)', alignSelf: 'center' }}>
               <div style={{ fontSize: 13, color: 'var(--green-primary)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 4, fontWeight: 700 }}>Total XP</div>
-              <div style={{ fontSize: 26, fontWeight: 800, color: 'var(--green-deep)', fontFamily: 'Space Grotesk, sans-serif' }}>{(profile?.total_xp ?? 0).toLocaleString()} <span style={{fontSize:18}}>⭐</span></div>
+              <div style={{ fontSize: 26, fontWeight: 800, color: 'var(--green-deep)', fontFamily: 'Space Grotesk, sans-serif' }}>{(profile?.total_xp ?? 0).toLocaleString()} <span style={{ fontSize: 18 }}>⭐</span></div>
             </div>
           </div>
 
@@ -974,7 +974,7 @@ function ProfileTab() {
       <h3 className="text-xl sm:text-2xl font-bold" style={{ color: 'var(--text-dark)', marginBottom: 20, fontFamily: 'Space Grotesk, sans-serif' }}>Career Stats</h3>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4" style={{ marginBottom: 40 }}>
         {[
-          { label: 'DAANIK Coins', value: `${(profile?.daanik_coins ?? 0).toLocaleString()}`, icon: '🪙' },
+          { label: 'DAANIK Coins', value: `${(profile?.daank_coins ?? 0).toLocaleString()}`, icon: '🪙' },
           { label: 'Win Rate', value: `${winRate}%`, icon: '🎯' },
           { label: 'Games Won', value: (profile?.games_won ?? 0).toString(), icon: '🏆' },
           { label: 'Games Played', value: (profile?.games_played ?? 0).toString(), icon: '🎮' },

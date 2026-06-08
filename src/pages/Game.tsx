@@ -125,7 +125,7 @@ export function Game() {
       const humanPlayer = forfeitState.players[humanPlayerIndex]
       playSound('lose')
       saveGameResult(profile.id, profile.username, false, humanPlayer.wealth).then(async () => {
-        await supabase.from('profiles').update({ daanik_coins: Math.max(0, (profile.daanik_coins || 0) - 25) }).eq('id', profile.id)
+        await supabase.from('profiles').update({ daank_coins: Math.max(0, (profile.daank_coins || 0) - 25) }).eq('id', profile.id)
         await refreshProfile()
         navigate('/dashboard')
       })
@@ -467,7 +467,7 @@ function SetupScreen({ botCount, setBotCount, onStart, onBack, levelId }: { botC
   const wealthGoalText = levelConfig ? formatWealth(levelConfig.targetCorpus) : '₹50 Lakhs';
   return (
     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24, background: '#d1fae5', position: 'relative', overflow: 'hidden' }}>
-      
+
       <style>{`
         @keyframes float1 { 0%, 100% { transform: translateY(0) rotate(-15deg); } 50% { transform: translateY(-20px) rotate(-12deg); } }
         @keyframes float2 { 0%, 100% { transform: translateY(0) rotate(10deg); } 50% { transform: translateY(-15px) rotate(13deg); } }
