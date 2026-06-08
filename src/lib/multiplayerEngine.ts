@@ -1,10 +1,9 @@
 import { supabase } from './supabase'
-import type { GameState, PlayerState } from '../types/game'
+import type { GameState, PlayerState, MultiplayerMode } from '../types/game'
 import { createGameDeck } from '../data/cards'
 
+// Default constants (overridden by mode)
 const STARTING_WEALTH = 500000
-const WEALTH_GOAL = 5000000      // ₹50 Lakhs — matches single-player
-const TIME_LIMIT_MS = 30 * 60 * 1000  // 30 minutes per game
 
 function generateRoomCode(): string {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'
@@ -41,7 +40,7 @@ export interface Room {
   updated_at: string
 }
 
-export async function createRoom(hostId: string, hostUsername: string, maxPlayers: number): Promise<Room> {
+export async function createRoom(hostId: string, hostUsername: string, maxPlayers: number, mode: MultiplayerMode = 'standard'): Promise<Room> {
   let code = generateRoomCode()
   let tries = 0
   while (tries < 10) {
@@ -53,7 +52,7 @@ export async function createRoom(hostId: string, hostUsername: string, maxPlayer
 
   const { data, error } = await supabase
     .from('multiplayer_rooms')
-    .insert({ host_id: hostId, host_username: hostUsername, code, max_players: maxPlayers, status: 'waiting' })
+    .insert({ host_id: hostId, host_username: hostUsername, code, max_players: maxPlayers, status: 'waiting', game_state: { multiplayerMode: mode } })
     .select()
     .single()
   if (error) throw error
@@ -131,9 +130,19 @@ export async function getRoom(roomId: string): Promise<Room | null> {
   return data
 }
 
-export function buildInitialGameState(players: (RoomPlayer & { avatar_url?: string; rank_points?: number })[]): GameState {
+export function buildInitialGameState(players: (RoomPlayer & { avatar_url?: string; rank_points?: number })[], mode: MultiplayerMode = 'standard'): GameState {
   const deck = createGameDeck()
   const sorted = [...players].sort((a, b) => a.seat_order - b.seat_order)
+  
+  let WEALTH_GOAL = 3500000
+  let TIME_LIMIT_MS = 25 * 60 * 1000
+  if (mode === 'blitz') {
+    WEALTH_GOAL = 1500000
+    TIME_LIMIT_MS = 15 * 60 * 1000
+  } else if (mode === 'epic') {
+    WEALTH_GOAL = 5000000
+    TIME_LIMIT_MS = 40 * 60 * 1000
+  }
 
   const playerStates: PlayerState[] = sorted.map(p => ({
     id: p.player_id,
@@ -166,11 +175,12 @@ export function buildInitialGameState(players: (RoomPlayer & { avatar_url?: stri
     pendingDecision: null,
     pendingTarget: null,
     winner: null,
-    log: ['Game started! First to ₹50 Lakhs wins.'],
+    log: [`Game started! First to ${mode === 'blitz' ? '₹15 Lakhs' : mode === 'epic' ? '₹50 Lakhs' : '₹35 Lakhs'} wins.`],
     wealthGoal: WEALTH_GOAL,
     timeLimit: TIME_LIMIT_MS,
     startTime: Date.now(),
     turnStartTime: Date.now(),
+    multiplayerMode: mode,
   }
 }
 
@@ -187,7 +197,11 @@ export async function startGame(roomId: string, players: RoomPlayer[]): Promise<
     }
   })
 
-  const gameState = buildInitialGameState(playersWithAvatars)
+  // Fetch the room to get the selected mode
+  const { data: roomData } = await supabase.from('multiplayer_rooms').select('game_state').eq('id', roomId).single()
+  const mode = (roomData?.game_state as any)?.multiplayerMode || 'standard'
+
+  const gameState = buildInitialGameState(playersWithAvatars, mode)
   const currentPlayerId = players.find(p => p.seat_order === 0)?.player_id ?? null
 
   const { error } = await supabase

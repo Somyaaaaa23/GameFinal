@@ -209,6 +209,20 @@ function applyEffect(state: GameState, effect: CardEffect, sourcePlayerIndex: nu
       players[sourcePlayerIndex] = { ...source, wealth: source.wealth + actualLoss }
       break
     }
+    case 'steal_pct': {
+      const pct = (effect.value ?? 0) / 100
+      const amount = Math.floor(target.wealth * pct)
+      let newWealth = target.wealth - amount
+      let newFloor = target.wealthFloor
+      if (newWealth < newFloor) {
+        newWealth = newFloor
+        newFloor = 0 // Shield breaks!
+      }
+      const actualLoss = target.wealth - newWealth
+      players[targetPlayerIndex] = { ...target, wealth: Math.max(0, newWealth), wealthFloor: newFloor }
+      players[sourcePlayerIndex] = { ...source, wealth: source.wealth + actualLoss }
+      break
+    }
     case 'attack_all_pct': {
       // Scale AoE damage down with more players to prevent runaway dominance
       const rawPct = (effect.value ?? 0) / 100

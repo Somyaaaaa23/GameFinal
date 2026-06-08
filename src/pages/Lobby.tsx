@@ -8,6 +8,7 @@ import {
   subscribeToRoom, getRoomPlayers, broadcastPlayersChanged,
   type Room, type RoomPlayer,
 } from '../lib/multiplayerEngine'
+import type { MultiplayerMode } from '../types/game'
 import type { RealtimeChannel } from '@supabase/supabase-js'
 
 type LobbyView = 'menu' | 'waiting'
@@ -19,6 +20,7 @@ export function Lobby() {
   const [view, setView] = useState<LobbyView>('menu')
   const [joinCode, setJoinCode] = useState('')
   const [maxPlayers, setMaxPlayers] = useState(2)
+  const [gameMode, setGameMode] = useState<MultiplayerMode>('standard')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -68,7 +70,7 @@ export function Lobby() {
     setLoading(true)
     setError('')
     try {
-      const newRoom = await createRoom(profile.id, profile.username, maxPlayers)
+      const newRoom = await createRoom(profile.id, profile.username, maxPlayers, gameMode)
       const players = await getRoomPlayers(newRoom.id)
       setRoomPlayers(players)
       enterRoom(newRoom)
@@ -208,6 +210,41 @@ export function Lobby() {
               ))}
             </div>
           </div>
+          
+          <div style={{ marginBottom: 20 }}>
+            <div style={{ fontSize: 16, color: 'var(--text-muted)', marginBottom: 8, fontWeight: 500 }}>Game Mode</div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              {[
+                { id: 'blitz', title: 'Blitz', desc: '15 Minutes • ₹15 Lakh Goal' },
+                { id: 'standard', title: 'Standard', desc: '25 Minutes • ₹35 Lakh Goal' },
+                { id: 'epic', title: 'Epic', desc: '40 Minutes • ₹50 Lakh Goal' }
+              ].map(m => (
+                <div
+                  key={m.id}
+                  onClick={() => setGameMode(m.id as MultiplayerMode)}
+                  style={{
+                    display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                    padding: '12px 16px', borderRadius: 10, cursor: 'pointer',
+                    border: `2px solid ${gameMode === m.id ? 'var(--orange-primary)' : 'rgba(0,0,0,0.08)'}`,
+                    background: gameMode === m.id ? 'rgba(224,80,32,0.08)' : 'transparent',
+                    transition: 'all 0.2s',
+                  }}
+                >
+                  <div>
+                    <div style={{ fontWeight: 800, fontSize: 16, color: gameMode === m.id ? 'var(--text-dark)' : 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{m.title}</div>
+                    <div style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 2, fontWeight: 500 }}>{m.desc}</div>
+                  </div>
+                  <div style={{
+                    width: 20, height: 20, borderRadius: '50%', border: `2px solid ${gameMode === m.id ? 'var(--orange-primary)' : 'rgba(0,0,0,0.2)'}`,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center'
+                  }}>
+                    {gameMode === m.id && <div style={{ width: 10, height: 10, borderRadius: '50%', background: 'var(--orange-primary)' }} />}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
           <Button variant="gold" size="lg" loading={loading} onClick={handleCreate} style={{ width: '100%' }}>
             Create Room
           </Button>
@@ -270,6 +307,8 @@ function WaitingRoom({
     setTimeout(() => setCopied(false), 2000)
   }
 
+  const modeStr = (room.game_state as any)?.multiplayerMode || 'standard'
+
   return (
     <div style={{ minHeight: '100vh', background: 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24, position: 'relative' }}>
       <button
@@ -302,6 +341,16 @@ function WaitingRoom({
             <span style={{ fontSize: 'clamp(12px, 3.5vw, 15px)', color: copied ? 'var(--green-primary)' : 'var(--text-muted)', fontWeight: 600, whiteSpace: 'nowrap' }}>
               {copied ? '✓ Copied!' : 'Click to copy'}
             </span>
+          </div>
+
+          <div style={{ marginTop: 16, padding: '10px 16px', background: 'rgba(0,0,0,0.03)', borderRadius: 12, display: 'inline-flex', alignItems: 'center', gap: 12, border: '1px solid rgba(0,0,0,0.05)' }}>
+             <div style={{ fontWeight: 800, textTransform: 'uppercase', color: 'var(--text-dark)', letterSpacing: '0.05em' }}>
+               {modeStr === 'blitz' ? 'Blitz Mode' : modeStr === 'epic' ? 'Epic Mode' : 'Standard Mode'}
+             </div>
+             <div style={{ width: 4, height: 4, borderRadius: '50%', background: 'var(--text-muted)' }} />
+             <div style={{ color: 'var(--text-muted)', fontWeight: 600 }}>
+               {modeStr === 'blitz' ? '15 Min / ₹15L Goal' : modeStr === 'epic' ? '40 Min / ₹50L Goal' : '25 Min / ₹35L Goal'}
+             </div>
           </div>
         </div>
 

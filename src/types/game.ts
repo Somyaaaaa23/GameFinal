@@ -1,9 +1,10 @@
 export type CardType = 'decision' | 'action' | 'defense'
 export type CardTier = 'common' | 'rare' | 'epic' | 'legendary'
 export type DecisionChoice = 'spend' | 'save' | 'invest'
+export type MultiplayerMode = 'blitz' | 'standard' | 'epic'
 import type { LevelConfig, LevelState } from './level'
 export interface CardEffect {
-  type: 'wealth_change' | 'wealth_pct' | 'wealth_next_turn' | 'wealth_end_game' | 'skip_turn' | 'steal' | 'attack_all_pct' | 'block_card' | 'reduce_attack_pct' | 'copy_card' | 'set_goal' | 'market_crash_player' | 'wealth_floor' | 'double_invest'
+  type: 'wealth_change' | 'wealth_pct' | 'wealth_next_turn' | 'wealth_end_game' | 'skip_turn' | 'steal' | 'steal_pct' | 'attack_all_pct' | 'block_card' | 'reduce_attack_pct' | 'copy_card' | 'set_goal' | 'market_crash_player' | 'wealth_floor' | 'double_invest'
   value?: number
   target?: 'self' | 'target' | 'all' | 'others'
   condition?: string
@@ -77,6 +78,7 @@ export interface GameState {
   timeLimit: number
   startTime: number
   turnStartTime: number
+  multiplayerMode?: MultiplayerMode
   levelConfig?: LevelConfig
   levelState?: LevelState
 }

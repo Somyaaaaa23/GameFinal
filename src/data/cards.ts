@@ -2213,6 +2213,22 @@ export const LEGENDARY_CARDS: GameCard[] = [
     effect: { type: 'market_crash_player', value: 25, target: 'target' },
   },
   {
+    id: 'ac_time_warp',
+    name: 'Market Pause',
+    type: 'action',
+    tier: 'legendary',
+    flavor: 'Time stands still for everyone but you. Take another turn!',
+    effect: { type: 'skip_turn', target: 'others', value: 1 },
+  },
+  {
+    id: 'ac_hostile_takeover_20',
+    name: 'Hostile Takeover',
+    type: 'action',
+    tier: 'legendary',
+    flavor: "You quietly acquire a controlling stake in your opponent's most profitable assets.",
+    effect: { type: 'steal_pct', target: 'target', value: 25 },
+  },
+  {
     id: 'leg_bankruptcy_shield',
     name: 'Bankruptcy Shield',
     type: 'defense',
@@ -2270,9 +2286,14 @@ export function createGameDeck(): GameCard[] {
     deck.push({ ...card, id: `${card.id}_1` })
   }
 
-  // 1 copy of each legendary (rare, exciting)
+  // 1 copy of each legendary (rare, exciting) - EXCEPT Market Pause gets 2 copies
   for (const card of LEGENDARY_CARDS) {
-    deck.push({ ...card, id: `${card.id}_1` })
+    if (card.id === 'ac_time_warp') {
+      deck.push({ ...card, id: `${card.id}_1` })
+      deck.push({ ...card, id: `${card.id}_2` })
+    } else {
+      deck.push({ ...card, id: `${card.id}_1` })
+    }
   }
 
   // Shuffle
@@ -2344,13 +2365,20 @@ export function createLevelDeck(levelIndex: number, botDifficulty: 'easy' | 'med
     deck.push({ ...card, id: `${card.id}_def_${i}` })
   })
 
-  // 4. SELECT 5 LEGENDARY CARDS
-  const legendaryPool = [...LEGENDARY_CARDS]
+  // 4. SELECT 5 LEGENDARY CARDS (excluding Market Pause)
+  const legendaryPool = LEGENDARY_CARDS.filter(c => c.id !== 'ac_time_warp')
   legendaryPool.sort(() => Math.random() - 0.5)
   const selectedLegendary = legendaryPool.slice(0, 5)
   selectedLegendary.forEach((card, i) => {
     deck.push({ ...card, id: `${card.id}_leg_${i}` })
   })
+
+  // Ensure Market Pause is in every level, exactly 2 times
+  const marketPauseCard = LEGENDARY_CARDS.find(c => c.id === 'ac_time_warp');
+  if (marketPauseCard) {
+    deck.push({ ...marketPauseCard, id: `${marketPauseCard.id}_forced_1` });
+    deck.push({ ...marketPauseCard, id: `${marketPauseCard.id}_forced_2` });
+  }
 
   // Shuffle the final 80 card deck
   for (let i = deck.length - 1; i > 0; i--) {
