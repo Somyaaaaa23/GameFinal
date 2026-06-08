@@ -5,7 +5,7 @@ import { Button } from '../components/ui/Button'
 import type { GameState, GameCard as GameCardType } from '../types/game'
 import { formatWealth } from '../types/game'
 import {
-  processDecision, processAction, advanceTurn, startDrawPhase, forceSkipTurn
+  processDecision, processAction, advanceTurn, startDrawPhase, forceSkipTurn, drawCard
 } from '../lib/gameEngine'
 import { pushGameState, leaveRoom } from '../lib/multiplayerEngine'
 import { saveGameResult } from '../lib/auth'
@@ -294,6 +294,34 @@ export function MultiplayerGame() {
     gameStateRef.current = updated
     playSound('draw')
     // Don't push yet — player needs to pick a card
+  }
+
+  async function handleBuyExtraCard() {
+    const gs = gameStateRef.current
+    if (!gs || gs.players[gs.currentPlayerIndex]?.id !== myPlayerId) return
+    if (gs.phase !== 'play') return
+
+    const currentCoins = profileRef.current?.daank_coins ?? 0
+    if (currentCoins < 25) return
+
+    // Deduct locally
+    if (profileRef.current) {
+      profileRef.current.daank_coins = currentCoins - 25
+    }
+
+    // Call Supabase to deduct
+    if (profileRef.current?.id) {
+      await supabase.from('profiles').update({ daank_coins: Math.max(0, currentCoins - 25) }).eq('id', profileRef.current.id)
+      await refreshProfile()
+    }
+
+    // Draw card
+    const { state: newState } = drawCard(gs, myPlayerIndex)
+    setGameState(newState)
+    gameStateRef.current = newState
+    playSound('draw')
+    notify('Extra card drawn! -25 🪙')
+    await pushState(newState)
   }
 
   async function handlePlayCard(card: GameCardType) {
@@ -605,6 +633,8 @@ export function MultiplayerGame() {
         onCancelTargeting={() => {
           setPhase('playing')
         }}
+        daanikCoins={profileRef.current?.daank_coins ?? 0}
+        onBuyExtraCard={handleBuyExtraCard}
       />
     </div>
   )
