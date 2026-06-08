@@ -2210,7 +2210,7 @@ export const LEGENDARY_CARDS: GameCard[] = [
     type: 'action',
     tier: 'legendary',
     flavor: 'An impossible event that changes everything.',
-    effect: { type: 'market_crash_player', value: 40, target: 'target' },
+    effect: { type: 'market_crash_player', value: 25, target: 'target' },
   },
   {
     id: 'leg_bankruptcy_shield',
@@ -2218,7 +2218,7 @@ export const LEGENDARY_CARDS: GameCard[] = [
     type: 'defense',
     tier: 'legendary',
     flavor: 'Chapter 11 for the win.',
-    effect: { type: 'wealth_floor', value: 100000, target: 'self' },
+    effect: { type: 'wealth_floor', value: 50000, target: 'self' },
   },
   {
     id: 'leg_compound_machine',
@@ -2227,21 +2227,21 @@ export const LEGENDARY_CARDS: GameCard[] = [
     tier: 'legendary',
     flavor: 'Compound interest: the 8th wonder of the world.',
     options: [
-      { type: 'spend', label: 'Cash Out', description: 'Take profits now', effect: { type: 'wealth_change', value: 200000, target: 'self' } },
-      { type: 'save', label: 'Reinvest 50%', description: 'Balanced approach', effect: { type: 'wealth_change', value: 350000, target: 'self' } },
-      { type: 'invest', label: 'Full Compounding', description: 'Let it ride', effect: { type: 'wealth_change', value: 500000, target: 'self' }, investRisk: 45, failEffect: { type: 'wealth_change', value: -200000, target: 'self' } },
+      { type: 'spend', label: 'Cash Out', description: 'Take profits now', effect: { type: 'wealth_change', value: 80000, target: 'self' } },
+      { type: 'save', label: 'Reinvest 50%', description: 'Balanced approach', effect: { type: 'wealth_change', value: 120000, target: 'self' } },
+      { type: 'invest', label: 'Full Compounding', description: 'Let it ride', effect: { type: 'wealth_change', value: 180000, target: 'self' }, investRisk: 45, failEffect: { type: 'wealth_change', value: -80000, target: 'self' } },
     ],
   },
   {
     id: 'leg_daanik_founder',
-    name: 'The DAANIK Founder',
+    name: 'Kuber',
     type: 'decision',
     tier: 'legendary',
     flavor: 'You set the rules of the game.',
     options: [
-      { type: 'spend', label: 'IPO Now', description: 'Cash out big', effect: { type: 'wealth_change', value: 500000, target: 'self' } },
-      { type: 'save', label: 'Strategic Partner', description: 'Steady growth', effect: { type: 'wealth_change', value: 400000, target: 'self' } },
-      { type: 'invest', label: 'Global Expansion', description: 'Build the empire', effect: { type: 'wealth_change', value: 750000, target: 'self' } },
+      { type: 'spend', label: 'IPO Now', description: 'Cash out big', effect: { type: 'wealth_change', value: 150000, target: 'self' } },
+      { type: 'save', label: 'Strategic Partner', description: 'Steady growth', effect: { type: 'wealth_change', value: 120000, target: 'self' } },
+      { type: 'invest', label: 'Global Expansion', description: 'Build the empire', effect: { type: 'wealth_change', value: 200000, target: 'self' } },
     ],
   },
 ]
