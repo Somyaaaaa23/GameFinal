@@ -15,24 +15,24 @@ function translateLogEntry(text: string, lang: string) {
   let translated = text
 
   // Common phrases
-  translated = translated.replace('Game started! First to', 'खेल शुरू हुआ! पहले')
-  translated = translated.replace('wins.', 'जीतता है।')
-  translated = translated.replace('Deck reshuffled.', 'डेक फिर से मिला दिया गया।')
-  translated = translated.replace('Fresh deck created.', 'नया डेक बनाया गया।')
-  translated = translated.replace('played', 'ने खेला')
-  translated = translated.replace('is skipping their turn.', 'अपनी बारी छोड़ रहे हैं।')
-  translated = translated.replace('took too long! Turn skipped.', 'ने बहुत समय लिया! बारी छूट गई।')
-  translated = translated.replace('defended with', 'के साथ बचाव किया')
-  translated = translated.replace('Auto-Defended!', 'स्वतः बचाव किया!')
-  translated = translated.replace('Investment Failed!', 'निवेश विफल रहा!')
+  translated = translated.replace('Game started! First to', 'गेम शुरू! लक्ष्य है')
+  translated = translated.replace('wins.', 'बनाना।')
+  translated = translated.replace('Deck reshuffled.', 'डेक फिर से मिलाया गया।')
+  translated = translated.replace('Fresh deck created.', 'नया डेक तैयार।')
+  translated = translated.replace('played', 'ने इस्तेमाल किया')
+  translated = translated.replace('is skipping their turn.', 'ने अपनी बारी छोड़ दी।')
+  translated = translated.replace('took too long! Turn skipped.', 'का समय खत्म! बारी छूट गई।')
+  translated = translated.replace('defended with', 'ने बचाव किया: ')
+  translated = translated.replace('Auto-Defended!', 'स्वतः बचाव!')
+  translated = translated.replace('Investment Failed!', 'निवेश विफल!')
   translated = translated.replace('Season Boost!', 'सीज़न बूस्ट!')
-  translated = translated.replace('Level Complete! Reached', 'स्तर पूरा हुआ! तक पहुंचे')
+  translated = translated.replace('Level Complete! Reached', 'लेवल पूरा! हासिल किया')
   translated = translated.replace('in time.', 'समय पर।')
-  translated = translated.replace('Turn limit reached! You failed to reach the goal.', 'बारी की सीमा समाप्त! आप लक्ष्य तक पहुँचने में विफल रहे।')
-  translated = translated.replace('reached', 'पहुंच गया')
-  translated = translated.replace('and WINS!', 'और जीत गया!')
-  translated = translated.replace('Everyone else forfeited!', 'बाकी सभी ने हार मान ली!')
-  translated = translated.replace('affects all!', 'सबको प्रभावित करता है!')
+  translated = translated.replace('Turn limit reached! You failed to reach the goal.', 'बारी की सीमा खत्म! आप लक्ष्य तक नहीं पहुँच पाए।')
+  translated = translated.replace('reached', 'ने हासिल किया')
+  translated = translated.replace('and WINS!', 'और जीत हासिल की!')
+  translated = translated.replace('Everyone else forfeited!', 'बाकी सभी ने गेम छोड़ दिया!')
+  translated = translated.replace('affects all!', 'सब पर असर!')
 
   translated = translated.replace('SPEND', 'खर्च')
   translated = translated.replace('SAVE', 'बचत')
@@ -137,7 +137,7 @@ export function GameLog({ log, mobileCompact, playerName }: GameLogProps) {
       <div className={`game-log-content ${isExpanded ? 'expanded' : ''}`} style={{ display: 'flex', flexDirection: 'column', gap: 8, paddingRight: 4, overflowY: 'auto', maxHeight: 'calc(100vh - 160px)' }}>
         {log.length === 0 ? (
           <div style={{ fontSize: 15, color: 'var(--text-muted)', fontStyle: 'italic' }}>
-            {i18n.language === 'hi' ? 'खेल शुरू हुआ। पहली चाल की प्रतीक्षा की जा रही है...' : 'Game started. Waiting for first move...'}
+            {i18n.language === 'hi' ? 'गेम शुरू हुआ। पहली चाल का इंतज़ार...' : 'Game started. Waiting for first move...'}
           </div>
         ) : (
           log.slice(0, itemsToShow).map((entry, i) => {

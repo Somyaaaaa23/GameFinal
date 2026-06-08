@@ -25,7 +25,7 @@ export function GameBoardMobile({
   daanikCoins,
   onBuyExtraCard,
 }: GameBoardProps) {
-  const { i18n } = useTranslation()
+  const { t, i18n } = useTranslation()
   const [previewCard, setPreviewCard] = useState<any>(null)
 
   const myPlayerIndex = gameState.players.findIndex(p => p.id === myPlayerId)
@@ -80,9 +80,9 @@ export function GameBoardMobile({
         <div className="glass-panel mobile-action-panel">
         <div className="mobile-action-header">
           <h2 className="mobile-action-title">
-            {isMyTurn ? <span style={{ color: '#60a5fa' }}>Your Turn</span> : <span>{currentPlayer?.name}'s Turn</span>}
+            {isMyTurn ? <span style={{ color: '#60a5fa' }}>{t('game.yourTurn')}</span> : <span>{t('game.playerTurn', { name: currentPlayer?.name })}</span>}
           </h2>
-          <div className="mobile-action-turn">TURN {gameState.turn}</div>
+          <div className="mobile-action-turn">{t('game.turn').toUpperCase()} {gameState.turn}</div>
         </div>
         
         {/* Not my turn */}
@@ -90,20 +90,19 @@ export function GameBoardMobile({
           <div className="mobile-wait-state">
             <div style={{ fontSize: 40, marginBottom: 12 }}>⏳</div>
             <div style={{ fontSize: 19, fontWeight: 600, color: '#94a3b8', marginBottom: 4 }}>
-              Waiting for {currentPlayer?.name}...
+              {t('game.waitingFor', { name: currentPlayer?.name })}
             </div>
-            <div style={{ fontSize: 16, color: '#475569' }}>Their turn to play</div>
+            <div style={{ fontSize: 16, color: '#475569' }}>{t('game.theirTurnToPlay')}</div>
           </div>
         )}
 
-        {/* Draw phase */}
         {isMyTurn && gameState.phase === 'draw' && (
           <div className="mobile-draw-state">
             <div style={{ fontSize: 16, color: '#94a3b8', marginBottom: 18 }}>
-              Your turn! Draw a card to start.
+              {t('game.yourTurnDraw')}
             </div>
             <Button size="lg" variant="gold" onClick={onDrawCard}>
-              Draw a Card ({gameState.deck.length} left in deck)
+              {t('game.drawCardBtn', { count: gameState.deck.length })}
             </Button>
           </div>
         )}
@@ -113,7 +112,7 @@ export function GameBoardMobile({
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
               <p style={{ fontSize: 16, color: '#94a3b8' }}>
-                {gameState.drawnCard ? `Drew "${gameState.drawnCard.name}" — pick a card to play:` : 'Pick a card to play:'}
+                {gameState.drawnCard ? `${t('game.drew')} "${i18n.language === 'hi' && gameState.drawnCard.nameHi ? gameState.drawnCard.nameHi : gameState.drawnCard.name}" — ${t('game.pickCard')}` : t('game.pickCard')}
               </p>
               <Button
                 variant="gold"
@@ -122,7 +121,7 @@ export function GameBoardMobile({
                 disabled={daanikCoins < 25}
                 title="Draw an extra card for 25 DAANIK coins"
               >
-                Extra Card (25 🪙)
+                {t('game.buyExtraCard')}
               </Button>
             </div>
             <div className="mobile-hand-grid">
@@ -135,17 +134,16 @@ export function GameBoardMobile({
 
 
 
-        {/* Action card targeting phase (Select opponent) */}
         {uiPhase === 'targeting' && gameState.pendingTarget && (
           <div className="mobile-targeting-state">
             <div style={{ fontSize: 22, marginBottom: 8 }}>🎯</div>
             <div style={{ fontSize: 16, color: '#f1f5f9', fontWeight: 700, marginBottom: 4 }}>
-              Select a target for {gameState.pendingTarget.card.name}
+              {t('game.selectTarget', { card: gameState.pendingTarget.card.name })}
             </div>
             <div style={{ fontSize: 15, color: '#94a3b8', marginBottom: 20 }}>
-              Click on an opponent's panel above to target them.
+              {t('game.clickOpponentTarget')}
             </div>
-            <Button variant="secondary" onClick={onCancelTargeting}>Cancel</Button>
+            <Button variant="secondary" onClick={onCancelTargeting}>{t('common.cancel')}</Button>
           </div>
         )}
       </div>
@@ -244,19 +242,19 @@ export function GameBoardMobile({
             >
               ✕
             </button>
-            <div className="mobile-preview-title">Preview Card</div>
+            <div className="mobile-preview-title">{t('game.previewCard')}</div>
             <div className="mobile-preview-card-wrapper">
               <GameCardComponent card={previewCard} />
             </div>
             <div style={{ marginTop: 20, display: 'flex', gap: 12 }}>
               <Button variant="secondary" onClick={() => setPreviewCard(null)} style={{ flex: 1 }}>
-                Cancel
+                {t('common.cancel')}
               </Button>
               <Button variant="primary" onClick={() => {
                 onPlayCard(previewCard)
                 setPreviewCard(null)
               }} style={{ flex: 1 }}>
-                Play Card
+                {t('game.playCard')}
               </Button>
             </div>
           </div>

@@ -106,18 +106,17 @@ export function GameBoardDesktop({
           </div>
         )}
 
-        {/* Draw phase */}
         {isMyTurn && gameState.phase === 'draw' && (
           <div style={{ textAlign: 'center', padding: '28px 0' }}>
             <div style={{ fontSize: 16, color: '#94a3b8', marginBottom: 18 }}>
-              Your turn! Draw a card to start.
+              {t('game.yourTurnDraw')}
             </div>
             <Button size="lg" variant="gold" onClick={onDrawCard}>
-              Draw a Card ({gameState.deck.length} left in deck)
+              {t('game.drawCardBtn', { count: gameState.deck.length })}
             </Button>
             {myPlayer && myPlayer.hand.length > 0 && (
               <div style={{ marginTop: 20, borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: 16 }}>
-                <p style={{ fontSize: 15, color: '#475569', marginBottom: 10 }}>Your current hand:</p>
+                <p style={{ fontSize: 15, color: '#475569', marginBottom: 10 }}>{t('game.yourCurrentHand')}</p>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3" style={{ justifyItems: 'center' }}>
                   {myPlayer.hand.map(card => (
                     <GameCardComponent key={card.id} card={card} compact disabled />
@@ -142,7 +141,7 @@ export function GameBoardDesktop({
                 disabled={daanikCoins < 25}
                 title="Draw an extra card for 25 DAANIK coins"
               >
-                Buy Extra Card (25 🪙)
+                {t('game.buyExtraCard')}
               </Button>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3" style={{ justifyItems: 'center' }}>
@@ -168,7 +167,7 @@ export function GameBoardDesktop({
               </div>
               
               <div style={{ marginTop: 20, borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: 16 }}>
-                <p style={{ fontSize: 15, color: '#475569', marginBottom: 10 }}>Your current hand:</p>
+                <p style={{ fontSize: 15, color: '#475569', marginBottom: 10 }}>{t('game.yourCurrentHand')}</p>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3" style={{ justifyItems: 'center' }}>
                   {myPlayer?.hand.map(card => (
                     <div key={card.id} style={{ position: 'relative' }}>
@@ -225,7 +224,7 @@ export function GameBoardDesktop({
                     onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = c.bg; (e.currentTarget as HTMLButtonElement).style.borderColor = c.border }}
                   >
                     <div style={{ fontSize: 11, fontWeight: 800, color: c.labelColor, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 2 }}>
-                      {i18n.language === 'hi' && opt.type === 'spend' ? 'खर्च (Spend)' : i18n.language === 'hi' && opt.type === 'save' ? 'बचत (Save)' : i18n.language === 'hi' && opt.type === 'invest' ? 'निवेश (Invest)' : opt.type}
+                      {i18n.language === 'hi' && opt.type === 'spend' ? 'खर्च' : i18n.language === 'hi' && opt.type === 'save' ? 'बचत' : i18n.language === 'hi' && opt.type === 'invest' ? 'निवेश' : opt.type}
                     </div>
                     <div style={{ fontSize: 15, fontWeight: 700, marginBottom: 2 }}>
                       {i18n.language === 'hi' && opt.labelHi ? opt.labelHi : (i18n.language === 'hi' && opt.label === 'Spend' ? 'खर्च करें' : i18n.language === 'hi' && opt.label === 'Save' ? 'बचत करें' : i18n.language === 'hi' && opt.label === 'Invest' ? 'निवेश करें' : opt.label)}
@@ -255,12 +254,12 @@ export function GameBoardDesktop({
           <div style={{ textAlign: 'center', padding: '12px 0' }}>
             <div style={{ fontSize: 22, marginBottom: 12 }}>🎯</div>
             <div style={{ fontSize: 18, color: '#1e293b', fontWeight: 800, marginBottom: 8 }}>
-              Select a target for {gameState.pendingTarget.card.name}
+              {t('game.selectTarget', { card: gameState.pendingTarget.card.name })}
             </div>
             <div style={{ fontSize: 15, color: '#475569', marginBottom: 20 }}>
-              Click on an opponent's panel above to target them.
+              {t('game.clickOpponentTarget')}
             </div>
-            <Button variant="secondary" onClick={onCancelTargeting}>Cancel</Button>
+            <Button variant="secondary" onClick={onCancelTargeting}>{t('common.cancel')}</Button>
           </div>
         )}
       </div>

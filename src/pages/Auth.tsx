@@ -3,8 +3,10 @@ import { useNavigate, useSearchParams, Link } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import { Button } from '../components/ui/Button'
 import { GlassPanel } from '../components/ui/GlassPanel'
+import { useTranslation } from 'react-i18next'
 
 export function Auth() {
+  const { t } = useTranslation()
   const [params] = useSearchParams()
   const [mode, setMode] = useState<'login' | 'register'>(params.get('mode') === 'register' ? 'register' : 'login')
   const [email, setEmail] = useState('')
@@ -207,15 +209,15 @@ export function Auth() {
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
             {mode === 'register' && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                <label htmlFor="username" style={{ fontSize: 13, fontWeight: 700, color: '#374151' }}>Username</label>
+                <label htmlFor="username" style={{ fontSize: 13, fontWeight: 700, color: '#374151' }}>{t('auth.usernameLabel', 'Username')}</label>
                 <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
                   <svg style={{ position: 'absolute', left: 14, color: '#9ca3af' }} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                   <input
                     id="username"
                     name="username"
                     type="text"
-                    aria-label="Choose a username"
-                    placeholder="Choose a username"
+                    aria-label={t('auth.usernamePlaceholder', 'Choose a username')}
+                    placeholder={t('auth.usernamePlaceholder', 'Choose a username')}
                     value={username}
                     onChange={e => setUsername(e.target.value)}
                     required
@@ -282,7 +284,7 @@ export function Auth() {
             )}
  
             <Button type="submit" size="lg" loading={loading} style={{ width: '100%', marginTop: 4, background: '#15803D', color: '#fff', borderRadius: 8, padding: '14px', fontSize: 15, fontWeight: 700, border: 'none', cursor: 'pointer', transition: 'background 0.2s', boxShadow: '0 4px 12px rgba(21,128,61,0.2)' }}>
-              {mode === 'login' ? 'Sign In' : 'Create Account'}
+              {mode === 'login' ? t('auth.signIn', 'Sign In') : t('auth.submit')}
             </Button>
           </form>
 

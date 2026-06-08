@@ -137,9 +137,9 @@ export function Dashboard() {
               fontSize: 'clamp(12px, 3vw, 14px)', display: 'flex', alignItems: 'center', padding: '4px 8px', borderRadius: 6, fontWeight: 700
             }}
           >
-            {i18n.language === 'en' ? 'HI' : 'EN'}
+            {i18n.language === 'en' ? 'हिंदी' : 'EN'}
           </button>
-          <button onClick={handleLogout} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: 'clamp(14px, 4vw, 16px)', fontFamily: 'inherit', whiteSpace: 'nowrap' }}>Sign Out</button>
+          <button onClick={handleLogout} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: 'clamp(14px, 4vw, 16px)', fontFamily: 'inherit', whiteSpace: 'nowrap' }}>{t('dashboard.signOut')}</button>
         </div>
       </nav>
 
@@ -303,17 +303,17 @@ function HomeTab({ navigate, profile, currentSeason, onlineUsers }: { navigate: 
 
       {profile?.games_played === 0 ? (
         <Card style={{ padding: '24px', textAlign: 'center', background: 'rgba(59,130,246,0.05)', borderColor: 'rgba(59,130,246,0.2)' }}>
-          <h3 style={{ fontSize: 20, fontWeight: 700, color: 'var(--blue-deep)', marginBottom: 8 }}>Welcome to BHAO!</h3>
-          <p style={{ fontSize: 16, color: 'var(--text-muted)', marginBottom: 16 }}>Play your first game to start tracking your stats.</p>
-          <Button variant="primary" onClick={() => navigate('/campaign')}>Play your first game →</Button>
+          <h3 style={{ fontSize: 20, fontWeight: 700, color: 'var(--blue-deep)', marginBottom: 8 }}>{t('dashboard.welcome')} BHAO!</h3>
+          <p style={{ fontSize: 16, color: 'var(--text-muted)', marginBottom: 16 }}>{t('dashboard.howToPlay')}</p>
+          <Button variant="primary" onClick={() => navigate('/campaign')}>{t('dashboard.campaign')} →</Button>
         </Card>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4">
           {[
-            { label: 'Games Played', value: (profile?.games_played ?? 0).toString(), icon: '🎮', color: 'var(--blue-deep)' },
-            { label: 'Games Won', value: (profile?.games_won ?? 0).toString(), icon: '🏆', color: 'var(--green-primary)' },
-            { label: 'Win Streak', value: `${profile?.win_streak ?? 0}`, icon: '🔥', color: 'var(--orange-dark)' },
-            { label: 'Total XP', value: (profile?.total_xp ?? 0).toLocaleString(), icon: '⭐', color: 'var(--orange-dark)' },
+            { label: t('dashboard.matchesPlayed'), value: (profile?.games_played ?? 0).toString(), icon: '🎮', color: 'var(--blue-deep)' },
+            { label: t('dashboard.matchesWon'), value: (profile?.games_won ?? 0).toString(), icon: '🏆', color: 'var(--green-primary)' },
+            { label: t('dashboard.winStreak'), value: `${profile?.win_streak ?? 0}`, icon: '🔥', color: 'var(--orange-dark)' },
+            { label: t('dashboard.totalXP'), value: (profile?.total_xp ?? 0).toLocaleString(), icon: '⭐', color: 'var(--orange-dark)' },
           ].map(stat => (
             <Card key={stat.label} className="p-2 sm:p-4">
               <div className="text-xl sm:text-2xl" style={{ marginBottom: 6 }}>{stat.icon}</div>
@@ -349,7 +349,7 @@ function HomeTab({ navigate, profile, currentSeason, onlineUsers }: { navigate: 
 
               <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, marginBottom: 8 }}>
                 <h2 style={{ fontSize: 32, fontWeight: 800, color: '#fff', margin: 0, fontFamily: 'var(--font-display)', letterSpacing: '-0.02em' }}>
-                  Level 3
+                  {t('dashboard.level')} 3
                 </h2>
                 <span style={{ color: '#FBBF24', fontSize: 16, fontWeight: 700 }}>
                   ↑ 150 XP
@@ -395,7 +395,7 @@ function HomeTab({ navigate, profile, currentSeason, onlineUsers }: { navigate: 
               <span style={{ position: 'absolute', top: 6, left: 8, fontSize: 12 }}>✨</span>
               <span style={{ position: 'absolute', bottom: 6, right: 8, fontSize: 12 }}>✨</span>
 
-              Continue <span style={{ marginLeft: 2 }}>→</span>
+              {t('dashboard.continue')} <span style={{ marginLeft: 2 }}>→</span>
             </button>
           </div>
         </div>
@@ -429,11 +429,11 @@ function HomeTab({ navigate, profile, currentSeason, onlineUsers }: { navigate: 
           </div>
           <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 12 }}>
             <div>
-              <div style={{ fontSize: 13, color: '#4b5563', marginBottom: 4 }}>Season ends in</div>
+              <div style={{ fontSize: 13, color: '#4b5563', marginBottom: 4 }}>{t('dashboard.seasonEndsIn')}</div>
               <div style={{ fontSize: 26, fontWeight: 800, color: '#dc2626', fontFamily: 'var(--font-display)' }}>{seasonTimeLeft}</div>
             </div>
             <button style={{ background: '#047857', color: '#fff', border: 'none', borderRadius: 8, padding: '10px 24px', fontSize: 15, fontWeight: 700, cursor: 'pointer', boxShadow: '0 4px 6px -1px rgba(4, 120, 87, 0.4)' }}>
-              View Rewards
+              {t('dashboard.viewRewards')}
             </button>
           </div>
         </div>

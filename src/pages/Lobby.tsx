@@ -10,12 +10,14 @@ import {
 } from '../lib/multiplayerEngine'
 import type { MultiplayerMode } from '../types/game'
 import type { RealtimeChannel } from '@supabase/supabase-js'
+import { useTranslation } from 'react-i18next'
 
 type LobbyView = 'menu' | 'waiting'
 
 type MenuTab = 'choice' | 'create' | 'join'
 
 export function Lobby() {
+  const { t } = useTranslation()
   const { profile } = useAuth()
   const navigate = useNavigate()
 
@@ -177,10 +179,10 @@ export function Lobby() {
         <div style={{ textAlign: 'center', marginBottom: 36 }}>
           <div style={{ fontSize: 50, marginBottom: 12 }}>🌐</div>
           <h1 style={{ fontSize: 35, fontWeight: 800, color: 'var(--text-dark)', fontFamily: 'var(--font-display)', marginBottom: 8 }}>
-            {menuTab === 'choice' ? 'Play Online' : menuTab === 'create' ? 'Create a Room' : 'Join a Room'}
+            {menuTab === 'choice' ? t('dashboard.playOnline') : menuTab === 'create' ? t('lobby.createRoom') : t('lobby.joinRoom')}
           </h1>
           <p style={{ color: 'var(--text-muted)', fontSize: 18 }}>
-            {menuTab === 'choice' ? 'Create a room or join a friend\'s game.' : 'Set up the match options.'}
+            {menuTab === 'choice' ? t('dashboard.playOnlineDesc') : ''}
           </p>
         </div>
 
@@ -193,10 +195,10 @@ export function Lobby() {
         {menuTab === 'choice' && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
             <Button size="lg" onClick={() => setMenuTab('create')} style={{ width: '100%', fontSize: 20, padding: 24 }}>
-              Create Room
+              {t('lobby.createRoom')}
             </Button>
             <Button size="lg" variant="secondary" onClick={() => setMenuTab('join')} style={{ width: '100%', fontSize: 20, padding: 24 }}>
-              Join Room
+              {t('lobby.joinRoom')}
             </Button>
           </div>
         )}
@@ -269,7 +271,7 @@ export function Lobby() {
             </div>
 
             <Button variant="gold" size="lg" loading={loading} onClick={handleCreate} style={{ width: '100%' }}>
-              Create Room
+              {t('lobby.createBtn')}
             </Button>
           </Card>
         )}
@@ -278,17 +280,17 @@ export function Lobby() {
           <Card style={{ padding: 24, animation: 'slideUp 0.3s ease' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
               <h2 style={{ fontSize: 21, fontWeight: 700, color: 'var(--text-dark)', fontFamily: 'var(--font-display)' }}>
-                Enter Room Code
+                {t('lobby.joinTitle')}
               </h2>
               <button onClick={() => setMenuTab('choice')} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: 14 }}>
-                Cancel
+                {t('common.cancel')}
               </button>
             </div>
             <div style={{ display: 'flex', gap: 10 }}>
               <input
                 value={joinCode}
                 onChange={e => setJoinCode(e.target.value.toUpperCase())}
-                placeholder="CODE"
+                placeholder={t('lobby.roomCodeLabel')}
                 maxLength={6}
                 onKeyDown={e => e.key === 'Enter' && handleJoin()}
                 style={{
@@ -302,7 +304,7 @@ export function Lobby() {
                 onBlur={e => { e.target.style.borderColor = 'rgba(0,0,0,0.1)' }}
               />
               <Button onClick={handleJoin} loading={loading} disabled={joinCode.length < 4}>
-                Join
+                {t('lobby.joinBtn')}
               </Button>
             </div>
           </Card>
@@ -329,6 +331,7 @@ function WaitingRoom({
   onStart: () => void
   onLeave: () => void
 }) {
+  const { t } = useTranslation()
   const [copied, setCopied] = useState(false)
 
   const copyCode = () => {
@@ -352,7 +355,7 @@ function WaitingRoom({
         {/* Room Code */}
         <div style={{ textAlign: 'center', marginBottom: 28 }}>
           <div style={{ fontSize: 15, color: 'var(--text-muted)', marginBottom: 8, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-            Share this code to invite players
+            {t('lobby.shareCode')}
           </div>
           <div
             onClick={copyCode}
@@ -369,7 +372,7 @@ function WaitingRoom({
               {room.code}
             </span>
             <span style={{ fontSize: 'clamp(12px, 3.5vw, 15px)', color: copied ? 'var(--green-primary)' : 'var(--text-muted)', fontWeight: 600, whiteSpace: 'nowrap' }}>
-              {copied ? '✓ Copied!' : 'Click to copy'}
+              {copied ? t('lobby.copied') : t('lobby.clickToCopy')}
             </span>
           </div>
 

@@ -14,6 +14,7 @@ import { supabase } from '../lib/supabase'
 import { ForfeitModal } from '../components/ForfeitModal'
 import { playSound } from '../lib/audio'
 import { GameBoard, UIPhase } from '../components/game/GameBoard'
+import { useTranslation } from 'react-i18next'
 
 function GameClock({ startTime, timeLimit }: { startTime: number; timeLimit: number }) {
   const [now, setNow] = useState(Date.now())
@@ -41,6 +42,7 @@ export function MultiplayerGame() {
   const { roomId } = useParams<{ roomId: string }>()
   const navigate = useNavigate()
   const { profile, refreshProfile } = useAuth()
+  const { t } = useTranslation()
 
   const [gameState, setGameState] = useState<GameState | null>(null)
   const [uiPhase, setUiPhase] = useState<PagePhase>('loading')
@@ -199,7 +201,7 @@ export function MultiplayerGame() {
     setPhase(newState.phase === 'game_over' ? 'result' : 'playing')
     await pushState(newState)
     playSound('lose')
-    notify(`Time ran out for ${gs.players[gs.currentPlayerIndex].name}!`)
+    notify(t('game.timeRanOut', { name: gs.players[gs.currentPlayerIndex].name }))
   }, [myPlayerId, onlinePlayers])
 
   async function pushState(state: GameState) {
@@ -244,7 +246,7 @@ export function MultiplayerGame() {
           forfeitState = {
             ...forfeitState,
             players: updatedPlayers,
-            log: [`${offlinePlayer?.name} disconnected and forfeited.`, ...forfeitState.log].slice(0, 20)
+            log: [t('game.disconnected', { name: offlinePlayer?.name }), ...forfeitState.log].slice(0, 20)
           }
           didForfeit = true
 
@@ -264,7 +266,7 @@ export function MultiplayerGame() {
             ...forfeitState,
             winner,
             phase: 'game_over',
-            log: [`🏆 Everyone else disconnected! ${winner.name} WINS!`, ...forfeitState.log].slice(0, 20)
+            log: [t('game.everyoneDisconnected', { name: winner.name }), ...forfeitState.log].slice(0, 20)
           }
         }
 
@@ -320,7 +322,7 @@ export function MultiplayerGame() {
     setGameState(newState)
     gameStateRef.current = newState
     playSound('draw')
-    notify('Extra card drawn! -25 🪙')
+    notify(t('game.extraCardDrawn'))
     await pushState(newState)
   }
 
@@ -348,7 +350,7 @@ export function MultiplayerGame() {
           await pushState(final)
           playSound('attack')
           if (final.phase === 'game_over') saveResult(final)
-          notify(`${card.name} hit ${gs.players[targetIndex].name}!`)
+          notify(t('game.hitTarget', { card: card.name, name: gs.players[targetIndex].name }))
         } else {
           const updated = { ...gs, pendingTarget: { card, playerIndex: myPlayerIndex, effect: card.effect } }
           setGameState(updated)
@@ -366,7 +368,7 @@ export function MultiplayerGame() {
         await pushState(final)
         playSound('play')
         if (final.phase === 'game_over') saveResult(final)
-        notify(`Played ${card.name}!`)
+        notify(t('game.playedCard', { card: card.name }))
       }
     } else if (card.type === 'defense') {
       // Playing defense as regular turn action — equip it for future protection
@@ -380,7 +382,7 @@ export function MultiplayerGame() {
       await pushState(next)
       playSound('defend')
       if (next.phase === 'game_over') saveResult(next)
-      notify('Equipped defense card!')
+      notify(t('game.equippedDefense'))
     }
   }
 
@@ -439,7 +441,7 @@ export function MultiplayerGame() {
     let forfeitState = {
       ...gs,
       players: updatedPlayers,
-      log: [`${myPlayer?.name} forfeited the match.`, ...gs.log].slice(0, 20)
+      log: [t('game.forfeited', { name: myPlayer?.name }), ...gs.log].slice(0, 20)
     }
 
     // If it's our turn, pass turn.
@@ -453,7 +455,7 @@ export function MultiplayerGame() {
           ...forfeitState,
           winner: remainingWinner,
           phase: 'game_over',
-          log: [`🏆 Everyone else forfeited! ${remainingWinner.name} WINS!`, ...forfeitState.log].slice(0, 20),
+          log: [t('game.everyoneForfeited', { name: remainingWinner.name }), ...forfeitState.log].slice(0, 20),
         }
       }
     }
@@ -515,12 +517,12 @@ export function MultiplayerGame() {
             {isWinner ? 'Victory!' : `${placement}${ordinal} Place`}
           </h1>
           <p style={{ color: 'var(--gray)', marginBottom: 28, fontSize: 20 }}>
-            Final wealth: {formatWealth(myFinalPlayer?.wealth ?? 0)}
+            {t('game.finalWealth', { amount: formatWealth(myFinalPlayer?.wealth ?? 0) })}
           </p>
 
           <div style={{ background: 'var(--green-deep)', border: '1px solid var(--green-primary)', borderRadius: 16, padding: 20, marginBottom: 24 }}>
             <h3 style={{ fontSize: 16, fontWeight: 700, color: 'var(--gray)', marginBottom: 14, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-              Final Rankings
+              {t('game.finalRankings')}
             </h3>
             {sorted.map((p, i) => (
               <div key={p.id} style={{
@@ -548,7 +550,7 @@ export function MultiplayerGame() {
           </div>
 
           <div style={{ display: 'flex', gap: 12, justifyContent: 'center' }}>
-            <Button variant="gold" size="lg" onClick={() => navigate('/multiplayer')}>Play Again</Button>
+            <Button variant="gold" size="lg" onClick={() => navigate('/multiplayer')}>{t('game.playAgain')}</Button>
             <Button variant="secondary" onClick={async () => {
               if (roomId && myPlayerId) {
                 await leaveRoom(roomId, myPlayerId).catch(() => { })
