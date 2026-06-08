@@ -540,7 +540,7 @@ export function checkWinCondition(state: GameState): GameState {
       ...state,
       winner,
       phase: 'game_over',
-      log: [`🏆 ${winner.name} reached ₹50 Lakhs and WINS!`, ...state.log].slice(0, 20),
+      log: [`🏆 ${winner.name} reached the wealth goal and WINS!`, ...state.log].slice(0, 20),
     }
   }
   const activePlayers = state.players.filter(p => !p.hasForfeited)
@@ -561,14 +561,25 @@ export function checkWinCondition(state: GameState): GameState {
         ...state,
         winner: human,
         phase: 'game_over',
-        log: [`🏆 Level Complete! Reached ${state.wealthGoal} in time.`, ...state.log].slice(0, 20),
+        log: [`🏆 Level Complete! Reached the target corpus in time.`, ...state.log].slice(0, 20),
       }
     } else {
-       return {
-        ...state,
-        winner: state.players.find(p => p.isBot) || null, // Human lost
-        phase: 'game_over',
-        log: [`❌ Turn limit reached! You failed to reach the goal.`, ...state.log].slice(0, 20),
+      // Check if human has the highest wealth even without hitting the target
+      const highestWealth = Math.max(...state.players.map(p => p.wealth))
+      if (human.wealth === highestWealth) {
+        return {
+          ...state,
+          winner: human,
+          phase: 'game_over',
+          log: [`🏆 Time's up! You survived with the most wealth!`, ...state.log].slice(0, 20),
+        }
+      } else {
+        return {
+          ...state,
+          winner: state.players.find(p => p.isBot && p.wealth === highestWealth) || state.players.find(p => p.isBot) || null,
+          phase: 'game_over',
+          log: [`❌ Turn limit reached! You were out-earned by the bots.`, ...state.log].slice(0, 20),
+        }
       }
     }
   }
