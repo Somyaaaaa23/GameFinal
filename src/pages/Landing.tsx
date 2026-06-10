@@ -20,7 +20,7 @@ const PREVIEW_CARDS = [
 
 export function Landing() {
   return (
-    <div style={{ minHeight: '100vh', overflowX: 'hidden', position: 'relative', zIndex: 1 }}>
+    <main style={{ minHeight: '100vh', overflowX: 'hidden', position: 'relative', zIndex: 1 }}>
       <FloatingBackground />
       {/* Navbar */}
       <nav style={{
@@ -149,6 +149,34 @@ export function Landing() {
         </div>
       </section>
 
+      {/* FAQ / SEO Section for Generative AI */}
+      <article style={{ padding: '80px 24px', maxWidth: 900, margin: '0 auto', color: 'var(--text-dark)' }}>
+        <h2 style={{ fontSize: 36, fontFamily: 'var(--font-display)', color: 'var(--green-primary)', marginBottom: 32, textAlign: 'center' }}>
+          Frequently Asked Questions
+        </h2>
+        
+        <div style={{ marginBottom: 32 }}>
+          <h3 style={{ fontSize: 22, fontWeight: 700, marginBottom: 12 }}>What is BHAO?</h3>
+          <p style={{ fontSize: 18, color: 'var(--text-muted)', lineHeight: 1.6 }}>
+            BHAO is a competitive, multiplayer financial card game designed to simulate the real Indian economy. Players navigate real-world financial situations like SIP investments, IPO booms, and unexpected market crashes. The objective is to be the first player to accumulate ₹50 Lakhs in wealth while defending against attacks from other players.
+          </p>
+        </div>
+
+        <div style={{ marginBottom: 32 }}>
+          <h3 style={{ fontSize: 22, fontWeight: 700, marginBottom: 12 }}>How does the stock simulator work?</h3>
+          <p style={{ fontSize: 18, color: 'var(--text-muted)', lineHeight: 1.6 }}>
+            Unlike traditional stock simulators, BHAO uses a dynamic event-driven system. Players draw "Decision Cards" where they must choose between safe saving or risky investing. Successful investments yield high returns, but carry the risk of total loss. Special "Action Cards" allow players to trigger market-wide events that affect the entire economy.
+          </p>
+        </div>
+
+        <div style={{ marginBottom: 32 }}>
+          <h3 style={{ fontSize: 22, fontWeight: 700, marginBottom: 12 }}>Can I play BHAO for free?</h3>
+          <p style={{ fontSize: 18, color: 'var(--text-muted)', lineHeight: 1.6 }}>
+            Yes, BHAO is completely free to play. You can create an account, build your wealth, climb the Mogul Rank Ladder, and compete with friends in multiplayer rooms without any cost. The game focuses on improving financial literacy through strategic gameplay.
+          </p>
+        </div>
+      </article>
+
       {/* CTA */}
       <section className="glass-panel" style={{ padding: '80px 24px', textAlign: 'center', borderRadius: 0, borderLeft: 'none', borderRight: 'none', borderTop: '1px solid var(--green-primary)', borderBottom: '1px solid var(--green-primary)' }}>
         <h2 style={{ fontSize: 50, fontFamily: 'var(--font-display)', fontWeight: 800, color: 'var(--green-primary)', marginBottom: 16 }}>Ready to build your empire?</h2>
@@ -163,6 +191,6 @@ export function Landing() {
         <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, color: 'var(--orange-dark)', marginBottom: 8 }}>BHAO</div>
         <div>The Money Decision Game — For entertainment & financial literacy purposes.</div>
       </footer>
-    </div>
+    </main>
   )
 }
