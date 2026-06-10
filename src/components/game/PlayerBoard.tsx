@@ -20,7 +20,6 @@ interface PlayerBoardProps {
   timeLimit?: number
   activeEmote?: string
   onSendEmote?: (emoji: string) => void
-  isThinking?: boolean
 }
 
 // Distinct color themes per seat — matching the screenshot's green, purple, red, gold palette
@@ -53,6 +52,11 @@ function CardTimer({ turnStartTime, timeLimit, type }: { turnStartTime: number; 
 
   const pct = Math.max(0, Math.min(100, (timeLeft / timeLimit) * 100))
   const isDanger = timeLeft <= 10000
+  const isWarning = timeLeft <= 30000 && !isDanger
+  
+  let neonColor = "#eab308" // Yellow (60s - 30s)
+  if (isWarning) neonColor = "#f97316" // Orange (30s - 10s)
+  if (isDanger) neonColor = "#ef4444" // Red (10s - 0s)
 
   if (type === 'ring') {
     const dash = 2 * Math.PI * 25 // r=25
@@ -95,7 +99,7 @@ function CardTimer({ turnStartTime, timeLimit, type }: { turnStartTime: number; 
         
         {/* Neon Aura (Thick, blurred, colored) */}
         <rect x="3" y="3" width="calc(100% - 6px)" height="calc(100% - 6px)" rx="16" fill="none" 
-          stroke={isDanger ? "#ef4444" : "#06b6d4"}
+          stroke={neonColor}
           strokeWidth="8" 
           filter="url(#neonGlow)"
           pathLength="100"
@@ -138,7 +142,7 @@ function CardTimer({ turnStartTime, timeLimit, type }: { turnStartTime: number; 
 
 
 
-export function PlayerBoard({ player, isCurrent, isMe, isTarget, isOffline, wealthGoal, seatIndex = 0, onClick, compact, turnStartTime, timeLimit, activeEmote, onSendEmote, isThinking }: PlayerBoardProps) {
+export function PlayerBoard({ player, isCurrent, isMe, isTarget, isOffline, wealthGoal, seatIndex = 0, onClick, compact, turnStartTime, timeLimit, activeEmote, onSendEmote }: PlayerBoardProps) {
   const { t } = useTranslation()
   const wealthPct = Math.min(100, (player.wealth / wealthGoal) * 100)
   const theme = SEAT_THEMES[seatIndex % SEAT_THEMES.length]

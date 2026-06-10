@@ -25,7 +25,6 @@ export function GameBoardDesktop({
   onBuyExtraCard,
   activeEmotes,
   onSendEmote,
-  isAnimating,
 }: GameBoardProps) {
   const { t, i18n } = useTranslation()
   const myPlayerIndex = gameState.players.findIndex(p => p.id === myPlayerId)
@@ -64,7 +63,6 @@ export function GameBoardDesktop({
                   timeLimit={TURN_TIME_LIMIT_MS}
                   activeEmote={activeEmotes?.[player.id]}
                   onSendEmote={onSendEmote}
-                  isThinking={isAnimating && originalIndex === gameState.currentPlayerIndex && player.isBot}
                 />
               </div>
             )

@@ -27,7 +27,6 @@ export function GameBoardMobile({
   onBuyExtraCard,
   activeEmotes,
   onSendEmote,
-  isAnimating,
 }: GameBoardProps) {
   const { t, i18n } = useTranslation()
   const [previewCard, setPreviewCard] = useState<any>(null)
@@ -69,7 +68,6 @@ export function GameBoardMobile({
                   timeLimit={TURN_TIME_LIMIT_MS}
                   activeEmote={activeEmotes?.[player.id]}
                   onSendEmote={onSendEmote}
-                  isThinking={isAnimating && originalIndex === gameState.currentPlayerIndex && player.isBot}
                 />
               </div>
             )
