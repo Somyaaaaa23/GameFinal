@@ -1,4 +1,3 @@
-import React from 'react'
 import './WalletLoader.css'
 
 export function WalletLoader() {
