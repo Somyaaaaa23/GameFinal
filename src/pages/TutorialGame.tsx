@@ -104,7 +104,7 @@ export function TutorialGame() {
     if (currentStep?.action !== 'draw') return
     
     if (step === 7) {
-      let actionCard: GameCardType = { id: `mock-${step}`, name: 'Cyber Heist', flavor: 'Steal cash from a rival.', type: 'action', tier: 'epic', effect: { type: 'steal', value: 10000, target: 'target' } }
+      const actionCard: GameCardType = { id: `mock-${step}`, name: 'Cyber Heist', flavor: 'Steal cash from a rival.', type: 'action', tier: 'epic', effect: { type: 'steal', value: 10000, target: 'target' } }
       setGameState(prev => ({
         ...prev,
         phase: 'play',
@@ -112,7 +112,7 @@ export function TutorialGame() {
       }))
       setUiPhase('playing')
     } else if (step === 10) {
-      let defCard: GameCardType = { id: `mock-${step}`, name: 'Firewall', flavor: 'Blocks 1 attack.', type: 'defense', tier: 'common', blocksCardTypes: ['action'] }
+      const defCard: GameCardType = { id: `mock-${step}`, name: 'Firewall', flavor: 'Blocks 1 attack.', type: 'defense', tier: 'common', blocksCardTypes: ['action'] }
       setGameState(prev => ({
         ...prev,
         phase: 'play',
@@ -120,7 +120,7 @@ export function TutorialGame() {
       }))
       setUiPhase('playing')
     } else {
-      let mockCard: GameCardType = {
+      const mockCard: GameCardType = {
         id: `mock-${step}`, name: 'Monthly Salary', flavor: 'Make a choice.', type: 'decision', tier: 'common',
         options: [
           { type: 'spend', label: 'Spend', description: 'Gain Clarity', effect: { type: 'wealth_change', value: -5000, target: 'self' } },
@@ -151,7 +151,7 @@ export function TutorialGame() {
       setStep(s => s + 1)
     } else if (currentStep?.action === 'play_defense' && card.type === 'defense') {
       // Equip defense
-      let newState = { ...gameState }
+      const newState = { ...gameState }
       newState.players[0].hand = []
       newState.players[0].activeDefenses = [card]
       newState.phase = 'draw'
@@ -161,7 +161,7 @@ export function TutorialGame() {
       
       // Simulate bot turn and attack
       setTimeout(() => {
-        let finalState = { ...newState }
+        const finalState = { ...newState }
         finalState.currentPlayerIndex = 1
         finalState.log = [`Rival CEO played Cyber Attack! Your Firewall blocked it!`, ...finalState.log]
         finalState.players[0].activeDefenses = [] // consumed
@@ -174,7 +174,7 @@ export function TutorialGame() {
   const handleTargetSelect = (targetIndex: number) => {
     if (currentStep?.action === 'target' && targetIndex === 1) {
       // Steal money
-      let newState = { ...gameState }
+      const newState = { ...gameState }
       newState.players[0].wealth += 10000
       newState.players[1].wealth -= 10000
       newState.pendingTarget = null
@@ -190,7 +190,7 @@ export function TutorialGame() {
 
   const handleCancelTargeting = () => {
     if (currentStep?.action === 'target') {
-      let actionCard: GameCardType = { id: `mock-7`, name: 'Cyber Heist', flavor: 'Steal cash from a rival.', type: 'action', tier: 'epic', effect: { type: 'steal', value: 10000, target: 'target' } }
+      const actionCard: GameCardType = { id: `mock-7`, name: 'Cyber Heist', flavor: 'Steal cash from a rival.', type: 'action', tier: 'epic', effect: { type: 'steal', value: 10000, target: 'target' } }
       setGameState(prev => ({
         ...prev,
         phase: 'play',
@@ -205,7 +205,7 @@ export function TutorialGame() {
   const handleDecision = (choice: 'spend' | 'save' | 'invest') => {
     if (currentStep?.action !== choice) return
     
-    let newState = { ...gameState, phase: 'draw' as const, pendingDecision: null }
+    const newState = { ...gameState, phase: 'draw' as const, pendingDecision: null }
     const player = newState.players[0]
     
     if (choice === 'save') {
