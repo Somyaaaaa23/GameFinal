@@ -50,6 +50,7 @@ export function MultiplayerGame() {
   const [showForfeitModal, setShowForfeitModal] = useState(false)
   const [onlinePlayers, setOnlinePlayers] = useState<Set<string>>(new Set())
   const [connectionStatus, setConnectionStatus] = useState<'connected' | 'disconnected'>('connected')
+  const [activeEmotes, setActiveEmotes] = useState<Record<string, string>>({})
 
   // Use a string representation for stable useEffect dependencies
   const onlinePlayersStr = Array.from(onlinePlayers).sort().join(',')
@@ -160,6 +161,19 @@ export function MultiplayerGame() {
         const updated = payload.payload as { game_state: GameState | null }
         if (updated.game_state && shouldApplyRemoteState(updated.game_state)) {
           applyRemoteState(updated.game_state)
+        }
+      })
+      .on('broadcast', { event: 'emote' }, (payload) => {
+        const data = payload.payload as { playerId: string, emoji: string }
+        if (data && data.playerId && data.emoji) {
+          setActiveEmotes(prev => ({ ...prev, [data.playerId]: data.emoji }))
+          setTimeout(() => {
+            setActiveEmotes(prev => {
+              const next = { ...prev }
+              delete next[data.playerId]
+              return next
+            })
+          }, 3000)
         }
       })
       .subscribe(async (status) => {
@@ -325,6 +339,23 @@ export function MultiplayerGame() {
     notify(t('game.extraCardDrawn'))
     await pushState(newState)
   }
+
+  const sendEmote = useCallback(async (emoji: string) => {
+    if (!roomId || !myPlayerId) return
+    setActiveEmotes(prev => ({ ...prev, [myPlayerId]: emoji }))
+    setTimeout(() => {
+      setActiveEmotes(prev => {
+        const next = { ...prev }
+        delete next[myPlayerId]
+        return next
+      })
+    }, 3000)
+    await supabase.channel(`game-${roomId}`).send({
+      type: 'broadcast',
+      event: 'emote',
+      payload: { playerId: myPlayerId, emoji }
+    })
+  }, [roomId, myPlayerId])
 
   async function handlePlayCard(card: GameCardType) {
     const gs = gameStateRef.current
@@ -620,24 +651,25 @@ export function MultiplayerGame() {
           {notification}
         </div>
       )}
-
-      <GameBoard
-        gameState={gameState}
-        myPlayerId={myPlayerId}
-        isMultiplayer={true}
-        uiPhase={uiPhase as UIPhase}
-        onlinePlayers={onlinePlayers}
-        onDrawCard={handleDrawCard}
-        onPlayCard={handlePlayCard}
-        onTargetSelect={handleTargetSelect}
-        onDecision={handleDecision}
-        onTimeout={handleTimeout}
-        onCancelTargeting={() => {
-          setPhase('playing')
-        }}
-        daanikCoins={profileRef.current?.daank_coins ?? 0}
-        onBuyExtraCard={handleBuyExtraCard}
-      />
+      {gameState && (
+        <GameBoard
+          gameState={gameState}
+          myPlayerId={myPlayerId}
+          isMultiplayer={true}
+          uiPhase={uiPhase}
+          onlinePlayers={onlinePlayers}
+          activeEmotes={activeEmotes}
+          onDrawCard={handleDrawCard}
+          onPlayCard={handlePlayCard}
+          onTargetSelect={handleTargetSelect}
+          onDecision={handleDecision}
+          onTimeout={handleTimeout}
+          onCancelTargeting={() => setPhase('playing')}
+          daanikCoins={profile?.daank_coins ?? 0}
+          onBuyExtraCard={handleBuyExtraCard}
+          onSendEmote={sendEmote}
+        />
+      )}
     </div>
   )
 }

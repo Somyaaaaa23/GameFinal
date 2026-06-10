@@ -19,6 +19,8 @@ export interface GameBoardProps {
   onCancelTargeting: () => void
   daanikCoins: number
   onBuyExtraCard: () => void
+  activeEmotes?: Record<string, string>
+  onSendEmote?: (emoji: string) => void
 }
 
 export function GameBoard(props: GameBoardProps) {

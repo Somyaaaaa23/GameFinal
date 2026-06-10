@@ -7,7 +7,6 @@ import { RankBadge } from '../components/RankBadge'
 import { SEASONS } from '../data/mockData'
 import { formatWealth } from '../types/game'
 import { supabase } from '../lib/supabase'
-import { TutorialModal } from '../components/TutorialModal'
 import { isSoundEnabled, toggleSound } from '../lib/audio'
 import { useTranslation } from 'react-i18next'
 
@@ -31,7 +30,6 @@ export function Dashboard() {
   const [tab, setTab] = useState<Tab>('home')
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([])
   const [leaderboardLoading, setLeaderboardLoading] = useState(false)
-  const [showTutorial, setShowTutorial] = useState(false)
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
   const [onlineUsers, setOnlineUsers] = useState(() => Math.floor(Math.random() * 301) + 200)
   const [soundOn, setSoundOn] = useState(isSoundEnabled)
@@ -56,11 +54,10 @@ export function Dashboard() {
 
   useEffect(() => {
     if (localStorage.getItem('justRegistered') === 'true') {
-      setShowTutorial(true)
+      navigate('/tutorial')
       localStorage.removeItem('justRegistered')
-      localStorage.setItem('hasSeenTutorial', 'true')
     }
-  }, [])
+  }, [navigate])
 
   const handleLogout = async () => {
     await logout()
@@ -89,12 +86,6 @@ export function Dashboard() {
 
   return (
     <div style={{ height: '100vh', background: 'transparent', display: 'flex', flexDirection: 'column', color: 'var(--text-dark)', overflow: 'hidden' }}>
-      {showTutorial && (
-        <TutorialModal onClose={() => {
-          setShowTutorial(false)
-          localStorage.setItem('hasSeenTutorial', 'true')
-        }} />
-      )}
       {/* Top Nav */}
       <nav style={{
         position: 'sticky', top: 0, zIndex: 40,
@@ -187,7 +178,7 @@ export function Dashboard() {
 
           <div style={{ marginTop: 'auto', padding: '12px 0', borderTop: '1px solid var(--green-primary)' }}>
             <button
-              onClick={() => setShowTutorial(true)}
+              onClick={() => navigate('/tutorial')}
               title={t('dashboard.howToPlay')}
               style={{
                 display: 'flex', alignItems: 'center',

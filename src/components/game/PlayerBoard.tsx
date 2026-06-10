@@ -18,6 +18,8 @@ interface PlayerBoardProps {
   compact?: boolean
   turnStartTime?: number
   timeLimit?: number
+  activeEmote?: string
+  onSendEmote?: (emoji: string) => void
 }
 
 // Distinct color themes per seat — matching the screenshot's green, purple, red, gold palette
@@ -95,7 +97,7 @@ function CardTimer({ turnStartTime, timeLimit, type }: { turnStartTime: number; 
 
 
 
-export function PlayerBoard({ player, isCurrent, isMe, isTarget, isOffline, wealthGoal, seatIndex = 0, onClick, compact, turnStartTime, timeLimit }: PlayerBoardProps) {
+export function PlayerBoard({ player, isCurrent, isMe, isTarget, isOffline, wealthGoal, seatIndex = 0, onClick, compact, turnStartTime, timeLimit, activeEmote, onSendEmote }: PlayerBoardProps) {
   const { t } = useTranslation()
   const wealthPct = Math.min(100, (player.wealth / wealthGoal) * 100)
   const theme = SEAT_THEMES[seatIndex % SEAT_THEMES.length]
@@ -104,6 +106,9 @@ export function PlayerBoard({ player, isCurrent, isMe, isTarget, isOffline, weal
   const prevWealthRef = useRef(player.wealth)
   const [floatingText, setFloatingText] = useState<{ id: string; diff: number }[]>([])
   const [isShaking, setIsShaking] = useState(false)
+  const [showEmotePicker, setShowEmotePicker] = useState(false)
+
+  const EMOTES = ['💰', '😭', '📉', '🚀', '😡']
 
   useEffect(() => {
     let timeoutId: ReturnType<typeof setTimeout> | undefined
@@ -254,6 +259,21 @@ export function PlayerBoard({ player, isCurrent, isMe, isTarget, isOffline, weal
 
 
       {/* Absolutely positioned inner badges */}
+      {activeEmote && (
+        <motion.div
+          initial={{ opacity: 0, y: 10, scale: 0.5 }}
+          animate={{ opacity: 1, y: -20, scale: 1.5 }}
+          exit={{ opacity: 0 }}
+          style={{
+            position: 'absolute', top: -30, right: -10, zIndex: 100,
+            fontSize: 40, pointerEvents: 'none',
+            filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.5))'
+          }}
+        >
+          {activeEmote}
+        </motion.div>
+      )}
+
       <div style={{ position: 'absolute', top: 6, left: 6, right: 6, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', pointerEvents: 'none' }}>
         {/* Status badges */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 4, alignItems: 'flex-start' }}>
@@ -397,6 +417,63 @@ export function PlayerBoard({ player, isCurrent, isMe, isTarget, isOffline, weal
           {t('game.defenseCards')}: {player.hand.filter(c => c.type === 'defense').length}
         </div>
       )}
+
+      {/* Emote Picker Button (Only for me) */}
+      {isMe && onSendEmote && !compact && (
+        <div style={{ position: 'absolute', bottom: -16, right: 12, zIndex: 110 }}>
+          <button
+            onClick={(e) => { e.stopPropagation(); setShowEmotePicker(!showEmotePicker); }}
+            style={{
+              background: '#1e293b', border: `1px solid ${theme.border}`,
+              borderRadius: '50%', width: 32, height: 32,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              cursor: 'pointer', boxShadow: '0 4px 12px rgba(0,0,0,0.5)',
+              fontSize: 16, transition: 'all 0.2s',
+            }}
+            onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.1)'}
+            onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+          >
+            💬
+          </button>
+
+          <AnimatePresence>
+            {showEmotePicker && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8, y: 10 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.8, y: 10 }}
+                style={{
+                  position: 'absolute', bottom: 40, right: 0,
+                  background: 'rgba(15, 23, 42, 0.95)', backdropFilter: 'blur(12px)',
+                  border: '1px solid rgba(255,255,255,0.1)', borderRadius: 12,
+                  padding: 8, display: 'flex', gap: 6,
+                  boxShadow: '0 8px 32px rgba(0,0,0,0.5)'
+                }}
+              >
+                {EMOTES.map(emoji => (
+                  <button
+                    key={emoji}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onSendEmote(emoji);
+                      setShowEmotePicker(false);
+                    }}
+                    style={{
+                      background: 'none', border: 'none', fontSize: 24,
+                      cursor: 'pointer', padding: 4, transition: 'transform 0.1s',
+                    }}
+                    onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.2)'}
+                    onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+                  >
+                    {emoji}
+                  </button>
+                ))}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      )}
+
     </motion.div>
   )
 }

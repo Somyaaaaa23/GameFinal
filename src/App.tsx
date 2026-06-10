@@ -32,6 +32,7 @@ const Game = retryLazy(() => import('./pages/Game').then(m => ({ default: m.Game
 const Lobby = retryLazy(() => import('./pages/Lobby').then(m => ({ default: m.Lobby })))
 const MultiplayerGame = retryLazy(() => import('./pages/MultiplayerGame').then(m => ({ default: m.MultiplayerGame })))
 const Campaign = retryLazy(() => import('./pages/Campaign').then(m => ({ default: m.Campaign })))
+const TutorialGame = retryLazy(() => import('./pages/TutorialGame').then(m => ({ default: m.TutorialGame })))
 
 import * as Sentry from '@sentry/react'
 
@@ -77,6 +78,7 @@ function AppRoutes() {
         <Route path="/game" element={<ProtectedRoute><Game /></ProtectedRoute>} />
         <Route path="/game/level/:levelId" element={<ProtectedRoute><Game /></ProtectedRoute>} />
         <Route path="/campaign" element={<ProtectedRoute><Campaign /></ProtectedRoute>} />
+        <Route path="/tutorial" element={<ProtectedRoute><TutorialGame /></ProtectedRoute>} />
         <Route path="/multiplayer" element={<ProtectedRoute><Lobby /></ProtectedRoute>} />
         <Route path="/multiplayer/:roomId" element={<ProtectedRoute><MultiplayerGame /></ProtectedRoute>} />
         <Route path="*" element={<Navigate to="/" replace />} />

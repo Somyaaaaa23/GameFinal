@@ -22,6 +22,8 @@ export function GameBoardDesktop({
   onCancelTargeting,
   daanikCoins,
   onBuyExtraCard,
+  activeEmotes,
+  onSendEmote,
 }: GameBoardProps) {
   const { t, i18n } = useTranslation()
   const myPlayerIndex = gameState.players.findIndex(p => p.id === myPlayerId)
@@ -52,12 +54,14 @@ export function GameBoardDesktop({
                   isCurrent={originalIndex === gameState.currentPlayerIndex}
                   isMe={player.id === myPlayerId}
                   isTarget={uiPhase === 'targeting' && player.id !== myPlayerId}
-                  isOffline={isMultiplayer && !onlinePlayers.has(player.id)}
+                  isOffline={isMultiplayer && !onlinePlayers?.has(player.id)}
                   wealthGoal={gameState.wealthGoal}
                   seatIndex={originalIndex}
                   onClick={() => onTargetSelect(originalIndex)}
                   turnStartTime={gameState.turnStartTime}
                   timeLimit={TURN_TIME_LIMIT_MS}
+                  activeEmote={activeEmotes?.[player.id]}
+                  onSendEmote={onSendEmote}
                 />
               </div>
             )

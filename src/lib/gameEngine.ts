@@ -71,7 +71,7 @@ export function initLevelGame(humanPlayer: { id: string; name: string; avatar_ur
     const multMap: Record<string, number> = { easy: 0.8, medium: 1.0, hard: 1.2 }
     players.push(createPlayer(`bot_${i}`, BOT_NAMES[i] ?? `Bot ${i + 1}`, true, diffMap[level.botDifficulty], null, multMap[level.botDifficulty]))
   }
-  
+
   players.forEach(p => p.wealth = level.startingCorpus)
 
   const hands: GameCard[][] = players.map(() => [])
@@ -112,23 +112,23 @@ export function initLevelGame(humanPlayer: { id: string; name: string; avatar_ur
 
 function refillDeck(state: GameState): GameState {
   const onlyDefenseLeftInDeck = state.deck.length > 0 && state.deck.every(c => c.type === 'defense')
-  
+
   if (state.deck.length > 0 && !onlyDefenseLeftInDeck) return state
 
   if (state.discardPile.length > 0) {
     const shuffled = [...state.deck, ...state.discardPile]
     for (let i = shuffled.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1))
-      ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+        ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
     }
-    
+
     // Check if the reshuffled deck still only has defense cards
     const stillOnlyDefense = shuffled.every(c => c.type === 'defense')
     if (!stillOnlyDefense) {
       return { ...state, deck: shuffled, discardPile: [], log: ['Deck reshuffled.', ...state.log].slice(0, 20) }
     }
   }
-  
+
   // Create a completely fresh deck to guarantee action/decision cards
   return { ...state, deck: createGameDeck(), discardPile: [], log: ['Fresh deck created.', ...state.log].slice(0, 20) }
 }
@@ -307,11 +307,11 @@ export function processDecision(state: GameState, playerIndex: number, choice: D
   const newWealth = newState.players[playerIndex].wealth
   const diff = newWealth - oldWealth
   const diffStr = diff > 0 ? ` (+₹${Math.abs(diff).toLocaleString()})` : diff < 0 ? ` (-₹${Math.abs(diff).toLocaleString()})` : ''
-  
+
   // Clear doubleInvestActive after use, and increment investChoices if choice was invest
   const players = newState.players.map((p, i) =>
-    i === playerIndex ? { 
-      ...p, 
+    i === playerIndex ? {
+      ...p,
       doubleInvestActive: false,
       investChoices: p.investChoices + (choice === 'invest' ? 1 : 0)
     } : p
@@ -379,7 +379,7 @@ export function processAction(state: GameState, playerIndex: number, card: GameC
   const oldTargetWealth = state.players[targetIndex].wealth
 
   let newState = { ...state, players: updatedPlayersForDefense, discardPile }
-  
+
   if (card.effect.target === 'all' || card.effect.target === 'others') {
     // AoE targets affect multiple players
     for (let i = 0; i < newState.players.length; i++) {
@@ -474,10 +474,10 @@ export function advanceTurn(state: GameState): GameState {
   const currentPlayer = state.players[state.currentPlayerIndex]
   if (!currentPlayer.hasForfeited) {
     const unplayedCards = [...currentPlayer.hand]
-    
+
     const updatedCurrentPlayer = { ...currentPlayer, hand: [] }
-    state = { 
-      ...state, 
+    state = {
+      ...state,
       players: state.players.map((p, i) => i === state.currentPlayerIndex ? updatedCurrentPlayer : p),
       discardPile: [...state.discardPile, ...unplayedCards]
     }
@@ -668,7 +668,7 @@ export function doBotTurn(state: GameState): { state: GameState; delay: number }
 export function startDrawPhase(state: GameState, playerIndex: number): { state: GameState; card: GameCard | null } {
   let currentState = state;
   let lastDrawnCard = null;
-  
+
   // Draw exactly 4 new cards every turn, ignoring what is currently stored in hand
   for (let i = 0; i < 4; i++) {
     const res = drawCard(currentState, playerIndex);
@@ -676,7 +676,7 @@ export function startDrawPhase(state: GameState, playerIndex: number): { state: 
     if (!res.card) break;
     lastDrawnCard = res.card;
   }
-  
+
   return { state: currentState, card: lastDrawnCard };
 }
 

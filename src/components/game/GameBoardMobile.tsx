@@ -24,6 +24,8 @@ export function GameBoardMobile({
   onCancelTargeting,
   daanikCoins,
   onBuyExtraCard,
+  activeEmotes,
+  onSendEmote,
 }: GameBoardProps) {
   const { t, i18n } = useTranslation()
   const [previewCard, setPreviewCard] = useState<any>(null)
@@ -63,6 +65,8 @@ export function GameBoardMobile({
                   compact={true}
                   turnStartTime={gameState.turnStartTime}
                   timeLimit={TURN_TIME_LIMIT_MS}
+                  activeEmote={activeEmotes?.[player.id]}
+                  onSendEmote={onSendEmote}
                 />
               </div>
             )
