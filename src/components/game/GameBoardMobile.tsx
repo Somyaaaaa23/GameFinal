@@ -4,6 +4,7 @@ import { Button } from '../ui/Button'
 import { PlayerBoard } from './PlayerBoard'
 import { GameLog } from './GameLog'
 import { useTranslation } from 'react-i18next'
+import { AnimatePresence } from 'framer-motion'
 
 import { formatWealth } from '../../types/game'
 import { TURN_TIME_LIMIT_MS } from '../../lib/gameEngine'
@@ -26,6 +27,7 @@ export function GameBoardMobile({
   onBuyExtraCard,
   activeEmotes,
   onSendEmote,
+  isAnimating,
 }: GameBoardProps) {
   const { t, i18n } = useTranslation()
   const [previewCard, setPreviewCard] = useState<any>(null)
@@ -67,6 +69,7 @@ export function GameBoardMobile({
                   timeLimit={TURN_TIME_LIMIT_MS}
                   activeEmote={activeEmotes?.[player.id]}
                   onSendEmote={onSendEmote}
+                  isThinking={isAnimating && originalIndex === gameState.currentPlayerIndex && player.isBot}
                 />
               </div>
             )
@@ -129,9 +132,11 @@ export function GameBoardMobile({
               </Button>
             </div>
             <div className="mobile-hand-grid">
-              {myPlayer?.hand.map(card => (
-                <GameCardComponent key={card.id} card={card} onClick={() => setPreviewCard(card)} />
-              ))}
+              <AnimatePresence>
+                {myPlayer?.hand.map(card => (
+                  <GameCardComponent key={card.id} card={card} onClick={() => setPreviewCard(card)} />
+                ))}
+              </AnimatePresence>
             </div>
           </div>
         )}

@@ -9,6 +9,7 @@ import { formatWealth } from '../types/game'
 import { supabase } from '../lib/supabase'
 import { isSoundEnabled, toggleSound } from '../lib/audio'
 import { useTranslation } from 'react-i18next'
+import { DailyRewardModal } from '../components/DailyRewardModal'
 
 
 type Tab = 'home' | 'leaderboard' | 'contracts' | 'profile'
@@ -25,7 +26,7 @@ interface LeaderboardEntry {
 }
 
 export function Dashboard() {
-  const { profile, logout } = useAuth()
+  const { profile, logout, refreshProfile } = useAuth()
   const navigate = useNavigate()
   const [tab, setTab] = useState<Tab>('home')
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([])
@@ -39,6 +40,43 @@ export function Dashboard() {
     const nextLng = i18n.language === 'en' ? 'hi' : 'en'
     i18n.changeLanguage(nextLng)
     localStorage.setItem('language', nextLng)
+  }
+
+  const [showDailyReward, setShowDailyReward] = useState(false)
+  const [dailyStreak, setDailyStreak] = useState(0)
+
+  useEffect(() => {
+    if (profile) {
+      const today = new Date().toISOString().split('T')[0]
+      if (profile.last_login_date !== today) {
+        const yesterday = new Date()
+        yesterday.setDate(yesterday.getDate() - 1)
+        const yStr = yesterday.toISOString().split('T')[0]
+        
+        let currentStreak = 0;
+        if (profile.last_login_date === yStr) {
+          currentStreak = profile.login_streak || 0;
+        }
+        
+        setDailyStreak(currentStreak)
+        setShowDailyReward(true)
+      }
+    }
+  }, [profile])
+
+  const handleClaimDaily = async (_day: number, _amount: number) => {
+    if (!profile) return
+    
+    // Call the secure backend function
+    const { error } = await supabase.rpc('claim_daily_reward')
+    
+    if (error) {
+      console.error("Error claiming reward:", error)
+      return
+    }
+    
+    setShowDailyReward(false)
+    if (refreshProfile) await refreshProfile()
   }
 
   useEffect(() => {
@@ -86,6 +124,7 @@ export function Dashboard() {
 
   return (
     <div style={{ height: '100vh', background: 'transparent', display: 'flex', flexDirection: 'column', color: 'var(--text-dark)', overflow: 'hidden' }}>
+      {showDailyReward && <DailyRewardModal onClose={() => setShowDailyReward(false)} onClaim={handleClaimDaily} currentStreak={dailyStreak} />}
       {/* Top Nav */}
       <nav style={{
         position: 'sticky', top: 0, zIndex: 40,

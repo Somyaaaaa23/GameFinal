@@ -21,6 +21,7 @@ export interface GameBoardProps {
   onBuyExtraCard: () => void
   activeEmotes?: Record<string, string>
   onSendEmote?: (emoji: string) => void
+  isAnimating?: boolean
 }
 
 export function GameBoard(props: GameBoardProps) {

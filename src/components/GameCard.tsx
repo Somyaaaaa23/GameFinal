@@ -119,6 +119,9 @@ export function GameCard({ card, onClick, selected, disabled, compact, faceDown 
       layoutId={card.id}
       initial={{ opacity: 0, y: 20, scale: 0.9 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.5, y: -20, transition: { duration: 0.2 } }}
+      whileHover={!disabled ? { scale: 1.05, y: -5 } : undefined}
+      whileTap={!disabled ? { scale: 0.95 } : undefined}
       onClick={!disabled ? onClick : undefined}
       className={classNames}
       style={cssVars}

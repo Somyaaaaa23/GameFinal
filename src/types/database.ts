@@ -69,6 +69,8 @@ export interface Profile {
   current_season_rank_points: number
   placement_games_done: number
   guild_id: string | null
+  last_login_date: string | null
+  login_streak: number
   created_at: string
   updated_at: string
 }

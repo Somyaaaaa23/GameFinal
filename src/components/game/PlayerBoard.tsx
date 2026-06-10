@@ -20,6 +20,7 @@ interface PlayerBoardProps {
   timeLimit?: number
   activeEmote?: string
   onSendEmote?: (emoji: string) => void
+  isThinking?: boolean
 }
 
 // Distinct color themes per seat — matching the screenshot's green, purple, red, gold palette
@@ -70,16 +71,56 @@ function CardTimer({ turnStartTime, timeLimit, type }: { turnStartTime: number; 
 
   if (type === 'card-border') {
     return (
-      <svg style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 20 }}>
-        <rect x="0" y="0" width="100%" height="100%" rx="16" fill="none" 
-          stroke={isDanger ? '#ef4444' : '#22c55e'} 
-          strokeWidth="6" 
+      <motion.svg 
+        animate={isDanger ? { opacity: [0.6, 1, 0.6] } : { opacity: 1 }}
+        transition={{ repeat: Infinity, duration: 0.8 }}
+        style={{ position: 'absolute', top: -3, left: -3, width: 'calc(100% + 6px)', height: 'calc(100% + 6px)', pointerEvents: 'none', zIndex: 20 }}
+      >
+        <defs>
+          <filter id="neonGlow">
+            <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+            <feMerge>
+              <feMergeNode in="coloredBlur"/>
+              <feMergeNode in="coloredBlur"/> {/* Double blur for intense glow */}
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+        </defs>
+        
+        {/* Background faint track */}
+        <rect x="3" y="3" width="calc(100% - 6px)" height="calc(100% - 6px)" rx="16" fill="none" 
+          stroke={isDanger ? "rgba(239, 68, 68, 0.15)" : "rgba(255, 255, 255, 0.15)"}
+          strokeWidth="2" 
+        />
+        
+        {/* Neon Aura (Thick, blurred, colored) */}
+        <rect x="3" y="3" width="calc(100% - 6px)" height="calc(100% - 6px)" rx="16" fill="none" 
+          stroke={isDanger ? "#ef4444" : "#06b6d4"}
+          strokeWidth="8" 
+          filter="url(#neonGlow)"
           pathLength="100"
           strokeDasharray="100" 
           strokeDashoffset={100 * (1 - pct/100)}
-          style={{ transition: 'stroke-dashoffset 1s linear' }}
+          style={{ 
+            transition: 'stroke-dashoffset 1s linear',
+            strokeLinecap: 'round',
+            opacity: 0.9
+          }}
         />
-      </svg>
+
+        {/* Neon Core (Thin, sharp, pure white) */}
+        <rect x="3" y="3" width="calc(100% - 6px)" height="calc(100% - 6px)" rx="16" fill="none" 
+          stroke="#ffffff"
+          strokeWidth="2" 
+          pathLength="100"
+          strokeDasharray="100" 
+          strokeDashoffset={100 * (1 - pct/100)}
+          style={{ 
+            transition: 'stroke-dashoffset 1s linear',
+            strokeLinecap: 'round'
+          }}
+        />
+      </motion.svg>
     )
   }
 
@@ -97,7 +138,7 @@ function CardTimer({ turnStartTime, timeLimit, type }: { turnStartTime: number; 
 
 
 
-export function PlayerBoard({ player, isCurrent, isMe, isTarget, isOffline, wealthGoal, seatIndex = 0, onClick, compact, turnStartTime, timeLimit, activeEmote, onSendEmote }: PlayerBoardProps) {
+export function PlayerBoard({ player, isCurrent, isMe, isTarget, isOffline, wealthGoal, seatIndex = 0, onClick, compact, turnStartTime, timeLimit, activeEmote, onSendEmote, isThinking }: PlayerBoardProps) {
   const { t } = useTranslation()
   const wealthPct = Math.min(100, (player.wealth / wealthGoal) * 100)
   const theme = SEAT_THEMES[seatIndex % SEAT_THEMES.length]
@@ -259,6 +300,7 @@ export function PlayerBoard({ player, isCurrent, isMe, isTarget, isOffline, weal
 
 
       {/* Absolutely positioned inner badges */}
+
       {activeEmote && (
         <motion.div
           initial={{ opacity: 0, y: 10, scale: 0.5 }}

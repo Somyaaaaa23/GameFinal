@@ -3,6 +3,7 @@ import { Button } from '../ui/Button'
 import { PlayerBoard } from './PlayerBoard'
 import { GameLog } from './GameLog'
 import { useTranslation } from 'react-i18next'
+import { AnimatePresence } from 'framer-motion'
 
 import { formatWealth } from '../../types/game'
 import { TURN_TIME_LIMIT_MS } from '../../lib/gameEngine'
@@ -24,6 +25,7 @@ export function GameBoardDesktop({
   onBuyExtraCard,
   activeEmotes,
   onSendEmote,
+  isAnimating,
 }: GameBoardProps) {
   const { t, i18n } = useTranslation()
   const myPlayerIndex = gameState.players.findIndex(p => p.id === myPlayerId)
@@ -62,6 +64,7 @@ export function GameBoardDesktop({
                   timeLimit={TURN_TIME_LIMIT_MS}
                   activeEmote={activeEmotes?.[player.id]}
                   onSendEmote={onSendEmote}
+                  isThinking={isAnimating && originalIndex === gameState.currentPlayerIndex && player.isBot}
                 />
               </div>
             )
@@ -149,9 +152,11 @@ export function GameBoardDesktop({
               </Button>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3" style={{ justifyItems: 'center' }}>
-              {myPlayer?.hand.map(card => (
-                <GameCardComponent key={card.id} card={card} onClick={() => onPlayCard(card)} />
-              ))}
+              <AnimatePresence>
+                {myPlayer?.hand.map(card => (
+                  <GameCardComponent key={card.id} card={card} onClick={() => onPlayCard(card)} />
+                ))}
+              </AnimatePresence>
             </div>
           </div>
         )}

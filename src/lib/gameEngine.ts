@@ -136,7 +136,29 @@ function refillDeck(state: GameState): GameState {
 export function drawCard(state: GameState, playerIndex: number): { state: GameState; card: GameCard | null } {
   const ready = refillDeck(state)
   const deck = [...ready.deck]
-  const card = deck.shift() ?? null
+  
+  // Underdog System: if player is in last place and < 50% of leader's wealth, higher chance for epic/legendary actions
+  const player = ready.players[playerIndex]
+  const activeOpponents = ready.players.filter((p, i) => i !== playerIndex && !p.hasForfeited)
+  const leaderWealth = activeOpponents.length > 0 ? Math.max(...activeOpponents.map(p => p.wealth)) : 0
+  const isUnderdog = activeOpponents.length > 0 && 
+                     activeOpponents.every(p => p.wealth > player.wealth) &&
+                     player.wealth < leaderWealth * 0.5
+
+  let cardIndexToDraw = 0
+  if (isUnderdog && deck.length >= 3) {
+    const peek = deck.slice(0, 3)
+    const strongCardIdx = peek.findIndex(c => c.type === 'action' && (c.tier === 'epic' || c.tier === 'legendary'))
+    if (strongCardIdx !== -1) {
+      cardIndexToDraw = strongCardIdx
+    }
+  }
+
+  const card = deck[cardIndexToDraw] ?? null
+  if (card) {
+    deck.splice(cardIndexToDraw, 1)
+  }
+
   const players = ready.players.map((p, i) => {
     if (i !== playerIndex || !card) return p
     return { ...p, hand: [...p.hand, card] }

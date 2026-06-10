@@ -425,6 +425,7 @@ export function Game() {
         }}
         daanikCoins={profile?.daank_coins ?? 0}
         onBuyExtraCard={handleBuyExtraCard}
+        isAnimating={animating}
       />
 
       {popupInfo && (
