@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import React from 'react'
 import { Suspense, lazy } from 'react'
 import { AuthProvider, useAuth } from './hooks/useAuth'
+import { WalletLoader } from './components/WalletLoader'
 
 // Automatically reload the page if a dynamically imported chunk fails to load 
 // (which happens when a new version is deployed to Vercel while a user has the app open)
@@ -45,13 +46,9 @@ function FallbackComponent() {
     </div>
   )
 }
-// Minimal Loading Spinner for Suspense fallback
+// Wallet Loading Spinner for Suspense fallback
 function PageLoader() {
-  return (
-    <div style={{ minHeight: '100vh', background: '#0a0e1a', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 16 }}>
-      <div style={{ width: 40, height: 40, border: '3px solid rgba(255,255,255,0.1)', borderTopColor: '#f59e0b', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
-    </div>
-  )
+  return <WalletLoader />
 }
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
