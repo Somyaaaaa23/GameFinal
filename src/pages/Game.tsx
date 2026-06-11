@@ -214,7 +214,7 @@ export function Game() {
 
   // Human player turn timer
   useEffect(() => {
-    if (!gameState || uiPhase !== 'playing' || gameState.phase === 'game_over' || popupInfo !== null) return
+    if (!gameState || gameState.phase === 'game_over' || popupInfo !== null) return
     if (gameState.currentPlayerIndex !== humanPlayerIndex) return
 
     const elapsed = Date.now() - gameState.turnStartTime
@@ -225,7 +225,7 @@ export function Game() {
     }, remaining)
 
     return () => clearTimeout(timer)
-  }, [gameState, uiPhase, handleTimeout, popupInfo])
+  }, [gameState, handleTimeout, popupInfo])
 
   const handleDrawCard = () => {
     if (!gameState || animating) return

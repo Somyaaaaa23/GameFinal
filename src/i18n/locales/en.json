@@ -75,7 +75,7 @@
     "playAgain": "Play Again",
     "you": "(you)",
     "yourTurnDraw": "Your turn! Draw a card to start.",
-    "drawCardBtn": "Draw a Card ({{count}} left in deck)",
+    "drawCardBtn": "Draw a Card",
     "yourCurrentHand": "Your current hand:",
     "buyExtraCard": "Buy Extra Card (25 🪙)",
     "selectTarget": "Select a target for {{card}}",

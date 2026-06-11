@@ -220,7 +220,7 @@ export function MultiplayerGame() {
 
   // Turn timer effect
   useEffect(() => {
-    if (!gameState || uiPhase !== 'playing' || gameState.phase === 'game_over') return
+    if (!gameState || gameState.phase === 'game_over') return
 
     const elapsed = Date.now() - gameState.turnStartTime
     const remaining = Math.max(0, TURN_TIME_LIMIT_MS - elapsed)
@@ -230,7 +230,7 @@ export function MultiplayerGame() {
     }, remaining)
 
     return () => clearTimeout(timer)
-  }, [gameState, uiPhase, handleTimeout])
+  }, [gameState, handleTimeout])
 
   async function pushState(state: GameState) {
     if (!roomId) return

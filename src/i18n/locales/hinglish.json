@@ -75,7 +75,7 @@
     "playAgain": "Phir se Khelein",
     "you": "(aap)",
     "yourTurnDraw": "Aapki turn! Start karne ke liye card draw karein.",
-    "drawCardBtn": "Card Draw Karein ({{count}} bache hain)",
+    "drawCardBtn": "Card Draw Karein",
     "yourCurrentHand": "Aapke current cards:",
     "buyExtraCard": "Extra Card Khareedein (25 🪙)",
     "selectTarget": "{{card}} ke liye target select karein",

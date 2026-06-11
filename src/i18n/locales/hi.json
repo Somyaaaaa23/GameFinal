@@ -75,7 +75,7 @@
     "playAgain": "फिर से खेलें",
     "you": "(आप)",
     "yourTurnDraw": "आपकी बारी! शुरू करने के लिए कार्ड उठाएँ।",
-    "drawCardBtn": "कार्ड उठाएँ ({{count}} बाकी हैं)",
+    "drawCardBtn": "कार्ड उठाएँ",
     "yourCurrentHand": "आपके मौजूद कार्ड:",
     "buyExtraCard": "अतिरिक्त कार्ड खरीदें (25 🪙)",
     "selectTarget": "{{card}} के लिए एक टारगेट चुनें",
