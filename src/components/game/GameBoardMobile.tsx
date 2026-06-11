@@ -1,10 +1,11 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { GameCard as GameCardComponent } from '../GameCard'
 import { Button } from '../ui/Button'
 import { PlayerBoard } from './PlayerBoard'
 import { GameLog } from './GameLog'
 import { useTranslation } from 'react-i18next'
 import { AnimatePresence } from 'framer-motion'
+import { Zap, Shield, FileWarning } from 'lucide-react'
 
 import { formatWealth } from '../../types/game'
 import { TURN_TIME_LIMIT_MS } from '../../lib/gameEngine'
@@ -22,6 +23,7 @@ export function GameBoardMobile({
   onPlayCard,
   onTargetSelect,
   onDecision,
+  onTimeout,
   onCancelTargeting,
   daanikCoins,
   onBuyExtraCard,
@@ -29,12 +31,20 @@ export function GameBoardMobile({
   onSendEmote,
 }: GameBoardProps) {
   const { t, i18n } = useTranslation()
+  const [selectedCard, setSelectedCard] = useState<any>(null)
   const [previewCard, setPreviewCard] = useState<any>(null)
 
   const myPlayerIndex = gameState.players.findIndex(p => p.id === myPlayerId)
   const isMyTurn = gameState.players[gameState.currentPlayerIndex]?.id === myPlayerId
   const myPlayer = myPlayerIndex >= 0 ? gameState.players[myPlayerIndex] : null
   const currentPlayer = gameState.players[gameState.currentPlayerIndex]
+
+  // Clear selected card when phase changes
+  useEffect(() => {
+    if (!isMyTurn || gameState.phase !== 'play' || uiPhase !== 'playing') {
+      setSelectedCard(null)
+    }
+  }, [isMyTurn, gameState.phase, uiPhase])
 
   // Rearrange players for display so local player is always first
   const displayPlayers = [...gameState.players]
@@ -46,53 +56,41 @@ export function GameBoardMobile({
   return (
     <div className="mobile-board-wrapper">
       
-      {/* TOP/MAIN CONTENT: Players & Action */}
-      <div className="mobile-left-col">
-        {/* Players */}
-        <div className="mobile-players-grid">
-          {displayPlayers.map((player) => {
-            const originalIndex = gameState.players.findIndex(p => p.id === player.id)
-            return (
-              <div key={player.id}>
-                <PlayerBoard
-                  player={player}
-                  isCurrent={originalIndex === gameState.currentPlayerIndex}
-                  isMe={player.id === myPlayerId}
-                  isTarget={uiPhase === 'targeting' && player.id !== myPlayerId}
-                  isOffline={isMultiplayer && !onlinePlayers.has(player.id)}
-                  wealthGoal={gameState.wealthGoal}
-                  seatIndex={originalIndex}
-                  onClick={() => onTargetSelect(originalIndex)}
-                  compact={true}
-                  turnStartTime={gameState.turnStartTime}
-                  timeLimit={TURN_TIME_LIMIT_MS}
-                  activeEmote={activeEmotes?.[player.id]}
-                  onSendEmote={onSendEmote}
-                />
-              </div>
-            )
-          })}
-        </div>
+      {/* Horizontal Players Row */}
+      <div className="mobile-players-row">
+        {displayPlayers.map((player) => {
+          const originalIndex = gameState.players.findIndex(p => p.id === player.id)
+          return (
+            <div key={player.id} className="mobile-player-item">
+              <PlayerBoard
+                player={player}
+                isCurrent={originalIndex === gameState.currentPlayerIndex}
+                isMe={player.id === myPlayerId}
+                isTarget={uiPhase === 'targeting' && player.id !== myPlayerId}
+                isOffline={isMultiplayer && !onlinePlayers.has(player.id)}
+                wealthGoal={gameState.wealthGoal}
+                seatIndex={originalIndex}
+                onClick={() => onTargetSelect(originalIndex)}
+                compact={true}
+                turnStartTime={gameState.turnStartTime}
+                timeLimit={TURN_TIME_LIMIT_MS}
+                activeEmote={activeEmotes?.[player.id]}
+                onSendEmote={onSendEmote}
+              />
+            </div>
+          )
+        })}
+      </div>
 
+      <div className="mobile-main-content">
         {/* Level HUD (if campaign level is active) */}
         {gameState.levelState && (
-          <div className="mobile-level-hud-container">
-            <LevelHUD levelState={gameState.levelState} />
-          </div>
+          <LevelHUD levelState={gameState.levelState} />
         )}
 
-        {/* Action panel */}
-        <div className="glass-panel mobile-action-panel">
-        <div className="mobile-action-header">
-          <h2 className="mobile-action-title">
-            {isMyTurn ? <span style={{ color: '#60a5fa' }}>{t('game.yourTurn')}</span> : <span>{t('game.playerTurn', { name: currentPlayer?.name })}</span>}
-          </h2>
-          <div className="mobile-action-turn">{t('game.turn').toUpperCase()} {gameState.turn}</div>
-        </div>
-        
         {/* Not my turn */}
         {!isMyTurn && uiPhase === 'playing' && (
-          <div className="mobile-wait-state">
+          <div className="mobile-wait-state glass-panel">
             <div style={{ fontSize: 40, marginBottom: 12 }}>⏳</div>
             <div style={{ fontSize: 19, fontWeight: 600, color: '#94a3b8', marginBottom: 4 }}>
               {t('game.waitingFor', { name: currentPlayer?.name })}
@@ -102,7 +100,7 @@ export function GameBoardMobile({
         )}
 
         {isMyTurn && gameState.phase === 'draw' && (
-          <div className="mobile-draw-state">
+          <div className="mobile-draw-state glass-panel">
             <div style={{ fontSize: 16, color: '#94a3b8', marginBottom: 18 }}>
               {t('game.yourTurnDraw')}
             </div>
@@ -112,34 +110,76 @@ export function GameBoardMobile({
           </div>
         )}
 
-        {/* Play phase — show full hand, pick one to play */}
+        {/* Play phase */}
         {isMyTurn && gameState.phase === 'play' && uiPhase === 'playing' && (
-          <div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
-              <p style={{ fontSize: 16, color: '#94a3b8' }}>
-                {gameState.drawnCard ? `${t('game.drew')} "${i18n.language === 'hi' && gameState.drawnCard.nameHi ? gameState.drawnCard.nameHi : gameState.drawnCard.name}" — ${t('game.pickCard')}` : t('game.pickCard')}
-              </p>
-              <Button
-                variant="gold"
-                size="sm"
-                onClick={onBuyExtraCard}
-                disabled={daanikCoins < 25}
-                title="Draw an extra card for 25 DAANIK coins"
-              >
-                {t('game.buyExtraCard')}
-              </Button>
+          <div className="mobile-play-phase-container">
+            
+            {/* DRAWN OR SELECTED CARD SECTION */}
+            {(selectedCard || gameState.drawnCard) && (() => {
+              const activeCard = selectedCard || gameState.drawnCard;
+              return (
+                <div className="mobile-drawn-card-section glass-panel">
+                  <div className="mobile-drawn-header">{selectedCard ? 'SELECTED CARD' : 'DRAWN CARD'}</div>
+                  <div className="mobile-drawn-content">
+                    <div className="mobile-drawn-text">
+                      <h3>{i18n.language === 'hi' && activeCard.nameHi ? activeCard.nameHi : activeCard.name}</h3>
+                      <span className="mobile-drawn-category">
+                        {activeCard.type === 'action' || activeCard.type === 'decision' 
+                          ? 'Opportunity' 
+                          : activeCard.type}
+                      </span>
+                      <p>{i18n.language === 'hi' && activeCard.flavorHi ? activeCard.flavorHi : activeCard.flavor}</p>
+                    </div>
+                    <div className="mobile-drawn-image">
+                      {activeCard.type === 'action' ? (
+                        <Zap size={48} strokeWidth={1.5} color="#94a3b8" />
+                      ) : activeCard.type === 'defense' ? (
+                        <Shield size={48} strokeWidth={1.5} color="#94a3b8" />
+                      ) : (
+                        <FileWarning size={48} strokeWidth={1.5} color="#94a3b8" />
+                      )}
+                    </div>
+                  </div>
+                </div>
+              );
+            })()}
+
+            {/* PICK ACTION HEADER */}
+            <div className="mobile-pick-action-header">
+              <span className="mobile-pick-title">PICK ONE ACTION CARD TO PLAY</span>
             </div>
+
+            {/* HAND GRID */}
             <div className="mobile-hand-grid">
               <AnimatePresence>
                 {myPlayer?.hand.map(card => (
-                  <GameCardComponent key={card.id} card={card} onClick={() => setPreviewCard(card)} />
+                  <GameCardComponent 
+                    key={card.id} 
+                    card={card} 
+                    selected={selectedCard?.id === card.id}
+                    onClick={() => setSelectedCard(card)} 
+                  />
                 ))}
               </AnimatePresence>
             </div>
+
+            {/* ACTION BUTTONS BAR */}
+            <div className="mobile-action-buttons-bar">
+              <button 
+                className="action-bar-btn confirm" 
+                disabled={!selectedCard}
+                onClick={() => {
+                  if (selectedCard) {
+                    onPlayCard(selectedCard);
+                    setSelectedCard(null);
+                  }
+                }}
+              >
+                Confirm Choice
+              </button>
+            </div>
           </div>
         )}
-
-
 
         {uiPhase === 'targeting' && gameState.pendingTarget && (
           <div className="mobile-targeting-state">
@@ -154,15 +194,13 @@ export function GameBoardMobile({
           </div>
         )}
       </div>
-      {/* END LEFT COLUMN */}
-      </div>
 
-      {/* BOTTOM COLUMN: Game Log */}
-      <div className="mobile-right-col">
+      {/* GAME LOG AT BOTTOM */}
+      <div className="mobile-log-section">
         <GameLog log={gameState.log} mobileCompact={true} playerName={myPlayer?.name} />
       </div>
 
-      {/* Decision card POPUP (Moved outside left-col to fix z-index overlapping) */}
+      {/* Decision card POPUP */}
       {uiPhase === 'decision' && gameState.pendingDecision && (
         <div className="mobile-decision-overlay">
           <div className="mobile-decision-modal">
@@ -256,12 +294,6 @@ export function GameBoardMobile({
             <div style={{ marginTop: 20, display: 'flex', gap: 12 }}>
               <Button variant="secondary" onClick={() => setPreviewCard(null)} style={{ flex: 1 }}>
                 {t('common.cancel')}
-              </Button>
-              <Button variant="primary" onClick={() => {
-                onPlayCard(previewCard)
-                setPreviewCard(null)
-              }} style={{ flex: 1 }}>
-                {t('game.playCard')}
               </Button>
             </div>
           </div>

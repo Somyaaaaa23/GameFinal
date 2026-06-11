@@ -9,33 +9,41 @@
   width: 100%;
   height: calc(100vh - 60px);
   overflow: hidden;
+  background: var(--bg-color, #eef8ef);
 }
 
-.mobile-left-col {
+/* Horizontal Players Row */
+.mobile-players-row {
+  display: flex;
+  flex-direction: row;
+  overflow-x: auto;
+  gap: 12px;
+  padding-bottom: 8px;
+  flex-shrink: 0;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Firefox */
+}
+
+.mobile-players-row::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+.mobile-player-item {
+  flex-shrink: 0;
+}
+
+.mobile-main-content {
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 16px;
   overflow-y: auto;
   padding-bottom: 16px;
-  flex: 1;
-}
-
-.mobile-players-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  justify-content: center;
 }
 
 .mobile-level-hud-container {
-  padding: 0 16px;
+  padding: 0;
   margin-bottom: 16px;
-}
-
-.mobile-action-panel {
-  border-radius: 20px;
-  padding: 24px;
-  box-shadow: none;
 }
 
 .mobile-action-header {
@@ -52,27 +60,178 @@
   font-weight: 700;
 }
 
-.mobile-action-turn {
-  font-size: 15px;
-  color: #475569;
-  font-weight: 700;
-}
-
 .mobile-wait-state {
   text-align: center;
   padding: 36px 0;
+  border-radius: 20px;
 }
 
 .mobile-draw-state {
   text-align: center;
   padding: 28px 0;
+  border-radius: 20px;
 }
 
+.mobile-play-phase-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Drawn Card Section */
+.mobile-drawn-card-section {
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 16px;
+  padding: 16px;
+  border: 1px solid rgba(0,0,0,0.05);
+}
+
+.mobile-drawn-header {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--text-muted, #64748b);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.mobile-drawn-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.mobile-drawn-text {
+  flex: 1;
+}
+
+.mobile-drawn-text h3 {
+  font-size: 20px;
+  font-weight: 800;
+  margin: 0 0 4px 0;
+  color: var(--text-dark);
+}
+
+.mobile-drawn-category {
+  display: inline-block;
+  background: #dcfce7;
+  color: #16a34a;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.mobile-drawn-text p {
+  font-size: 14px;
+  color: #475569;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.mobile-drawn-image {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.card-illustration-placeholder {
+  font-size: 60px;
+  opacity: 0.8;
+}
+
+/* Pick Action Header */
+.mobile-pick-action-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.mobile-pick-title {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text-muted, #64748b);
+  text-transform: uppercase;
+}
+
+/* Hand Grid */
 .mobile-hand-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
+  gap: 12px;
   justify-items: center;
+}
+
+.mobile-hand-grid .game-card-premium {
+  width: 100% !important;
+  max-width: 150px !important;
+  height: 160px !important;
+  min-width: unset !important;
+  min-height: unset !important;
+  padding: 12px 8px 8px !important;
+}
+
+.mobile-hand-grid .game-card-premium .icon-circle {
+  margin-bottom: 4px !important;
+}
+
+.mobile-hand-grid .game-card-premium .card-title {
+  font-size: 13px !important;
+  line-height: 1.2 !important;
+  flex-grow: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0 !important;
+}
+
+.mobile-hand-grid .game-card-premium .card-button,
+.mobile-hand-grid .game-card-premium .bottom-bars {
+  margin-top: auto !important;
+}
+
+/* Action Buttons Bar */
+.mobile-action-buttons-bar {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.action-bar-btn {
+  flex: 1;
+  padding: 12px 8px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.action-bar-btn.secondary {
+  background: rgba(0, 0, 0, 0.05);
+  color: #475569;
+}
+
+.action-bar-btn.confirm {
+  background: #facc15; /* Yellow/Gold */
+  color: #854d0e;
+  flex: 1.5; /* make it slightly wider */
+}
+
+.action-bar-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .mobile-targeting-state {
@@ -83,10 +242,14 @@
   margin: 0 12px;
 }
 
-.mobile-right-col {
+/* Game Log Section at bottom */
+.mobile-log-section {
   width: 100%;
-  margin-top: 8px;
   flex-shrink: 0;
+  background: rgba(255,255,255,0.6);
+  border-radius: 16px;
+  padding: 12px;
+  border: 1px solid rgba(0,0,0,0.05);
 }
 
 /* Decision Modal */
@@ -206,7 +369,6 @@
   margin-bottom: 12px;
 }
 
-/* Force the preview card to render significantly larger, overriding the mobile media query limits */
 .mobile-preview-card-wrapper .game-card-premium {
   width: 240px !important;
   height: 336px !important;
