@@ -23,10 +23,7 @@ export function GameBoardMobile({
   onPlayCard,
   onTargetSelect,
   onDecision,
-  onTimeout,
   onCancelTargeting,
-  daanikCoins,
-  onBuyExtraCard,
   activeEmotes,
   onSendEmote,
 }: GameBoardProps) {
