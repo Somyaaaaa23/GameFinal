@@ -102,8 +102,8 @@
   --shadow-glow-green: 0 0 24px rgba(48, 160, 96, 0.35);
   --shadow-glow-orange: 0 0 24px rgba(224, 80, 32, 0.35);
 
-  --font-sans: 'Outfit', 'Inter', system-ui, sans-serif;
-  --font-display: 'Space Grotesk', 'Outfit', 'Inter', system-ui, sans-serif;
+  --font-sans: 'Outfit', 'Inter', system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-display: 'Space Grotesk', 'Outfit', 'Inter', system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   
   --bg-gradient: linear-gradient(135deg, #EEEFE0 0%, #9FC7AA 100%);
 }

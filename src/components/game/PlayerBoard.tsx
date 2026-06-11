@@ -349,29 +349,7 @@ export function PlayerBoard({ player, isCurrent, isMe, isTarget, isOffline, weal
           )}
         </div>
 
-        {/* DEFENSE BADGES */}
-        {player.activeDefenses?.length > 0 && (
-          <div style={{ display: 'flex', gap: 2, pointerEvents: 'auto' }}>
-            {player.activeDefenses.map((_, i) => (
-              <motion.div
-                key={i}
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                style={{
-                  width: 16, height: 16,
-                  background: 'linear-gradient(135deg, #3b82f6, #1e3a8a)',
-                  borderRadius: '50%',
-                  border: '1px solid #60a5fa',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  boxShadow: '0 2px 4px rgba(0,0,0,0.3)',
-                  fontSize: 10
-                }}
-              >
-                🛡️
-              </motion.div>
-            ))}
-          </div>
-        )}
+        {/* DEFENSE BADGES REMOVED */}
 
         {/* Seat number badge */}
         <div style={{
@@ -460,7 +438,7 @@ export function PlayerBoard({ player, isCurrent, isMe, isTarget, isOffline, weal
           fontSize: 12, fontWeight: 700, color: theme.accent, 
           textAlign: 'center', opacity: 0.9, marginTop: 4 
         }}>
-          {t('game.defenseCards')}: {player.hand.filter(c => c.type === 'defense').length}
+          {t('game.defenseCards')}: {player.activeDefenses?.length || 0}
         </div>
       )}
 
