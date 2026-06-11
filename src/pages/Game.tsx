@@ -7,7 +7,7 @@ import type { GameState, PlayerState, GameCard as GameCardType } from '../types/
 import { formatWealth } from '../types/game'
 import {
   initGame, initLevelGame, startDrawPhase, processDecision, processAction,
-  advanceTurn, doBotTurn, calculateRPChange, forceSkipTurn, drawCard
+  advanceTurn, doBotTurn, calculateRPChange, forceSkipTurn, drawCard, TURN_TIME_LIMIT_MS
 } from '../lib/gameEngine'
 import { ARTHA_YATRA_LEVELS } from '../data/levels'
 import { saveGameResult } from '../lib/auth'
@@ -211,6 +211,21 @@ export function Game() {
     playSound('lose')
     notify('Time ran out! Turn skipped.')
   }, [humanPlayerIndex, handleGameOver])
+
+  // Human player turn timer
+  useEffect(() => {
+    if (!gameState || uiPhase !== 'playing' || gameState.phase === 'game_over' || popupInfo !== null) return
+    if (gameState.currentPlayerIndex !== humanPlayerIndex) return
+
+    const elapsed = Date.now() - gameState.turnStartTime
+    const remaining = Math.max(0, TURN_TIME_LIMIT_MS - elapsed)
+
+    const timer = setTimeout(() => {
+      handleTimeout()
+    }, remaining)
+
+    return () => clearTimeout(timer)
+  }, [gameState, uiPhase, handleTimeout, popupInfo])
 
   const handleDrawCard = () => {
     if (!gameState || animating) return

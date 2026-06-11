@@ -5,7 +5,7 @@ import { Button } from '../components/ui/Button'
 import type { GameState, GameCard as GameCardType } from '../types/game'
 import { formatWealth } from '../types/game'
 import {
-  processDecision, processAction, advanceTurn, startDrawPhase, forceSkipTurn, drawCard
+  processDecision, processAction, advanceTurn, startDrawPhase, forceSkipTurn, drawCard, TURN_TIME_LIMIT_MS
 } from '../lib/gameEngine'
 import { pushGameState, leaveRoom } from '../lib/multiplayerEngine'
 import { saveGameResult } from '../lib/auth'
@@ -217,6 +217,20 @@ export function MultiplayerGame() {
     playSound('lose')
     notify(t('game.timeRanOut', { name: gs.players[gs.currentPlayerIndex].name }))
   }, [myPlayerId, onlinePlayers])
+
+  // Turn timer effect
+  useEffect(() => {
+    if (!gameState || uiPhase !== 'playing' || gameState.phase === 'game_over') return
+
+    const elapsed = Date.now() - gameState.turnStartTime
+    const remaining = Math.max(0, TURN_TIME_LIMIT_MS - elapsed)
+
+    const timer = setTimeout(() => {
+      handleTimeout()
+    }, remaining)
+
+    return () => clearTimeout(timer)
+  }, [gameState, uiPhase, handleTimeout])
 
   async function pushState(state: GameState) {
     if (!roomId) return
