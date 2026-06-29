@@ -219,7 +219,10 @@ export function GameBoardMobile({
             </div>
             
             <div className="mobile-decision-options">
-              {gameState.pendingDecision.card.options?.map(opt => {
+              {[...(gameState.pendingDecision.card.options || [])].sort((a, b) => {
+                const order = { spend: 1, save: 2, invest: 3 };
+                return (order[a.type as keyof typeof order] || 0) - (order[b.type as keyof typeof order] || 0);
+              }).map(opt => {
                 const colors = {
                   spend: { bg: '#fff1f2', border: '#fda4af', labelColor: '#e11d48', labelBg: '#ffe4e6' },
                   save: { bg: '#f0fdf4', border: '#86efac', labelColor: '#16a34a', labelBg: '#dcfce7' },

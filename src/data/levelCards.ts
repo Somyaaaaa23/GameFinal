@@ -20,7 +20,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
       {
         type: 'invest',
         label: "Invest",
-        description: "-",
+        description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 10, target: 'self' },
         investRisk: 10,
         failEffect: { type: 'wealth_pct', value: -6, target: 'self' },
@@ -54,7 +54,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
       {
         type: 'invest',
         label: "Invest",
-        description: "-",
+        description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 11, target: 'self' },
         investRisk: 10,
         failEffect: { type: 'wealth_pct', value: -7, target: 'self' },
@@ -122,7 +122,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
       {
         type: 'invest',
         label: "Invest",
-        description: "-",
+        description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 12, target: 'self' },
         investRisk: 10,
         failEffect: { type: 'wealth_pct', value: -6, target: 'self' },
@@ -156,7 +156,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
       {
         type: 'invest',
         label: "Invest",
-        description: "-",
+        description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 9, target: 'self' },
         investRisk: 10,
         failEffect: { type: 'wealth_pct', value: -6, target: 'self' },
@@ -224,7 +224,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
       {
         type: 'invest',
         label: "Invest",
-        description: "-",
+        description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 10, target: 'self' },
         investRisk: 10,
         failEffect: { type: 'wealth_pct', value: -6, target: 'self' },
@@ -258,7 +258,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
       {
         type: 'invest',
         label: "Invest",
-        description: "-",
+        description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 11, target: 'self' },
         investRisk: 10,
         failEffect: { type: 'wealth_pct', value: -6, target: 'self' },
@@ -292,7 +292,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
       {
         type: 'invest',
         label: "Invest",
-        description: "-",
+        description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 10, target: 'self' },
         investRisk: 10,
         failEffect: { type: 'wealth_pct', value: -7, target: 'self' },
@@ -326,7 +326,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
       {
         type: 'invest',
         label: "Invest",
-        description: "-",
+        description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 10, target: 'self' },
         investRisk: 10,
         failEffect: { type: 'wealth_pct', value: -7, target: 'self' },
@@ -360,7 +360,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
       {
         type: 'invest',
         label: "Invest",
-        description: "-",
+        description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 8, target: 'self' },
         investRisk: 10,
         failEffect: { type: 'wealth_pct', value: -6, target: 'self' },
@@ -394,7 +394,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
       {
         type: 'invest',
         label: "Invest",
-        description: "-",
+        description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 10, target: 'self' },
         investRisk: 10,
         failEffect: { type: 'wealth_pct', value: -7, target: 'self' },
@@ -428,7 +428,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
       {
         type: 'invest',
         label: "Invest",
-        description: "-",
+        description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 11, target: 'self' },
         investRisk: 10,
         failEffect: { type: 'wealth_pct', value: -7, target: 'self' },
@@ -462,7 +462,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
       {
         type: 'invest',
         label: "Invest",
-        description: "-",
+        description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 9, target: 'self' },
         investRisk: 10,
         failEffect: { type: 'wealth_pct', value: -7, target: 'self' },
@@ -530,7 +530,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
       {
         type: 'invest',
         label: "Invest",
-        description: "-",
+        description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 9, target: 'self' },
         investRisk: 10,
         failEffect: { type: 'wealth_pct', value: -7, target: 'self' },
@@ -598,7 +598,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
       {
         type: 'invest',
         label: "Invest",
-        description: "-",
+        description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 10, target: 'self' },
         investRisk: 10,
         failEffect: { type: 'wealth_pct', value: -7, target: 'self' },
@@ -632,7 +632,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
       {
         type: 'invest',
         label: "Invest",
-        description: "-",
+        description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 12, target: 'self' },
         investRisk: 10,
         failEffect: { type: 'wealth_pct', value: -6, target: 'self' },
@@ -768,7 +768,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
       {
         type: 'invest',
         label: "Invest",
-        description: "-",
+        description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 11, target: 'self' },
         investRisk: 10,
         failEffect: { type: 'wealth_pct', value: -7, target: 'self' },
@@ -802,7 +802,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
       {
         type: 'invest',
         label: "Invest",
-        description: "-",
+        description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 8, target: 'self' },
         investRisk: 10,
         failEffect: { type: 'wealth_pct', value: -7, target: 'self' },
@@ -836,7 +836,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
       {
         type: 'invest',
         label: "Invest",
-        description: "-",
+        description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 12, target: 'self' },
         investRisk: 10,
         failEffect: { type: 'wealth_pct', value: -6, target: 'self' },
@@ -870,7 +870,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
       {
         type: 'invest',
         label: "Invest",
-        description: "-",
+        description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 9, target: 'self' },
         investRisk: 10,
         failEffect: { type: 'wealth_pct', value: -6, target: 'self' },
@@ -938,7 +938,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
       {
         type: 'invest',
         label: "Invest",
-        description: "-",
+        description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 9, target: 'self' },
         investRisk: 10,
         failEffect: { type: 'wealth_pct', value: -6, target: 'self' },
@@ -972,7 +972,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
       {
         type: 'invest',
         label: "Invest",
-        description: "-",
+        description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 10, target: 'self' },
         investRisk: 10,
         failEffect: { type: 'wealth_pct', value: -6, target: 'self' },
@@ -1040,7 +1040,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
       {
         type: 'invest',
         label: "Invest",
-        description: "-",
+        description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 12, target: 'self' },
         investRisk: 10,
         failEffect: { type: 'wealth_pct', value: -7, target: 'self' },
@@ -1108,7 +1108,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
       {
         type: 'invest',
         label: "Invest",
-        description: "-",
+        description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 10, target: 'self' },
         investRisk: 10,
         failEffect: { type: 'wealth_pct', value: -6, target: 'self' },
@@ -1262,7 +1262,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
       {
         type: 'invest',
         label: "Invest",
-        description: "-",
+        description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 11, target: 'self' },
         investRisk: 10,
         failEffect: { type: 'wealth_pct', value: -7, target: 'self' },
@@ -1398,7 +1398,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
       {
         type: 'invest',
         label: "Invest",
-        description: "-",
+        description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 10, target: 'self' },
         investRisk: 10,
         failEffect: { type: 'wealth_pct', value: -7, target: 'self' },
@@ -1466,7 +1466,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
       {
         type: 'invest',
         label: "Invest",
-        description: "-",
+        description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 10, target: 'self' },
         investRisk: 10,
         failEffect: { type: 'wealth_pct', value: -6, target: 'self' },
@@ -1534,7 +1534,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
       {
         type: 'invest',
         label: "Invest",
-        description: "-",
+        description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 12, target: 'self' },
         investRisk: 10,
         failEffect: { type: 'wealth_pct', value: -6, target: 'self' },
@@ -1670,7 +1670,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
       {
         type: 'invest',
         label: "Invest",
-        description: "-",
+        description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 10, target: 'self' },
         investRisk: 10,
         failEffect: { type: 'wealth_pct', value: -7, target: 'self' },
@@ -1772,7 +1772,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
       {
         type: 'invest',
         label: "Invest",
-        description: "-",
+        description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 11, target: 'self' },
         investRisk: 10,
         failEffect: { type: 'wealth_pct', value: -6, target: 'self' },
@@ -1840,7 +1840,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
       {
         type: 'invest',
         label: "Invest",
-        description: "-",
+        description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 8, target: 'self' },
         investRisk: 10,
         failEffect: { type: 'wealth_pct', value: -6, target: 'self' },

@@ -199,7 +199,10 @@ export function GameBoardDesktop({
                 {i18n.language === 'hi' && gameState.pendingDecision.card.flavorHi ? gameState.pendingDecision.card.flavorHi : gameState.pendingDecision.card.flavor}
               </p>
               
-              {gameState.pendingDecision.card.options?.map(opt => {
+              {[...(gameState.pendingDecision.card.options || [])].sort((a, b) => {
+                const order = { spend: 1, save: 2, invest: 3 };
+                return (order[a.type as keyof typeof order] || 0) - (order[b.type as keyof typeof order] || 0);
+              }).map(opt => {
                 const colors = {
                   spend: { bg: 'rgba(234, 88, 12, 0.08)', border: '#ea580c', labelColor: '#c2410c', hoverBg: 'rgba(234, 88, 12, 0.15)', borderFocus: '#9a3412' },
                   save: { bg: 'rgba(16, 185, 129, 0.08)', border: '#10b981', labelColor: '#047857', hoverBg: 'rgba(16, 185, 129, 0.15)', borderFocus: '#059669' },
