@@ -159,7 +159,7 @@ export function buildInitialGameState(players: (RoomPlayer & { avatar_url?: stri
     investChoices: 0,
     spendChoices: 0,
     savingStreak: 0,
-    stressLevel: 0,
+    greedIndex: 0,
     emiDamageTaken: false,
   }))
 

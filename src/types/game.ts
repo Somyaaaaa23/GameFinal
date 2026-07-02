@@ -57,7 +57,7 @@ export interface PlayerState {
   investChoices: number
   spendChoices: number
   savingStreak: number
-  stressLevel: number
+  greedIndex: number
   emiDamageTaken: boolean
   hasForfeited?: boolean
   diffMultiplier?: number

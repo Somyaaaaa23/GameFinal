@@ -19,8 +19,8 @@ export function TutorialGame() {
     phase: 'draw',
     currentPlayerIndex: 0,
     players: [
-      { id: myPlayerId, name: 'You', isBot: false, wealth: 50000, wealthFloor: 0, hand: [], activeDefenses: [], skippedTurns: 0, pendingGains: [], doubleInvestActive: false, investChoices: 0, spendChoices: 0, savingStreak: 0, stressLevel: 0, emiDamageTaken: false },
-      { id: botPlayerId, name: 'Rival CEO', isBot: true, wealth: 50000, wealthFloor: 0, hand: [], activeDefenses: [], skippedTurns: 0, pendingGains: [], doubleInvestActive: false, investChoices: 0, spendChoices: 0, savingStreak: 0, stressLevel: 0, emiDamageTaken: false }
+      { id: myPlayerId, name: 'You', isBot: false, wealth: 50000, wealthFloor: 0, hand: [], activeDefenses: [], skippedTurns: 0, pendingGains: [], doubleInvestActive: false, investChoices: 0, spendChoices: 0, savingStreak: 0, greedIndex: 0, emiDamageTaken: false },
+      { id: botPlayerId, name: 'Rival CEO', isBot: true, wealth: 50000, wealthFloor: 0, hand: [], activeDefenses: [], skippedTurns: 0, pendingGains: [], doubleInvestActive: false, investChoices: 0, spendChoices: 0, savingStreak: 0, greedIndex: 0, emiDamageTaken: false }
     ],
     deck: [],
     discardPile: [],

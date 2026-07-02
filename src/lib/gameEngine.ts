@@ -25,7 +25,7 @@ function createPlayer(id: string, name: string, isBot: boolean, rankPoints?: num
     investChoices: 0,
     spendChoices: 0,
     savingStreak: 0,
-    stressLevel: 0,
+    greedIndex: 0,
     emiDamageTaken: false,
     diffMultiplier,
     profile: isBot ? { rank_points: rankPoints ?? 1500, avatar_url: null } : { rank_points: 0, avatar_url: avatarUrl ?? null },
@@ -313,7 +313,7 @@ export function processDecision(state: GameState, playerIndex: number, choice: D
   }
 
   // --- Core Mechanics Processing ---
-  let newStressLevel = player.stressLevel
+  let newGreedIndex = player.greedIndex
   let newSavingStreak = player.savingStreak
   let newSpendChoices = player.spendChoices
 
@@ -332,12 +332,13 @@ export function processDecision(state: GameState, playerIndex: number, choice: D
   let multiplier = 1.0
   if (choice === 'save') {
     newSavingStreak += 1
-    newStressLevel += 1
     multiplier = 1 + (newSavingStreak * 0.05) // +5% per streak
     if (newSavingStreak > 1) logs.push(`🔥 Saving Streak x${newSavingStreak}!`)
   } else if (choice === 'invest') {
     newSavingStreak = 0
-    newStressLevel += 1
+    if (!riskFired) {
+      newGreedIndex += 1
+    }
     // Lifestyle Tier multiplier on success
     if (!riskFired) {
       if (lifestyleTier === 1) multiplier = 0.75
@@ -347,9 +348,9 @@ export function processDecision(state: GameState, playerIndex: number, choice: D
     }
   } else if (choice === 'spend') {
     newSavingStreak = 0
-    newStressLevel = 0
+    newGreedIndex = 0
     newSpendChoices += 1
-    logs.push(`🛍️ Treated yourself! Stress relieved.`)
+    logs.push(`🛍️ Treated yourself! Greed reset.`)
   }
 
   // Apply multipliers
@@ -363,14 +364,14 @@ export function processDecision(state: GameState, playerIndex: number, choice: D
   const oldWealth = player.wealth
   let newState = applyEffect(state, scaledEffect, playerIndex, playerIndex)
   
-  // --- Check for Burnout (Stress Max) ---
-  if (newStressLevel >= 3) {
-    newStressLevel = 0
+  // --- Check for Market Correction (Greed Max) ---
+  if (newGreedIndex >= 3) {
+    newGreedIndex = 0
     // Apply 20% penalty
     const currentWealth = newState.players[playerIndex].wealth
     const penalty = Math.floor(currentWealth * 0.20)
     newState.players[playerIndex].wealth -= penalty
-    logs.push(`🚨 BURNOUT! Stress reached MAX. Lost ₹${penalty.toLocaleString()}!`)
+    logs.push(`📉 MARKET CORRECTION! Greed reached MAX. Lost ₹${penalty.toLocaleString()}!`)
   }
 
   const newWealth = newState.players[playerIndex].wealth
@@ -385,7 +386,7 @@ export function processDecision(state: GameState, playerIndex: number, choice: D
     investChoices: updatedPlayers[playerIndex].investChoices + (choice === 'invest' ? 1 : 0),
     spendChoices: newSpendChoices,
     savingStreak: newSavingStreak,
-    stressLevel: newStressLevel
+    greedIndex: newGreedIndex
   }
   newState = { ...newState, players: updatedPlayers }
 
