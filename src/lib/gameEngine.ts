@@ -302,7 +302,7 @@ export function processDecision(state: GameState, playerIndex: number, choice: D
   const player = state.players[playerIndex]
   let effectToApply = option.effect
   let riskFired = false
-  let logs: string[] = []
+  const logs: string[] = []
   
   // --- Invest Risk mechanic ---
   if (choice === 'invest' && option.investRisk && option.failEffect) {
