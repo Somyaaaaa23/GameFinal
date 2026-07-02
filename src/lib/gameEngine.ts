@@ -364,9 +364,7 @@ export function processDecision(state: GameState, playerIndex: number, choice: D
   let newState = applyEffect(state, scaledEffect, playerIndex, playerIndex)
   
   // --- Check for Burnout (Stress Max) ---
-  let burnoutTriggered = false
   if (newStressLevel >= 3) {
-    burnoutTriggered = true
     newStressLevel = 0
     // Apply 20% penalty
     const currentWealth = newState.players[playerIndex].wealth

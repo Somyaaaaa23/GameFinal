@@ -55,6 +55,9 @@ export interface PlayerState {
   wealthFloor: number
   doubleInvestActive: boolean
   investChoices: number
+  spendChoices: number
+  savingStreak: number
+  stressLevel: number
   emiDamageTaken: boolean
   hasForfeited?: boolean
   diffMultiplier?: number
