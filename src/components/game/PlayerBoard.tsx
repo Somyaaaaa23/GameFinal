@@ -442,6 +442,25 @@ export function PlayerBoard({ player, isCurrent, isMe, isTarget, isOffline, weal
         </div>
       )}
 
+      {/* New Stats Row */}
+      {!compact && (
+        <div style={{
+          display: 'flex', justifyContent: 'center', gap: 8, marginTop: 8, flexWrap: 'wrap'
+        }}>
+          <div style={{ fontSize: 10, background: 'rgba(255,255,255,0.1)', padding: '2px 6px', borderRadius: 10, fontWeight: 700 }}>
+            😰 Stress: {player.stressLevel || 0}/3
+          </div>
+          <div style={{ fontSize: 10, background: 'rgba(255,255,255,0.1)', padding: '2px 6px', borderRadius: 10, fontWeight: 700 }}>
+            💎 Lifestyle: Tier {Math.min(3, 1 + Math.floor((player.spendChoices || 0) / 2))}
+          </div>
+          {(player.savingStreak || 0) > 0 && (
+            <div style={{ fontSize: 10, background: 'rgba(16,185,129,0.2)', color: '#34d399', padding: '2px 6px', borderRadius: 10, fontWeight: 700 }}>
+              🔥 Save Streak: {player.savingStreak}
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Emote Picker Button (Only for me) */}
       {isMe && onSendEmote && !compact && (
         <div style={{ position: 'absolute', bottom: -16, right: 12, zIndex: 110 }}>

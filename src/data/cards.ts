@@ -13,7 +13,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Spend it on a premium coffee or small indulgence.", effect: { type: 'wealth_pct', value: -8, target: 'self' } },
       { type: 'save', label: 'Save', description: "Put it securely in your savings account.", effect: { type: 'wealth_pct', value: 4, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Invest it in a micro-fund. The compounding happens instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 10, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Invest it in a micro-fund. The compounding happens instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
     ],
   },
   {
@@ -27,7 +27,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Swipe your credit card to go on the trip.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Decline the trip, save your money, and suggest a local meetup instead.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Put the ₹10,000 into a high-yield asset to fund a future trip. You instantly receive the 5-year returns.", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Put the ₹10,000 into a high-yield asset to fund a future trip. You instantly receive the 5-year returns.", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -41,7 +41,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Upgrade a gadget you've been eyeing.", effect: { type: 'wealth_pct', value: -8, target: 'self' } },
       { type: 'save', label: 'Save', description: "Bank it immediately.", effect: { type: 'wealth_pct', value: 4, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Put it into a mutual fund. The market matures instantly.", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 10, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Put it into a mutual fund. The market matures instantly.", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
     ],
   },
   {
@@ -55,7 +55,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Accept it as the cost of convenience.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Wake up earlier to prepare meals at home.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Invest that ₹4,500 monthly budget into a Systematic Investment Plan (SIP). You fast-forward 10 years!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Invest that ₹4,500 monthly budget into a Systematic Investment Plan (SIP). You fast-forward 10 years!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -69,7 +69,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Buy the brand-new model.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Buy the second-hand model.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Buy second-hand and invest the ₹17,000 difference. You instantly receive the 3-year returns.", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Buy second-hand and invest the ₹17,000 difference. You instantly receive the 3-year returns.", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -83,7 +83,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Throw a massive party for your friends.", effect: { type: 'wealth_pct', value: -8, target: 'self' } },
       { type: 'save', label: 'Save', description: "Put 80% in savings, spend 20%.", effect: { type: 'wealth_pct', value: 4, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Invest 100% into an upskilling course to boost your salary. You instantly receive the career ROI.", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 10, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Invest 100% into an upskilling course to boost your salary. You instantly receive the career ROI.", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
     ],
   },
   {
@@ -111,7 +111,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Reject the gig to enjoy weekends.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Take the gig and bank the amount.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Take the gig and reinvest the ₹15,000 into better software/tools. You instantly realize 2 years of higher freelance rates!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Take the gig and reinvest the ₹15,000 into better software/tools. You instantly realize 2 years of higher freelance rates!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -125,7 +125,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Get angry and spend more defensively to \"feel better.\"", effect: { type: 'wealth_pct', value: -8, target: 'self' } },
       { type: 'save', label: 'Save', description: "Cut back on non-essentials this week to balance it out.", effect: { type: 'wealth_pct', value: 4, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Spend ₹1,000 on an automated tracking app to stop this happening. You instantly gain 5 years of prevented losses!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 10, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Spend ₹1,000 on an automated tracking app to stop this happening. You instantly gain 5 years of prevented losses!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
     ],
   },
   {
@@ -139,7 +139,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Spend ₹6,000 to get the \"deal\".", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Buy only the 1 item you actually need.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Buy 1 item, and invest the ₹4,000 difference into a blue-chip stock. The stock matures instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Buy 1 item, and invest the ₹4,000 difference into a blue-chip stock. The stock matures instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -153,7 +153,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Treat yourself immediately to snacks.", effect: { type: 'wealth_pct', value: -8, target: 'self' } },
       { type: 'save', label: 'Save', description: "Put it straight into your savings account.", effect: { type: 'wealth_pct', value: 4, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Invest it in a high-risk asset. The market swings instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 10, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Invest it in a high-risk asset. The market swings instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
     ],
   },
   {
@@ -167,7 +167,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Lend the full ₹5,000 without setting terms.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Politely decline but offer non-financial help.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Lend them the ₹5,000 as a micro-loan. They pay you back instantly with interest!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Lend them the ₹5,000 as a micro-loan. They pay you back instantly with interest!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -181,7 +181,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Buy the virtual currency.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Ignore the notification entirely.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Use that ₹1,500 on an educational course instead. You instantly gain the career ROI.", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Use that ₹1,500 on an educational course instead. You instantly gain the career ROI.", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -195,7 +195,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Keep both.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Cancel one service.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Cancel both and use the ₹2,400 to start a mutual fund. The fund matures instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Cancel both and use the ₹2,400 to start a mutual fund. The fund matures instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -209,7 +209,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Use the ₹4,000 to buy new clothes immediately.", effect: { type: 'wealth_pct', value: -8, target: 'self' } },
       { type: 'save', label: 'Save', description: "Deposit the money into your emergency fund.", effect: { type: 'wealth_pct', value: 4, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Reinvest the ₹4,000 into raw materials for a side hustle. Your hustle scales instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 10, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Reinvest the ₹4,000 into raw materials for a side hustle. Your hustle scales instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
     ],
   },
   {
@@ -223,7 +223,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Keep ordering food.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Batch-cook meals on Sundays.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Hire a cook for ₹3,000/month and invest the remaining ₹4,200. You instantly receive the 1-year returns!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Hire a cook for ₹3,000/month and invest the remaining ₹4,200. You instantly receive the 1-year returns!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -237,7 +237,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Blow ₹30,000 on a massive party.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Save 50% immediately.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Setup an automated ₹10,000 SIP. The SIP compounds instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Setup an automated ₹10,000 SIP. The SIP compounds instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -265,7 +265,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Buy it outright for immediate convenience but barely use it.", effect: { type: 'wealth_pct', value: -8, target: 'self' } },
       { type: 'save', label: 'Save', description: "Find a free alternative or library copy.", effect: { type: 'wealth_pct', value: 4, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Buy it, use the knowledge to land a client. The client pays you instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 10, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Buy it, use the knowledge to land a client. The client pays you instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
     ],
   },
   {
@@ -293,7 +293,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Reject it and spend ₹15,000 on a short vacation.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Study free materials on YouTube instead.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Pay the ₹15,000. Your new skills land you a massive project instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Pay the ₹15,000. Your new skills land you a massive project instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -307,7 +307,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Buy designer clothes.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Send it directly to your emergency fund.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Reinvest 100% of it into the business. The compounding snowball effect accelerates instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Reinvest 100% of it into the business. The compounding snowball effect accelerates instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -335,7 +335,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Put it on a debit card without having confirmation. One friend bails.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Demand everyone transfers their share before you click book.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Use a high-reward card to front it. The friends pay you back instantly, and you keep the points!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Use a high-reward card to front it. The friends pay you back instantly, and you keep the points!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -349,7 +349,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Ignore it.", effect: { type: 'wealth_pct', value: -8, target: 'self' } },
       { type: 'save', label: 'Save', description: "Cancel the 3 unused ones immediately.", effect: { type: 'wealth_pct', value: 4, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Cancel them all and downgrade to free tiers. Invest the savings. You instantly receive the 1-year returns!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 10, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Cancel them all and downgrade to free tiers. Invest the savings. You instantly receive the 1-year returns!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
     ],
   },
   {
@@ -363,7 +363,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Keep going 4 times a week.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Create a nice workspace at home.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Go to the café only once a week. Invest the difference. You instantly realize the future gains!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Go to the café only once a week. Invest the difference. You instantly realize the future gains!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -377,7 +377,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Use it as down payment for a luxury car EMI.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Park 100% of it in an emergency liquid fund.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Use it to wipe out high-interest debt entirely. The interest savings are realized instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Use it to wipe out high-interest debt entirely. The interest savings are realized instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -405,7 +405,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Buy brand new gear immediately.", effect: { type: 'wealth_pct', value: -8, target: 'self' } },
       { type: 'save', label: 'Save', description: "Rent the gear for ₹1,500 for a weekend.", effect: { type: 'wealth_pct', value: 4, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Buy second-hand gear for ₹10,000 and invest the ₹5,000. You instantly realize the future gains!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 10, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Buy second-hand gear for ₹10,000 and invest the ₹5,000. You instantly realize the future gains!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
     ],
   },
   {
@@ -419,7 +419,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Treat everyone to dinner and buy a new console.", effect: { type: 'wealth_pct', value: -8, target: 'self' } },
       { type: 'save', label: 'Save', description: "Put it in a locked savings vault.", effect: { type: 'wealth_pct', value: 4, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Invest it entirely in an index fund. The market fast-forwards 15 years instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 10, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Invest it entirely in an index fund. The market fast-forwards 15 years instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
     ],
   },
   {
@@ -433,7 +433,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Buy the newest, most expensive model.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Pay for a basic repair.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Trade it in, buy a reliable replacement, and use the extra productivity to finish a gig. You get paid instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Trade it in, buy a reliable replacement, and use the extra productivity to finish a gig. You get paid instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -447,7 +447,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Reject the gig to go to a concert instead.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Take the gig and put the money straight into your bank.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Take the gig, but reinvest the ₹6,000 immediately on better tools. Your business scales instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Take the gig, but reinvest the ₹6,000 immediately on better tools. Your business scales instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -475,7 +475,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Buy the ₹999 deal out of FOMO. It's a scam.", effect: { type: 'wealth_pct', value: -8, target: 'self' } },
       { type: 'save', label: 'Save', description: "Research reviews. Realize it's a scam and ignore it.", effect: { type: 'wealth_pct', value: 4, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Buy the legitimate version for ₹5,000. The tool lands you a client instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 10, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Buy the legitimate version for ₹5,000. The tool lands you a client instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
     ],
   },
   {
@@ -489,7 +489,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Use the ₹2,000 to go out drinking with friends instead.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Skip it and watch free videos instead.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Attend the masterclass. The knowledge gives you an immediate financial optimization!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Attend the masterclass. The knowledge gives you an immediate financial optimization!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -517,7 +517,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Opt out. You want the cash in hand now.", effect: { type: 'wealth_pct', value: -8, target: 'self' } },
       { type: 'save', label: 'Save', description: "Opt in immediately.", effect: { type: 'wealth_pct', value: 4, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Opt in, and match it with a personal index fund. It compounds instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 10, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Opt in, and match it with a personal index fund. It compounds instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
     ],
   },
   {
@@ -531,7 +531,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Buy the ₹60,000 flagship.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Buy the basic ₹12,000 replacement with cash.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Buy a mid-range phone for ₹25,000 and use its features to start a vlog that goes viral instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Buy a mid-range phone for ₹25,000 and use its features to start a vlog that goes viral instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -559,7 +559,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Upgrade everything. You earned it!", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Resist the urge. Keep living like a student.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Invest ₹10,000 into a REIT (Real Estate Investment Trust). It pays out its 5-year dividend instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Invest ₹10,000 into a REIT (Real Estate Investment Trust). It pays out its 5-year dividend instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -573,7 +573,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Buy a massive new TV you didn't plan for.", effect: { type: 'wealth_pct', value: -8, target: 'self' } },
       { type: 'save', label: 'Save', description: "Bank the entire amount immediately.", effect: { type: 'wealth_pct', value: 4, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Invest ₹30,000 in a tech stock. It moons instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 10, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Invest ₹30,000 in a tech stock. It moons instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
     ],
   },
   {
@@ -587,7 +587,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Pay the full bill just to show off.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Ask to split the bill evenly.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Pay the full bill. The networking lands you a massive contract instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Pay the full bill. The networking lands you a massive contract instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -601,7 +601,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Use the \"extra\" ₹4,000 to upgrade your online shopping habits.", effect: { type: 'wealth_pct', value: -8, target: 'self' } },
       { type: 'save', label: 'Save', description: "Leave it in your checking account.", effect: { type: 'wealth_pct', value: 4, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Invest the ₹4,000 in an automated fund. You fast-forward 3 years instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 10, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Invest the ₹4,000 in an automated fund. You fast-forward 3 years instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
     ],
   },
   {
@@ -629,7 +629,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Throw a \"farewell\" party.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Save the entire bonus.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Invest the bonus in a tax-saving instrument. You get the tax refund instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Invest the bonus in a tax-saving instrument. You get the tax refund instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -643,7 +643,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Keep ordering expensive food.", effect: { type: 'wealth_pct', value: -8, target: 'self' } },
       { type: 'save', label: 'Save', description: "Bring lunch from home.", effect: { type: 'wealth_pct', value: 4, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Invest the ₹6,000/month lunch budget into a health fund. It matures instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 10, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Invest the ₹6,000/month lunch budget into a health fund. It matures instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
     ],
   },
   {
@@ -657,7 +657,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Assume this is your new normal and sign a lease for a car.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Bank it securely.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Reinvest ₹25,000 into marketing. The campaign goes viral instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Reinvest ₹25,000 into marketing. The campaign goes viral instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -685,7 +685,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Put your entire ₹50,000 into it. It's a scam.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Report the post and do not engage.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Invest ₹10,000. The stock jumps, you sell immediately!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Invest ₹10,000. The stock jumps, you sell immediately!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -699,7 +699,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Buy a ₹50,000 home treadmill that you won't use.", effect: { type: 'wealth_pct', value: -8, target: 'self' } },
       { type: 'save', label: 'Save', description: "Run in the park for free.", effect: { type: 'wealth_pct', value: 4, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Pay ₹3,000/month for the gym. It pays off in zero medical bills instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 10, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Pay ₹3,000/month for the gym. It pays off in zero medical bills instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
     ],
   },
   {
@@ -713,7 +713,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Book a luxury staycation.", effect: { type: 'wealth_pct', value: -8, target: 'self' } },
       { type: 'save', label: 'Save', description: "Immediately transfer it to your fixed deposits.", effect: { type: 'wealth_pct', value: 4, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Invest it in an aggressive growth fund. It matures instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 10, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Invest it in an aggressive growth fund. It matures instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
     ],
   },
   {
@@ -741,7 +741,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Accept the hike.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Move to a cheaper apartment.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Pay ₹5,000 upfront to a broker to negotiate a better deal. It works instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Pay ₹5,000 upfront to a broker to negotiate a better deal. It works instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -755,7 +755,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Blow all ₹10,000 on designer shoes.", effect: { type: 'wealth_pct', value: -8, target: 'self' } },
       { type: 'save', label: 'Save', description: "Put it straight into savings.", effect: { type: 'wealth_pct', value: 4, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Invest ₹10,000 in a small cap fund. It doubles instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 10, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Invest ₹10,000 in a small cap fund. It doubles instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
     ],
   },
   {
@@ -769,7 +769,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Keep paying out of guilt.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Cancel it immediately without guilt.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Hire a coach for ₹5,000 to build the habit. The habit pays off in medical savings instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Hire a coach for ₹5,000 to build the habit. The habit pays off in medical savings instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -797,7 +797,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Spend the full ₹50,000 on luxury hotels.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Keep it as a dedicated emergency fund. Don't travel.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Invest the ₹50,000. The market grants 10 years of compounding instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Invest the ₹50,000. The market grants 10 years of compounding instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -811,7 +811,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Buy the software, but use the free time to watch Netflix.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Continue doing the work manually for free.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Buy the software for ₹5,000. It frees you up to take a ₹20,000 gig instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Buy the software for ₹5,000. It frees you up to take a ₹20,000 gig instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -853,7 +853,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Keep buying it because \"it's just ₹250.\"", effect: { type: 'wealth_pct', value: -8, target: 'self' } },
       { type: 'save', label: 'Save', description: "Make coffee at home and bring a thermos.", effect: { type: 'wealth_pct', value: 4, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Invest that ₹7,500 into a blue-chip stock fund. You fast-forward 5 years instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 10, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Invest that ₹7,500 into a blue-chip stock fund. You fast-forward 5 years instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
     ],
   },
   {
@@ -867,7 +867,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Throw the note away and curse your luck.", effect: { type: 'wealth_pct', value: -8, target: 'self' } },
       { type: 'save', label: 'Save', description: "Take the effort to go to the bank and exchange it.", effect: { type: 'wealth_pct', value: 4, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Spend 1 hour learning about digital currency/UPI instead. Your financial literacy improves instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 10, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Spend 1 hour learning about digital currency/UPI instead. Your financial literacy improves instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
     ],
   },
   {
@@ -881,7 +881,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Buy a new smartwatch for ₹10,000 because it's 40% off.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Delete the shopping app until the sale ends.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Invest the ₹10,000 you wanted to spend into the stock of the company running the sale! It jumps instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Invest the ₹10,000 you wanted to spend into the stock of the company running the sale! It jumps instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -895,7 +895,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Get angry and hire a lawyer or debt collector for ₹3,000.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Write it off mentally, but stop paying for their dinners when they do show up.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Visit them in person, communicate clearly, and get them to sign a repayment schedule. They pay you back instantly with interest!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Visit them in person, communicate clearly, and get them to sign a repayment schedule. They pay you back instantly with interest!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -923,7 +923,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Take out a ₹15,000 short-term loan because you \"know the client will pay eventually.\"", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Send polite reminders but prepare your budget as if the money is gone.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Hire a virtual assistant for ₹2,000 to relentlessly follow up on all invoices. The system works instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Hire a virtual assistant for ₹2,000 to relentlessly follow up on all invoices. The system works instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -937,7 +937,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "You don't have the cash, but you take the 0% EMI anyway. You miss a payment.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Decline it. You don't buy things you can't pay for in cash today.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "You have the ₹60k cash. You take the EMI, but invest the cash in an FD. The interest pays out instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "You have the ₹60k cash. You take the EMI, but invest the cash in an FD. The interest pays out instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -965,7 +965,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Hit \"Buy Now.\"", effect: { type: 'wealth_pct', value: -8, target: 'self' } },
       { type: 'save', label: 'Save', description: "Close the app and go to sleep. Wait 48 hours.", effect: { type: 'wealth_pct', value: 4, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Put that ₹5,000 into your investment account right now. You fast-forward 4 years instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 10, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Put that ₹5,000 into your investment account right now. You fast-forward 4 years instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
     ],
   },
   {
@@ -979,7 +979,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Give them the ₹1,000 out of guilt. It was a scam.", effect: { type: 'wealth_pct', value: -8, target: 'self' } },
       { type: 'save', label: 'Save', description: "Say \"No, thank you\" and walk away.", effect: { type: 'wealth_pct', value: 4, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Donate the ₹1,000 to an officially registered charity online. You get an instant tax break!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 10, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Donate the ₹1,000 to an officially registered charity online. You get an instant tax break!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
     ],
   },
   {
@@ -993,7 +993,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Pay only the \"Minimum Amount Due\" (₹1,000) because you are frustrated.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Pay the full ₹21,500 immediately from savings and accept the lesson.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Call the bank, threaten to close the card, and get the fee waived instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Call the bank, threaten to close the card, and get the fee waived instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -1007,7 +1007,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Use the ₹5,000 to gamble more or buy random app skins.", effect: { type: 'wealth_pct', value: -8, target: 'self' } },
       { type: 'save', label: 'Save', description: "Transfer it to your bank account immediately.", effect: { type: 'wealth_pct', value: 4, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Use it to buy a fractional share of a growing tech company. It skyrockets instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 10, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Use it to buy a fractional share of a growing tech company. It skyrockets instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
     ],
   },
   {
@@ -1021,7 +1021,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Ignore the fine.", effect: { type: 'wealth_pct', value: -8, target: 'self' } },
       { type: 'save', label: 'Save', description: "Pay the fine immediately so it doesn't escalate.", effect: { type: 'wealth_pct', value: 4, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Pay ₹2,000 fine AND buy a ₹1,000 dashcam. It instantly prevents a ₹20,000 future accident claim!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 10, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Pay ₹2,000 fine AND buy a ₹1,000 dashcam. It instantly prevents a ₹20,000 future accident claim!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
     ],
   },
   {
@@ -1049,7 +1049,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Pay the ₹25,000 but stop going to the gym after week 2.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Say \"No\" firmly and stick to your own routine.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Pay the ₹25,000. The fitness results land you a modeling/sports gig instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Pay the ₹25,000. The fitness results land you a modeling/sports gig instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -1077,7 +1077,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Let the policy lapse to save money.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Pay the ₹15,000 to renew your existing policy.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Spend 2 hours comparing policies online. You switch providers and get a rebate instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Spend 2 hours comparing policies online. You switch providers and get a rebate instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -1105,7 +1105,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Throw clothes away and buy new ones instead of washing them.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Pay the ₹6,000 repair.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Buy a highly energy-efficient new machine. The electricity savings pay out instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Buy a highly energy-efficient new machine. The electricity savings pay out instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -1119,7 +1119,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Take out a ₹20,000 loan to \"buy the dip\" hoping it recovers.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Accept the loss, sell the ₹2,000, and put it in a safe FD.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Hold it, but spend ₹2,000 on a financial literacy course to never repeat this. The knowledge saves you instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Hold it, but spend ₹2,000 on a financial literacy course to never repeat this. The knowledge saves you instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -1133,7 +1133,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Ignore the exam and buy a ₹40,000 gaming PC.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Self-study the syllabus for free without taking the exam.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Pay the ₹40,000 and pass. Your company promotes you instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Pay the ₹40,000 and pass. Your company promotes you instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -1147,7 +1147,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Buy the absolute top-tier professional gear for ₹80,000 on credit.", effect: { type: 'wealth_pct', value: -8, target: 'self' } },
       { type: 'save', label: 'Save', description: "Rent the gear first to make sure you like it.", effect: { type: 'wealth_pct', value: 4, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Buy the ₹12,000 gear and use it to win a local competition instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 10, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Buy the ₹12,000 gear and use it to win a local competition instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
     ],
   },
   {
@@ -1161,7 +1161,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "You already pre-spent the full ₹50,000 on a credit card before the bonus hit.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Accept the reality and bank the ₹35,000.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Hire a tax planner for ₹5,000. They restructure your pay and you get the tax back instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Hire a tax planner for ₹5,000. They restructure your pay and you get the tax back instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -1175,7 +1175,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Use this as an excuse to buy an entirely new designer wardrobe for ₹40,000.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Buy only the absolute basics (₹3,000) while waiting for the airline.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "You bought Travel Insurance for ₹1,000. It pays out instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "You bought Travel Insurance for ₹1,000. It pays out instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -1189,7 +1189,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Buy at the absolute top out of FOMO. It crashes.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Stick to your boring index funds.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Short the stock (bet against it). It crashes instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Short the stock (bet against it). It crashes instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -1217,7 +1217,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Put it on a 36% interest credit card.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Pay from your emergency fund.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "You bought Pet Insurance for ₹2,000. It pays out instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "You bought Pet Insurance for ₹2,000. It pays out instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -1231,7 +1231,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Contribute ₹5,000 to look like the most generous person in the office.", effect: { type: 'wealth_pct', value: -8, target: 'self' } },
       { type: 'save', label: 'Save', description: "Contribute only ₹500 and sign the card.", effect: { type: 'wealth_pct', value: 4, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Contribute ₹2,000 but use the farewell dinner to secure a freelance referral from them instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 10, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Contribute ₹2,000 but use the farewell dinner to secure a freelance referral from them instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
     ],
   },
   {
@@ -1245,7 +1245,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Complain on Twitter but keep paying the monthly fee.", effect: { type: 'wealth_pct', value: -8, target: 'self' } },
       { type: 'save', label: 'Save', description: "Cancel the service. Read books from the library instead.", effect: { type: 'wealth_pct', value: 4, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Switch to an annual plan upfront for ₹6,000. You instantly save the difference!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 10, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Switch to an annual plan upfront for ₹6,000. You instantly save the difference!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
     ],
   },
   {
@@ -1273,7 +1273,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Buy the designer couch on a 12-month EMI.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Buy a sturdy, second-hand couch for ₹8,000.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Buy the second-hand couch and invest the ₹32,000 difference in a home-building supply stock. The market jumps instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Buy the second-hand couch and invest the ₹32,000 difference in a home-building supply stock. The market jumps instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -1287,7 +1287,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Buy them. It's too good a deal to pass up!", effect: { type: 'wealth_pct', value: -8, target: 'self' } },
       { type: 'save', label: 'Save', description: "Swipe the notification away.", effect: { type: 'wealth_pct', value: 4, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Invest the ₹3,000 into a dividend stock instead. The stock pays out its 3-year dividend instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 10, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Invest the ₹3,000 into a dividend stock instead. The stock pays out its 3-year dividend instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
     ],
   },
   {
@@ -1301,7 +1301,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Check out with all the snacks. You deserve treats.", effect: { type: 'wealth_pct', value: -8, target: 'self' } },
       { type: 'save', label: 'Save', description: "Put all the snacks back and buy only the ₹500 staples you came for.", effect: { type: 'wealth_pct', value: 4, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Buy the staples, and use the ₹2,000 saved to buy a meal-prep masterclass. The class cuts your grocery bill instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 10, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Buy the staples, and use the ₹2,000 saved to buy a meal-prep masterclass. The class cuts your grocery bill instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
     ],
   },
   {
@@ -1315,7 +1315,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Pay the ₹3,000 in silence and complain about it later.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Speak up and ask to pay only for what you ordered.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Pay the ₹3,000 evenly to avoid drama, but use the goodwill to instantly close a business deal with one of them!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Pay the ₹3,000 evenly to avoid drama, but use the goodwill to instantly close a business deal with one of them!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -1343,7 +1343,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Trade it in and take a massive loan for the luxury SUV.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Wash your car, detail the interior for ₹2,000, and keep driving it.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Take the ₹15,000/month EMI you would have paid, and invest it. The investment compounds instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Take the ₹15,000/month EMI you would have paid, and invest it. The investment compounds instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -1371,7 +1371,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Procrastinate. Tell yourself \"I'll figure out how to cancel it this weekend.\"", effect: { type: 'wealth_pct', value: -8, target: 'self' } },
       { type: 'save', label: 'Save', description: "Cancel it immediately through the App Store.", effect: { type: 'wealth_pct', value: 4, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Cancel it, then email customer support demanding a refund for unused months. They comply instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 10, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Cancel it, then email customer support demanding a refund for unused months. They comply instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
     ],
   },
   {
@@ -1399,7 +1399,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Buy ₹5,000 worth of tickets to \"increase your odds.\" You lose.", effect: { type: 'wealth_pct', value: -8, target: 'self' } },
       { type: 'save', label: 'Save', description: "Ignore the hype. The odds are 1 in 300 million.", effect: { type: 'wealth_pct', value: 4, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Put that ₹500 into a high-risk microcap stock. It pumps instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 10, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Put that ₹500 into a high-risk microcap stock. It pumps instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
     ],
   },
   {
@@ -1427,7 +1427,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Take the upgrade. You \"deserve it.\"", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Decline it. Economy gets you there at the exact same time.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Decline the flight upgrade, but buy a ₹2,000 lounge pass. You use the quiet space to finish a work project instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Decline the flight upgrade, but buy a ₹2,000 lounge pass. You use the quiet space to finish a work project instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -1441,7 +1441,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Ignore the pain and spend ₹5,000 on painkillers and massages over the year.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Pay the ₹5,000 and start treatment immediately.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Buy ergonomic furniture for ₹10,000. It fixes your posture instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Buy ergonomic furniture for ₹10,000. It fixes your posture instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -1455,7 +1455,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Buy the warranty out of fear.", effect: { type: 'wealth_pct', value: -8, target: 'self' } },
       { type: 'save', label: 'Save', description: "Decline it. You'll rely on the standard 1-year manufacturer warranty.", effect: { type: 'wealth_pct', value: 4, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Decline it, and put that ₹4,000 into an index fund. The market jumps instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 10, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Decline it, and put that ₹4,000 into an index fund. The market jumps instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
     ],
   },
   {
@@ -1469,7 +1469,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Buy the new one and throw the old one in a drawer.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Skip this generation entirely.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Sell your old console for ₹20,000, buy the new one, and start a review channel. The channel gets monetized instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Sell your old console for ₹20,000, buy the new one, and start a review channel. The channel gets monetized instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -1483,7 +1483,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Buy a ₹25,000 espresso machine from the registry to show off.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Ignore the registry and give a thoughtful ₹3,000 customized gift.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Buy the ₹12,000 blender, but use the wedding to instantly secure a high-paying client!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Buy the ₹12,000 blender, but use the wedding to instantly secure a high-paying client!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -1497,7 +1497,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Browse the \"Rewards Catalog\" and use points plus ₹3,000 cash to buy an overpriced toaster.", effect: { type: 'wealth_pct', value: -8, target: 'self' } },
       { type: 'save', label: 'Save', description: "Convert them directly into ₹2,500 cashback against your statement.", effect: { type: 'wealth_pct', value: 4, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Convert points to air miles and book a business flight to a conference. You land a deal instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 10, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Convert points to air miles and book a business flight to a conference. You land a deal instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
     ],
   },
   {
@@ -1525,7 +1525,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Put it on a credit card today. You \"need\" it for an upcoming event.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Set a rule: You can only buy it if you save up the cash over 6 months. (You realize you don't want it that bad).", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Put ₹80,000 into the stock of the luxury company instead. The stock moons instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Put ₹80,000 into the stock of the luxury company instead. The stock moons instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -1539,7 +1539,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Treat it as a \"windfall\" and blow it on a luxury vacation.", effect: { type: 'wealth_pct', value: -8, target: 'self' } },
       { type: 'save', label: 'Save', description: "Put it in a secure fixed deposit in their memory.", effect: { type: 'wealth_pct', value: 4, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Invest it in a high-yield mutual fund. The fund compounds instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 10, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Invest it in a high-yield mutual fund. The fund compounds instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
     ],
   },
   {
@@ -1595,7 +1595,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Buy 6 books for ₹2,000 to \"motivate yourself.\" You read none.", effect: { type: 'wealth_pct', value: -8, target: 'self' } },
       { type: 'save', label: 'Save', description: "Don't buy them until you finish the ones you have.", effect: { type: 'wealth_pct', value: 4, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Buy one highly relevant book for ₹500. Read it immediately, apply the lesson, and get a raise instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 10, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Buy one highly relevant book for ₹500. Read it immediately, apply the lesson, and get a raise instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
     ],
   },
   {
@@ -1623,7 +1623,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Upgrade just because 1 Gbps sounds cool.", effect: { type: 'wealth_pct', value: -8, target: 'self' } },
       { type: 'save', label: 'Save', description: "Reject it. 100 Mbps is plenty for your needs.", effect: { type: 'wealth_pct', value: 4, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Upgrade to 1 Gbps, but use the speed to start streaming/gaming professionally. You get sponsored instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 10, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Upgrade to 1 Gbps, but use the speed to start streaming/gaming professionally. You get sponsored instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
     ],
   },
   {
@@ -1637,7 +1637,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Pay the ₹3,000 but delay making a spare key because you are \"too busy.\"", effect: { type: 'wealth_pct', value: -8, target: 'self' } },
       { type: 'save', label: 'Save', description: "Pay the ₹3,000, then immediately make a spare key for ₹100.", effect: { type: 'wealth_pct', value: 4, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Pay the ₹3,000, but invest ₹5,000 in a smart lock system. You never need keys again and save time instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 10, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Pay the ₹3,000, but invest ₹5,000 in a smart lock system. You never need keys again and save time instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
     ],
   },
   {
@@ -1651,7 +1651,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Go overboard. Hire a bartender and caterer to impress everyone (₹25,000).", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Make it a potluck. You provide the main dish (₹1,500), they bring the rest.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Spend ₹5,000 on great food and drinks, but use the night to introduce two friends who start a business and give you a finder's fee instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Spend ₹5,000 on great food and drinks, but use the night to introduce two friends who start a business and give you a finder's fee instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -1665,7 +1665,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Pay the ₹20,000 upfront, go twice, and never go again.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Pay monthly for the first 3 months to prove you will actually go.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Pay the ₹20,000 upfront. You go every day, get ripped, and become a fitness influencer instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Pay the ₹20,000 upfront. You go every day, get ripped, and become a fitness influencer instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -1679,7 +1679,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Refuse to take the break because you \"need the money,\" but your productivity crashes and you get fired.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Use your emergency fund to comfortably cover your expenses while you rest.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Take the month off, rest for 2 weeks, and spend 2 weeks building a digital product. It sells instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Take the month off, rest for 2 weeks, and spend 2 weeks building a digital product. It sells instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -1693,7 +1693,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Pay the ₹15,000. It's a once-in-a-lifetime show!", effect: { type: 'wealth_pct', value: -8, target: 'self' } },
       { type: 'save', label: 'Save', description: "Refuse to pay the markup. Stay home and watch their live performances online.", effect: { type: 'wealth_pct', value: 4, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "You skip the concert, but invest ₹15,000 into the event management company's stock. The concert succeeds instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 10, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "You skip the concert, but invest ₹15,000 into the event management company's stock. The concert succeeds instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
     ],
   },
   {
@@ -1707,7 +1707,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Pay the ₹1,200 instantly because you hate waiting.", effect: { type: 'wealth_pct', value: -8, target: 'self' } },
       { type: 'save', label: 'Save', description: "Wait 45 minutes in a café until the surge pricing ends, then pay ₹300.", effect: { type: 'wealth_pct', value: 4, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Pay the ₹1,200 surge, but use the fast ride home to jump on an urgent freelance call. You get paid instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 10, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Pay the ₹1,200 surge, but use the fast ride home to jump on an urgent freelance call. You get paid instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
     ],
   },
   {
@@ -1735,7 +1735,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Take it without negotiating, borrowing money to survive the 3 months. The company doesn't hire you.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Reject it. You need an actual salary to survive.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Accept it, but negotiate for them to pay for your massive upskilling courses during the trial. The skills land you a job instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Accept it, but negotiate for them to pay for your massive upskilling courses during the trial. The skills land you a job instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -1749,7 +1749,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Spend the ₹4,000 to get 4 shirts.", effect: { type: 'wealth_pct', value: -8, target: 'self' } },
       { type: 'save', label: 'Save', description: "Buy the single ₹2,000 shirt you actually came for.", effect: { type: 'wealth_pct', value: 4, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Buy the ₹4,000 deal, keep the 1 shirt, and instantly resell the other 3 online!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 10, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Buy the ₹4,000 deal, keep the 1 shirt, and instantly resell the other 3 online!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
     ],
   },
   {
@@ -1777,7 +1777,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Buy ₹25,000 worth of color-changing lights that provide no financial return.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Only buy a single ₹2,000 smart speaker and call it a day.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Invest ₹25,000 in smart thermostats and energy monitors. They instantly slash your electricity bill for 5 years!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Invest ₹25,000 in smart thermostats and energy monitors. They instantly slash your electricity bill for 5 years!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -1791,7 +1791,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Decline the plan and don't save anything.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Decline the plan, but manually put aside ₹1,200/month into a \"pet sinking fund\".", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Buy the ₹15,000 plan. It instantly covers a major illness that would have cost ₹50,000!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Buy the ₹15,000 plan. It instantly covers a major illness that would have cost ₹50,000!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -1805,7 +1805,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Lease the luxury car purely for status.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Buy the used car with cash you saved up.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Lease the luxury car for ₹30,000/month, but use it to instantly secure high-end real estate clients!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Lease the luxury car for ₹30,000/month, but use it to instantly secure high-end real estate clients!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -1819,7 +1819,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Take a cash advance from your credit card.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Sell unused items from your house to generate the ₹15,000.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Borrow the ₹15,000 from a friend, but spend your weekend instantly fixing the leak in your budget!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Borrow the ₹15,000 from a friend, but spend your weekend instantly fixing the leak in your budget!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -1833,7 +1833,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Ignore the text message.", effect: { type: 'wealth_pct', value: -8, target: 'self' } },
       { type: 'save', label: 'Save', description: "Transfer ₹1,000 from savings to restore the balance immediately.", effect: { type: 'wealth_pct', value: 4, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Call the bank manager, demand a refund, and instantly upgrade to a zero-balance account!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 10, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Call the bank manager, demand a refund, and instantly upgrade to a zero-balance account!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
     ],
   },
   {
@@ -1861,7 +1861,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Buy the ₹25,000 course hoping it will magically make you rich without doing any work.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Don't buy it. Buy a ₹300 book by an actual billionaire instead.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Pay the ₹25,000 but only to steal the Guru's marketing strategy. You implement it and get sales instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Pay the ₹25,000 but only to steal the Guru's marketing strategy. You implement it and get sales instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -1875,7 +1875,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Throw the phone away and buy a new one for ₹50,000.", effect: { type: 'wealth_pct', value: -8, target: 'self' } },
       { type: 'save', label: 'Save', description: "Use it with a cracked screen for 6 months until you save up the cash.", effect: { type: 'wealth_pct', value: 4, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Buy a screen repair kit for ₹2,000 and fix it yourself using YouTube. You succeed instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 10, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Buy a screen repair kit for ₹2,000 and fix it yourself using YouTube. You succeed instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
     ],
   },
   {
@@ -1889,7 +1889,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Buy ₹30,000 worth of matching sets on your credit card to \"commit to the lifestyle.\"", effect: { type: 'wealth_pct', value: -8, target: 'self' } },
       { type: 'save', label: 'Save', description: "Keep wearing your old t-shirt. The weights don't care what you wear.", effect: { type: 'wealth_pct', value: 4, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Buy the ₹6,000 gear, and the confidence boost makes you hit a personal record instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 10, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Buy the ₹6,000 gear, and the confidence boost makes you hit a personal record instantly!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
     ],
   },
   {
@@ -1917,7 +1917,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Buy the puppy for ₹15,000 without realizing food and vet bills will cost ₹5,000/month.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Adopt a stray/shelter dog for ₹1,000 instead.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "You buy the puppy, but instantly start a pet-fluencer account that goes viral!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "You buy the puppy, but instantly start a pet-fluencer account that goes viral!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -1931,7 +1931,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Skip the service to save money.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Pay the ₹5,000 and get it serviced.", effect: { type: 'wealth_pct', value: 10, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Buy the oil and parts for ₹1,500 and service it yourself using a tutorial. You succeed instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 25, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Buy the oil and parts for ₹1,500 and service it yourself using a tutorial. You succeed instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -15, target: 'self' } },
     ],
   },
   {
@@ -1945,7 +1945,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Pay the ₹3,000 parking AND use valet service for an extra ₹1,000 because you feel fancy.", effect: { type: 'wealth_pct', value: -8, target: 'self' } },
       { type: 'save', label: 'Save', description: "Take the Uber (Total ₹2,000).", effect: { type: 'wealth_pct', value: 4, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Pay the ₹3,000 parking, but use the time saved to instantly close a business email!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 10, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Pay the ₹3,000 parking, but use the time saved to instantly close a business email!", effect: { type: 'wealth_pct', value: 10, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
     ],
   },
   {
@@ -1973,7 +1973,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Use the free trial and get hacked.", effect: { type: 'wealth_pct', value: -20, target: 'self' } },
       { type: 'save', label: 'Save', description: "Use strong passwords but no premium software.", effect: { type: 'wealth_pct', value: 5, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Buy the premium software. It blocks a major attack instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 10, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Buy the premium software. It blocks a major attack instantly!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -5, target: 'self' } },
     ],
   },
   {
@@ -1987,7 +1987,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Don't buy insurance, and your flight gets cancelled.", effect: { type: 'wealth_pct', value: -20, target: 'self' } },
       { type: 'save', label: 'Save', description: "Buy the basic trip cancellation coverage.", effect: { type: 'wealth_pct', value: 5, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Buy premium insurance. Your lost luggage results in a massive payout!", effect: { type: 'wealth_pct', value: 30, target: 'self' }, investRisk: 20, failEffect: { type: 'wealth_pct', value: -10, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Buy premium insurance. Your lost luggage results in a massive payout!", effect: { type: 'wealth_pct', value: 30, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -10, target: 'self' } },
     ],
   },
   {
@@ -2001,7 +2001,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Decline the plan and get hit with unexpected vet bills.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Set aside an emergency fund specifically for the pet.", effect: { type: 'wealth_pct', value: 5, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Buy the comprehensive plan. It covers a major surgery instantly!", effect: { type: 'wealth_pct', value: 25, target: 'self' }, investRisk: 20, failEffect: { type: 'wealth_pct', value: -10, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Buy the comprehensive plan. It covers a major surgery instantly!", effect: { type: 'wealth_pct', value: 25, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -10, target: 'self' } },
     ],
   },
   {
@@ -2029,7 +2029,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Decline it. The appliance breaks the next week.", effect: { type: 'wealth_pct', value: -15, target: 'self' } },
       { type: 'save', label: 'Save', description: "Set aside the warranty cost in your emergency fund.", effect: { type: 'wealth_pct', value: 5, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Buy the warranty. The appliance is completely replaced with a newer model!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 15, failEffect: { type: 'wealth_pct', value: -10, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Buy the warranty. The appliance is completely replaced with a newer model!", effect: { type: 'wealth_pct', value: 20, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -10, target: 'self' } },
     ],
   },
   {
@@ -2043,7 +2043,7 @@ export const DECISION_CARDS: GameCard[] = [
     options: [
       { type: 'spend', label: 'Spend', description: "Buy cheap dummy cameras that provide no actual security.", effect: { type: 'wealth_pct', value: -5, target: 'self' } },
       { type: 'save', label: 'Save', description: "Rely on standard locks and hope for the best.", effect: { type: 'wealth_pct', value: 2, target: 'self' } },
-      { type: 'invest', label: 'Invest', description: "Buy the premium 4K cameras. They capture a thief instantly and you collect a massive reward!", effect: { type: 'wealth_pct', value: 15, target: 'self' }, investRisk: 15, failEffect: { type: 'wealth_pct', value: -10, target: 'self' } },
+      { type: 'invest', label: 'Invest', description: "Buy the premium 4K cameras. They capture a thief instantly and you collect a massive reward!", effect: { type: 'wealth_pct', value: 15, target: 'self' }, investRisk: 30, failEffect: { type: 'wealth_pct', value: -10, target: 'self' } },
     ],
   },
 ]

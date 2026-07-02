@@ -23,6 +23,9 @@ function createPlayer(id: string, name: string, isBot: boolean, rankPoints?: num
     wealthFloor: 0,
     doubleInvestActive: false,
     investChoices: 0,
+    spendChoices: 0,
+    savingStreak: 0,
+    stressLevel: 0,
     emiDamageTaken: false,
     diffMultiplier,
     profile: isBot ? { rank_points: rankPoints ?? 1500, avatar_url: null } : { rank_points: 0, avatar_url: avatarUrl ?? null },
@@ -296,11 +299,12 @@ export function processDecision(state: GameState, playerIndex: number, choice: D
   const option = card.options?.find(o => o.type === choice)
   if (!option) return state
 
-  // --- Invest Risk mechanic ---
-  // If the chosen option has a risk chance, roll the dice.
-  // On failure, apply the failEffect instead (e.g., loss).
+  const player = state.players[playerIndex]
   let effectToApply = option.effect
   let riskFired = false
+  let logs: string[] = []
+  
+  // --- Invest Risk mechanic ---
   if (choice === 'invest' && option.investRisk && option.failEffect) {
     if (Math.random() * 100 < option.investRisk) {
       effectToApply = option.failEffect
@@ -308,49 +312,107 @@ export function processDecision(state: GameState, playerIndex: number, choice: D
     }
   }
 
-  // --- Season multiplier ---
-  // If the active season boosts invest gains, apply it when the invest SUCCEEDS
+  // --- Core Mechanics Processing ---
+  let newStressLevel = player.stressLevel
+  let newSavingStreak = player.savingStreak
+  let newSpendChoices = player.spendChoices
+
+  // Calculate Lifestyle Tier based on Spend Choices
+  const lifestyleTier = Math.min(3, 1 + Math.floor(player.spendChoices / 2))
+
+  // 1. Season Boost
   const activeSeason = SEASONS.find(s => s.is_active)
   let seasonBoost = 1.0
   if (!riskFired && choice === 'invest' && activeSeason?.special_rule?.includes('INVEST gains')) {
     const match = activeSeason.special_rule.match(/(\d+)%/)
-    if (match) seasonBoost = 1 + parseInt(match[1]) / 100 // e.g. +40% → 1.4
+    if (match) seasonBoost = 1 + parseInt(match[1]) / 100
   }
 
-  // Apply season boost by temporarily scaling the effect value
+  // 2. Modifiers based on Choice
+  let multiplier = 1.0
+  if (choice === 'save') {
+    newSavingStreak += 1
+    newStressLevel += 1
+    multiplier = 1 + (newSavingStreak * 0.05) // +5% per streak
+    if (newSavingStreak > 1) logs.push(`🔥 Saving Streak x${newSavingStreak}!`)
+  } else if (choice === 'invest') {
+    newSavingStreak = 0
+    newStressLevel += 1
+    // Lifestyle Tier multiplier on success
+    if (!riskFired) {
+      if (lifestyleTier === 1) multiplier = 0.75
+      else if (lifestyleTier === 2) multiplier = 1.0
+      else if (lifestyleTier === 3) multiplier = 1.5
+      logs.push(`💎 Tier ${lifestyleTier} Lifestyle Multiplier!`)
+    }
+  } else if (choice === 'spend') {
+    newSavingStreak = 0
+    newStressLevel = 0
+    newSpendChoices += 1
+    logs.push(`🛍️ Treated yourself! Stress relieved.`)
+  }
+
+  // Apply multipliers
   let scaledEffect = effectToApply
-  if (seasonBoost !== 1.0 && effectToApply.value && effectToApply.value > 0) {
-    scaledEffect = { ...effectToApply, value: Math.floor(effectToApply.value * seasonBoost) }
+  const totalMultiplier = seasonBoost * multiplier
+  if (totalMultiplier !== 1.0 && effectToApply.value && effectToApply.value > 0) {
+    scaledEffect = { ...effectToApply, value: Math.floor(effectToApply.value * totalMultiplier) }
   }
 
-  // applyEffect handles doubleInvestActive bonus internally
-  const oldWealth = state.players[playerIndex].wealth
+  // --- Apply Effects ---
+  const oldWealth = player.wealth
   let newState = applyEffect(state, scaledEffect, playerIndex, playerIndex)
+  
+  // --- Check for Burnout (Stress Max) ---
+  let burnoutTriggered = false
+  if (newStressLevel >= 3) {
+    burnoutTriggered = true
+    newStressLevel = 0
+    // Apply 20% penalty
+    const currentWealth = newState.players[playerIndex].wealth
+    const penalty = Math.floor(currentWealth * 0.20)
+    newState.players[playerIndex].wealth -= penalty
+    logs.push(`🚨 BURNOUT! Stress reached MAX. Lost ₹${penalty.toLocaleString()}!`)
+  }
+
   const newWealth = newState.players[playerIndex].wealth
   const diff = newWealth - oldWealth
   const diffStr = diff > 0 ? ` (+₹${Math.abs(diff).toLocaleString()})` : diff < 0 ? ` (-₹${Math.abs(diff).toLocaleString()})` : ''
 
-  // Clear doubleInvestActive after use, and increment investChoices if choice was invest
-  const players = newState.players.map((p, i) =>
-    i === playerIndex ? {
-      ...p,
-      doubleInvestActive: false,
-      investChoices: p.investChoices + (choice === 'invest' ? 1 : 0)
-    } : p
-  )
-  newState = { ...newState, players }
+  // Update Player Stats
+  let updatedPlayers = [...newState.players]
+  updatedPlayers[playerIndex] = {
+    ...updatedPlayers[playerIndex],
+    doubleInvestActive: false,
+    investChoices: updatedPlayers[playerIndex].investChoices + (choice === 'invest' ? 1 : 0),
+    spendChoices: newSpendChoices,
+    savingStreak: newSavingStreak,
+    stressLevel: newStressLevel
+  }
+  newState = { ...newState, players: updatedPlayers }
 
+  // Draw Card if Spend
+  if (choice === 'spend') {
+    const drawResult = drawCard(newState, playerIndex)
+    newState = drawResult.state
+    if (drawResult.card) logs.push(`🃏 Drew a free card!`)
+  }
+
+  // Handle hand and discard pile
   const discard = [...newState.discardPile, card]
   const hand = newState.players[playerIndex].hand.filter(c => c.id !== card.id)
-  const updatedPlayers = newState.players.map((p, i) =>
+  updatedPlayers = newState.players.map((p, i) =>
     i === playerIndex ? { ...p, hand } : p
   )
 
-  let logEntry = `${state.players[playerIndex].name} played ${card.name} → ${choice.toUpperCase()}${diffStr}`
-  if (riskFired) logEntry += ' 📉 (Investment Failed!)'
+  // Log Entry
+  let logEntry = `${player.name} played ${card.name} → ${choice.toUpperCase()}${diffStr}`
+  if (riskFired) logEntry += ' 📉 (Failed!)'
   if (seasonBoost !== 1.0 && !riskFired) logEntry += ' ⚡ (Season Boost!)'
+  
+  const finalLogs = [logEntry, ...logs, ...newState.log].slice(0, 20)
 
-  // Update level state if active
+  // Update legacy level state
   if (newState.levelState) {
     const ls = { ...newState.levelState }
     if (newState.levelConfig?.id === 'level_2') {
@@ -366,7 +428,7 @@ export function processDecision(state: GameState, playerIndex: number, choice: D
     discardPile: discard,
     playedCard: card,
     pendingDecision: null,
-    log: [logEntry, ...newState.log].slice(0, 20),
+    log: finalLogs,
   })
 }
 

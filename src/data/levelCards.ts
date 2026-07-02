@@ -22,7 +22,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 10, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -6, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -56,7 +56,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 11, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -7, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -90,7 +90,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "Open kids FD Saved money interest",
         effect: { type: 'wealth_pct', value: 8, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -6, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -124,7 +124,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 12, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -6, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -158,7 +158,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 9, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -6, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -192,7 +192,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "some money in book course",
         effect: { type: 'wealth_pct', value: 11, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -7, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -226,7 +226,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 10, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -6, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -260,7 +260,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 11, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -6, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -294,7 +294,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 10, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -7, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -328,7 +328,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 10, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -7, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -362,7 +362,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 8, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -6, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -396,7 +396,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 10, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -7, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -430,7 +430,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 11, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -7, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -464,7 +464,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 9, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -7, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -498,7 +498,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "Put some money in piggy bank",
         effect: { type: 'wealth_pct', value: 12, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -6, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -532,7 +532,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 9, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -7, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -566,7 +566,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "Start some money SIP",
         effect: { type: 'wealth_pct', value: 11, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -7, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -600,7 +600,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 10, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -7, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -634,7 +634,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 12, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -6, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -668,7 +668,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "Only if you can afford to lose it",
         effect: { type: 'wealth_pct', value: 8, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -6, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -702,7 +702,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "Invest in skill - ROI is a job",
         effect: { type: 'wealth_pct', value: 8, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -7, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -736,7 +736,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "SIP some money spend some money",
         effect: { type: 'wealth_pct', value: 12, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -7, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -770,7 +770,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 11, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -7, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -804,7 +804,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 8, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -7, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -838,7 +838,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 12, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -6, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -872,7 +872,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 9, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -6, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -906,7 +906,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "some money first mutual fund",
         effect: { type: 'wealth_pct', value: 11, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -7, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -940,7 +940,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 9, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -6, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -974,7 +974,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 10, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -6, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -1008,7 +1008,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "some money in index fund",
         effect: { type: 'wealth_pct', value: 12, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -6, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -1042,7 +1042,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 12, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -7, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -1076,7 +1076,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "some money SIP start",
         effect: { type: 'wealth_pct', value: 12, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -6, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -1110,7 +1110,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 10, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -6, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -1162,7 +1162,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Take EMI",
         description: "Get some money for gym",
         effect: { type: 'wealth_pct', value: 17, target: 'self' },
-        investRisk: 25,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -11, target: 'self' },
         mentorInsight: "Fitness is good, but paying 15% interest for a gym you might not visit is bad."
       },
@@ -1196,7 +1196,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "some money first SIP!",
         effect: { type: 'wealth_pct', value: 10, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -7, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -1230,7 +1230,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "It's investing in 60-year-you",
         effect: { type: 'wealth_pct', value: 11, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -7, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -1264,7 +1264,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 11, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -7, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -1298,7 +1298,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "Negotiate! Salary is your biggest asset",
         effect: { type: 'wealth_pct', value: 12, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -6, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -1332,7 +1332,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "Save 50% of hike",
         effect: { type: 'wealth_pct', value: 12, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -6, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -1366,7 +1366,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "some money in mutual fund",
         effect: { type: 'wealth_pct', value: 12, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -6, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -1400,7 +1400,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 10, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -7, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -1434,7 +1434,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "Step up SIP",
         effect: { type: 'wealth_pct', value: 8, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -7, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -1468,7 +1468,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 10, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -6, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -1502,7 +1502,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "Step up SIP by some money",
         effect: { type: 'wealth_pct', value: 12, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -6, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -1536,7 +1536,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 12, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -6, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -1570,7 +1570,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "some money in SIP",
         effect: { type: 'wealth_pct', value: 11, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -6, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -1604,7 +1604,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "Only if placement data is strong",
         effect: { type: 'wealth_pct', value: 8, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -6, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -1638,7 +1638,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "Stick to index funds",
         effect: { type: 'wealth_pct', value: 9, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -7, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -1672,7 +1672,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 10, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -7, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -1706,7 +1706,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "some money in ELSS",
         effect: { type: 'wealth_pct', value: 12, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -7, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -1740,7 +1740,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "Max some money if you can lose it",
         effect: { type: 'wealth_pct', value: 10, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -7, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -1774,7 +1774,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 11, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -6, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -1808,7 +1808,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "some money in SIP top-up",
         effect: { type: 'wealth_pct', value: 9, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -6, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -1842,7 +1842,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "Invest for potential growth",
         effect: { type: 'wealth_pct', value: 8, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -6, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -1876,7 +1876,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "Health = wealth",
         effect: { type: 'wealth_pct', value: 10, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -6, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -1910,7 +1910,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "Saved money in equity fund",
         effect: { type: 'wealth_pct', value: 8, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -6, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -1944,7 +1944,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Invest",
         description: "Step up SIP by some money",
         effect: { type: 'wealth_pct', value: 12, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -7, target: 'self' },
         mentorInsight: "Investing puts your money to work. Risk is involved, but so is growth."
       },
@@ -1978,7 +1978,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Aggressive",
         description: "High risk, high reward",
         effect: { type: 'wealth_pct', value: 10, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -7, target: 'self' },
         mentorInsight: "Investing heavily is necessary for retirement, but ensure you diversify."
       },
@@ -2046,7 +2046,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Aggressive",
         description: "High risk, high reward",
         effect: { type: 'wealth_pct', value: 12, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -7, target: 'self' },
         mentorInsight: "Investing heavily is necessary for retirement, but ensure you diversify."
       },
@@ -2080,7 +2080,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Aggressive",
         description: "High risk, high reward",
         effect: { type: 'wealth_pct', value: 10, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -6, target: 'self' },
         mentorInsight: "Investing heavily is necessary for retirement, but ensure you diversify."
       },
@@ -2114,7 +2114,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Aggressive",
         description: "High risk, high reward",
         effect: { type: 'wealth_pct', value: 17, target: 'self' },
-        investRisk: 25,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -13, target: 'self' },
         mentorInsight: "Investing heavily is necessary for retirement, but ensure you diversify."
       },
@@ -2148,7 +2148,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Aggressive",
         description: "High risk, high reward",
         effect: { type: 'wealth_pct', value: 8, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -7, target: 'self' },
         mentorInsight: "Investing heavily is necessary for retirement, but ensure you diversify."
       },
@@ -2216,7 +2216,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Aggressive",
         description: "High risk, high reward",
         effect: { type: 'wealth_pct', value: 20, target: 'self' },
-        investRisk: 25,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -12, target: 'self' },
         mentorInsight: "Investing heavily is necessary for retirement, but ensure you diversify."
       },
@@ -2250,7 +2250,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Aggressive",
         description: "High risk, high reward",
         effect: { type: 'wealth_pct', value: 8, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -6, target: 'self' },
         mentorInsight: "Investing heavily is necessary for retirement, but ensure you diversify."
       },
@@ -2284,7 +2284,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Aggressive",
         description: "High risk, high reward",
         effect: { type: 'wealth_pct', value: 12, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -7, target: 'self' },
         mentorInsight: "Investing heavily is necessary for retirement, but ensure you diversify."
       },
@@ -2318,7 +2318,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Aggressive",
         description: "High risk, high reward",
         effect: { type: 'wealth_pct', value: 16, target: 'self' },
-        investRisk: 25,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -12, target: 'self' },
         mentorInsight: "Investing heavily is necessary for retirement, but ensure you diversify."
       },
@@ -2386,7 +2386,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Aggressive",
         description: "High risk, high reward",
         effect: { type: 'wealth_pct', value: 11, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -7, target: 'self' },
         mentorInsight: "Investing heavily is necessary for retirement, but ensure you diversify."
       },
@@ -2420,7 +2420,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Aggressive",
         description: "High risk, high reward",
         effect: { type: 'wealth_pct', value: 15, target: 'self' },
-        investRisk: 25,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -14, target: 'self' },
         mentorInsight: "Investing heavily is necessary for retirement, but ensure you diversify."
       },
@@ -2454,7 +2454,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Aggressive",
         description: "High risk, high reward",
         effect: { type: 'wealth_pct', value: 11, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -7, target: 'self' },
         mentorInsight: "Investing heavily is necessary for retirement, but ensure you diversify."
       },
@@ -2488,7 +2488,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Aggressive",
         description: "High risk, high reward",
         effect: { type: 'wealth_pct', value: 10, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -7, target: 'self' },
         mentorInsight: "Investing heavily is necessary for retirement, but ensure you diversify."
       },
@@ -2556,7 +2556,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Aggressive",
         description: "High risk, high reward",
         effect: { type: 'wealth_pct', value: 10, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -7, target: 'self' },
         mentorInsight: "Investing heavily is necessary for retirement, but ensure you diversify."
       },
@@ -2590,7 +2590,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Aggressive",
         description: "High risk, high reward",
         effect: { type: 'wealth_pct', value: 10, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -7, target: 'self' },
         mentorInsight: "Investing heavily is necessary for retirement, but ensure you diversify."
       },
@@ -2624,7 +2624,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Aggressive",
         description: "High risk, high reward",
         effect: { type: 'wealth_pct', value: 19, target: 'self' },
-        investRisk: 25,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -12, target: 'self' },
         mentorInsight: "Investing heavily is necessary for retirement, but ensure you diversify."
       },
@@ -2658,7 +2658,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Aggressive",
         description: "High risk, high reward",
         effect: { type: 'wealth_pct', value: 10, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -6, target: 'self' },
         mentorInsight: "Investing heavily is necessary for retirement, but ensure you diversify."
       },
@@ -2726,7 +2726,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Aggressive",
         description: "High risk, high reward",
         effect: { type: 'wealth_pct', value: 17, target: 'self' },
-        investRisk: 25,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -13, target: 'self' },
         mentorInsight: "Investing heavily is necessary for retirement, but ensure you diversify."
       },
@@ -2760,7 +2760,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Aggressive",
         description: "High risk, high reward",
         effect: { type: 'wealth_pct', value: 12, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -6, target: 'self' },
         mentorInsight: "Investing heavily is necessary for retirement, but ensure you diversify."
       },
@@ -2794,7 +2794,7 @@ export const LEVEL_SITUATION_CARDS: GameCard[] = [
         label: "Aggressive",
         description: "High risk, high reward",
         effect: { type: 'wealth_pct', value: 10, target: 'self' },
-        investRisk: 10,
+        investRisk: 30,
         failEffect: { type: 'wealth_pct', value: -7, target: 'self' },
         mentorInsight: "Investing heavily is necessary for retirement, but ensure you diversify."
       },
