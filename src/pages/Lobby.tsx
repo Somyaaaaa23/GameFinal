@@ -164,8 +164,8 @@ export function Lobby() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
-      <div style={{ width: '100%', maxWidth: 480, animation: 'slideUp 0.4s ease' }}>
+    <div style={{ minHeight: '100vh', background: 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px 24px' }}>
+      <div style={{ width: '100%', maxWidth: menuTab === 'create' ? 760 : 500, animation: 'slideUp 0.4s ease' }}>
         <button
           onClick={() => {
             if (menuTab !== 'choice') setMenuTab('choice')
@@ -176,15 +176,37 @@ export function Lobby() {
           ← {menuTab === 'choice' ? 'Back to Dashboard' : 'Back'}
         </button>
 
-        <div style={{ textAlign: 'center', marginBottom: 36 }}>
-          <div style={{ fontSize: 50, marginBottom: 12 }}>🌐</div>
-          <h1 style={{ fontSize: 35, fontWeight: 800, color: 'var(--text-dark)', fontFamily: 'var(--font-display)', marginBottom: 8 }}>
-            {menuTab === 'choice' ? t('dashboard.playOnline') : menuTab === 'create' ? t('lobby.createRoom') : t('lobby.joinRoom')}
-          </h1>
-          <p style={{ color: 'var(--text-muted)', fontSize: 18 }}>
-            {menuTab === 'choice' ? t('dashboard.playOnlineDesc') : ''}
-          </p>
-        </div>
+        {menuTab !== 'create' && (
+          <div style={{ textAlign: 'center', marginBottom: 36 }}>
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 16 }}>
+              <div style={{ fontSize: 50 }}>🌐</div>
+            </div>
+            <h1 style={{ fontSize: 35, fontWeight: 800, color: '#1A202C', fontFamily: 'var(--font-display)', margin: 0 }}>
+              {menuTab === 'choice' ? t('dashboard.playOnline') : t('lobby.joinRoom')}
+            </h1>
+            {menuTab === 'choice' && (
+              <p style={{ color: 'var(--text-muted)', fontSize: 18, marginTop: 8 }}>
+                {t('dashboard.playOnlineDesc')}
+              </p>
+            )}
+          </div>
+        )}
+
+        {menuTab === 'create' && (
+          <div style={{ textAlign: 'center', marginBottom: 16 }}>
+            <h1 style={{ fontSize: 48, fontWeight: 800, color: '#1A284D', fontFamily: 'var(--font-display)', margin: 0, letterSpacing: '-0.03em' }}>
+              Create Room
+            </h1>
+          </div>
+        )}
+        
+        {menuTab === 'join' && (
+          <div style={{ textAlign: 'center', marginBottom: 16 }}>
+            <h1 style={{ fontSize: 48, fontWeight: 800, color: '#1A284D', fontFamily: 'var(--font-display)', margin: 0, letterSpacing: '-0.03em' }}>
+              Join Room
+            </h1>
+          </div>
+        )}
 
         {error && (
           <div style={{ background: 'rgba(224,80,32,0.1)', border: '1px solid var(--orange-primary)', borderRadius: 10, padding: '12px 16px', fontSize: 16, color: 'var(--orange-soft)', marginBottom: 20 }}>
@@ -204,110 +226,201 @@ export function Lobby() {
         )}
 
         {menuTab === 'create' && (
-          <Card style={{ padding: 24, marginBottom: 16, animation: 'slideUp 0.3s ease' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-              <h2 style={{ fontSize: 21, fontWeight: 700, color: 'var(--text-dark)', fontFamily: 'var(--font-display)' }}>
-                Room Options
-              </h2>
-              <button onClick={() => setMenuTab('choice')} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: 14 }}>
-                Cancel
-              </button>
-            </div>
+          <div style={{ background: '#C2E3D2', borderRadius: 24, padding: '32px', marginBottom: 16, animation: 'slideUp 0.3s ease' }}>
             
-            <div style={{ marginBottom: 16 }}>
-              <div style={{ fontSize: 16, color: 'var(--text-muted)', marginBottom: 8, fontWeight: 500 }}>Max Players</div>
-              <div style={{ display: 'flex', gap: 8 }}>
-                {[2, 3, 4, 5, 6].map(n => (
-                  <button
-                    key={n}
-                    onClick={() => setMaxPlayers(n)}
-                    style={{
-                      width: 44, height: 44, borderRadius: 8,
-                      border: `2px solid ${maxPlayers === n ? 'var(--blue-primary)' : 'rgba(0,0,0,0.1)'}`,
-                      background: maxPlayers === n ? 'rgba(16,112,192,0.1)' : 'transparent',
-                      color: maxPlayers === n ? 'var(--blue-deep)' : 'var(--text-muted)',
-                      fontWeight: 700, fontSize: 19, cursor: 'pointer',
-                      transition: 'all 0.15s', fontFamily: 'inherit',
-                    }}
-                  >
-                    {n}
-                  </button>
-                ))}
+            <div style={{ marginBottom: 20 }}>
+              <h2 style={{ fontSize: 28, fontWeight: 800, color: '#111827', fontFamily: 'var(--font-display)', margin: '0 0 4px 0', letterSpacing: '-0.02em' }}>
+                Choose Your Room
+              </h2>
+              <div style={{ fontSize: 18, color: '#4B5563', fontWeight: 500 }}>
+                Choose number of opponents
               </div>
             </div>
             
-            <div style={{ marginBottom: 20 }}>
-              <div style={{ fontSize: 16, color: 'var(--text-muted)', marginBottom: 8, fontWeight: 500 }}>Game Mode</div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            {/* Max Players / Opponents */}
+            <div style={{ marginBottom: 8 }}>
+              <div style={{ display: 'flex', gap: 16 }}>
                 {[
-                  { id: 'blitz', title: 'Blitz', desc: '15 Minutes • ₹15 Lakh Goal' },
-                  { id: 'standard', title: 'Standard', desc: '25 Minutes • ₹35 Lakh Goal' },
-                  { id: 'epic', title: 'Epic', desc: '40 Minutes • ₹50 Lakh Goal' }
-                ].map(m => (
+                  { num: 1, label: 'one', maxP: 2 },
+                  { num: 2, label: 'two', maxP: 3 },
+                  { num: 3, label: 'three', maxP: 4 }
+                ].map(opt => {
+                  const isSelected = maxPlayers === opt.maxP;
+                  return (
+                    <div
+                      key={opt.num}
+                      onClick={() => setMaxPlayers(opt.maxP)}
+                      style={{
+                        width: 120, height: 100, borderRadius: 12,
+                        background: '#1A284D',
+                        opacity: isSelected ? 1 : 0.6,
+                        display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+                        cursor: 'pointer', transition: 'all 0.15s',
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#38D6A3' }}>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                          <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        <span style={{ fontSize: 42, fontWeight: 400, color: '#fff', fontFamily: 'var(--font-display)', lineHeight: 1 }}>{opt.num}</span>
+                      </div>
+                      <div style={{ fontSize: 16, color: '#38D6A3', marginTop: 4 }}>{opt.label}</div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+            <div style={{ fontSize: 16, color: '#4B5563', marginBottom: 20, fontWeight: 500, paddingLeft: 8 }}>
+              Playing against {maxPlayers - 1} AI opponents
+            </div>
+            
+            {/* Game Mode */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 24 }}>
+              {[
+                { id: 'blitz', title: 'BLITZ', desc: '15 minutes', reward: '15 Lakh' },
+                { id: 'standard', title: 'STANDARD', desc: '15 minutes', reward: '15 Lakh' },
+                { id: 'epic', title: 'EPIC', desc: '15 minutes', reward: '15 Lakh' }
+              ].map(m => {
+                const isSelected = gameMode === m.id;
+                return (
                   <div
                     key={m.id}
                     onClick={() => setGameMode(m.id as MultiplayerMode)}
                     style={{
                       display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                      padding: '12px 16px', borderRadius: 10, cursor: 'pointer',
-                      border: `2px solid ${gameMode === m.id ? 'var(--orange-primary)' : 'rgba(0,0,0,0.08)'}`,
-                      background: gameMode === m.id ? 'rgba(224,80,32,0.08)' : 'transparent',
+                      padding: '14px 24px', borderRadius: 16, cursor: 'pointer',
+                      background: '#D9EFE3',
                       transition: 'all 0.2s',
                     }}
                   >
                     <div>
-                      <div style={{ fontWeight: 800, fontSize: 16, color: gameMode === m.id ? 'var(--text-dark)' : 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{m.title}</div>
-                      <div style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 2, fontWeight: 500 }}>{m.desc}</div>
+                      <div style={{ fontWeight: 600, fontSize: 24, color: '#0F172A', fontFamily: 'var(--font-display)', letterSpacing: '0.02em' }}>{m.title}</div>
+                      <div style={{ fontSize: 15, color: '#6B7280', marginTop: 2 }}>{m.desc}</div>
                     </div>
-                    <div style={{
-                      width: 20, height: 20, borderRadius: '50%', border: `2px solid ${gameMode === m.id ? 'var(--orange-primary)' : 'rgba(0,0,0,0.2)'}`,
-                      display: 'flex', alignItems: 'center', justifyContent: 'center'
-                    }}>
-                      {gameMode === m.id && <div style={{ width: 10, height: 10, borderRadius: '50%', background: 'var(--orange-primary)' }} />}
+                    
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
+                      <div style={{ 
+                        background: '#34D399', color: '#064E3B', 
+                        padding: '6px 14px', borderRadius: 20, 
+                        fontWeight: 800, fontSize: 15, 
+                        display: 'flex', alignItems: 'center', gap: 6,
+                        boxShadow: '0 2px 4px rgba(52, 211, 153, 0.3)'
+                      }}>
+                        <span style={{ fontSize: 14 }}>🪙</span> {m.reward}
+                      </div>
+                      
+                      <div style={{
+                        width: 24, height: 24, borderRadius: '50%', border: `2px solid #111827`,
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        background: 'transparent'
+                      }}>
+                        {isSelected && <div style={{ width: 12, height: 12, borderRadius: '50%', background: '#111827' }} />}
+                      </div>
                     </div>
                   </div>
-                ))}
-              </div>
+                );
+              })}
             </div>
 
-            <Button variant="gold" size="lg" loading={loading} onClick={handleCreate} style={{ width: '100%' }}>
-              {t('lobby.createBtn')}
-            </Button>
-          </Card>
+            <button 
+              onClick={handleCreate} 
+              disabled={loading}
+              style={{ 
+                width: '100%', height: 64, padding: '0 24px', borderRadius: 16, border: 'none',
+                background: '#1A284D',
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                color: '#4ADE80', cursor: 'pointer',
+                boxShadow: '0 8px 24px rgba(26, 40, 77, 0.3)', opacity: loading ? 0.8 : 1,
+                transition: 'transform 0.2s'
+              }}
+              onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.02)'}
+              onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+            >
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="2" y="6" width="20" height="12" rx="2" ry="2"></rect>
+                <line x1="6" y1="12" x2="10" y2="12"></line>
+                <line x1="8" y1="10" x2="8" y2="14"></line>
+                <line x1="15" y1="13" x2="15.01" y2="13"></line>
+                <line x1="18" y1="11" x2="18.01" y2="11"></line>
+              </svg>
+              
+              <span style={{ fontSize: 24, fontWeight: 800, fontFamily: 'var(--font-display)' }}>
+                {loading ? 'Creating...' : 'Create Room'}
+              </span>
+              
+              <div style={{ width: 40, height: 40, borderRadius: '50%', background: '#4ADE80', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="#1A284D" stroke="#1A284D" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+              </div>
+            </button>
+          </div>
         )}
 
         {menuTab === 'join' && (
-          <Card style={{ padding: 24, animation: 'slideUp 0.3s ease' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-              <h2 style={{ fontSize: 21, fontWeight: 700, color: 'var(--text-dark)', fontFamily: 'var(--font-display)' }}>
-                {t('lobby.joinTitle')}
+          <div style={{ background: '#BCE2CF', border: '1px solid rgba(0,0,0,0.15)', borderRadius: 8, padding: '32px 40px', marginBottom: 16, animation: 'slideUp 0.3s ease', maxWidth: 540, margin: '0 auto', boxShadow: 'none' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 32 }}>
+              <h2 style={{ fontSize: 26, fontWeight: 800, color: '#111827', fontFamily: 'var(--font-display)', margin: 0, letterSpacing: '-0.02em' }}>
+                Join an existing room
               </h2>
-              <button onClick={() => setMenuTab('choice')} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: 14 }}>
-                {t('common.cancel')}
+              <button onClick={() => setMenuTab('choice')} style={{ background: 'none', border: 'none', color: '#6B7280', cursor: 'pointer', fontSize: 16, fontWeight: 600 }}>
+                Cancle
               </button>
             </div>
-            <div style={{ display: 'flex', gap: 10 }}>
+            
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
               <input
                 value={joinCode}
                 onChange={e => setJoinCode(e.target.value.toUpperCase())}
-                placeholder={t('lobby.roomCodeLabel')}
+                placeholder="ROOM CODE"
                 maxLength={6}
                 onKeyDown={e => e.key === 'Enter' && handleJoin()}
                 style={{
-                  flex: 1, padding: '10px 14px', background: 'rgba(0,0,0,0.02)',
-                  border: '1px solid rgba(0,0,0,0.1)', borderRadius: 10,
-                  color: 'var(--text-dark)', fontSize: 20, fontWeight: 700,
-                  letterSpacing: '0.15em', fontFamily: 'var(--font-display)',
-                  outline: 'none', textTransform: 'uppercase'
+                  width: '100%', height: 60, padding: '0 20px', 
+                  background: '#75CFA3',
+                  border: 'none', borderRadius: 8,
+                  color: '#064E3B', fontSize: 20, fontWeight: 800,
+                  letterSpacing: '0.1em', fontFamily: 'var(--font-display)',
+                  outline: 'none', textTransform: 'uppercase',
+                  textAlign: 'center'
                 }}
-                onFocus={e => { e.target.style.borderColor = 'var(--blue-primary)' }}
-                onBlur={e => { e.target.style.borderColor = 'rgba(0,0,0,0.1)' }}
               />
-              <Button onClick={handleJoin} loading={loading} disabled={joinCode.length < 4}>
-                {t('lobby.joinBtn')}
-              </Button>
+              
+              <button 
+                onClick={handleJoin} 
+                disabled={loading || joinCode.length < 4}
+                style={{ 
+                  width: '100%', height: 64, padding: '0 24px', borderRadius: 8, border: 'none',
+                  background: '#142145',
+                  display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                  color: '#4ADE80', cursor: (loading || joinCode.length < 4) ? 'not-allowed' : 'pointer',
+                  opacity: (loading || joinCode.length < 4) ? 0.6 : 1,
+                  transition: 'transform 0.2s', boxShadow: 'none'
+                }}
+                onMouseEnter={e => { if (!loading && joinCode.length >= 4) e.currentTarget.style.transform = 'scale(1.02)' }}
+                onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+              >
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="2" y="6" width="20" height="12" rx="2" ry="2"></rect>
+                  <line x1="6" y1="12" x2="10" y2="12"></line>
+                  <line x1="8" y1="10" x2="8" y2="14"></line>
+                  <line x1="15" y1="13" x2="15.01" y2="13"></line>
+                  <line x1="18" y1="11" x2="18.01" y2="11"></line>
+                </svg>
+                
+                <span style={{ fontSize: 24, fontWeight: 800, fontFamily: 'var(--font-display)' }}>
+                  {loading ? 'Joining...' : 'Create Room'}
+                </span>
+                
+                <div style={{ width: 36, height: 36, borderRadius: '50%', background: '#4ADE80', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="#142145" stroke="#142145" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                  </svg>
+                </div>
+              </button>
             </div>
-          </Card>
+          </div>
         )}
       </div>
     </div>

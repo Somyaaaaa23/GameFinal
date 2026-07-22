@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion'
 import type { GameCard as GameCardType } from '../types/game'
-import { FileWarning, Shield, Zap, IndianRupee } from 'lucide-react'
-import './GameCard.css'
+import { useTranslation } from 'react-i18next'
 
 interface GameCardProps {
   card: GameCardType
@@ -12,143 +11,101 @@ interface GameCardProps {
   faceDown?: boolean
 }
 
-// Map card types to background themes and button labels
-const TYPE_CONFIG = {
-  action: {
-    bgTop: '#4c1115', bgBottom: '#271315',
-    icon: Zap,
-    btnClass: 'action-btn',
-    btnText: 'Action Card',
-    glowColor: '255, 70, 70', // Red
-  },
-  defense: {
-    bgTop: '#15274e', bgBottom: '#172141',
-    icon: Shield,
-    btnClass: 'defense-btn',
-    btnText: 'Defense Card',
-    glowColor: '36, 119, 242', // Blue
-  },
-  decision: {
-    bgTop: '#063f2b', bgBottom: '#092b22',
-    icon: FileWarning,
-    btnClass: '', // no explicit class for decision in template, we'll use inline
-    btnText: 'Decision Card',
-    glowColor: '60, 255, 170', // Green
-  },
-  situation: {
-    bgTop: '#43290b', bgBottom: '#271705',
-    icon: FileWarning,
-    btnClass: '', 
-    btnText: 'Situation',
-    glowColor: '255, 150, 50', // Orange
-  }
-}
-
-// Map tiers to border/accent colors
-const TIER_CONFIG = {
+const TIER_STYLES = {
   common: {
-    accent: 'rgba(255, 255, 255, 0.4)',
-    light: 'rgba(255, 255, 255, 0.8)',
-    glowOpacity: 0.1,
+    bg: 'linear-gradient(180deg, #515151 0%, #151515 100%)',
+    badgeText: '#A1A1A1',
+    badgeBg: '#2A2A2A',
   },
   rare: {
-    accent: '#2477f2',
-    light: '#61a0ff',
-    glowOpacity: 0.35,
+    bg: 'linear-gradient(180deg, #1A4B8B 0%, #0B1930 100%)',
+    badgeText: '#60A5FA',
+    badgeBg: '#1E3A8A',
   },
   epic: {
-    accent: '#8d3df2',
-    light: '#b867ff',
-    glowOpacity: 0.45,
+    bg: 'linear-gradient(180deg, #5D2E8C 0%, #1A0B2E 100%)',
+    badgeText: '#C084FC',
+    badgeBg: '#4C1D95',
   },
   legendary: {
-    accent: '#eab308', // Gold
-    light: '#fde047',
-    glowOpacity: 0.5,
+    bg: 'linear-gradient(180deg, #B5842F 0%, #30200B 100%)',
+    badgeText: '#FDE047',
+    badgeBg: '#713F12',
   }
 }
-
-import { useTranslation } from 'react-i18next'
 
 export function GameCard({ card, onClick, selected, disabled, compact, faceDown }: GameCardProps) {
   const { t, i18n } = useTranslation()
-  const typeCfg = TYPE_CONFIG[card.type] ?? TYPE_CONFIG.decision
-  const tierCfg = TIER_CONFIG[card.tier] ?? TIER_CONFIG.common
-  const Icon = typeCfg.icon
+  const tierStyle = TIER_STYLES[card.tier] ?? TIER_STYLES.common
 
   if (faceDown) {
     return (
-      <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className={`game-card-premium ${compact ? 'compact' : ''}`}
-        style={{
-          background: 'linear-gradient(135deg, #004030, #002020)',
-          border: '3px dashed #FFD050',
-          alignItems: 'center',
-          justifyContent: 'center',
-          boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
-        }}
-      >
-        <IndianRupee style={{ color: '#facc15' }} size={compact ? 24 : 48} />
-      </motion.div>
+      <div style={{ width: compact ? 120 : 220, height: compact ? 160 : 320, background: 'linear-gradient(180deg, #1A4B8B 0%, #0B1930 100%)', borderRadius: 16, border: '4px solid #00202E' }} />
     )
   }
 
-  // Construct CSS Variables
-  const cssVars = {
-    '--bg-top': typeCfg.bgTop,
-    '--bg-bottom': typeCfg.bgBottom,
-    '--accent': selected ? '#eab308' : tierCfg.accent,
-    '--accent-light': selected ? '#fef08a' : tierCfg.light,
-    '--accent-glow': selected ? 'rgba(234, 179, 8, 0.6)' : `rgba(${typeCfg.glowColor}, ${tierCfg.glowOpacity})`,
-    '--icon-glow-inner': `rgba(${typeCfg.glowColor}, 0.15)`,
-    '--icon-glow-outer': `rgba(${typeCfg.glowColor}, 0.25)`,
-    '--icon-glow-outer2': `rgba(${typeCfg.glowColor}, 0.15)`,
-  } as React.CSSProperties
-
-  const classNames = [
-    'game-card-premium',
-    compact ? 'compact' : '',
-    selected ? 'is-selected' : '',
-    disabled ? 'disabled' : ''
-  ].filter(Boolean).join(' ')
+  const title = i18n.language === 'hi' && card.nameHi ? card.nameHi : card.name;
+  const flavor = i18n.language === 'hi' && card.flavorHi ? card.flavorHi : card.flavor;
 
   return (
     <motion.button
       layoutId={card.id}
-      initial={{ opacity: 0, y: 20, scale: 0.9 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.5, y: -20, transition: { duration: 0.2 } }}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
       whileHover={!disabled ? { scale: 1.05, y: -5 } : undefined}
       whileTap={!disabled ? { scale: 0.95 } : undefined}
       onClick={!disabled ? onClick : undefined}
-      className={classNames}
-      style={cssVars}
+      style={{
+        width: compact ? 140 : 220,
+        height: compact ? 200 : 320,
+        background: tierStyle.bg,
+        borderRadius: 16,
+        border: '4px solid #00202E',
+        padding: compact ? 12 : 20,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        color: '#fff',
+        position: 'relative',
+        cursor: disabled ? 'not-allowed' : 'pointer',
+        opacity: disabled ? 0.6 : 1,
+        boxShadow: selected ? '0 0 20px #66D575' : '0 8px 16px rgba(0,0,0,0.4)',
+        outline: 'none',
+      }}
     >
-      <div className="rarity">{t(`common.${card.tier}`, card.tier.toUpperCase())}</div>
-
-      <div className="icon-circle">
-        <Icon className="card-icon" />
+      <div style={{ fontSize: compact ? 36 : 48, marginBottom: 12 }}>
+        💼
+      </div>
+      
+      <div style={{ 
+        background: tierStyle.badgeBg, color: tierStyle.badgeText, 
+        padding: '4px 12px', borderRadius: 12, fontSize: compact ? 10 : 12, fontWeight: 700,
+        textTransform: 'uppercase', marginBottom: compact ? 8 : 16
+      }}>
+        {t(`common.${card.tier}`, card.tier.toUpperCase())}
       </div>
 
-      <h2 className="card-title">{i18n.language === 'hi' && card.nameHi ? card.nameHi : card.name}</h2>
+      <h3 style={{ 
+        fontSize: compact ? 16 : 20, fontWeight: 800, textAlign: 'center', 
+        marginBottom: compact ? 4 : 12, lineHeight: 1.2, fontFamily: 'Avengenz, sans-serif',
+        display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden'
+      }}>
+        {title}
+      </h3>
 
-      <p className="card-desc">
-        {i18n.language === 'hi' && card.flavorHi ? card.flavorHi : card.flavor}
-      </p>
+      {!compact && (
+        <p style={{ fontSize: 13, color: '#D1D5DB', textAlign: 'center', lineHeight: 1.4, flex: 1, display: '-webkit-box', WebkitLineClamp: 4, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+          {flavor}
+        </p>
+      )}
 
-      {/* Bottom element depends on card type & features */}
-      {card.type === 'decision' && card.options ? (
-        <div className="bottom-bars">
-          {card.options.map(opt => {
-             const optColor = opt.type === 'save' ? 'bar-green' : opt.type === 'invest' ? 'bar-blue' : 'bar-red'
-             return <span key={opt.type} className={optColor}></span>
-          })}
-        </div>
-      ) : (
-        <div className={`card-button ${typeCfg.btnClass}`}>
-          {t(`game.${card.type}Card`, typeCfg.btnText).toUpperCase()}
+      {!compact && card.type === 'decision' && (
+        <div style={{ 
+          background: 'rgba(255,255,255,0.1)', padding: '6px 12px', borderRadius: 8, 
+          fontSize: 12, fontWeight: 700, width: '100%', textAlign: 'center', color: '#66D575',
+          marginTop: 'auto'
+        }}>
+          OPPORTUNITY
         </div>
       )}
     </motion.button>

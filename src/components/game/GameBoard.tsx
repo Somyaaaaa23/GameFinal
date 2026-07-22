@@ -1,7 +1,5 @@
 import type { GameState, GameCard } from '../../types/game'
-import { useIsMobile } from '../../hooks/useIsMobile'
 import { GameBoardDesktop } from './GameBoardDesktop'
-import { GameBoardMobile } from './GameBoardMobile'
 
 export type UIPhase = 'playing' | 'decision' | 'targeting'
 
@@ -24,11 +22,5 @@ export interface GameBoardProps {
 }
 
 export function GameBoard(props: GameBoardProps) {
-  const isMobile = useIsMobile(768);
-
-  if (isMobile) {
-    return <GameBoardMobile {...props} />
-  }
-
   return <GameBoardDesktop {...props} />
 }

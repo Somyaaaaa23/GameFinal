@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Button } from './ui/Button'
 import Confetti from 'react-confetti'
 import { playSound } from '../lib/audio'
 
@@ -60,11 +59,11 @@ export function DailyRewardModal({ onClose, onClaim, currentStreak }: DailyRewar
           ×
         </button>
 
-        <div style={{ textAlign: 'center', marginBottom: 24 }}>
-          <h2 style={{ fontSize: 28, fontWeight: 900, color: '#1e293b', fontFamily: 'Space Grotesk, sans-serif', marginBottom: 8 }}>
-            Daily Login Reward
+        <div style={{ textAlign: 'center', marginBottom: 28 }}>
+          <h2 style={{ fontSize: 32, fontWeight: 800, color: '#000', fontFamily: 'var(--font-display)', marginBottom: 8 }}>
+            Daily Login reward
           </h2>
-          <p style={{ color: '#64748b', fontSize: 16 }}>Come back every day to earn more Daanik Coins!</p>
+          <p style={{ color: '#64748b', fontSize: 16 }}>Come back every day to earn more daanik coins</p>
         </div>
 
         <div style={{ 
@@ -84,14 +83,22 @@ export function DailyRewardModal({ onClose, onClaim, currentStreak }: DailyRewar
 
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           {!claimed ? (
-            <Button size="lg" variant="gold" onClick={handleClaim} style={{ padding: '16px 48px', fontSize: 20 }}>
-              Claim {currentReward.amount} DC
-            </Button>
+            <button 
+              onClick={handleClaim} 
+              style={{ 
+                padding: '16px 40px', fontSize: 22, fontWeight: 700,
+                background: '#0F203B', color: '#4ADE80',
+                border: 'none', borderRadius: 12, cursor: 'pointer',
+                boxShadow: '0 8px 16px rgba(15, 32, 59, 0.2)'
+              }}
+            >
+              Claim {currentReward.amount}DC
+            </button>
           ) : (
             <motion.div
               initial={{ scale: 0.8 }}
               animate={{ scale: 1 }}
-              style={{ fontSize: 20, fontWeight: 800, color: '#10b981' }}
+              style={{ fontSize: 22, fontWeight: 800, color: '#10b981' }}
             >
               ✓ Claimed!
             </motion.div>
@@ -103,27 +110,35 @@ export function DailyRewardModal({ onClose, onClaim, currentStreak }: DailyRewar
 }
 
 function RewardBox({ reward, isToday, isPast }: { reward: any, isToday: boolean, isPast: boolean }) {
-  const bg = isToday ? '#fef08a' : isPast ? '#dcfce7' : '#ffffff'
-  const border = isToday ? '#eab308' : isPast ? '#22c55e' : '#cbd5e1'
+  const bg = isToday ? '#FDE68A' : isPast ? '#D8F3C6' : '#FFFFFF'
+  const border = isToday ? '#FBBF24' : isPast ? '#B7E495' : '#E2E8F0'
+  const textColor = isToday ? '#4B5563' : isPast ? '#7B966F' : '#64748b'
+  const amountColor = isToday ? '#1A202C' : isPast ? '#7B966F' : '#475569'
   
   return (
     <div style={{
-      background: bg, border: `2px solid ${border}`, borderRadius: 12,
-      padding: '12px 4px', textAlign: 'center',
-      position: 'relative', opacity: isPast ? 0.6 : 1,
+      background: bg, border: `2px solid ${border}`, borderRadius: 16,
+      padding: '16px 8px', textAlign: 'center',
+      position: 'relative', 
       transform: isToday ? 'scale(1.05)' : 'scale(1)',
-      boxShadow: isToday ? '0 8px 16px rgba(234, 179, 8, 0.3)' : 'none',
-      transition: 'all 0.3s'
+      boxShadow: isToday ? '0 12px 24px rgba(251, 191, 36, 0.4)' : '0 4px 12px rgba(0,0,0,0.02)',
+      transition: 'all 0.3s', zIndex: isToday ? 2 : 1
     }}>
       {isPast && (
-        <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 32, zIndex: 10 }}>
+        <div style={{ 
+          position: 'absolute', bottom: -8, right: -8, 
+          width: 32, height: 32, borderRadius: '50%', background: '#65A30D',
+          border: '3px solid #D8F3C6', display: 'flex', alignItems: 'center', justifyContent: 'center',
+          color: '#fff', fontSize: 18, fontWeight: 'bold', zIndex: 10,
+          boxShadow: '0 4px 8px rgba(101, 163, 13, 0.4)'
+        }}>
           ✓
         </div>
       )}
-      <div style={{ fontSize: 12, fontWeight: 700, color: '#64748b', marginBottom: 4 }}>DAY {reward.day}</div>
-      <div style={{ fontSize: 24, marginBottom: 4 }}>{reward.icon}</div>
-      <div style={{ fontSize: 14, fontWeight: 800, color: '#0f172a' }}>{reward.amount} DC</div>
-      {reward.label && <div style={{ fontSize: 10, color: '#d97706', fontWeight: 800, marginTop: 2 }}>{reward.label}</div>}
+      <div style={{ fontSize: 16, fontWeight: 800, color: textColor, marginBottom: 8, textTransform: 'uppercase' }}>DAY {reward.day}</div>
+      <div style={{ fontSize: 40, marginBottom: 12, filter: isPast ? 'grayscale(80%) opacity(50%)' : 'drop-shadow(0 4px 6px rgba(0,0,0,0.1))' }}>{reward.icon}</div>
+      <div style={{ fontSize: 18, fontWeight: 800, color: amountColor }}>{reward.amount} DC</div>
+      {reward.label && <div style={{ fontSize: 12, color: '#d97706', fontWeight: 800, marginTop: 4 }}>{reward.label}</div>}
     </div>
   )
 }

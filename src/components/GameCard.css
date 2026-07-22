@@ -263,3 +263,6 @@
 .game-card-premium.compact .bottom-bars {
   display: none;
 }
+.game-card-premium.decision-card::before {
+  display: none;
+}

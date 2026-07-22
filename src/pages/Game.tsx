@@ -356,6 +356,7 @@ export function Game() {
     const nearMiss = !isWinner && wealthGap > 0 && wealthGap < gameState.wealthGoal * 0.2
 
     return (
+      <>
       <ResultScreen
         isWinner={isWinner}
         placement={placement}
@@ -368,6 +369,19 @@ export function Game() {
         onPlayAgain={() => { setGameState(null); setUiPhase('setup') }}
         onDashboard={() => navigate('/dashboard')}
       />
+      
+      {/* LANDSCAPE OVERLAY (Rotate Back to Portrait) - Only visible on Result screen in landscape */}
+      <div className="mobile-landscape-overlay">
+        <div style={{
+          width: 80, height: 80,
+          background: 'url("/avatars/rotate screen.png") center / contain no-repeat',
+          marginBottom: 24
+        }} />
+        <h2 style={{ fontSize: 24, fontWeight: 700, fontFamily: 'Space Grotesk, sans-serif' }}>
+          Rotate back to Portrait view
+        </h2>
+      </div>
+      </>
     )
   }
 
@@ -375,34 +389,125 @@ export function Game() {
 
   const themeClass = levelId === 'level_2' ? 'theme-level2' : levelId === 'level_3' ? 'theme-level3' : ''
   return (
-    <div className={themeClass} style={{ minHeight: '100dvh', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-      {/* Header */}
-      <div className="glass-panel" style={{
-        position: 'sticky', top: 0, zIndex: 40,
-        padding: '0 20px', height: 60,
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        borderRadius: 0, borderTop: 'none', borderLeft: 'none', borderRight: 'none',
+    <div className={themeClass} style={{ minHeight: '100dvh', background: 'url("/avatars/image copy.png") center / cover no-repeat', display: 'flex', flexDirection: 'column', overflow: 'hidden', position: 'relative' }}>
+      {/* Background Laser Lines Overlay (Approximation of image.png) */}
+
+      {/* --- DESKTOP GAME HUD --- */}
+      <div className="desktop-game-flex" style={{
+        position: 'absolute', top: 0, left: 0, right: 0, zIndex: 40,
+        height: 100, pointerEvents: 'none', display: 'flex', justifyContent: 'center'
       }}>
-        <button onClick={() => setShowForfeitModal(true)} style={{ background: 'none', border: 'none', color: '#64748b', cursor: 'pointer', fontSize: 16, fontFamily: 'inherit', display: 'flex', alignItems: 'center', gap: 6 }}>
-          ← End Game
+        {/* Level Indicator */}
+        <div style={{
+          position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)',
+          width: 320, height: 80,
+          background: 'url("/avatars/level bar.png") center top / contain no-repeat',
+          zIndex: 60
+        }} />
+
+        {/* EXIT Button */}
+        <button onClick={() => setShowForfeitModal(true)} style={{
+          position: 'absolute', left: 40, top: 24,
+          background: 'url("/avatars/exit button.png") center / contain no-repeat',
+          width: 140, height: 48,
+          border: 'none', cursor: 'pointer', pointerEvents: 'auto',
+          backgroundColor: 'transparent'
+        }}>
         </button>
-        <div className="desktop-only" style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 800, fontSize: 20, color: '#f59e0b', position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
-          BHAO
+
+        {/* Center Opponents HUD */}
+        <div style={{
+          marginTop: 70, // Pushed down to avoid overlapping the Level Bar
+          background: 'url("/avatars/player bar.png") center / 100% 100% no-repeat',
+          padding: '24px 64px 16px 64px', display: 'flex', gap: 48, pointerEvents: 'auto',
+          minWidth: 400, justifyContent: 'center',
+          position: 'relative', zIndex: 30
+        }}>
+          {gameState.players.map((p) => {
+            if (p.id === (profile?.id ?? 'human')) return null; // Skip local player
+            return (
+              <div key={p.id} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                <div style={{ width: 44, height: 44, borderRadius: '50%', background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+                  <img src={'https://api.dicebear.com/9.x/avataaars/svg?seed=' + p.name} style={{ width: '100%', height: '100%' }} alt="Avatar" />
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <span style={{ color: '#4b5563', fontSize: 16, fontWeight: 600 }}>{p.name}</span>
+                  <span style={{ color: '#ef4444', fontSize: 14, fontWeight: 700 }}>{formatWealth(p.wealth)}</span>
+                </div>
+              </div>
+            )
+          })}
         </div>
-        <div style={{ display: 'flex', gap: 20, alignItems: 'center' }}>
-          {mode === 'ranked' && (
-            <span style={{ padding: '3px 10px', borderRadius: 5, background: 'rgba(37,99,235,0.15)', color: '#60a5fa', fontSize: 14, fontWeight: 700 }}>
-              RANKED
-            </span>
-          )}
-          {mode === 'campaign' && gameState.levelConfig && (
-            <span style={{ padding: '3px 10px', borderRadius: 5, background: 'rgba(245,158,11,0.15)', color: '#f59e0b', fontSize: 14, fontWeight: 700 }}>
-              LEVEL: {gameState.levelConfig.name}
-            </span>
-          )}
+
+        {/* TIMER */}
+        <div style={{
+          position: 'absolute', right: 40, top: 24,
+          background: 'rgba(12, 108, 78, 0.55)', borderRadius: 8,
+          border: '1px solid rgba(255,255,255,0.1)', color: '#fff', fontSize: 24, fontWeight: 700,
+          fontFamily: 'Avengenz, sans-serif', padding: '12px 24px',
+          display: 'flex', alignItems: 'center', gap: 12
+        }}>
           <GameClock startTime={gameState.startTime} timeLimit={gameState.timeLimit} />
         </div>
       </div>
+
+      {/* --- MOBILE LANDSCAPE HUD --- */}
+      <div className="mobile-landscape-flex" style={{
+        position: 'absolute', top: 0, left: 0, right: 0, zIndex: 40,
+        height: 80, pointerEvents: 'none', display: 'flex', justifyContent: 'center'
+      }}>
+        {/* Level Indicator */}
+        <div style={{
+          position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)',
+          width: 200, height: 50,
+          background: 'url("/avatars/level bar.png") center top / contain no-repeat',
+          zIndex: 60
+        }} />
+
+        {/* EXIT Button */}
+        <button onClick={() => setShowForfeitModal(true)} style={{
+          position: 'absolute', left: 16, top: 12,
+          background: 'url("/avatars/exit button.png") center / contain no-repeat',
+          width: 100, height: 36,
+          border: 'none', cursor: 'pointer', pointerEvents: 'auto',
+          backgroundColor: 'transparent'
+        }} />
+
+        {/* TIMER */}
+        <div style={{
+          position: 'absolute', right: 16, top: 12,
+          background: 'rgba(12, 108, 78, 0.55)', borderRadius: 6,
+          border: '1px solid rgba(255,255,255,0.1)', color: '#fff', fontSize: 16, fontWeight: 700,
+          fontFamily: 'Avengenz, sans-serif', padding: '6px 12px',
+          display: 'flex', alignItems: 'center', gap: 6, pointerEvents: 'auto'
+        }}>
+          <GameClock startTime={gameState.startTime} timeLimit={gameState.timeLimit} />
+        </div>
+
+        {/* Center Opponents HUD */}
+        <div style={{
+          marginTop: 45,
+          background: 'url("/avatars/player bar.png") center / 100% 100% no-repeat',
+          padding: '16px 40px 12px 40px', display: 'flex', gap: 24, pointerEvents: 'auto',
+          justifyContent: 'center', position: 'relative', zIndex: 30, transform: 'scale(0.8)', transformOrigin: 'top center'
+        }}>
+          {gameState.players.map((p) => {
+            if (p.id === (profile?.id ?? 'human')) return null; // Skip local player
+            return (
+              <div key={p.id} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <div style={{ width: 36, height: 36, borderRadius: '50%', background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+                  <img src={'https://api.dicebear.com/9.x/avataaars/svg?seed=' + p.name} style={{ width: '100%', height: '100%' }} alt="Avatar" />
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <span style={{ color: '#4b5563', fontSize: 14, fontWeight: 600 }}>{p.name}</span>
+                  <span style={{ color: '#ef4444', fontSize: 12, fontWeight: 700 }}>{formatWealth(p.wealth)}</span>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+
 
 
       {showForfeitModal && (
@@ -414,7 +519,7 @@ export function Game() {
 
       {notification && (
         <div style={{
-          position: 'fixed', top: 68, right: 20,
+          position: 'fixed', top: 100, right: 40,
           background: '#1e293b', border: '1px solid rgba(255,255,255,0.12)',
           borderRadius: 10, padding: '11px 18px',
           fontSize: 18, color: '#f1f5f9', zIndex: 200,
@@ -424,27 +529,41 @@ export function Game() {
         </div>
       )}
 
-      <GameBoard
-        gameState={gameState}
-        myPlayerId={profile?.id ?? 'human'}
-        isMultiplayer={false}
-        uiPhase={uiPhase as UIPhase}
-        onDrawCard={handleDrawCard}
-        onPlayCard={handlePlayCard}
-        onTargetSelect={handleTargetSelect}
-        onDecision={handleDecision}
-        onTimeout={handleTimeout}
-        onCancelTargeting={() => {
-          setGameState({ ...gameState, pendingTarget: null })
-          setUiPhase('playing')
-        }}
-        daanikCoins={profile?.daank_coins ?? 0}
-        onBuyExtraCard={handleBuyExtraCard}
-      />
+      <div className="game-content-wrapper" style={{ flex: 1, position: 'relative', zIndex: 10, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <GameBoard
+          gameState={gameState}
+          myPlayerId={profile?.id ?? 'human'}
+          isMultiplayer={false}
+          uiPhase={uiPhase as UIPhase}
+          onDrawCard={handleDrawCard}
+          onPlayCard={handlePlayCard}
+          onTargetSelect={handleTargetSelect}
+          onDecision={handleDecision}
+          onTimeout={handleTimeout}
+          onCancelTargeting={() => {
+            setGameState({ ...gameState, pendingTarget: null })
+            setUiPhase('playing')
+          }}
+          daanikCoins={profile?.daank_coins ?? 0}
+          onBuyExtraCard={handleBuyExtraCard}
+        />
+      </div>
 
       {popupInfo && (
         <EventPopup info={popupInfo} onContinue={handlePopupContinue} />
       )}
+
+      {/* PORTRAIT OVERLAY (Rotate Screen) */}
+      <div className="mobile-portrait-overlay">
+        <div style={{
+          width: 80, height: 80,
+          background: 'url("/avatars/rotate screen.png") center / contain no-repeat',
+          marginBottom: 24
+        }} />
+        <h2 style={{ fontSize: 24, fontWeight: 700, fontFamily: 'Space Grotesk, sans-serif' }}>
+          Rotate Your Screen
+        </h2>
+      </div>
     </div>
   )
 }
@@ -454,50 +573,46 @@ function EventPopup({ info, onContinue }: { info: { reason: string, reasonHi?: s
   useEffect(() => {
     const timer = setTimeout(() => {
       onContinue()
-    }, 7000)
+    }, 4000) // Shorter duration so they don't have to wait 7s
     return () => clearTimeout(timer)
   }, [onContinue])
+
+  const title = info.isGain
+    ? (i18n.language === 'hi' ? 'धन प्राप्त हुआ!' : 'WEALTH GAINED')
+    : (info.sourceName && !info.isSelf && info.sourceName !== 'Game'
+      ? (i18n.language === 'hi' ? `${info.sourceName} ने हमला किया!` : `${info.sourceName} ATTACKED!`)
+      : (i18n.language === 'hi' ? 'धन की हानि!' : 'WEALTH LOST'));
+
+  const reason = i18n.language === 'hi' && info.reasonHi ? info.reasonHi : info.reason;
+  const description = info.description ? (i18n.language === 'hi' && info.descriptionHi ? info.descriptionHi : info.description) : '';
 
   return (
     <div
       onClick={onContinue}
       style={{
         position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-        background: 'rgba(15, 23, 42, 0.75)', backdropFilter: 'blur(8px)',
+        background: 'rgba(0, 10, 5, 0.4)', // Dim background
+        backdropFilter: 'blur(12px)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         zIndex: 9999, animation: 'fadeIn 0.2s ease', cursor: 'pointer'
       }}
     >
-      <div style={{
-        background: '#F8F9FA',
-        border: '1px solid rgba(0, 0, 0, 0.1)',
-        padding: '40px 32px', borderRadius: 28, maxWidth: 420, width: '90%',
-        textAlign: 'center', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.5)',
-        animation: 'slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1)'
-      }}>
-        <div style={{ fontSize: 14, color: 'var(--text-muted)', marginBottom: 12, textTransform: 'uppercase', letterSpacing: 1.5, fontWeight: 800 }}>
-          {info.isGain
-            ? (i18n.language === 'hi' ? 'धन प्राप्त हुआ!' : 'Wealth Gained!')
-            : (info.sourceName && !info.isSelf && info.sourceName !== 'Game'
-              ? (i18n.language === 'hi' ? `${info.sourceName} ने हमला किया!` : `${info.sourceName} attacked!`)
-              : (i18n.language === 'hi' ? 'धन की हानि!' : 'Wealth Lost!'))}
+      <div className="event-popup-box">
+        <div className="event-popup-title">
+          {title}
         </div>
-        <h3 style={{ fontSize: 26, color: 'var(--text-dark)', marginBottom: info.description ? 12 : 28, lineHeight: 1.3, fontWeight: 800, fontFamily: 'Space Grotesk, sans-serif' }}>
-          {i18n.language === 'hi' && info.reasonHi ? info.reasonHi : info.reason}
-        </h3>
+        
+        <div className={`event-popup-reason ${info.isGain ? 'gain' : 'loss'}`}>
+          {reason}
+        </div>
 
-        {info.description && (
-          <div style={{ fontSize: 16, color: '#4b5563', marginBottom: 28, fontStyle: 'italic', padding: '0 20px' }}>
-            "{i18n.language === 'hi' && info.descriptionHi ? info.descriptionHi : info.description}"
+        {description && (
+          <div className="event-popup-desc">
+            "{description}"
           </div>
         )}
 
-        <div style={{
-          fontSize: 52, fontWeight: 800, fontFamily: 'Space Grotesk, sans-serif',
-          color: info.isGain ? 'var(--green-bright, #10b981)' : '#ef4444',
-          marginBottom: 12,
-          textShadow: info.isGain ? '0 4px 20px rgba(16,185,129,0.2)' : '0 4px 20px rgba(239,68,68,0.2)'
-        }}>
+        <div className={`event-popup-amount ${info.isGain ? 'gain' : 'loss'}`}>
           {info.amountStr}
         </div>
       </div>
