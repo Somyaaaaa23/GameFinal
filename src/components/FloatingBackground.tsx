@@ -21,7 +21,7 @@ export function FloatingBackground() {
     // Generate static initial positions to avoid hydration mismatch,
     // or just run entirely on client side after mount.
     const newParticles: Particle[] = []
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 12; i++) { // Reduced from 20 to 12 for performance
       newParticles.push({
         id: i,
         x: Math.random() * 100, // random start X (%)
@@ -30,7 +30,7 @@ export function FloatingBackground() {
         duration: Math.random() * 30 + 20, // 20-50s to float up
         delay: Math.random() * -20, // Negative delay so they start already moving!
         icon: ICONS[Math.floor(Math.random() * ICONS.length)],
-        opacity: Math.random() * 0.2 + 0.15, // more visible (0.15 - 0.35)
+        opacity: Math.random() * 0.15 + 0.1, // slightly less visible (0.1 - 0.25)
       })
     }
     setParticles(newParticles)
@@ -46,13 +46,16 @@ export function FloatingBackground() {
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       // Calculate offset from center (-1 to 1), and multiply by max shift in px
-      const x = (e.clientX / window.innerWidth - 0.5) * -40 
-      const y = (e.clientY / window.innerHeight - 0.5) * -40
+      const x = (e.clientX / window.innerWidth - 0.5) * -20 
+      const y = (e.clientY / window.innerHeight - 0.5) * -20
       mouseX.set(x)
       mouseY.set(y)
     }
-    window.addEventListener('mousemove', handleMouseMove)
-    return () => window.removeEventListener('mousemove', handleMouseMove)
+    // Only add mouse listener on non-touch devices to save performance
+    if (window.matchMedia('(hover: hover)').matches) {
+      window.addEventListener('mousemove', handleMouseMove)
+      return () => window.removeEventListener('mousemove', handleMouseMove)
+    }
   }, [mouseX, mouseY])
 
   return (
@@ -73,13 +76,11 @@ export function FloatingBackground() {
       {particles.map((p) => (
         <motion.div
           key={p.id}
-          initial={{ y: `${p.y}vh`, x: `${p.x}vw`, opacity: 0, scale: 0 }}
+          initial={{ y: `${p.y}vh`, x: `${p.x}vw`, opacity: 0 }}
           animate={{
             y: '-20vh',
-            x: [`${p.x}vw`, `${p.x + (Math.random() * 10 - 5)}vw`, `${p.x}vw`], // gentle sway
+            x: [`${p.x}vw`, `${p.x + (Math.random() * 4 - 2)}vw`, `${p.x}vw`], // gentle sway
             opacity: [0, p.opacity, p.opacity, 0],
-            scale: [0, 1, 1, 0.5],
-            rotate: [0, 180, 360],
           }}
           transition={{
             duration: p.duration,
@@ -90,8 +91,8 @@ export function FloatingBackground() {
           style={{
             position: 'absolute',
             fontSize: p.size,
-            filter: 'blur(0.5px)',
             userSelect: 'none',
+            // Removed filter: blur() because it causes massive GPU lag when animated
           }}
         >
           {p.icon}

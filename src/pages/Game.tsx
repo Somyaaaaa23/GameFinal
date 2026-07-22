@@ -35,7 +35,7 @@ function GameClock({ startTime, timeLimit }: { startTime: number; timeLimit: num
   const secondsLeft = Math.floor((remaining % 60000) / 1000)
 
   return (
-    <div style={{ fontSize: 16, color: minutesLeft < 5 ? '#ef4444' : '#64748b', fontWeight: minutesLeft < 5 ? 700 : 400 }}>
+    <div style={{ fontSize: 16, color: minutesLeft < 5 ? '#ef4444' : '#fff', fontWeight: 700 }}>
       ⏱ {minutesLeft}:{secondsLeft.toString().padStart(2, '0')}
     </div>
   )
@@ -454,7 +454,7 @@ export function Game() {
       {/* --- MOBILE LANDSCAPE HUD --- */}
       <div className="mobile-landscape-flex" style={{
         position: 'absolute', top: 0, left: 0, right: 0, zIndex: 40,
-        height: 80, pointerEvents: 'none', display: 'flex', justifyContent: 'center'
+        height: 80, pointerEvents: 'none', justifyContent: 'center'
       }}>
         {/* Level Indicator */}
         <div style={{

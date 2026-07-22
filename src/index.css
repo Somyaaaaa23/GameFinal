@@ -273,7 +273,7 @@ input, textarea, select {
 }
 
 /* Mobile Responsiveness Utilities */
-.mobile-only {
+.mobile-only, .mobile-flex {
   display: none !important;
 }
 
@@ -880,7 +880,7 @@ input, textarea, select {
   display: none;
 }
 .mobile-landscape-flex {
-  display: none;
+  display: none !important;
 }
 .desktop-game-flex {
   display: flex;

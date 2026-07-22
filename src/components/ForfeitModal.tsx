@@ -1,5 +1,3 @@
-import { Button } from './ui/Button'
-
 interface ForfeitModalProps {
   onCancel: () => void
   onConfirm: () => void
@@ -14,30 +12,93 @@ export function ForfeitModal({ onCancel, onConfirm }: ForfeitModalProps) {
       zIndex: 1000, padding: 24, animation: 'fadeIn 0.2s ease'
     }}>
       <div style={{
-        background: 'var(--card-paper)',
-        boxShadow: '0 20px 40px rgba(0,0,0,0.3)',
-        border: '1px solid rgba(0,0,0,0.1)',
-        maxWidth: 400, width: '100%', borderRadius: 20, padding: 32,
-        display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center'
+        background: 'linear-gradient(0.83deg, #2D9842 -131.45%, #62B271 -73.88%, #FFFFFF 99.29%)',
+        width: '100%', 
+        maxWidth: 695,
+        position: 'relative',
+        display: 'flex', 
+        flexDirection: 'column', 
+        alignItems: 'center', 
+        textAlign: 'center',
+        borderRadius: 12,
+        padding: '60px 40px',
+        boxShadow: '0 24px 48px rgba(0,0,0,0.4)'
       }}>
-        <div style={{ width: 64, height: 64, borderRadius: '50%', background: 'rgba(239,68,68,0.1)', color: '#ef4444', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 40, marginBottom: 20 }}>
-          ⚠️
-        </div>
-        <h2 style={{ fontSize: 28, fontWeight: 800, color: 'var(--text-dark)', fontFamily: 'Space Grotesk, sans-serif', marginBottom: 12 }}>
-          Forfeit Match?
-        </h2>
-        <p style={{ fontSize: 18, color: 'var(--text-muted)', lineHeight: 1.5, marginBottom: 32 }}>
-          Are you sure you want to leave? If you leave now, you will automatically <strong style={{ color: 'var(--orange-dark)' }}>lose this match</strong> and incur any rank point deductions.
+        
+        <h1 style={{
+          fontFamily: 'Sora, sans-serif',
+          fontWeight: 700, // Bold and large as requested
+          fontSize: 42, 
+          lineHeight: 1.2,
+          color: '#000000',
+          margin: '0 0 24px 0'
+        }}>
+          Forfeit Match
+        </h1>
+
+        <div style={{
+          fontFamily: 'Sora, sans-serif',
+          fontSize: 20, 
+          color: '#575D66', 
+          lineHeight: 1.6, 
+          fontWeight: 400, 
+          margin: '0 0 50px 0',
+          maxWidth: '80%'
+        }}>
+          Are you sure you want to leave? If you leave now, you will automatically <strong style={{ color: '#d92c2c' }}>lose this match</strong> and incur any rank point deductions.
           <br /><br />
-          <strong style={{ color: '#ef4444' }}>Leaving the match may result in a deduction of 25 DC Coins.</strong>
-        </p>
-        <div style={{ display: 'flex', gap: 12, width: '100%' }}>
-          <Button variant="secondary" onClick={onCancel} style={{ flex: 1 }}>
+          <strong style={{ color: '#d92c2c' }}>Leaving the match may result in a deduction of 25 DC Coins.</strong>
+        </div>
+
+        <div style={{
+          display: 'flex',
+          flexDirection: 'row',
+          gap: 24,
+          justifyContent: 'center',
+          width: '100%'
+        }}>
+          <button 
+            onClick={onCancel} 
+            style={{ 
+              width: 258, 
+              height: 59, 
+              background: 'linear-gradient(180deg, #66D575 0%, #09BC83 100%)', 
+              borderRadius: 8,
+              border: 'none', 
+              cursor: 'pointer',
+              fontFamily: 'Sora, sans-serif',
+              fontWeight: 600,
+              fontSize: 24,
+              color: '#111827',
+              transition: 'opacity 0.2s'
+            }} 
+            onMouseEnter={e => e.currentTarget.style.opacity = '0.9'}
+            onMouseLeave={e => e.currentTarget.style.opacity = '1'}
+          >
             Cancel
-          </Button>
-          <Button onClick={onConfirm} style={{ flex: 1, background: '#ef4444', borderColor: '#ef4444', color: 'white' }}>
-            Yes, Forfeit
-          </Button>
+          </button>
+
+          <button 
+            onClick={onConfirm} 
+            style={{ 
+              width: 322, 
+              height: 59, 
+              background: '#0B2545', 
+              borderRadius: 8,
+              border: 'none', 
+              cursor: 'pointer',
+              fontFamily: 'Sora, sans-serif',
+              fontWeight: 600,
+              fontSize: 24,
+              color: '#66D575',
+              transition: 'opacity 0.2s',
+              textTransform: 'uppercase' // User wanted it capitalized/uppercase instead of lowercase
+            }} 
+            onMouseEnter={e => e.currentTarget.style.opacity = '0.9'}
+            onMouseLeave={e => e.currentTarget.style.opacity = '1'}
+          >
+            Forfeit
+          </button>
         </div>
       </div>
     </div>

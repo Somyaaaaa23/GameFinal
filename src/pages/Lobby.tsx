@@ -2,7 +2,6 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import { Button } from '../components/ui/Button'
-import { Card } from '../components/ui/Card'
 import {
   createRoom, joinRoom, leaveRoom, setReady, startGame,
   subscribeToRoom, getRoomPlayers, broadcastPlayersChanged,
@@ -365,7 +364,7 @@ export function Lobby() {
                 Join an existing room
               </h2>
               <button onClick={() => setMenuTab('choice')} style={{ background: 'none', border: 'none', color: '#6B7280', cursor: 'pointer', fontSize: 16, fontWeight: 600 }}>
-                Cancle
+                Cancel
               </button>
             </div>
             
@@ -389,28 +388,24 @@ export function Lobby() {
               
               <button 
                 onClick={handleJoin} 
-                disabled={loading || joinCode.length < 4}
+                disabled={loading || joinCode.length !== 6}
                 style={{ 
-                  width: '100%', height: 64, padding: '0 24px', borderRadius: 8, border: 'none',
-                  background: '#142145',
+                  background: '#142145', color: '#4ADE80', border: 'none', borderRadius: 16, 
+                  padding: '16px', cursor: (loading || joinCode.length !== 6) ? 'not-allowed' : 'pointer',
                   display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                  color: '#4ADE80', cursor: (loading || joinCode.length < 4) ? 'not-allowed' : 'pointer',
-                  opacity: (loading || joinCode.length < 4) ? 0.6 : 1,
-                  transition: 'transform 0.2s', boxShadow: 'none'
+                  boxShadow: '0 8px 24px rgba(20, 33, 69, 0.4)', opacity: (loading || joinCode.length !== 6) ? 0.7 : 1
                 }}
-                onMouseEnter={e => { if (!loading && joinCode.length >= 4) e.currentTarget.style.transform = 'scale(1.02)' }}
-                onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
               >
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="2" y="6" width="20" height="12" rx="2" ry="2"></rect>
-                  <line x1="6" y1="12" x2="10" y2="12"></line>
-                  <line x1="8" y1="10" x2="8" y2="14"></line>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="2" y="6" width="20" height="12" rx="2"></rect>
+                  <line x1="6" y1="12" x2="6.01" y2="12"></line>
+                  <line x1="10" y1="12" x2="10.01" y2="12"></line>
                   <line x1="15" y1="13" x2="15.01" y2="13"></line>
                   <line x1="18" y1="11" x2="18.01" y2="11"></line>
                 </svg>
                 
                 <span style={{ fontSize: 24, fontWeight: 800, fontFamily: 'var(--font-display)' }}>
-                  {loading ? 'Joining...' : 'Create Room'}
+                  {loading ? 'Joining...' : 'Join Room'}
                 </span>
                 
                 <div style={{ width: 36, height: 36, borderRadius: '50%', background: '#4ADE80', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -427,24 +422,24 @@ export function Lobby() {
   )
 }
 
+// Start of WaitingRoom function signature
 function WaitingRoom({
-  room, roomPlayers, nonHostPlayers, isHost, myPlayer, canStart, allReady, loading, error,
+  room, roomPlayers, isHost, myPlayer, canStart, loading, error,
   onToggleReady, onStart, onLeave,
 }: {
   room: Room
   roomPlayers: RoomPlayer[]
-  nonHostPlayers: RoomPlayer[]
+  nonHostPlayers: RoomPlayer[] // Keep in interface to match parent passing it, but not used here
   isHost: boolean
   myPlayer: RoomPlayer | undefined
   canStart: boolean
-  allReady: boolean
+  allReady: boolean // Keep in interface to match parent passing it
   loading: boolean
   error: string
   onToggleReady: () => void
   onStart: () => void
   onLeave: () => void
 }) {
-  const { t } = useTranslation()
   const [copied, setCopied] = useState(false)
 
   const copyCode = () => {
@@ -453,51 +448,51 @@ function WaitingRoom({
     setTimeout(() => setCopied(false), 2000)
   }
 
-  const modeStr = (room.game_state as any)?.multiplayerMode || 'standard'
-
   return (
     <div style={{ minHeight: '100vh', background: 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24, position: 'relative' }}>
       <button
         onClick={onLeave}
-        style={{ position: 'absolute', top: 24, left: 24, background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: 16, fontFamily: 'inherit', display: 'flex', alignItems: 'center', gap: 6 }}
+        style={{ position: 'absolute', top: 24, left: 24, background: 'none', border: 'none', color: '#ADB3BD', cursor: 'pointer', fontSize: 16, fontFamily: 'inherit', display: 'flex', alignItems: 'center', gap: 6 }}
       >
         ← Back to Dashboard
       </button>
-      <div style={{ width: '100%', maxWidth: 520, animation: 'slideUp 0.4s ease' }}>
+      
+      <div style={{ width: '100%', maxWidth: 750, display: 'flex', flexDirection: 'column', alignItems: 'center', animation: 'slideUp 0.4s ease' }}>
 
-        {/* Room Code */}
-        <div style={{ textAlign: 'center', marginBottom: 28 }}>
-          <div style={{ fontSize: 15, color: 'var(--text-muted)', marginBottom: 8, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-            {t('lobby.shareCode')}
-          </div>
-          <div
-            onClick={copyCode}
-            style={{
-              display: 'inline-flex', alignItems: 'center', gap: 'clamp(8px, 2vw, 14px)',
-              background: 'rgba(0,0,0,0.05)', border: '2px solid var(--orange-dark)',
-              borderRadius: 16, padding: 'clamp(10px, 3vw, 16px) clamp(16px, 4vw, 32px)', cursor: 'pointer',
-              transition: 'all 0.2s', userSelect: 'none',
-            }}
-            onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.borderColor = 'var(--orange-primary)' }}
-            onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.borderColor = 'var(--orange-dark)' }}
-          >
-            <span style={{ fontSize: 'clamp(30px, 8vw, 45px)', fontWeight: 800, letterSpacing: '0.2em', color: 'var(--orange-dark)', fontFamily: 'var(--font-display)' }}>
-              {room.code}
-            </span>
-            <span style={{ fontSize: 'clamp(12px, 3.5vw, 15px)', color: copied ? 'var(--green-primary)' : 'var(--text-muted)', fontWeight: 600, whiteSpace: 'nowrap' }}>
-              {copied ? t('lobby.copied') : t('lobby.clickToCopy')}
-            </span>
-          </div>
+        {/* Title */}
+        <div style={{ fontFamily: 'Inter, sans-serif', fontSize: 20, color: '#6A7380', marginBottom: 24 }}>
+          Compete with friends in real-time multiplayer
+        </div>
 
-          <div style={{ marginTop: 16, padding: '10px 16px', background: 'rgba(0,0,0,0.03)', borderRadius: 12, display: 'inline-flex', alignItems: 'center', gap: 12, border: '1px solid rgba(0,0,0,0.05)' }}>
-             <div style={{ fontWeight: 800, textTransform: 'uppercase', color: 'var(--text-dark)', letterSpacing: '0.05em' }}>
-               {modeStr === 'blitz' ? 'Blitz Mode' : modeStr === 'epic' ? 'Epic Mode' : 'Standard Mode'}
-             </div>
-             <div style={{ width: 4, height: 4, borderRadius: '50%', background: 'var(--text-muted)' }} />
-             <div style={{ color: 'var(--text-muted)', fontWeight: 600 }}>
-               {modeStr === 'blitz' ? '15 Min / ₹15L Goal' : modeStr === 'epic' ? '40 Min / ₹50L Goal' : '25 Min / ₹35L Goal'}
-             </div>
+        {/* Code Box */}
+        <div 
+          onClick={copyCode}
+          style={{
+            width: '100%', maxWidth: 545, height: 103, 
+            background: 'rgba(0, 185, 192, 0.1)',
+            border: '2px solid rgba(105, 184, 159, 0.3)',
+            borderRadius: 12,
+            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 20,
+            marginBottom: 40, cursor: 'pointer', position: 'relative',
+            transition: 'transform 0.2s'
+          }}
+          onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.02)'}
+          onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+        >
+          <div style={{
+            fontFamily: 'Sora, sans-serif', fontWeight: 400, fontSize: 64, letterSpacing: '0.15em',
+            background: 'linear-gradient(180deg, #001733 0%, #163E6F 100%)',
+            WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+            userSelect: 'none'
+          }}>
+            {room.code}
           </div>
+          {/* copy icon */}
+          <svg width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="#555353" strokeWidth="2">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          </svg>
+          {copied && <div style={{ position: 'absolute', top: -30, color: '#09BC83', fontWeight: 'bold', fontSize: 16 }}>Copied!</div>}
         </div>
 
         {error && (
@@ -506,117 +501,140 @@ function WaitingRoom({
           </div>
         )}
 
-        {/* Players List */}
-        <Card style={{ padding: 20, marginBottom: 14 }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
-            <h2 style={{ fontSize: 19, fontWeight: 700, color: 'var(--text-dark)', fontFamily: 'var(--font-display)' }}>
-              Players ({roomPlayers.length}/{room.max_players})
-            </h2>
-            <div style={{ fontSize: 15, color: 'var(--text-muted)' }}>
-              {allReady
-                ? <span style={{ color: 'var(--green-primary)', fontWeight: 700 }}>All ready!</span>
-                : nonHostPlayers.length === 0
-                  ? <span>Waiting for players...</span>
-                  : <span>{nonHostPlayers.filter(p => p.is_ready).length}/{nonHostPlayers.length} ready</span>
-              }
-            </div>
-          </div>
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            {roomPlayers.map(p => (
-              <div
-                key={p.id}
-                style={{
-                  display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                  padding: '12px 14px', borderRadius: 10,
-                  background: p.player_id === room.host_id ? 'rgba(224,80,32,0.06)' : 'rgba(0,0,0,0.05)',
-                  border: `1px solid ${p.player_id === room.host_id ? 'var(--orange-primary)' : 'rgba(0,0,0,0.1)'}`,
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <div style={{
-                    width: 38, height: 38, borderRadius: '50%',
-                    background: `hsl(${p.seat_order * 55 + 140}, 60%, 40%)`,
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontSize: 19, fontWeight: 700, color: '#fff', flexShrink: 0,
-                  }}>
-                    {p.username[0]?.toUpperCase()}
-                  </div>
-                  <div>
-                    <div style={{ fontSize: 18, fontWeight: 600, color: 'var(--text-dark)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 120 }}>{p.username}</div>
-                    <div style={{ fontSize: 14, color: 'var(--text-muted)' }}>
-                      {p.player_id === room.host_id ? '👑 Host' : `Player ${p.seat_order + 1}`}
-                    </div>
-                  </div>
-                </div>
+        {/* Players Box (Rectangle 275) */}
+        <div style={{
+          width: '100%',
+          background: 'linear-gradient(180deg, #001733 0%, #163E6F 100%)',
+          borderRadius: 12,
+          display: 'flex',
+          padding: '40px 0',
+          marginBottom: 30,
+          position: 'relative'
+        }}>
+          {/* Render exactly room.max_players slots */}
+          {Array.from({ length: room.max_players || 4 }).map((_, i) => {
+            const p = roomPlayers[i]
+            const pAny = p as any;
+            const isHostPlayer = p && p.player_id === room.host_id
+            return (
+              <div key={i} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
+                {/* Divider Line (except first) */}
+                {i > 0 && (
+                  <div style={{ position: 'absolute', left: 0, top: '5%', bottom: '5%', width: 2, background: '#3D6596' }} />
+                )}
+                
+                {/* Avatar */}
                 <div style={{
-                  fontSize: 15, fontWeight: 700, padding: '5px 12px', borderRadius: 6,
-                  background: p.is_ready ? 'rgba(32,160,96,0.12)' : 'rgba(0,0,0,0.05)',
-                  color: p.is_ready ? 'var(--green-primary)' : 'var(--text-muted)',
-                  border: `1px solid ${p.is_ready ? 'var(--green-primary)' : 'rgba(0,0,0,0.1)'}`,
+                  width: 118, height: 118, borderRadius: '50%',
+                  background: p 
+                    ? (pAny.avatar_url?.startsWith('/') || pAny.avatar_url?.startsWith('http') ? `url('${pAny.avatar_url}') center/cover` : '#fff') 
+                    : 'rgba(255,255,255,0.05)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  marginBottom: 16,
+                  position: 'relative',
+                  border: p && !(pAny.avatar_url?.startsWith('/') || pAny.avatar_url?.startsWith('http')) ? '2px solid #ccc' : 'none'
                 }}>
-                  {p.is_ready ? '✓ Ready' : 'Not Ready'}
+                  {!p && <span style={{ color: '#ADB3BD', fontSize: 40, fontWeight: 300 }}>+</span>}
+                  {p && !(pAny.avatar_url?.startsWith('/') || pAny.avatar_url?.startsWith('http')) && (
+                     <span style={{ fontSize: 40, color: '#000' }}>{p.username[0]?.toUpperCase()}</span>
+                  )}
+
+                  {isHostPlayer && (
+                    <div style={{
+                      position: 'absolute', top: -12, left: '50%', transform: 'translateX(-50%)',
+                      background: 'linear-gradient(183.6deg, #FF4332 2.96%, #F4CC00 123.94%)',
+                      padding: '4px 16px', borderRadius: 12,
+                      fontFamily: 'Sora, sans-serif', fontWeight: 700, fontSize: 16, color: '#E9F2ED',
+                      boxShadow: '0 4px 8px rgba(0,0,0,0.2)'
+                    }}>
+                      host
+                    </div>
+                  )}
                 </div>
-              </div>
-            ))}
-
-            {Array.from({ length: Math.max(0, room.max_players - roomPlayers.length) }).map((_, i) => (
-              <div
-                key={`empty-${i}`}
-                style={{
-                  display: 'flex', alignItems: 'center', gap: 10,
-                  padding: '12px 14px', borderRadius: 10,
-                  border: '1px dashed rgba(0,0,0,0.15)',
-                }}
-              >
-                <div style={{ width: 38, height: 38, borderRadius: '50%', background: 'rgba(0,0,0,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 23, color: 'var(--text-muted)' }}>
-                  +
+                
+                {/* Name */}
+                <div style={{
+                  fontFamily: 'Sora, sans-serif', fontSize: 20, color: '#E9F2ED',
+                  height: 25, marginBottom: 14,
+                  whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '90%'
+                }}>
+                  {p ? p.username : 'Waiting...'}
                 </div>
-                <div style={{ fontSize: 16, color: 'var(--text-muted)' }}>Waiting for player...</div>
+                
+                {/* Status Pill */}
+                {p && (
+                  <div style={{
+                    background: p.is_ready ? 'linear-gradient(180deg, #66D575 0%, #09BC83 100%)' : '#4B5563',
+                    borderRadius: 8, padding: '6px 16px',
+                    fontFamily: 'Clash Display Variable, sans-serif', fontWeight: 600, fontSize: 18,
+                    color: '#DAF4E3',
+                    textAlign: 'center', minWidth: 100
+                  }}>
+                    {p.is_ready ? 'READY' : 'NOT READY'}
+                  </div>
+                )}
               </div>
-            ))}
-          </div>
-        </Card>
-
-        {roomPlayers.length < 2 && (
-          <div style={{ fontSize: 16, color: 'var(--text-muted)', textAlign: 'center', marginBottom: 14 }}>
-            Need at least 2 players to start
-          </div>
-        )}
-
-        {/* Actions */}
-        <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-          {isHost ? (
-            <Button
-              variant="gold"
-              size="lg"
-              onClick={onStart}
-              disabled={!canStart}
-              loading={loading}
-              style={{ flex: 1 }}
-            >
-              {loading ? 'Starting...' : canStart ? 'Start Game!' : nonHostPlayers.length === 0 ? 'Waiting for players...' : `Waiting for ${nonHostPlayers.filter(p => !p.is_ready).length} to ready up...`}
-            </Button>
-          ) : (
-            <Button
-              variant={myPlayer?.is_ready ? 'secondary' : 'primary'}
-              size="lg"
-              onClick={onToggleReady}
-              style={{ flex: 1 }}
-            >
-              {myPlayer?.is_ready ? 'Cancel Ready' : 'Ready Up!'}
-            </Button>
-          )}
-          <Button variant="secondary" size="lg" onClick={onLeave} style={{ flex: '1 1 100%' }}>
-            Leave
-          </Button>
+            )
+          })}
         </div>
 
-        {isHost && nonHostPlayers.length > 0 && !allReady && (
-          <p style={{ fontSize: 15, color: 'var(--text-muted)', textAlign: 'center', marginTop: 12 }}>
-            All other players must click "Ready Up!" before you can start
-          </p>
+        {/* Footer Text */}
+        {roomPlayers.length < 2 && (
+          <div style={{ fontFamily: 'Inter, sans-serif', fontSize: 20, color: '#6A7380', marginBottom: 24 }}>
+            need at least 2 player to start
+          </div>
         )}
+
+        {/* Bottom Buttons */}
+        <div style={{ display: 'flex', gap: 24, justifyContent: 'center', width: '100%' }}>
+          {isHost ? (
+            <button
+              onClick={onStart}
+              disabled={!canStart || loading}
+              style={{
+                background: canStart ? 'linear-gradient(180deg, #66D575 0%, #09BC83 100%)' : '#4B5563',
+                borderRadius: 8, padding: '16px 32px', minWidth: 288,
+                fontFamily: 'Sora, sans-serif', fontWeight: 600, fontSize: 24, color: canStart ? '#001733' : '#ADB3BD',
+                border: 'none', cursor: canStart ? 'pointer' : 'not-allowed',
+                transition: 'opacity 0.2s'
+              }}
+            >
+              {loading ? 'Starting...' : canStart ? 'Start Game' : `Waiting for player...`}
+            </button>
+          ) : (
+            <button
+              onClick={onToggleReady}
+              style={{
+                background: myPlayer?.is_ready ? '#4B5563' : 'linear-gradient(180deg, #66D575 0%, #09BC83 100%)',
+                borderRadius: 8, padding: '16px 32px', minWidth: 288,
+                fontFamily: 'Sora, sans-serif', fontWeight: 600, fontSize: 24, color: myPlayer?.is_ready ? '#ADB3BD' : '#001733',
+                border: 'none', cursor: 'pointer',
+                transition: 'opacity 0.2s'
+              }}
+            >
+              {myPlayer?.is_ready ? 'Cancel Ready' : 'Ready Up'}
+            </button>
+          )}
+
+          <button
+            onClick={onLeave}
+            style={{
+              background: 'linear-gradient(180deg, #66D575 0%, #09BC83 100%)',
+              borderRadius: 8, padding: '16px 32px', minWidth: 150,
+              fontFamily: 'Sora, sans-serif', fontWeight: 600, fontSize: 24,
+              border: 'none', cursor: 'pointer',
+              display: 'flex', alignItems: 'center', justifyContent: 'center'
+            }}
+          >
+            <span style={{
+              background: 'linear-gradient(180deg, #001733 0%, #163E6F 100%)',
+              WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+              display: 'block'
+            }}>
+              Leave
+            </span>
+          </button>
+        </div>
       </div>
     </div>
   )

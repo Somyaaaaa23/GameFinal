@@ -109,13 +109,13 @@ export function GameLog({ log, mobileCompact, playerName }: GameLogProps) {
 
   return (
     <div style={{
-      background: 'rgba(255, 255, 255, 0.45)',
+      background: 'rgba(255, 255, 255, 0.92)',
       backdropFilter: 'blur(16px)',
       WebkitBackdropFilter: 'blur(16px)',
       borderRadius: 20,
       padding: '24px',
       border: '1px solid rgba(255, 255, 255, 0.6)',
-      boxShadow: '0 8px 32px rgba(0,0,0,0.06)',
+      boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
       display: 'flex',
       flexDirection: 'column',
       gap: 16,

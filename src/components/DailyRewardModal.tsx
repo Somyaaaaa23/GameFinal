@@ -13,13 +13,13 @@ export function DailyRewardModal({ onClose, onClaim, currentStreak }: DailyRewar
   const [claimed, setClaimed] = useState(false)
   
   const REWARDS = [
-    { day: 1, amount: 10, icon: '🪙' },
-    { day: 2, amount: 20, icon: '🪙' },
-    { day: 3, amount: 30, icon: '🪙' },
-    { day: 4, amount: 50, icon: '💰' },
-    { day: 5, amount: 100, icon: '💰' },
-    { day: 6, amount: 200, icon: '💎' },
-    { day: 7, amount: 500, icon: '🎁', label: 'Mega Bonus' },
+    { day: 1, amount: 10, icon: <img src="/avatars/coins.png" style={{ height: 60, width: 'auto', objectFit: 'contain' }} /> },
+    { day: 2, amount: 20, icon: <img src="/avatars/coins.png" style={{ height: 60, width: 'auto', objectFit: 'contain' }} /> },
+    { day: 3, amount: 30, icon: <img src="/avatars/coins.png" style={{ height: 60, width: 'auto', objectFit: 'contain' }} /> },
+    { day: 4, amount: 50, icon: <img src="/avatars/coins.png" style={{ height: 60, width: 'auto', objectFit: 'contain' }} /> },
+    { day: 5, amount: 100, icon: <img src="/avatars/coins bag.png" style={{ height: 70, width: 'auto', objectFit: 'contain' }} /> },
+    { day: 6, amount: 200, icon: <img src="/avatars/coins bag.png" style={{ height: 70, width: 'auto', objectFit: 'contain' }} /> },
+    { day: 7, amount: 500, icon: <img src="/avatars/coins bag.png" style={{ height: 80, width: 'auto', objectFit: 'contain' }} /> },
   ]
 
   const todayIndex = Math.min(currentStreak, 6)
@@ -110,10 +110,10 @@ export function DailyRewardModal({ onClose, onClaim, currentStreak }: DailyRewar
 }
 
 function RewardBox({ reward, isToday, isPast }: { reward: any, isToday: boolean, isPast: boolean }) {
-  const bg = isToday ? '#FDE68A' : isPast ? '#D8F3C6' : '#FFFFFF'
-  const border = isToday ? '#FBBF24' : isPast ? '#B7E495' : '#E2E8F0'
-  const textColor = isToday ? '#4B5563' : isPast ? '#7B966F' : '#64748b'
-  const amountColor = isToday ? '#1A202C' : isPast ? '#7B966F' : '#475569'
+  const bg = isToday ? '#FDE68A' : isPast ? '#E4F9B8' : '#FFFFFF'
+  const border = isToday ? '#FBBF24' : isPast ? '#A3E635' : '#E2E8F0'
+  const textColor = isToday ? '#1E3A8A' : isPast ? '#4D7C0F' : '#475569'
+  const amountColor = isToday ? '#1E3A8A' : isPast ? '#4D7C0F' : '#475569'
   
   return (
     <div style={{
@@ -121,23 +121,26 @@ function RewardBox({ reward, isToday, isPast }: { reward: any, isToday: boolean,
       padding: '16px 8px', textAlign: 'center',
       position: 'relative', 
       transform: isToday ? 'scale(1.05)' : 'scale(1)',
-      boxShadow: isToday ? '0 12px 24px rgba(251, 191, 36, 0.4)' : '0 4px 12px rgba(0,0,0,0.02)',
-      transition: 'all 0.3s', zIndex: isToday ? 2 : 1
+      boxShadow: isToday ? '0 12px 24px rgba(251, 191, 36, 0.4)' : '0 4px 12px rgba(0,0,0,0.05)',
+      transition: 'all 0.3s', zIndex: isToday ? 2 : 1,
+      display: 'flex', flexDirection: 'column', alignItems: 'center'
     }}>
       {isPast && (
         <div style={{ 
-          position: 'absolute', bottom: -8, right: -8, 
-          width: 32, height: 32, borderRadius: '50%', background: '#65A30D',
+          position: 'absolute', bottom: -10, right: -10, 
+          width: 36, height: 36, borderRadius: '50%', background: '#65A30D',
           border: '3px solid #D8F3C6', display: 'flex', alignItems: 'center', justifyContent: 'center',
-          color: '#fff', fontSize: 18, fontWeight: 'bold', zIndex: 10,
+          color: '#fff', fontSize: 20, fontWeight: 'bold', zIndex: 10,
           boxShadow: '0 4px 8px rgba(101, 163, 13, 0.4)'
         }}>
           ✓
         </div>
       )}
-      <div style={{ fontSize: 16, fontWeight: 800, color: textColor, marginBottom: 8, textTransform: 'uppercase' }}>DAY {reward.day}</div>
-      <div style={{ fontSize: 40, marginBottom: 12, filter: isPast ? 'grayscale(80%) opacity(50%)' : 'drop-shadow(0 4px 6px rgba(0,0,0,0.1))' }}>{reward.icon}</div>
-      <div style={{ fontSize: 18, fontWeight: 800, color: amountColor }}>{reward.amount} DC</div>
+      <div style={{ fontSize: 16, fontWeight: 800, color: textColor, marginBottom: 12, textTransform: 'uppercase' }}>DAY {reward.day}</div>
+      <div style={{ marginBottom: 12, display: 'flex', justifyContent: 'center', height: 80, alignItems: 'center', filter: isPast ? 'opacity(40%) grayscale(60%)' : 'drop-shadow(0 4px 6px rgba(0,0,0,0.15))' }}>
+        {reward.icon}
+      </div>
+      <div style={{ fontSize: 20, fontWeight: 800, color: amountColor }}>{reward.amount} DC</div>
       {reward.label && <div style={{ fontSize: 12, color: '#d97706', fontWeight: 800, marginTop: 4 }}>{reward.label}</div>}
     </div>
   )

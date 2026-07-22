@@ -246,7 +246,7 @@ export function TutorialGame() {
   }
 
   return (
-    <div style={{ background: 'transparent', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+    <div style={{ background: 'url("/avatars/image copy.png") center / cover no-repeat', minHeight: '100vh', display: 'flex', flexDirection: 'column', overflow: 'hidden', position: 'relative' }}>
       <MentorDialog 
         message={currentStep?.message || ''} 
         onNext={currentStep?.action === 'finish' ? () => navigate('/dashboard') : undefined} 

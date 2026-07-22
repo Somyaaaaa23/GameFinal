@@ -11,41 +11,41 @@ interface GameCardProps {
   faceDown?: boolean
 }
 
-const TIER_STYLES = {
-  common: {
-    bg: 'linear-gradient(180deg, #515151 0%, #151515 100%)',
-    badgeText: '#A1A1A1',
-    badgeBg: '#2A2A2A',
-  },
-  rare: {
-    bg: 'linear-gradient(180deg, #1A4B8B 0%, #0B1930 100%)',
-    badgeText: '#60A5FA',
-    badgeBg: '#1E3A8A',
-  },
-  epic: {
-    bg: 'linear-gradient(180deg, #5D2E8C 0%, #1A0B2E 100%)',
-    badgeText: '#C084FC',
-    badgeBg: '#4C1D95',
-  },
-  legendary: {
-    bg: 'linear-gradient(180deg, #B5842F 0%, #30200B 100%)',
-    badgeText: '#FDE047',
-    badgeBg: '#713F12',
-  }
-}
+// All card types now use the clean green.png background (no placeholder text).
+// The card name and description are placed in the empty areas of the image.
 
 export function GameCard({ card, onClick, selected, disabled, compact, faceDown }: GameCardProps) {
-  const { t, i18n } = useTranslation()
-  const tierStyle = TIER_STYLES[card.tier] ?? TIER_STYLES.common
+  const { i18n } = useTranslation()
 
   if (faceDown) {
+    // Face-down: show the back of the card
+    const backImg = card.type === 'decision' ? 'green cards.png'
+      : card.type === 'defense' ? 'blue cards.png'
+      : card.type === 'action' ? 'red cards.png'
+      : 'green cards.png'
+    
+    // Blue/red are sprite sheets, just show the first (common) variant for face-down
+    const isSpriteSheet = card.type === 'action' || card.type === 'defense'
+    
     return (
-      <div style={{ width: compact ? 120 : 220, height: compact ? 160 : 320, background: 'linear-gradient(180deg, #1A4B8B 0%, #0B1930 100%)', borderRadius: 16, border: '4px solid #00202E' }} />
+      <div style={{ 
+        width: compact ? 120 : 220, 
+        height: compact ? 160 : 320, 
+        background: `url('/avatars/${backImg}') ${isSpriteSheet ? '0% 0%/400% auto' : 'center/cover'} no-repeat`,
+        borderRadius: 16, 
+      }} />
     )
   }
 
   const title = i18n.language === 'hi' && card.nameHi ? card.nameHi : card.name;
   const flavor = i18n.language === 'hi' && card.flavorHi ? card.flavorHi : card.flavor;
+
+  const cardW = compact ? 140 : 220
+  const cardH = compact ? 200 : 320
+
+  const frontImg = card.type === 'action' ? 'red.png'
+    : card.type === 'defense' ? 'blue.png'
+    : 'green.png';
 
   return (
     <motion.button
@@ -56,12 +56,13 @@ export function GameCard({ card, onClick, selected, disabled, compact, faceDown 
       whileTap={!disabled ? { scale: 0.95 } : undefined}
       onClick={!disabled ? onClick : undefined}
       style={{
-        width: compact ? 140 : 220,
-        height: compact ? 200 : 320,
-        background: tierStyle.bg,
+        width: cardW,
+        height: cardH,
+        // Use the appropriate background for the card type
+        background: `url('/avatars/${frontImg}') center/cover no-repeat`,
         borderRadius: 16,
-        border: '4px solid #00202E',
-        padding: compact ? 12 : 20,
+        border: 'none',
+        padding: 0,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -71,41 +72,69 @@ export function GameCard({ card, onClick, selected, disabled, compact, faceDown 
         opacity: disabled ? 0.6 : 1,
         boxShadow: selected ? '0 0 20px #66D575' : '0 8px 16px rgba(0,0,0,0.4)',
         outline: 'none',
+        overflow: 'hidden',
       }}
     >
-      <div style={{ fontSize: compact ? 36 : 48, marginBottom: 12 }}>
-        💼
-      </div>
-      
-      <div style={{ 
-        background: tierStyle.badgeBg, color: tierStyle.badgeText, 
-        padding: '4px 12px', borderRadius: 12, fontSize: compact ? 10 : 12, fontWeight: 700,
-        textTransform: 'uppercase', marginBottom: compact ? 8 : 16
+      {/* 
+        Card name — placed in the empty area between the wallet icon and the OPPORTUNITY tag.
+        The green.png background has this area clean/empty for us to put text.
+      */}
+      <div style={{
+        position: 'absolute',
+        top: compact ? '38%' : '42%',
+        left: '8%',
+        right: '8%',
+        textAlign: 'center',
+        zIndex: 2,
       }}>
-        {t(`common.${card.tier}`, card.tier.toUpperCase())}
-      </div>
-
-      <h3 style={{ 
-        fontSize: compact ? 16 : 20, fontWeight: 800, textAlign: 'center', 
-        marginBottom: compact ? 4 : 12, lineHeight: 1.2, fontFamily: 'Avengenz, sans-serif',
-        display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden'
-      }}>
-        {title}
-      </h3>
-
-      {!compact && (
-        <p style={{ fontSize: 13, color: '#D1D5DB', textAlign: 'center', lineHeight: 1.4, flex: 1, display: '-webkit-box', WebkitLineClamp: 4, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-          {flavor}
-        </p>
-      )}
-
-      {!compact && card.type === 'decision' && (
-        <div style={{ 
-          background: 'rgba(255,255,255,0.1)', padding: '6px 12px', borderRadius: 8, 
-          fontSize: 12, fontWeight: 700, width: '100%', textAlign: 'center', color: '#66D575',
-          marginTop: 'auto'
+        <h3 style={{ 
+          fontSize: compact ? 12 : 16, 
+          fontWeight: 800, 
+          textAlign: 'center', 
+          lineHeight: 1.2, 
+          fontFamily: 'Avengenz, sans-serif', 
+          margin: 0,
+          color: '#fff',
+          textShadow: '0 2px 6px rgba(0,0,0,0.5)',
+          display: '-webkit-box', 
+          WebkitLineClamp: 2, 
+          WebkitBoxOrient: 'vertical', 
+          overflow: 'hidden'
         }}>
-          OPPORTUNITY
+          {title}
+        </h3>
+      </div>
+
+      {/* 
+        Card description — placed inside the empty description box at the bottom.
+        The green.png has an empty bordered box here for description text.
+      */}
+      {!compact && (
+        <div style={{
+          position: 'absolute',
+          bottom: '4%',
+          left: '8%',
+          right: '8%',
+          height: '24%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '6px 10px',
+          zIndex: 2,
+        }}>
+          <p style={{ 
+            fontSize: 11, 
+            color: '#e5e7eb', 
+            textAlign: 'center', 
+            lineHeight: 1.3,
+            display: '-webkit-box', 
+            WebkitLineClamp: 4, 
+            WebkitBoxOrient: 'vertical', 
+            overflow: 'hidden', 
+            margin: 0 
+          }}>
+            {flavor}
+          </p>
         </div>
       )}
     </motion.button>

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
-import { Button } from '../components/ui/Button'
+
 import { Card } from '../components/ui/Card'
 import { formatWealth } from '../types/game'
 import { supabase } from '../lib/supabase'
@@ -24,7 +24,7 @@ interface LeaderboardEntry {
 }
 
 export function Dashboard() {
-  const { profile, logout, refreshProfile } = useAuth()
+  const { profile, refreshProfile } = useAuth()
   const navigate = useNavigate()
   const [tab, setTab] = useState<Tab>('home')
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([])
@@ -95,10 +95,7 @@ export function Dashboard() {
     }
   }, [navigate])
 
-  const handleLogout = async () => {
-    await logout()
-    navigate('/')
-  }
+
 
   useEffect(() => {
     if (tab === 'leaderboard') fetchLeaderboard()
@@ -208,7 +205,7 @@ export function Dashboard() {
 
         <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 16 }}>
           {/* Player Compact Profile */}
-          {profile && isSidebarOpen && (
+          {profile && isSidebarOpen && tab !== 'profile' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
               <div style={{ color: '#66D575', fontSize: 13, fontWeight: 700 }}>Rookie Investor</div>
               <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
@@ -230,12 +227,6 @@ export function Dashboard() {
                 style={{ flex: 1, padding: '8px', borderRadius: 8, background: 'rgba(255,255,255,0.1)', color: '#fff', border: 'none', cursor: 'pointer', fontSize: 13, fontWeight: 700 }}
               >
                 {i18n.language === 'en' ? 'हिंदी' : 'EN'}
-              </button>
-              <button
-                onClick={handleLogout}
-                style={{ flex: 1, padding: '8px', borderRadius: 8, background: 'rgba(239, 68, 68, 0.2)', color: '#FCA5A5', border: 'none', cursor: 'pointer', fontSize: 13, fontWeight: 700 }}
-              >
-                Sign Out
               </button>
             </div>
           )}
@@ -339,6 +330,7 @@ export function Dashboard() {
 
 function HomeTab({ navigate, profile, onlineUsers }: { navigate: (path: string) => void; profile: ReturnType<typeof useAuth>['profile']; onlineUsers: number }) {
   const { t } = useTranslation()
+  const winRate = profile && profile.games_played > 0 ? Math.round((profile.games_won / profile.games_played) * 100) : 0
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 24, maxWidth: 1000, width: '100%', margin: '0 auto', position: 'relative' }}>
@@ -463,10 +455,10 @@ function HomeTab({ navigate, profile, onlineUsers }: { navigate: (path: string) 
           position: 'relative', zIndex: 1, border: '1px solid rgba(255,255,255,0.05)'
         }}>
           {[
-            { label: 'Total Win', value: '12', icon: '🏅', color: '#3B82F6' },
-            { label: 'Win Rate', value: '68%', icon: '🏆', color: '#F59E0B' },
-            { label: 'Win Streak', value: '4', icon: '🔥', color: '#EF4444' },
-            { label: 'Best Rank', value: '#128', icon: '🌟', color: '#8B5CF6' },
+            { label: 'Total Win', value: (profile?.games_won ?? 0).toString(), icon: '🏅', color: '#3B82F6' },
+            { label: 'Win Rate', value: `${winRate}%`, icon: '🏆', color: '#F59E0B' },
+            { label: 'Win Streak', value: (profile?.win_streak ?? 0).toString(), icon: '🔥', color: '#EF4444' },
+            { label: 'Games Played', value: (profile?.games_played ?? 0).toString(), icon: '🎮', color: '#8B5CF6' },
           ].map((stat, idx) => (
             <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
               {/* Stat Icon container */}
@@ -1113,6 +1105,7 @@ function ContractsTab() {
 function ProfileTab() {
   const { t } = useTranslation()
   const { profile, logout, refreshProfile } = useAuth()
+  const navigate = useNavigate()
   const [isEditingAvatar, setIsEditingAvatar] = useState(false)
   const [isEditingName, setIsEditingName] = useState(false)
   const [newName, setNewName] = useState(profile?.username || '')
@@ -1181,6 +1174,7 @@ function ProfileTab() {
               border: '6px solid #FCD34D', display: 'flex', alignItems: 'center', justifyContent: 'center', 
               fontSize: 50, cursor: 'pointer', position: 'relative', 
               boxShadow: '0 8px 24px rgba(252, 211, 77, 0.4)', zIndex: 10,
+
               transition: 'transform 0.2s'
             }}
             onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.05)'}
@@ -1292,10 +1286,17 @@ function ProfileTab() {
         ))}
       </div>
 
-      <div style={{ borderTop: '1px solid rgba(0,0,0,0.1)', paddingTop: 32, display: 'flex', justifyContent: 'center' }}>
-        <Button variant="ghost" onClick={logout} style={{ color: '#dc2626', border: '1px solid rgba(220,38,38,0.3)', background: 'rgba(220,38,38,0.05)', padding: '12px 24px', fontSize: 16 }}>
+      <div style={{ borderTop: '1px solid rgba(0,0,0,0.1)', paddingTop: 32, display: 'flex', justifyContent: 'center', paddingBottom: 40 }}>
+        <button onClick={async () => { await logout(); navigate('/'); }} style={{ 
+          background: '#EF4444', color: '#fff', border: 'none', borderRadius: 8,
+          padding: '16px 32px', fontSize: 18, fontWeight: 700, cursor: 'pointer',
+          boxShadow: '0 4px 12px rgba(239, 68, 68, 0.3)', transition: 'background 0.2s'
+        }}
+        onMouseEnter={e => e.currentTarget.style.background = '#DC2626'}
+        onMouseLeave={e => e.currentTarget.style.background = '#EF4444'}
+        >
           Sign Out of Account
-        </Button>
+        </button>
       </div>
     </div>
 
@@ -1306,13 +1307,63 @@ function ProfileTab() {
       
       {/* Avatar & Name */}
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: -50 }}>
-        <div style={{ width: 100, height: 100, borderRadius: '50%', background: '#fff', padding: 4, boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
+        <div 
+          onClick={() => setIsEditingAvatar(!isEditingAvatar)}
+          style={{ width: 100, height: 100, borderRadius: '50%', background: '#fff', padding: 4, boxShadow: '0 4px 12px rgba(0,0,0,0.1)', cursor: 'pointer' }}
+        >
           <div style={{ width: '100%', height: '100%', borderRadius: '50%', overflow: 'hidden' }}>
             {(avatar.startsWith('/') || avatar.startsWith('http')) ? <img src={avatar} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <div style={{width:'100%', height:'100%', display:'flex', alignItems:'center', justifyContent:'center', fontSize:32, background:'#f1f5f9'}}>{avatar}</div>}
           </div>
         </div>
-        <h1 style={{ fontSize: 26, fontWeight: 700, color: '#111827', marginTop: 16 }}>{profile?.username ?? 'Name'}</h1>
+        
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 16 }}>
+          {isEditingName ? (
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <input
+                autoFocus
+                type="text"
+                value={newName}
+                onChange={e => setNewName(e.target.value)}
+                onKeyDown={e => e.key === 'Enter' && handleUpdateName()}
+                style={{ fontSize: 20, fontWeight: 700, padding: '4px 8px', borderRadius: 8, border: '2px solid var(--green-primary)', outline: 'none', fontFamily: 'Space Grotesk, sans-serif', width: 140 }}
+              />
+              <button onClick={handleUpdateName} disabled={updating} style={{ background: 'var(--green-primary)', color: 'white', border: 'none', borderRadius: 8, padding: '6px 12px', fontWeight: 700, cursor: 'pointer' }}>
+                {updating ? t('common.saving') : 'Save'}
+              </button>
+            </div>
+          ) : (
+            <h1 style={{ fontSize: 26, fontWeight: 700, color: '#111827', margin: 0, display: 'flex', alignItems: 'center', gap: 8 }}>
+              {profile?.username ?? 'Name'}
+              <button onClick={() => setIsEditingName(true)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#111827', fontSize: 18, display: 'flex', alignItems: 'center', padding: 0 }}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+              </button>
+            </h1>
+          )}
+        </div>
       </div>
+
+      {/* Avatar Selector Modal for Mobile */}
+      {isEditingAvatar && (
+        <div style={{ margin: '16px 16px 0', padding: 16, background: '#fff', borderRadius: 16, boxShadow: '0 8px 32px rgba(0,0,0,0.1)' }}>
+          <div style={{ fontSize: 14, color: '#64748B', marginBottom: 12, fontWeight: 700 }}>Choose your avatar:</div>
+          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center' }}>
+            {AVATARS.map(a => (
+              <button
+                key={a}
+                onClick={() => handleUpdateAvatar(a)}
+                disabled={updating}
+                style={{ 
+                  width: 48, height: 48, borderRadius: '50%', background: 'rgba(0,0,0,0.05)', 
+                  border: avatar === a ? '3px solid #3b82f6' : '3px solid transparent', 
+                  cursor: 'pointer', transition: 'all 0.2s', padding: 0, overflow: 'hidden' 
+                }}
+              >
+                {(a.startsWith('/') || a.startsWith('http')) ? <img src={a} alt="Avatar option" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : a}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Dark Blue Level Card */}
       <div style={{ background: '#0F1E3A', borderRadius: 16, padding: '20px 24px', margin: '24px 16px', boxShadow: '0 8px 16px rgba(0,0,0,0.15)' }}>
