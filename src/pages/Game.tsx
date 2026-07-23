@@ -17,6 +17,7 @@ import Confetti from 'react-confetti'
 import { GameBoard, UIPhase } from '../components/game/GameBoard'
 import { supabase } from '../lib/supabase'
 import { motion } from 'framer-motion'
+import { usePreloadImages } from '../hooks/usePreloadImages'
 
 type GamePhaseUI = 'setup' | UIPhase | 'result'
 
@@ -47,6 +48,7 @@ export function Game() {
   const mode = levelId ? 'campaign' : (params.get('mode') ?? 'ranked')
   const navigate = useNavigate()
   const { profile, refreshProfile } = useAuth()
+  usePreloadImages()
 
   const [gameState, setGameState] = useState<GameState | null>(null)
   const gameStateRef = useRef<GameState | null>(null)

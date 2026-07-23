@@ -15,6 +15,7 @@ import { ForfeitModal } from '../components/ForfeitModal'
 import { playSound } from '../lib/audio'
 import { GameBoard, UIPhase } from '../components/game/GameBoard'
 import { useTranslation } from 'react-i18next'
+import { usePreloadImages } from '../hooks/usePreloadImages'
 
 function GameClock({ startTime, timeLimit }: { startTime: number; timeLimit: number }) {
   const [now, setNow] = useState(Date.now())
@@ -39,6 +40,7 @@ function GameClock({ startTime, timeLimit }: { startTime: number; timeLimit: num
 type PagePhase = UIPhase | 'loading' | 'result'
 
 export function MultiplayerGame() {
+  usePreloadImages()
   const { roomId } = useParams<{ roomId: string }>()
   const navigate = useNavigate()
   const { profile, refreshProfile } = useAuth()

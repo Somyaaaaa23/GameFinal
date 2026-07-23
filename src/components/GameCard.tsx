@@ -19,10 +19,10 @@ export function GameCard({ card, onClick, selected, disabled, compact, faceDown 
 
   if (faceDown) {
     // Face-down: show the back of the card
-    const backImg = card.type === 'decision' ? 'green cards.png'
-      : card.type === 'defense' ? 'blue cards.png'
-      : card.type === 'action' ? 'red cards.png'
-      : 'green cards.png'
+    const backImg = card.type === 'decision' ? 'green cards.webp'
+      : card.type === 'defense' ? 'blue cards.webp'
+      : card.type === 'action' ? 'red cards.webp'
+      : 'green cards.webp'
     
     // Blue/red are sprite sheets, just show the first (common) variant for face-down
     const isSpriteSheet = card.type === 'action' || card.type === 'defense'
@@ -43,9 +43,9 @@ export function GameCard({ card, onClick, selected, disabled, compact, faceDown 
   const cardW = compact ? 140 : 220
   const cardH = compact ? 200 : 320
 
-  const frontImg = card.type === 'action' ? 'red.png'
-    : card.type === 'defense' ? 'blue.png'
-    : 'green.png';
+  const frontImg = card.type === 'action' ? 'red.webp'
+    : card.type === 'defense' ? 'blue.webp'
+    : 'green.webp';
 
   return (
     <motion.button
