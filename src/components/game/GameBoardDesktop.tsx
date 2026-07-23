@@ -7,6 +7,40 @@ import { AnimatePresence } from 'framer-motion'
 import { formatWealth } from '../../types/game'
 import type { GameBoardProps } from './GameBoard'
 
+function PlayerTimerRing({ turnStartTime, timeLimit }: { turnStartTime: number, timeLimit: number }) {
+  const [now, setNow] = useState(Date.now())
+
+  useEffect(() => {
+    let frame: number
+    const loop = () => {
+      setNow(Date.now())
+      frame = requestAnimationFrame(loop)
+    }
+    frame = requestAnimationFrame(loop)
+    return () => cancelAnimationFrame(frame)
+  }, [])
+
+  const elapsed = Math.max(0, now - turnStartTime)
+  const remaining = Math.max(0, timeLimit - elapsed)
+  const pct = Math.max(0, Math.min(100, (remaining / timeLimit) * 100))
+  const isDanger = remaining < 10000
+
+  const dash = 2 * Math.PI * 40 // r=40
+  
+  return (
+    <svg style={{ position: 'absolute', top: -10, left: -10, width: 'calc(100% + 20px)', height: 'calc(100% + 20px)', pointerEvents: 'none', transform: 'rotate(-90deg)', zIndex: 10 }}>
+      <circle cx="50%" cy="50%" r="40" fill="none" 
+        stroke={isDanger ? '#ef4444' : '#10b981'} 
+        strokeWidth="4" 
+        strokeDasharray={dash} 
+        strokeDashoffset={dash * (1 - pct/100)}
+        style={{ transition: 'stroke-dashoffset 0.1s linear' }}
+      />
+    </svg>
+  )
+}
+
+
 export function GameBoardDesktop({
   gameState,
   myPlayerId,
@@ -40,9 +74,7 @@ export function GameBoardDesktop({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Star calculation based on wealth goal progress
   const progressRatio = myPlayer ? Math.min(1, myPlayer.wealth / gameState.wealthGoal) : 0;
-  const starsEarned = progressRatio >= 1 ? 3 : progressRatio >= 0.66 ? 2 : progressRatio >= 0.33 ? 1 : 0;
 
   return (
     <div style={{ width: '100%', height: '100%', position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -218,17 +250,30 @@ export function GameBoardDesktop({
         <div style={{ 
           position: 'absolute', bottom: 40, left: 40, 
           display: 'flex', alignItems: 'center', gap: 16,
-          background: 'url("/avatars/mainplayercard.png") center / 100% 100% no-repeat',
+          background: 'url("/avatars/mainplayercard.webp") center / 100% 100% no-repeat',
           padding: '16px 20px', width: 340, height: 110
         }}>
           {/* Avatar Area */}
           <div style={{ 
             width: 78, height: 78, 
-            background: 'url("/avatars/player avatar holder.png") center / contain no-repeat',
+            background: 'url("/avatars/player avatar holder.webp") center / contain no-repeat',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            flexShrink: 0
+            flexShrink: 0,
+            position: 'relative'
           }}>
-            <img src={'https://api.dicebear.com/9.x/avataaars/svg?seed=' + myPlayer.name} style={{ width: 62, height: 62, borderRadius: '50%' }} alt="Avatar" />
+            {/* SVG Timer Ring */}
+            {isMyTurn && gameState.phase !== 'game_over' && gameState.timeLimit && (
+              <PlayerTimerRing 
+                turnStartTime={gameState.turnStartTime} 
+                timeLimit={gameState.timeLimit} 
+              />
+            )}
+            
+            <img 
+              src={myPlayer.profile?.avatar_url || ('https://api.dicebear.com/9.x/avataaars/svg?seed=' + myPlayer.name)} 
+              style={{ width: 62, height: 62, borderRadius: '50%', objectFit: 'cover' }} 
+              alt="Avatar" 
+            />
           </div>
 
           {/* Info Area */}
@@ -240,26 +285,28 @@ export function GameBoardDesktop({
               {formatWealth(myPlayer.wealth)}
             </div>
             
-            {/* Progress Bar & Stars */}
-            <div style={{ position: 'relative', height: 24, width: '100%', marginTop: 2, display: 'flex', alignItems: 'center' }}>
+            {/* Real Progress Bar */}
+            <div style={{ position: 'relative', height: 12, width: '100%', marginTop: 6, display: 'flex', alignItems: 'center', background: 'rgba(0,0,0,0.3)', borderRadius: 6, overflow: 'hidden' }}>
+              {/* Fill */}
               <div style={{ 
-                position: 'absolute', top: '50%', transform: 'translateY(-50%)', 
-                left: 0, right: 0, height: 8, 
-                background: 'url("/avatars/level bar.png") center / 100% 100% no-repeat',
-                borderRadius: 4
+                position: 'absolute', top: 0, left: 0, bottom: 0, 
+                width: `${Math.max(0, Math.min(100, progressRatio * 100))}%`, 
+                background: 'linear-gradient(90deg, #10b981, #34d399)',
+                transition: 'width 0.5s ease-in-out'
               }} />
               
+              {/* Stars Overlay (Optional visual flair) */}
               <div style={{ position: 'absolute', inset: 0, display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 8px' }}>
-                {[1, 2, 3].map(s => (
+                {[0.33, 0.66, 1].map((threshold, idx) => (
                   <img 
-                    key={s} 
-                    src="/avatars/star.png" 
+                    key={idx} 
+                    src="/avatars/star.webp" 
                     alt="star"
                     style={{ 
-                      width: 20, 
-                      height: 20, 
-                      opacity: starsEarned >= s ? 1 : 0.3, 
-                      filter: starsEarned >= s ? 'drop-shadow(0 0 5px #FBBF24)' : 'none',
+                      width: 14, 
+                      height: 14, 
+                      opacity: progressRatio >= threshold ? 1 : 0.2, 
+                      filter: progressRatio >= threshold ? 'drop-shadow(0 0 5px #FBBF24)' : 'none',
                       zIndex: 2,
                       transform: 'translateY(-1px)'
                     }} 

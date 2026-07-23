@@ -18,6 +18,7 @@ import { GameBoard, UIPhase } from '../components/game/GameBoard'
 import { supabase } from '../lib/supabase'
 import { motion } from 'framer-motion'
 import { usePreloadImages } from '../hooks/usePreloadImages'
+import { TrendingUp, TrendingDown } from 'lucide-react'
 
 type GamePhaseUI = 'setup' | UIPhase | 'result'
 
@@ -624,10 +625,15 @@ function EventPopup({ info, onContinue }: { info: { reason: string, reasonHi?: s
 
         <div style={{
           position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
-          width: 350, height: 350,
-          background: `url("/avatars/${info.isGain ? 'coins bag' : 'loss'}.png") center / contain no-repeat`,
-          opacity: 0.3, zIndex: 1, pointerEvents: 'none'
-        }} />
+          opacity: 0.15, zIndex: 1, pointerEvents: 'none',
+          display: 'flex', alignItems: 'center', justifyContent: 'center'
+        }}>
+          {info.isGain ? (
+            <TrendingUp size={300} color="#000000" strokeWidth={1.5} />
+          ) : (
+            <TrendingDown size={300} color="#000000" strokeWidth={1.5} />
+          )}
+        </div>
 
         <div style={{
           fontFamily: 'Inter, sans-serif', fontWeight: 700, fontSize: 28,
