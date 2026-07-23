@@ -1,13 +1,12 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
-import { useNavigate, useSearchParams, useParams } from 'react-router-dom'
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
-import { Button } from '../components/ui/Button'
 import { ForfeitModal } from '../components/ForfeitModal'
-import type { GameState, PlayerState, GameCard as GameCardType } from '../types/game'
-import { formatWealth } from '../types/game'
+import { Button } from '../components/ui/Button'
+import { GameState, PlayerState, GameCard as GameCardType, formatWealth } from '../types/game'
 import {
   initGame, initLevelGame, startDrawPhase, processDecision, processAction,
-  advanceTurn, doBotTurn, calculateRPChange, forceSkipTurn, drawCard, TURN_TIME_LIMIT_MS
+  advanceTurn, doBotTurn, forceSkipTurn, drawCard, TURN_TIME_LIMIT_MS, calculateRPChange
 } from '../lib/gameEngine'
 import { ARTHA_YATRA_LEVELS } from '../data/levels'
 import { saveGameResult } from '../lib/auth'
@@ -16,8 +15,8 @@ import { ALL_CARDS } from '../data/cards'
 import { playSound } from '../lib/audio'
 import Confetti from 'react-confetti'
 import { GameBoard, UIPhase } from '../components/game/GameBoard'
-import { motion } from 'framer-motion'
 import { supabase } from '../lib/supabase'
+import { motion } from 'framer-motion'
 
 type GamePhaseUI = 'setup' | UIPhase | 'result'
 
@@ -43,8 +42,8 @@ function GameClock({ startTime, timeLimit }: { startTime: number; timeLimit: num
 
 export function Game() {
   const { i18n } = useTranslation()
-  const [params] = useSearchParams()
   const { levelId } = useParams()
+  const [params] = useSearchParams()
   const mode = levelId ? 'campaign' : (params.get('mode') ?? 'ranked')
   const navigate = useNavigate()
   const { profile, refreshProfile } = useAuth()
@@ -590,32 +589,75 @@ function EventPopup({ info, onContinue }: { info: { reason: string, reasonHi?: s
     <div
       onClick={onContinue}
       style={{
-        position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-        background: 'rgba(0, 10, 5, 0.4)', // Dim background
+        position: 'fixed', inset: 0,
+        background: 'rgba(0, 10, 5, 0.7)',
         backdropFilter: 'blur(12px)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        zIndex: 9999, animation: 'fadeIn 0.2s ease', cursor: 'pointer'
+        zIndex: 9999, cursor: 'pointer'
       }}
     >
-      <div className="event-popup-box">
-        <div className="event-popup-title">
+      <motion.div
+        initial={{ scale: 0.8, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        style={{
+          width: '90%', maxWidth: 621, minHeight: 400,
+          background: info.isGain 
+            ? 'linear-gradient(180.64deg, #0B7F4C 0.55%, #91C650 57.12%, #FCE894 131.53%)'
+            : 'linear-gradient(180.64deg, #7F0B24 0.55%, #C65050 57.12%, #FC9494 131.53%)',
+          borderRadius: 24,
+          display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+          boxShadow: '0 24px 48px rgba(0,0,0,0.5)',
+          padding: '40px 24px',
+          position: 'relative',
+          overflow: 'hidden'
+        }}
+      >
+        <div style={{
+          fontFamily: 'Inter, sans-serif', fontWeight: 600, fontSize: 32,
+          letterSpacing: '0.09em', textTransform: 'uppercase', color: '#FFFFFF',
+          textShadow: '0 4px 10px rgba(0,0,0,0.2)', marginBottom: 24, textAlign: 'center', zIndex: 2
+        }}>
           {title}
         </div>
-        
-        <div className={`event-popup-reason ${info.isGain ? 'gain' : 'loss'}`}>
+
+        <div style={{
+          position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
+          width: 350, height: 350,
+          background: `url("/avatars/${info.isGain ? 'coins bag' : 'loss'}.png") center / contain no-repeat`,
+          opacity: 0.3, zIndex: 1, pointerEvents: 'none'
+        }} />
+
+        <div style={{
+          fontFamily: 'Inter, sans-serif', fontWeight: 700, fontSize: 28,
+          color: info.isGain ? '#0d4026' : '#400d14', textAlign: 'center', width: '90%',
+          marginBottom: 16, zIndex: 2
+        }}>
           {reason}
         </div>
 
         {description && (
-          <div className="event-popup-desc">
+          <div style={{
+            fontFamily: 'Inter, sans-serif', fontWeight: 500, fontSize: 20,
+            color: '#4B5563', textAlign: 'center', width: '90%', zIndex: 2, marginBottom: 24
+          }}>
             "{description}"
           </div>
         )}
 
-        <div className={`event-popup-amount ${info.isGain ? 'gain' : 'loss'}`}>
+        <div style={{
+          fontFamily: 'Inter, sans-serif', fontWeight: 800, fontSize: 'clamp(50px, 8vw, 80px)',
+          letterSpacing: '0.04em',
+          background: info.isGain 
+            ? 'linear-gradient(0deg, #18372E 0%, #007A54 100%)'
+            : 'linear-gradient(0deg, #371818 0%, #7A0000 100%)',
+          WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+          backgroundClip: 'text', color: 'transparent',
+          filter: 'drop-shadow(0px 2px 4px rgba(255,255,255,0.4))',
+          textAlign: 'center', zIndex: 2
+        }}>
           {info.amountStr}
         </div>
-      </div>
+      </motion.div>
     </div>
   )
 }
@@ -752,7 +794,6 @@ function SetupScreen({ botCount, setBotCount, onStart, onBack, levelId }: { botC
     </div>
   )
 }
-
 function ResultScreen({ isWinner, placement, finalWealth, rpChange, players, mode, onPlayAgain, onDashboard, nearMiss, wealthGap }: { isWinner: boolean; placement: number; finalWealth: number; rpChange: number; players: PlayerState[]; mode: string; onPlayAgain: () => void; onDashboard: () => void; nearMiss?: boolean; wealthGap?: number }) {
   const sorted = [...players].sort((a, b) => b.wealth - a.wealth)
 

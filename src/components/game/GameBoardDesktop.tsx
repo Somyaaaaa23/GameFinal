@@ -218,31 +218,54 @@ export function GameBoardDesktop({
         <div style={{ 
           position: 'absolute', bottom: 40, left: 40, 
           display: 'flex', alignItems: 'center', gap: 16,
-          background: 'url("/avatars/image copy 3.png") center / 100% 100% no-repeat',
-          padding: '24px 32px', width: 380, height: 130
+          background: 'url("/avatars/mainplayercard.png") center / 100% 100% no-repeat',
+          padding: '16px 20px', width: 340, height: 110
         }}>
-          <div style={{ width: 80, height: 80, borderRadius: '50%', background: '#fff', border: '3px solid #66D575', overflow: 'hidden' }}>
-            <img src={'https://api.dicebear.com/9.x/avataaars/svg?seed=' + myPlayer.name} style={{ width: '100%', height: '100%' }} alt="Avatar" />
+          {/* Avatar Area */}
+          <div style={{ 
+            width: 78, height: 78, 
+            background: 'url("/avatars/player avatar holder.png") center / contain no-repeat',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            flexShrink: 0
+          }}>
+            <img src={'https://api.dicebear.com/9.x/avataaars/svg?seed=' + myPlayer.name} style={{ width: 62, height: 62, borderRadius: '50%' }} alt="Avatar" />
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-            <div style={{ fontSize: 24, fontWeight: 700, color: '#fff' }}>{myPlayer.name}</div>
-            <div style={{ fontSize: 20, fontWeight: 800, color: '#66D575' }}>{formatWealth(myPlayer.wealth)}</div>
+
+          {/* Info Area */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 2, flex: 1, paddingRight: 8 }}>
+            <div style={{ fontSize: 20, fontWeight: 500, color: '#6ee7b7', fontFamily: 'Inter, sans-serif' }}>
+              {myPlayer.name}
+            </div>
+            <div style={{ fontSize: 24, fontWeight: 800, color: '#fff', fontFamily: 'Inter, sans-serif', marginTop: -4 }}>
+              {formatWealth(myPlayer.wealth)}
+            </div>
             
-            {/* Progress Stars */}
-            <div style={{ display: 'flex', gap: 4, marginTop: 4 }}>
-              {[1, 2, 3].map(s => (
-                <img 
-                  key={s} 
-                  src="/avatars/star.png" 
-                  alt="star"
-                  style={{ 
-                    width: 24, 
-                    height: 24, 
-                    opacity: starsEarned >= s ? 1 : 0.3, 
-                    filter: starsEarned >= s ? 'drop-shadow(0 0 5px #FBBF24)' : 'none' 
-                  }} 
-                />
-              ))}
+            {/* Progress Bar & Stars */}
+            <div style={{ position: 'relative', height: 24, width: '100%', marginTop: 2, display: 'flex', alignItems: 'center' }}>
+              <div style={{ 
+                position: 'absolute', top: '50%', transform: 'translateY(-50%)', 
+                left: 0, right: 0, height: 8, 
+                background: 'url("/avatars/level bar.png") center / 100% 100% no-repeat',
+                borderRadius: 4
+              }} />
+              
+              <div style={{ position: 'absolute', inset: 0, display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 8px' }}>
+                {[1, 2, 3].map(s => (
+                  <img 
+                    key={s} 
+                    src="/avatars/star.png" 
+                    alt="star"
+                    style={{ 
+                      width: 20, 
+                      height: 20, 
+                      opacity: starsEarned >= s ? 1 : 0.3, 
+                      filter: starsEarned >= s ? 'drop-shadow(0 0 5px #FBBF24)' : 'none',
+                      zIndex: 2,
+                      transform: 'translateY(-1px)'
+                    }} 
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </div>
