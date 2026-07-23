@@ -13,13 +13,13 @@ export function DailyRewardModal({ onClose, onClaim, currentStreak }: DailyRewar
   const [claimed, setClaimed] = useState(false)
   
   const REWARDS = [
-    { day: 1, amount: 10, icon: <img src="/avatars/coins.png" style={{ height: 60, width: 'auto', objectFit: 'contain' }} /> },
-    { day: 2, amount: 20, icon: <img src="/avatars/coins.png" style={{ height: 60, width: 'auto', objectFit: 'contain' }} /> },
-    { day: 3, amount: 30, icon: <img src="/avatars/coins.png" style={{ height: 60, width: 'auto', objectFit: 'contain' }} /> },
-    { day: 4, amount: 50, icon: <img src="/avatars/coins.png" style={{ height: 60, width: 'auto', objectFit: 'contain' }} /> },
-    { day: 5, amount: 100, icon: <img src="/avatars/coins bag.png" style={{ height: 70, width: 'auto', objectFit: 'contain' }} /> },
-    { day: 6, amount: 200, icon: <img src="/avatars/coins bag.png" style={{ height: 70, width: 'auto', objectFit: 'contain' }} /> },
-    { day: 7, amount: 500, icon: <img src="/avatars/coins bag.png" style={{ height: 80, width: 'auto', objectFit: 'contain' }} /> },
+    { day: 1, amount: 10 },
+    { day: 2, amount: 20 },
+    { day: 3, amount: 30 },
+    { day: 4, amount: 50 },
+    { day: 5, amount: 100 },
+    { day: 6, amount: 200 },
+    { day: 7, amount: 500 },
   ]
 
   const todayIndex = Math.min(currentStreak, 6)
@@ -36,7 +36,7 @@ export function DailyRewardModal({ onClose, onClaim, currentStreak }: DailyRewar
   return (
     <div style={{
       position: 'fixed', inset: 0, zIndex: 9999,
-      background: 'rgba(15, 23, 42, 0.85)', backdropFilter: 'blur(8px)',
+      background: 'rgba(0, 0, 0, 0.8)', backdropFilter: 'blur(10px)',
       display: 'flex', alignItems: 'center', justifyContent: 'center',
       padding: 16
     }}>
@@ -46,51 +46,59 @@ export function DailyRewardModal({ onClose, onClaim, currentStreak }: DailyRewar
         initial={{ scale: 0.9, opacity: 0, y: 20 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
         style={{
-          background: 'linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%)',
-          borderRadius: 24, padding: '32px 24px', maxWidth: 500, width: '100%',
-          boxShadow: '0 25px 50px -12px rgba(0,0,0,0.5)',
-          position: 'relative', overflow: 'hidden'
+          background: 'linear-gradient(0.83deg, #2D9842 -131.45%, #62B271 -73.88%, #FFFFFF 99.29%)',
+          borderRadius: 12, padding: '40px 24px', maxWidth: 695, width: '100%',
+          boxShadow: '0 24px 48px rgba(0,0,0,0.4)',
+          position: 'relative', overflow: 'hidden',
+          display: 'flex', flexDirection: 'column', alignItems: 'center'
         }}
       >
         <button 
           onClick={onClose} 
-          style={{ position: 'absolute', top: 16, right: 16, background: 'none', border: 'none', fontSize: 24, cursor: 'pointer', color: '#64748b' }}
+          style={{ position: 'absolute', top: 16, right: 16, background: 'none', border: 'none', fontSize: 28, cursor: 'pointer', color: '#6A7380' }}
         >
           ×
         </button>
 
-        <div style={{ textAlign: 'center', marginBottom: 28 }}>
-          <h2 style={{ fontSize: 32, fontWeight: 800, color: '#000', fontFamily: 'var(--font-display)', marginBottom: 8 }}>
+        <div style={{ textAlign: 'center', marginBottom: 40 }}>
+          <h2 style={{ fontSize: 32, fontWeight: 600, color: '#000000', fontFamily: 'Sora, sans-serif', marginBottom: 8 }}>
             Daily Login reward
           </h2>
-          <p style={{ color: '#64748b', fontSize: 16 }}>Come back every day to earn more daanik coins</p>
+          <p style={{ color: '#575D66', fontSize: 16, fontFamily: 'Sora, sans-serif' }}>
+            Come back every day to earn more daanik coins
+          </p>
         </div>
 
         <div style={{ 
-          display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8, marginBottom: 24 
+          display: 'flex', justifyContent: 'center', gap: 16, marginBottom: 16, flexWrap: 'wrap'
         }}>
           {REWARDS.slice(0, 4).map((r, i) => (
             <RewardBox key={r.day} reward={r} isToday={i === todayIndex} isPast={i < todayIndex} />
           ))}
         </div>
         <div style={{ 
-          display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8, marginBottom: 32 
+          display: 'flex', justifyContent: 'center', gap: 16, marginBottom: 40, flexWrap: 'wrap'
         }}>
           {REWARDS.slice(4).map((r, i) => (
             <RewardBox key={r.day} reward={r} isToday={i + 4 === todayIndex} isPast={i + 4 < todayIndex} />
           ))}
         </div>
 
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
           {!claimed ? (
             <button 
               onClick={handleClaim} 
               style={{ 
-                padding: '16px 40px', fontSize: 22, fontWeight: 700,
-                background: '#0F203B', color: '#4ADE80',
-                border: 'none', borderRadius: 12, cursor: 'pointer',
-                boxShadow: '0 8px 16px rgba(15, 32, 59, 0.2)'
+                width: 322, height: 59,
+                background: 'linear-gradient(180deg, #001733 0%, #163E6F 100%)',
+                color: '#66D575',
+                fontFamily: 'Sora, sans-serif', fontSize: 24, fontWeight: 600,
+                border: 'none', borderRadius: 8, cursor: 'pointer',
+                transition: 'opacity 0.2s',
+                display: 'flex', alignItems: 'center', justifyContent: 'center'
               }}
+              onMouseEnter={e => e.currentTarget.style.opacity = '0.9'}
+              onMouseLeave={e => e.currentTarget.style.opacity = '1'}
             >
               Claim {currentReward.amount}DC
             </button>
@@ -98,7 +106,14 @@ export function DailyRewardModal({ onClose, onClaim, currentStreak }: DailyRewar
             <motion.div
               initial={{ scale: 0.8 }}
               animate={{ scale: 1 }}
-              style={{ fontSize: 22, fontWeight: 800, color: '#10b981' }}
+              style={{ 
+                width: 322, height: 59,
+                background: 'linear-gradient(180deg, #66D575 0%, #09BC83 100%)',
+                color: '#001733',
+                fontFamily: 'Sora, sans-serif', fontSize: 24, fontWeight: 700,
+                borderRadius: 8,
+                display: 'flex', alignItems: 'center', justifyContent: 'center'
+              }}
             >
               ✓ Claimed!
             </motion.div>
@@ -110,38 +125,79 @@ export function DailyRewardModal({ onClose, onClaim, currentStreak }: DailyRewar
 }
 
 function RewardBox({ reward, isToday, isPast }: { reward: any, isToday: boolean, isPast: boolean }) {
-  const bg = isToday ? '#FDE68A' : isPast ? '#E4F9B8' : '#FFFFFF'
-  const border = isToday ? '#FBBF24' : isPast ? '#A3E635' : '#E2E8F0'
-  const textColor = isToday ? '#1E3A8A' : isPast ? '#4D7C0F' : '#475569'
-  const amountColor = isToday ? '#1E3A8A' : isPast ? '#4D7C0F' : '#475569'
+  const bg = isToday ? '#FEF18B' : isPast ? '#DCFD9C' : '#FFFFFF'
+  const border = isToday ? '1px solid #DDB668' : isPast ? '1px solid #66D575' : 'none'
+  const opacity = isPast ? 0.67 : 1
+  const shadow = isToday ? '0px 0px 4px rgba(0, 0, 0, 0.25), 0px 0px 13.6px rgba(0, 0, 0, 0.29)' : '0px 0px 4px rgba(0, 0, 0, 0.25)'
   
+  const width = isToday ? 142 : 127
+  const height = isToday ? 164 : 147
+
   return (
     <div style={{
-      background: bg, border: `2px solid ${border}`, borderRadius: 16,
+      background: bg, border: border, borderRadius: 12,
+      width: width, height: height,
       padding: '16px 8px', textAlign: 'center',
       position: 'relative', 
-      transform: isToday ? 'scale(1.05)' : 'scale(1)',
-      boxShadow: isToday ? '0 12px 24px rgba(251, 191, 36, 0.4)' : '0 4px 12px rgba(0,0,0,0.05)',
+      boxShadow: shadow,
+      opacity: opacity,
       transition: 'all 0.3s', zIndex: isToday ? 2 : 1,
-      display: 'flex', flexDirection: 'column', alignItems: 'center'
+      display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between'
     }}>
-      {isPast && (
-        <div style={{ 
-          position: 'absolute', bottom: -10, right: -10, 
-          width: 36, height: 36, borderRadius: '50%', background: '#65A30D',
-          border: '3px solid #D8F3C6', display: 'flex', alignItems: 'center', justifyContent: 'center',
-          color: '#fff', fontSize: 20, fontWeight: 'bold', zIndex: 10,
-          boxShadow: '0 4px 8px rgba(101, 163, 13, 0.4)'
-        }}>
-          ✓
-        </div>
-      )}
-      <div style={{ fontSize: 16, fontWeight: 800, color: textColor, marginBottom: 12, textTransform: 'uppercase' }}>DAY {reward.day}</div>
-      <div style={{ marginBottom: 12, display: 'flex', justifyContent: 'center', height: 80, alignItems: 'center', filter: isPast ? 'opacity(40%) grayscale(60%)' : 'drop-shadow(0 4px 6px rgba(0,0,0,0.15))' }}>
-        {reward.icon}
+      <div style={{ fontFamily: 'Sora, sans-serif', fontSize: 20, fontWeight: 600, color: '#575D66' }}>
+        DAY {reward.day}
       </div>
-      <div style={{ fontSize: 20, fontWeight: 800, color: amountColor }}>{reward.amount} DC</div>
-      {reward.label && <div style={{ fontSize: 12, color: '#d97706', fontWeight: 800, marginTop: 4 }}>{reward.label}</div>}
+      
+      <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative', width: '100%' }}>
+        {renderCoins(reward.day, isPast)}
+        
+        {isPast && (
+          <div style={{ 
+            position: 'absolute', bottom: -10, right: 0, 
+            width: 28, height: 28, borderRadius: '50%', background: '#66D575',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            color: '#fff', fontSize: 16, fontWeight: 'bold', zIndex: 10,
+          }}>
+            ✓
+          </div>
+        )}
+      </div>
+
+      <div style={{ fontFamily: 'Sora, sans-serif', fontSize: 20, fontWeight: 600, color: '#575D66' }}>
+        {reward.amount} DC
+      </div>
+    </div>
+  )
+}
+
+function renderCoins(day: number, isPast: boolean) {
+  const isBag = day >= 4;
+  // Increase amount of coins visually:
+  // Day 1: 1 coin, Day 2: 2 coins, Day 3: 3 coins
+  // Day 4: 1 bag, Day 5: 2 bags, Day 6: 3 bags, Day 7: 1 huge pile (4 bags)
+  let count = isBag ? day - 3 : day;
+  
+  const src = isBag ? "/avatars/coins bag.png" : "/avatars/coins.png";
+  const baseSize = isBag ? 65 : 55;
+  const size = baseSize + (count * 5); // Size increases slightly per item
+  
+  return (
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative' }}>
+      {Array.from({ length: count }).map((_, i) => (
+        <img 
+          key={i} 
+          src={src} 
+          style={{ 
+            height: size, 
+            width: size, 
+            objectFit: 'contain',
+            marginLeft: i > 0 ? - (size * 0.4) : 0, // Overlap items significantly
+            zIndex: i,
+            filter: isPast ? 'grayscale(100%) opacity(70%)' : 'drop-shadow(0px 4px 6px rgba(0,0,0,0.2))'
+          }} 
+          alt={`reward-${day}`}
+        />
+      ))}
     </div>
   )
 }
