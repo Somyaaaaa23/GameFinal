@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
-import { Button } from '../components/ui/Button'
 import {
   createRoom, joinRoom, leaveRoom, setReady, startGame,
   subscribeToRoom, getRoomPlayers, broadcastPlayersChanged,
@@ -214,13 +213,70 @@ export function Lobby() {
         )}
 
         {menuTab === 'choice' && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-            <Button size="lg" onClick={() => setMenuTab('create')} style={{ width: '100%', fontSize: 20, padding: 24 }}>
-              {t('lobby.createRoom')}
-            </Button>
-            <Button size="lg" variant="secondary" onClick={() => setMenuTab('join')} style={{ width: '100%', fontSize: 20, padding: 24 }}>
-              {t('lobby.joinRoom')}
-            </Button>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+            {/* Create Room Button */}
+            <div 
+              onClick={() => setMenuTab('create')}
+              style={{
+                background: 'linear-gradient(90deg, #4ADE80 0%, #10B981 100%)',
+                borderRadius: 16,
+                padding: '24px 32px',
+                display: 'flex',
+                alignItems: 'center',
+                cursor: 'pointer',
+                boxShadow: '0 10px 25px rgba(16, 185, 129, 0.3)',
+                transition: 'transform 0.2s',
+              }}
+              onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.02)'}
+              onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+            >
+              {/* Plus Icon */}
+              <div style={{ fontSize: 40, color: '#0F172A', fontWeight: 300, marginRight: 24, lineHeight: 0.8 }}>+</div>
+              
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: 36, fontWeight: 800, color: '#0F172A', letterSpacing: '-1px', marginBottom: 4 }}>Create Room</div>
+                <div style={{ fontSize: 18, color: '#0F172A', opacity: 0.8, fontWeight: 500 }}>Host a new private match</div>
+              </div>
+
+              {/* Arrow */}
+              <div style={{ fontSize: 24, color: '#0F172A' }}>›</div>
+            </div>
+
+            {/* Join Room Button */}
+            <div 
+              onClick={() => setMenuTab('join')}
+              style={{
+                background: 'linear-gradient(90deg, #1E3A5F 0%, #0F1C36 100%)',
+                borderRadius: 16,
+                padding: '24px 32px',
+                display: 'flex',
+                alignItems: 'center',
+                cursor: 'pointer',
+                boxShadow: '0 10px 25px rgba(0, 0, 0, 0.2)',
+                transition: 'transform 0.2s',
+              }}
+              onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.02)'}
+              onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+            >
+              {/* Gamepad Icon */}
+              <div style={{ marginRight: 24, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="2" y="6" width="20" height="12" rx="2" ry="2"></rect>
+                  <line x1="6" y1="12" x2="10" y2="12"></line>
+                  <line x1="8" y1="10" x2="8" y2="14"></line>
+                  <line x1="15" y1="13" x2="15.01" y2="13"></line>
+                  <line x1="18" y1="11" x2="18.01" y2="11"></line>
+                </svg>
+              </div>
+              
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: 36, fontWeight: 800, color: '#4ADE80', letterSpacing: '-1px', marginBottom: 4 }}>Join Room</div>
+                <div style={{ fontSize: 18, color: '#FFFFFF', opacity: 0.9, fontWeight: 400 }}>Enter an Existing room</div>
+              </div>
+
+              {/* Arrow */}
+              <div style={{ fontSize: 24, color: '#4ADE80' }}>›</div>
+            </div>
           </div>
         )}
 

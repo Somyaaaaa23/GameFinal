@@ -977,7 +977,7 @@ function ContractsTab() {
         if (activeContracts) {
           setContracts(activeContracts)
           if (activeContracts.length > 0) {
-            const contractIds = activeContracts.map(c => c.id)
+            const contractIds = activeContracts.map((c: any) => c.id)
             const { data: pContracts } = await supabase
               .from('player_contracts')
               .select('*')
