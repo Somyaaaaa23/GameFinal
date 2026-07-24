@@ -15,8 +15,12 @@ export interface DecisionOption {
   type: DecisionChoice
   label: string
   labelHi?: string
+  shortLabel?: string
+  shortLabelHi?: string
   description: string
   descriptionHi?: string
+  shortDescription?: string
+  shortDescriptionHi?: string
   effect: CardEffect
   /** 0-100: percentage chance that an INVEST choice will FAIL and apply failEffect instead */
   investRisk?: number
@@ -29,10 +33,14 @@ export interface GameCard {
   id: string
   name: string
   nameHi?: string
+  shortName?: string
+  shortNameHi?: string
   type: CardType
   tier: CardTier
   flavor: string
   flavorHi?: string
+  shortFlavor?: string
+  shortFlavorHi?: string
   art?: string
   options?: DecisionOption[]
   effect?: CardEffect

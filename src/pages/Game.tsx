@@ -376,7 +376,7 @@ export function Game() {
       <div className="mobile-landscape-overlay">
         <div style={{
           width: 80, height: 80,
-          background: 'url("/avatars/rotate screen.png") center / contain no-repeat',
+          background: 'url("/avatars/rotate screen.webp") center / contain no-repeat',
           marginBottom: 24
         }} />
         <h2 style={{ fontSize: 24, fontWeight: 700, fontFamily: 'Space Grotesk, sans-serif' }}>
@@ -391,7 +391,7 @@ export function Game() {
 
   const themeClass = levelId === 'level_2' ? 'theme-level2' : levelId === 'level_3' ? 'theme-level3' : ''
   return (
-    <div className={themeClass} style={{ minHeight: '100dvh', background: 'url("/avatars/image copy.png") center / cover no-repeat', display: 'flex', flexDirection: 'column', overflow: 'hidden', position: 'relative' }}>
+    <div className={themeClass} style={{ minHeight: '100dvh', background: 'url("/avatars/image copy.webp") center / cover no-repeat', display: 'flex', flexDirection: 'column', overflow: 'hidden', position: 'relative' }}>
       {/* Background Laser Lines Overlay (Approximation of image.png) */}
 
       {/* --- DESKTOP GAME HUD --- */}
@@ -403,14 +403,20 @@ export function Game() {
         <div style={{
           position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)',
           width: 320, height: 80,
-          background: 'url("/avatars/level bar.png") center top / contain no-repeat',
-          zIndex: 60
-        }} />
+          background: 'url("/avatars/level bar.webp") center top / contain no-repeat',
+          zIndex: 60,
+          display: 'flex', alignItems: 'flex-start', justifyContent: 'center', paddingTop: 16
+        }}>
+          {/* Hack to cover baked-in "LEVEL - 1" text with dynamic text */}
+          <div style={{ background: '#08170D', padding: '0 24px', color: '#E8F5E9', fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: 26, letterSpacing: 1, borderRadius: 4 }}>
+            {mode === 'campaign' && levelId ? `LEVEL - ${levelId.split('_')[1]}` : (mode === 'ranked' ? 'RANKED' : mode.toUpperCase())}
+          </div>
+        </div>
 
         {/* EXIT Button */}
         <button onClick={() => setShowForfeitModal(true)} style={{
           position: 'absolute', left: 40, top: 24,
-          background: 'url("/avatars/exit button.png") center / contain no-repeat',
+          background: 'url("/avatars/exit button.webp") center / contain no-repeat',
           width: 140, height: 48,
           border: 'none', cursor: 'pointer', pointerEvents: 'auto',
           backgroundColor: 'transparent'
@@ -419,18 +425,18 @@ export function Game() {
 
         {/* Center Opponents HUD */}
         <div style={{
-          marginTop: 70, // Pushed down to avoid overlapping the Level Bar
-          background: 'url("/avatars/player bar.png") center / 100% 100% no-repeat',
+          position: 'absolute', top: 160, left: '50%', transform: 'translateX(-50%)',
+          background: 'url("/avatars/player bar.webp") center / 100% 100% no-repeat',
           padding: '24px 64px 16px 64px', display: 'flex', gap: 48, pointerEvents: 'auto',
           minWidth: 400, justifyContent: 'center',
-          position: 'relative', zIndex: 30
+          zIndex: 30
         }}>
           {gameState.players.map((p) => {
             if (p.id === (profile?.id ?? 'human')) return null; // Skip local player
             return (
               <div key={p.id} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                 <div style={{ width: 44, height: 44, borderRadius: '50%', background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
-                  <img src={'https://api.dicebear.com/9.x/avataaars/svg?seed=' + p.name} style={{ width: '100%', height: '100%' }} alt="Avatar" />
+                  <img src={p.profile?.avatar_url?.startsWith('/') || p.profile?.avatar_url?.startsWith('http') ? p.profile.avatar_url : 'https://api.dicebear.com/9.x/avataaars/svg?seed=' + p.name} style={{ width: '100%', height: '100%' }} alt="Avatar" />
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
                   <span style={{ color: '#4b5563', fontSize: 16, fontWeight: 600 }}>{p.name}</span>
@@ -462,14 +468,14 @@ export function Game() {
         <div style={{
           position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)',
           width: 200, height: 50,
-          background: 'url("/avatars/level bar.png") center top / contain no-repeat',
+          background: 'url("/avatars/level bar.webp") center top / contain no-repeat',
           zIndex: 60
         }} />
 
         {/* EXIT Button */}
         <button onClick={() => setShowForfeitModal(true)} style={{
           position: 'absolute', left: 16, top: 12,
-          background: 'url("/avatars/exit button.png") center / contain no-repeat',
+          background: 'url("/avatars/exit button.webp") center / contain no-repeat',
           width: 100, height: 36,
           border: 'none', cursor: 'pointer', pointerEvents: 'auto',
           backgroundColor: 'transparent'
@@ -489,7 +495,7 @@ export function Game() {
         {/* Center Opponents HUD */}
         <div style={{
           marginTop: 45,
-          background: 'url("/avatars/player bar.png") center / 100% 100% no-repeat',
+          background: 'url("/avatars/player bar.webp") center / 100% 100% no-repeat',
           padding: '16px 40px 12px 40px', display: 'flex', gap: 24, pointerEvents: 'auto',
           justifyContent: 'center', position: 'relative', zIndex: 30, transform: 'scale(0.8)', transformOrigin: 'top center'
         }}>
@@ -559,7 +565,7 @@ export function Game() {
       <div className="mobile-portrait-overlay">
         <div style={{
           width: 80, height: 80,
-          background: 'url("/avatars/rotate screen.png") center / contain no-repeat',
+          background: 'url("/avatars/rotate screen.webp") center / contain no-repeat',
           marginBottom: 24
         }} />
         <h2 style={{ fontSize: 24, fontWeight: 700, fontFamily: 'Space Grotesk, sans-serif' }}>

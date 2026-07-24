@@ -211,10 +211,14 @@ export function GameBoardMobile({
 
             <div className="mobile-decision-header">
               <h3 className="mobile-decision-title">
-                {i18n.language === 'hi' && gameState.pendingDecision.card.nameHi ? gameState.pendingDecision.card.nameHi : gameState.pendingDecision.card.name}
+                {i18n.language === 'hi' 
+                  ? (gameState.pendingDecision.card.shortNameHi || gameState.pendingDecision.card.nameHi || gameState.pendingDecision.card.shortName || gameState.pendingDecision.card.name)
+                  : (gameState.pendingDecision.card.shortName || gameState.pendingDecision.card.name)}
               </h3>
               <p style={{ color: '#0ea5e9', fontSize: 15, fontWeight: 600 }}>
-                {i18n.language === 'hi' && gameState.pendingDecision.card.flavorHi ? gameState.pendingDecision.card.flavorHi : gameState.pendingDecision.card.flavor}
+                {i18n.language === 'hi' 
+                  ? (gameState.pendingDecision.card.shortFlavorHi || gameState.pendingDecision.card.flavorHi || gameState.pendingDecision.card.shortFlavor || gameState.pendingDecision.card.flavor)
+                  : (gameState.pendingDecision.card.shortFlavor || gameState.pendingDecision.card.flavor)}
               </p>
             </div>
             
@@ -256,7 +260,11 @@ export function GameBoardMobile({
                         {i18n.language === 'hi' && opt.labelHi ? opt.labelHi : (i18n.language === 'hi' && opt.label === 'Spend' ? 'खर्च करें' : i18n.language === 'hi' && opt.label === 'Save' ? 'बचत करें' : i18n.language === 'hi' && opt.label === 'Invest' ? 'निवेश करें' : opt.label)}
                       </div>
                       <div style={{ fontSize: 14, color: '#475569', fontWeight: 600 }}>
-                        {i18n.language === 'hi' && opt.descriptionHi ? opt.descriptionHi : opt.description}
+                        {opt.shortDescription ? (
+                          i18n.language === 'hi' ? (opt.shortDescriptionHi || opt.shortDescription) : opt.shortDescription
+                        ) : (
+                          i18n.language === 'hi' && opt.descriptionHi ? opt.descriptionHi : opt.description
+                        )}
                       </div>
                       {opt.investRisk && opt.failEffect && (
                         <div style={{ fontSize: 11, color: '#dc2626', fontWeight: 700, marginTop: 4, background: 'rgba(220, 38, 38, 0.1)', padding: '2px 6px', borderRadius: 4, display: 'inline-block' }}>

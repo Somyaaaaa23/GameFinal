@@ -2059,7 +2059,11 @@ export const ACTION_CARDS: GameCard[] = [
     flavor: "You hire a hacker to breach your opponent's poorly secured digital wallet.",
     flavorHi: "आप अपने प्रतिद्वंद्वी के खराब सुरक्षित डिजिटल वॉलेट में सेंध लगाने के लिए एक हैकर को नियुक्त करते हैं।",
     effect: { type: 'wealth_pct', value: -10, target: 'target' },
-  },
+      shortName: "Hacker",
+      shortNameHi: "हैकर",
+      shortFlavor: "Hack digital wallet. (Attack)",
+      shortFlavorHi: "डिजिटल वॉलेट हैक करें. (आक्रमण करना)"
+},
   {
     id: "ac_identity_theft_142",
     name: "Identity Theft",
@@ -2069,7 +2073,11 @@ export const ACTION_CARDS: GameCard[] = [
     flavor: "Someone steals your opponent's identity and takes out loans in their name.",
     flavorHi: "कोई आपके प्रतिद्वंद्वी की पहचान चुरा लेता है और उनके नाम पर ऋण निकाल लेता है।",
     effect: { type: 'wealth_pct', value: -15, target: 'target' },
-  },
+      shortName: "Stolen ID",
+      shortNameHi: "चोरी हुई आईडी",
+      shortFlavor: "Steal identity. (Attack)",
+      shortFlavorHi: "पहचान चुराओ. (आक्रमण करना)"
+},
   {
     id: "ac_market_manipulation_143",
     name: "Market Manipulation",
@@ -2079,7 +2087,11 @@ export const ACTION_CARDS: GameCard[] = [
     flavor: "You spread false rumors about the company your opponent invested in.",
     flavorHi: "आपने उस कंपनी के बारे में झूठी अफवाहें फैलाईं जिसमें आपके प्रतिद्वंद्वी ने निवेश किया था।",
     effect: { type: 'wealth_pct', value: -10, target: 'target' },
-  },
+      shortName: "Fake News",
+      shortNameHi: "फर्जी खबर",
+      shortFlavor: "Spread false rumors. (Attack)",
+      shortFlavorHi: "झूठी अफवाहें फैलाओ. (आक्रमण करना)"
+},
   {
     id: "ac_vexatious_lawsuit_144",
     name: "Vexatious Lawsuit",
@@ -2089,7 +2101,11 @@ export const ACTION_CARDS: GameCard[] = [
     flavor: "You drag your opponent into a frivolous but expensive legal battle.",
     flavorHi: "आप अपने प्रतिद्वंद्वी को तुच्छ लेकिन महँगी कानूनी लड़ाई में घसीटते हैं।",
     effect: { type: 'wealth_pct', value: -15, target: 'target' },
-  },
+      shortName: "Fake Lawsuit",
+      shortNameHi: "फर्जी मुकदमा",
+      shortFlavor: "Fake lawsuit. (Attack)",
+      shortFlavorHi: "फर्जी मुकदमा. (आक्रमण करना)"
+},
   {
     id: "ac_tax_audit_trigger_145",
     name: "Tax Audit Trigger",
@@ -2099,7 +2115,11 @@ export const ACTION_CARDS: GameCard[] = [
     flavor: "You anonymously tip off the tax authorities about your opponent's freelance income.",
     flavorHi: "आप गुमनाम रूप से कर अधिकारियों को अपने प्रतिद्वंद्वी की फ्रीलांस आय के बारे में सूचित करते हैं।",
     effect: { type: 'wealth_pct', value: -15, target: 'target' },
-  },
+      shortName: "Tax Check",
+      shortNameHi: "कर जांच",
+      shortFlavor: "Tax audit. (Attack)",
+      shortFlavorHi: "कर लेखापरीक्षा. (आक्रमण करना)"
+},
   {
     id: "ac_property_damage_146",
     name: "Property Damage",
@@ -2109,7 +2129,11 @@ export const ACTION_CARDS: GameCard[] = [
     flavor: "A massive tree branch falls directly onto your opponent's parked car.",
     flavorHi: "एक विशाल पेड़ की शाखा सीधे आपके प्रतिद्वंद्वी की खड़ी कार पर गिरती है।",
     effect: { type: 'wealth_pct', value: -10, target: 'target' },
-  },
+      shortName: "Broken Stuff",
+      shortNameHi: "टूटा हुआ सामान",
+      shortFlavor: "Property damage. (Attack)",
+      shortFlavorHi: "संपत्ति का नुकसान। (आक्रमण करना)"
+},
   {
     id: "ac_phishing_scam_147",
     name: "Phishing Scam",
@@ -2119,7 +2143,11 @@ export const ACTION_CARDS: GameCard[] = [
     flavor: "You send a highly convincing fake \"bank alert\" SMS to your opponent. They click the link.",
     flavorHi: "आप अपने प्रतिद्वंद्वी को अत्यधिक विश्वसनीय नकली \"बैंक अलर्ट\" एसएमएस भेजते हैं। वे लिंक पर क्लिक करें.",
     effect: { type: 'wealth_pct', value: -5, target: 'target' },
-  },
+      shortName: "Fake Message",
+      shortNameHi: "फर्जी संदेश",
+      shortFlavor: "Phishing scam. (Attack)",
+      shortFlavorHi: "फ़िशिंग घोटाले। (आक्रमण करना)"
+},
   {
     id: "ac_competitor_poaching_148",
     name: "Competitor Poaching",
@@ -2129,7 +2157,11 @@ export const ACTION_CARDS: GameCard[] = [
     flavor: "You poach the best-performing employee/client from your opponent's side hustle.",
     flavorHi: "आप अपने प्रतिद्वंद्वी की ओर से सबसे अच्छा प्रदर्शन करने वाले कर्मचारी/ग्राहक को पकड़ लेते हैं।",
     effect: { type: 'wealth_pct', value: -10, target: 'target' },
-  },
+      shortName: "Stolen Worker",
+      shortNameHi: "चोरी हुआ मजदूर",
+      shortFlavor: "Poach client. (Attack)",
+      shortFlavorHi: "ग्राहक को लूटो. (आक्रमण करना)"
+},
   {
     id: "ac_insurance_denial_149",
     name: "Insurance Denial",
@@ -2139,7 +2171,11 @@ export const ACTION_CARDS: GameCard[] = [
     flavor: "You find a loophole in your opponent's insurance policy, causing their recent claim to be denied.",
     flavorHi: "आप अपने प्रतिद्वंद्वी की बीमा पॉलिसी में एक खामी पाते हैं, जिसके कारण उनका हालिया दावा अस्वीकार कर दिया जाता है।",
     effect: { type: 'wealth_pct', value: -15, target: 'target' },
-  },
+      shortName: "No Insurance",
+      shortNameHi: "कोई बीमा नहीं",
+      shortFlavor: "Deny insurance. (Attack)",
+      shortFlavorHi: "बीमा से इनकार करें. (आक्रमण करना)"
+},
   {
     id: "ac_supply_chain_disruption_150",
     name: "Supply Chain Disruption",
@@ -2149,7 +2185,11 @@ export const ACTION_CARDS: GameCard[] = [
     flavor: "You intercept a major delivery meant for your opponent's business.",
     flavorHi: "आप अपने प्रतिद्वंद्वी के व्यवसाय के लिए की गई एक बड़ी डिलीवरी को रोकते हैं।",
     effect: { type: 'wealth_pct', value: -10, target: 'target' },
-  },
+      shortName: "Lost Package",
+      shortNameHi: "खोया हुआ पैकेज",
+      shortFlavor: "Intercept delivery. (Attack)",
+      shortFlavorHi: "अवरोधन वितरण. (आक्रमण करना)"
+},
   {
     id: "ac_car_towing_151",
     name: "Car Towing",
@@ -2159,7 +2199,11 @@ export const ACTION_CARDS: GameCard[] = [
     flavor: "You report your opponent's illegally parked car to the city.",
     flavorHi: "आप अपने प्रतिद्वंद्वी की अवैध रूप से पार्क की गई कार की सूचना शहर को देते हैं।",
     effect: { type: 'wealth_pct', value: -5, target: 'target' },
-  },
+      shortName: "Towed Car",
+      shortNameHi: "खींची गई कार",
+      shortFlavor: "Tow car. (Attack)",
+      shortFlavorHi: "टो कार. (आक्रमण करना)"
+},
   {
     id: "ac_bad_investment_tip_152",
     name: "Bad Investment Tip",
@@ -2169,7 +2213,11 @@ export const ACTION_CARDS: GameCard[] = [
     flavor: "You \"accidentally\" let your opponent overhear you talking about a terrible stock.",
     flavorHi: "आपने \"संयोग से\" अपने प्रतिद्वंद्वी को एक भयानक स्टॉक के बारे में बात करते हुए सुन लिया।",
     effect: { type: 'wealth_pct', value: -10, target: 'target' },
-  },
+      shortName: "Bad Tip",
+      shortNameHi: "ख़राब सलाह",
+      shortFlavor: "Bad stock tip. (Attack)",
+      shortFlavorHi: "ख़राब स्टॉक टिप. (आक्रमण करना)"
+},
   {
     id: "ac_medical_emergency_trigger_153",
     name: "Medical Emergency Trigger",
@@ -2179,7 +2227,11 @@ export const ACTION_CARDS: GameCard[] = [
     flavor: "Your opponent slips on a wet floor and requires an immediate ER visit.",
     flavorHi: "आपका प्रतिद्वंद्वी गीले फर्श पर फिसल जाता है और उसे तत्काल ईआर विजिट की आवश्यकता होती है।",
     effect: { type: 'wealth_pct', value: -15, target: 'target' },
-  },
+      shortName: "Hospital Trip",
+      shortNameHi: "अस्पताल यात्रा",
+      shortFlavor: "Medical emergency. (Attack)",
+      shortFlavorHi: "चिकित्सा आपातकाल. (आक्रमण करना)"
+},
   {
     id: "ac_hidden_bank_fees_154",
     name: "Hidden Bank Fees",
@@ -2189,7 +2241,11 @@ export const ACTION_CARDS: GameCard[] = [
     flavor: "Your opponent's bank randomly updates its terms of service and charges them.",
     flavorHi: "आपके प्रतिद्वंद्वी का बैंक अपनी सेवा की शर्तों को बेतरतीब ढंग से अपडेट करता है और उनसे शुल्क लेता है।",
     effect: { type: 'wealth_pct', value: -5, target: 'target' },
-  },
+      shortName: "Bank Fees",
+      shortNameHi: "बैंक शुल्क",
+      shortFlavor: "Bank fees. (Attack)",
+      shortFlavorHi: "बैंक शुल्क. (आक्रमण करना)"
+},
   {
     id: "ac_fraudulent_charge_155",
     name: "Fraudulent Charge",
@@ -2199,7 +2255,11 @@ export const ACTION_CARDS: GameCard[] = [
     flavor: "Your opponent's credit card is cloned at a sketchy gas station.",
     flavorHi: "आपके प्रतिद्वंद्वी का क्रेडिट कार्ड एक संदिग्ध गैस स्टेशन पर क्लोन किया गया है।",
     effect: { type: 'wealth_pct', value: -10, target: 'target' },
-  },
+      shortName: "Fake Charge",
+      shortNameHi: "फर्जी आरोप",
+      shortFlavor: "Clone card. (Attack)",
+      shortFlavorHi: "क्लोन कार्ड. (आक्रमण करना)"
+},
   {
     id: "ac_bounced_check_156",
     name: "Bounced Check",
@@ -2209,7 +2269,11 @@ export const ACTION_CARDS: GameCard[] = [
     flavor: "A client check your opponent was depending on suddenly bounces.",
     flavorHi: "एक ग्राहक यह जांचता है कि आपका प्रतिद्वंद्वी अचानक उछाल पर निर्भर था।",
     effect: { type: 'wealth_pct', value: -5, target: 'target' },
-  },
+      shortName: "Bad Check",
+      shortNameHi: "ख़राब जाँच",
+      shortFlavor: "Bounced check. (Attack)",
+      shortFlavorHi: "चेक बाउंस हो गया. (आक्रमण करना)"
+},
   {
     id: "ac_emergency_travel_157",
     name: "Emergency Travel",
@@ -2219,7 +2283,11 @@ export const ACTION_CARDS: GameCard[] = [
     flavor: "Your opponent is forced to book a last-minute, full-fare flight for a family emergency.",
     flavorHi: "आपके प्रतिद्वंद्वी को पारिवारिक आपात स्थिति के लिए अंतिम समय में पूर्ण किराया वाली उड़ान बुक करने के लिए मजबूर किया जाता है।",
     effect: { type: 'wealth_pct', value: -10, target: 'target' },
-  },
+      shortName: "Sudden Trip",
+      shortNameHi: "अचानक यात्रा",
+      shortFlavor: "Emergency travel. (Attack)",
+      shortFlavorHi: "आपातकालीन यात्रा. (आक्रमण करना)"
+},
   {
     id: "ac_broken_appliance_158",
     name: "Broken Appliance",
@@ -2229,7 +2297,11 @@ export const ACTION_CARDS: GameCard[] = [
     flavor: "Your opponent's refrigerator compressor dies in the middle of summer.",
     flavorHi: "आपके प्रतिद्वंद्वी का रेफ्रिजरेटर कंप्रेसर गर्मियों के बीच में बंद हो जाता है।",
     effect: { type: 'wealth_pct', value: -5, target: 'target' },
-  },
+      shortName: "Broken Fridge",
+      shortNameHi: "टूटा हुआ फ्रिज",
+      shortFlavor: "Broken fridge. (Attack)",
+      shortFlavorHi: "टूटा हुआ फ्रिज. (आक्रमण करना)"
+},
   {
     id: "ac_roof_leak_159",
     name: "Roof Leak",
@@ -2239,7 +2311,11 @@ export const ACTION_CARDS: GameCard[] = [
     flavor: "A severe storm destroys the roof of your opponent's house.",
     flavorHi: "एक भयंकर तूफान आपके प्रतिद्वंद्वी के घर की छत को नष्ट कर देता है।",
     effect: { type: 'wealth_pct', value: -15, target: 'target' },
-  },
+      shortName: "Roof Leak",
+      shortNameHi: "छत का रिसाव",
+      shortFlavor: "Roof leak. (Attack)",
+      shortFlavorHi: "छत का रिसाव. (आक्रमण करना)"
+},
   {
     id: "ac_pet_illness_160",
     name: "Pet Illness",
@@ -2249,7 +2325,11 @@ export const ACTION_CARDS: GameCard[] = [
     flavor: "Your opponent's dog swallows a sock and requires surgery.",
     flavorHi: "आपके प्रतिद्वंद्वी का कुत्ता एक जुर्राब निगल लेता है और उसे सर्जरी की आवश्यकता होती है।",
     effect: { type: 'wealth_pct', value: -10, target: 'target' },
-  },
+      shortName: "Sick Pet",
+      shortNameHi: "बीमार पालतू",
+      shortFlavor: "Sick pet. (Attack)",
+      shortFlavorHi: "बीमार पालतू. (आक्रमण करना)"
+},
   {
     id: "ac_lost_valuables_161",
     name: "Lost Valuables",
@@ -2259,7 +2339,11 @@ export const ACTION_CARDS: GameCard[] = [
     flavor: "Your opponent leaves their brand new laptop on the subway.",
     flavorHi: "आपका प्रतिद्वंद्वी अपना नया लैपटॉप सबवे पर छोड़ देता है।",
     effect: { type: 'wealth_pct', value: -10, target: 'target' },
-  },
+      shortName: "Lost Bag",
+      shortNameHi: "बैग खो गया",
+      shortFlavor: "Lost laptop. (Attack)",
+      shortFlavorHi: "लैपटॉप खो गया. (आक्रमण करना)"
+},
   {
     id: "ac_unfair_dismissal_162",
     name: "Unfair Dismissal",
@@ -2269,7 +2353,11 @@ export const ACTION_CARDS: GameCard[] = [
     flavor: "Your opponent is suddenly laid off due to \"corporate restructuring.\"",
     flavorHi: "आपके प्रतिद्वंद्वी को \"कॉर्पोरेट पुनर्गठन\" के कारण अचानक हटा दिया गया है।",
     effect: { type: 'wealth_pct', value: -15, target: 'target' },
-  },
+      shortName: "Fired",
+      shortNameHi: "निकाल दिया",
+      shortFlavor: "Unfair dismissal. (Attack)",
+      shortFlavorHi: "अनुचित बर्खास्तगी. (आक्रमण करना)"
+},
   {
     id: "ac_baggage_loss_163",
     name: "Baggage Loss",
@@ -2279,7 +2367,11 @@ export const ACTION_CARDS: GameCard[] = [
     flavor: "The airline completely loses your opponent's checked luggage on a business trip.",
     flavorHi: "व्यावसायिक यात्रा पर एयरलाइन आपके प्रतिद्वंद्वी का चेक किया हुआ सामान पूरी तरह से खो देती है।",
     effect: { type: 'wealth_pct', value: -5, target: 'target' },
-  },
+      shortName: "Lost Bag",
+      shortNameHi: "बैग खो गया",
+      shortFlavor: "Lost luggage. (Attack)",
+      shortFlavorHi: "सामान खो गया. (आक्रमण करना)"
+},
   {
     id: "ac_bank_glitch_164",
     name: "Bank Glitch",
@@ -2289,7 +2381,11 @@ export const ACTION_CARDS: GameCard[] = [
     flavor: "A server error locks your opponent out of their funds, forcing them to use an expensive payday loan for the weekend.",
     flavorHi: "एक सर्वर त्रुटि आपके प्रतिद्वंद्वी को उनके फंड से वंचित कर देती है, जिससे उन्हें सप्ताहांत के लिए महंगे वेतन-दिवस ऋण का उपयोग करने के लिए मजबूर होना पड़ता है।",
     effect: { type: 'wealth_pct', value: -5, target: 'target' },
-  },
+      shortName: "Bank Error",
+      shortNameHi: "बैंक त्रुटि",
+      shortFlavor: "Bank glitch. (Attack)",
+      shortFlavorHi: "बैंक की गड़बड़ी. (आक्रमण करना)"
+},
   {
     id: "ac_severe_market_crash_165",
     name: "Severe Market Crash",
@@ -2299,7 +2395,11 @@ export const ACTION_CARDS: GameCard[] = [
     flavor: "A global pandemic or economic crisis wipes out a huge chunk of the market.",
     flavorHi: "एक वैश्विक महामारी या आर्थिक संकट बाज़ार का एक बड़ा हिस्सा ख़त्म कर देता है।",
     effect: { type: 'attack_all_pct', value: 15, target: 'all' },
-  },
+      shortName: "Market Crash",
+      shortNameHi: "बाज़ार दुर्घटना",
+      shortFlavor: "Market crash. (Attack)",
+      shortFlavorHi: "बाज़ार दुर्घटना. (आक्रमण करना)"
+},
   {
     id: "ac_subscription_trap_166",
     name: "Subscription Trap",
@@ -2309,7 +2409,11 @@ export const ACTION_CARDS: GameCard[] = [
     flavor: "Your opponent forgets to cancel a \"free trial\" and gets billed for the annual premium plan.",
     flavorHi: "आपका प्रतिद्वंद्वी \"निःशुल्क परीक्षण\" रद्द करना भूल जाता है और उसे वार्षिक प्रीमियम योजना का बिल मिल जाता है।",
     effect: { type: 'wealth_pct', value: -5, target: 'target' },
-  },
+      shortName: "Free Trial",
+      shortNameHi: "मुफ्त परीक्षण",
+      shortFlavor: "Subscription trap. (Attack)",
+      shortFlavorHi: "सदस्यता जाल. (आक्रमण करना)"
+},
   {
     id: "ac_vandalism_167",
     name: "Vandalism",
@@ -2319,7 +2423,11 @@ export const ACTION_CARDS: GameCard[] = [
     flavor: "Someone keys your opponent's car overnight.",
     flavorHi: "कोई आपके प्रतिद्वंद्वी की कार में रातों-रात चाबी लगा देता है।",
     effect: { type: 'wealth_pct', value: -10, target: 'target' },
-  },
+      shortName: "Scratched Car",
+      shortNameHi: "खरोंच वाली कार",
+      shortFlavor: "Vandalism. (Attack)",
+      shortFlavorHi: "बर्बरता. (आक्रमण करना)"
+},
   {
     id: "ac_traffic_ticket_168",
     name: "Traffic Ticket",
@@ -2329,7 +2437,11 @@ export const ACTION_CARDS: GameCard[] = [
     flavor: "Your opponent runs a red light and gets caught by a traffic camera.",
     flavorHi: "आपका प्रतिद्वंद्वी लाल बत्ती चलाता है और ट्रैफ़िक कैमरे द्वारा पकड़ा जाता है।",
     effect: { type: 'wealth_pct', value: -5, target: 'target' },
-  },
+      shortName: "Red Light",
+      shortNameHi: "लाल बत्ती",
+      shortFlavor: "Traffic ticket. (Attack)",
+      shortFlavorHi: "यातायात टिकट. (आक्रमण करना)"
+},
   {
     id: "ac_rumor_mill_169",
     name: "Rumor Mill",
@@ -2339,7 +2451,11 @@ export const ACTION_CARDS: GameCard[] = [
     flavor: "A bad review online ruins your opponent's weekend side-hustle sales.",
     flavorHi: "ऑनलाइन एक ख़राब समीक्षा आपके प्रतिद्वंद्वी की सप्ताहांत की बिक्री को बर्बाद कर देती है।",
     effect: { type: 'wealth_pct', value: -5, target: 'target' },
-  },
+      shortName: "Bad Review",
+      shortNameHi: "ख़राब समीक्षा",
+      shortFlavor: "Bad review. (Attack)",
+      shortFlavorHi: "ख़राब समीक्षा. (आक्रमण करना)"
+},
   {
     id: "ac_hostile_takeover_170",
     name: "Hostile Takeover",
@@ -2349,7 +2465,11 @@ export const ACTION_CARDS: GameCard[] = [
     flavor: "A larger company aggressively forces your opponent out of their prime business location.",
     flavorHi: "एक बड़ी कंपनी आक्रामक रूप से आपके प्रतिद्वंद्वी को उनके प्रमुख व्यावसायिक स्थान से बाहर कर देती है।",
     effect: { type: 'wealth_pct', value: -15, target: 'target' },
-  },
+      shortName: "Forced Out",
+      shortNameHi: "जबरन बाहर करना",
+      shortFlavor: "Hostile takeover. (Attack)",
+      shortFlavorHi: "शत्रुतापूर्ण अधिग्रहण. (आक्रमण करना)"
+},
 ]
 
 export const DEFENSE_CARDS: GameCard[] = [
@@ -2362,7 +2482,11 @@ export const DEFENSE_CARDS: GameCard[] = [
     flavor: "You have a ruthless corporate lawyer ready to send cease-and-desist letters at a moment's notice.",
     flavorHi: "आपके पास एक क्रूर कॉर्पोरेट वकील है जो एक पल की सूचना पर संघर्ष विराम पत्र भेजने के लिए तैयार है।",
     effect: { type: 'block_card', target: 'self', blocks: ["Defense Effect:", "Vexatious Lawsuit", "Hostile Takeover"] },
-  },
+      shortName: "Good Lawyer",
+      shortNameHi: "अच्छा वकील",
+      shortFlavor: "Top lawyer. (Defense)",
+      shortFlavorHi: "शीर्ष वकील. (रक्षा)"
+},
   {
     id: "def_comprehensive_health_insurance_173",
     name: "Comprehensive Health Insurance",
@@ -2372,7 +2496,11 @@ export const DEFENSE_CARDS: GameCard[] = [
     flavor: "You pay for a platinum-tier health plan with zero deductibles.",
     flavorHi: "आप शून्य कटौती योग्य प्लैटिनम-स्तरीय स्वास्थ्य योजना के लिए भुगतान करते हैं।",
     effect: { type: 'block_card', target: 'self', blocks: ["Defense Effect:", "Medical Emergency Trigger"] },
-  },
+      shortName: "Good Health",
+      shortNameHi: "अच्छा स्वास्थ्य",
+      shortFlavor: "Health insurance. (Defense)",
+      shortFlavorHi: "स्वास्थ्य बीमा. (रक्षा)"
+},
   {
     id: "def_ironclad_contract_174",
     name: "Ironclad Contract",
@@ -2382,7 +2510,11 @@ export const DEFENSE_CARDS: GameCard[] = [
     flavor: "You had a professional draft your employment and client agreements with strict non-compete clauses.",
     flavorHi: "आपके पास सख्त गैर-प्रतिस्पर्धा धाराओं के साथ अपने रोजगार और ग्राहक समझौतों का एक पेशेवर मसौदा था।",
     effect: { type: 'block_card', target: 'self', blocks: ["Defense Effect:", "Competitor Poaching", "Unfair Dismissal"] },
-  },
+      shortName: "Strong Contract",
+      shortNameHi: "मजबूत अनुबंध",
+      shortFlavor: "Ironclad contract. (Defense)",
+      shortFlavorHi: "आयरनक्लाड अनुबंध. (रक्षा)"
+},
   {
     id: "def_emergency_cash_reserve_175",
     name: "Emergency Cash Reserve",
@@ -2392,7 +2524,11 @@ export const DEFENSE_CARDS: GameCard[] = [
     flavor: "You have 6 months of living expenses sitting in a liquid savings account.",
     flavorHi: "तरल बचत खाते में आपके पास 6 महीने का जीवन-यापन खर्च है।",
     effect: { type: 'block_card', target: 'self', blocks: ["Defense Effect:"] },
-  },
+      shortName: "Cash Savings",
+      shortNameHi: "नकद बचत",
+      shortFlavor: "Cash reserve. (Defense)",
+      shortFlavorHi: "नकद आरक्षित. (रक्षा)"
+},
   {
     id: "def_full_coverage_auto_insurance_176",
     name: "Full Coverage Auto Insurance",
@@ -2402,7 +2538,11 @@ export const DEFENSE_CARDS: GameCard[] = [
     flavor: "Your car is fully insured against acts of God, vandalism, and accidents.",
     flavorHi: "आपकी कार दैवीय कृत्यों, बर्बरता और दुर्घटनाओं के विरुद्ध पूरी तरह से बीमाकृत है।",
     effect: { type: 'block_card', target: 'self', blocks: ["Defense Effect:", "Property Damage", "Vandalism"] },
-  },
+      shortName: "Car Insurance",
+      shortNameHi: "गाड़ी बीमा",
+      shortFlavor: "Auto insurance. (Defense)",
+      shortFlavorHi: "ऑटो बीमा. (रक्षा)"
+},
   {
     id: "def_two_factor_authentication_2fa_177",
     name: "Two-Factor Authentication (2FA)",
@@ -2412,7 +2552,11 @@ export const DEFENSE_CARDS: GameCard[] = [
     flavor: "You use hardware keys and authenticator apps for all your accounts.",
     flavorHi: "आप अपने सभी खातों के लिए हार्डवेयर कुंजी और प्रमाणक ऐप्स का उपयोग करते हैं।",
     effect: { type: 'block_card', target: 'self', blocks: ["Defense Effect:", "Phishing Scam"] },
-  },
+      shortName: "Secure Login",
+      shortNameHi: "सुरक्षित लॉगइन",
+      shortFlavor: "Two-factor auth. (Defense)",
+      shortFlavorHi: "दो-कारक प्रमाणीकरण. (रक्षा)"
+},
   {
     id: "def_homeowner_s_insurance_178",
     name: "Homeowner's Insurance",
@@ -2432,7 +2576,11 @@ export const DEFENSE_CARDS: GameCard[] = [
     flavor: "Your taxes are audited internally by a professional before filing. Your books are spotless.",
     flavorHi: "आपके कर दाखिल करने से पहले एक पेशेवर द्वारा आंतरिक रूप से ऑडिट किया जाता है। आपकी किताबें बेदाग हैं.",
     effect: { type: 'block_card', target: 'self', blocks: ["Defense Effect:", "Tax Audit Trigger"] },
-  },
+      shortName: "Good Accountant",
+      shortNameHi: "अच्छा अकाउंटेंट",
+      shortFlavor: "Trusted accountant. (Defense)",
+      shortFlavorHi: "विश्वसनीय अकाउंटेंट. (रक्षा)"
+},
   {
     id: "def_strong_password_manager_182",
     name: "Strong Password Manager",
@@ -2442,7 +2590,11 @@ export const DEFENSE_CARDS: GameCard[] = [
     flavor: "You use auto-generated 24-character passwords for every site you use.",
     flavorHi: "आप अपने द्वारा उपयोग की जाने वाली प्रत्येक साइट के लिए स्वतः-जनरेटेड 24-वर्ण पासवर्ड का उपयोग करते हैं।",
     effect: { type: 'block_card', target: 'self', blocks: ["Defense Effect:", "Identity Theft"] },
-  },
+      shortName: "Safe Password",
+      shortNameHi: "सुरक्षित पासवर्ड",
+      shortFlavor: "Password manager. (Defense)",
+      shortFlavorHi: "पासवर्ड मैनेजर. (रक्षा)"
+},
   {
     id: "def_reputation_management_pr_firm_184",
     name: "Reputation Management PR Firm",
@@ -2452,7 +2604,11 @@ export const DEFENSE_CARDS: GameCard[] = [
     flavor: "You have automated tools that monitor and suppress fake negative reviews online.",
     flavorHi: "आपके पास स्वचालित उपकरण हैं जो ऑनलाइन नकली नकारात्मक समीक्षाओं की निगरानी करते हैं और उन्हें दबा देते हैं।",
     effect: { type: 'block_card', target: 'self', blocks: ["Defense Effect:", "Rumor Mill"] },
-  },
+      shortName: "Good PR",
+      shortNameHi: "अच्छा पीआर",
+      shortFlavor: "PR firm. (Defense)",
+      shortFlavorHi: "पीआर फर्म. (रक्षा)"
+},
   {
     id: "def_dashcam_footage_185",
     name: "Dashcam Footage",
@@ -2462,7 +2618,11 @@ export const DEFENSE_CARDS: GameCard[] = [
     flavor: "Your 4K dashcam proves you didn't run the red light.",
     flavorHi: "आपका 4K डैशकैम साबित करता है कि आपने लाल बत्ती नहीं जलाई।",
     effect: { type: 'block_card', target: 'self', blocks: ["Defense Effect:", "Traffic Ticket"] },
-  },
+      shortName: "Dashcam",
+      shortNameHi: "डैशकैम",
+      shortFlavor: "Dashcam footage. (Defense)",
+      shortFlavorHi: "डैशकैम फ़ुटेज. (रक्षा)"
+},
   {
     id: "def_multiple_income_streams_187",
     name: "Multiple Income Streams",
@@ -2472,7 +2632,11 @@ export const DEFENSE_CARDS: GameCard[] = [
     flavor: "You don't rely on a single client for your business survival.",
     flavorHi: "आप अपने व्यवसाय के अस्तित्व के लिए किसी एक ग्राहक पर निर्भर नहीं हैं।",
     effect: { type: 'block_card', target: 'self', blocks: ["Defense Effect:", "Bounced Check", "Supply Chain Disruption"] },
-  },
+      shortName: "Many Jobs",
+      shortNameHi: "अनेक नौकरियाँ",
+      shortFlavor: "Multiple incomes. (Defense)",
+      shortFlavorHi: "एकाधिक आय. (रक्षा)"
+},
   {
     id: "def_cloud_backup_drive_188",
     name: "Cloud Backup Drive",
@@ -2482,7 +2646,11 @@ export const DEFENSE_CARDS: GameCard[] = [
     flavor: "Your laptop was lost, but all your data is securely backed up to the cloud. You only lose the hardware, not your business.",
     flavorHi: "आपका लैपटॉप खो गया था, लेकिन आपका सारा डेटा सुरक्षित रूप से क्लाउड पर बैकअप है। आप केवल हार्डवेयर खोते हैं, अपना व्यवसाय नहीं।",
     effect: { type: 'block_card', target: 'self', blocks: ["Defense Effect:", "Lost Valuables"] },
-  },
+      shortName: "Cloud Backup",
+      shortNameHi: "मेघ बैकअप",
+      shortFlavor: "Cloud backup. (Defense)",
+      shortFlavorHi: "मेघ बैकअप। (रक्षा)"
+},
   {
     id: "def_labor_union_rep_189",
     name: "Labor Union Rep",
@@ -2492,7 +2660,11 @@ export const DEFENSE_CARDS: GameCard[] = [
     flavor: "Your union representatives step in to negotiate a massive severance package for you.",
     flavorHi: "आपके संघ के प्रतिनिधि आपके लिए एक बड़े विच्छेद पैकेज पर बातचीत करने के लिए आगे आते हैं।",
     effect: { type: 'block_card', target: 'self', blocks: ["Defense Effect:", "Unfair Dismissal"] },
-  },
+      shortName: "Union Rep",
+      shortNameHi: "संघ प्रतिनिधि",
+      shortFlavor: "Union rep. (Defense)",
+      shortFlavorHi: "संघ प्रतिनिधि. (रक्षा)"
+},
   {
     id: "def_emergency_roadside_assistance_190",
     name: "Emergency Roadside Assistance",
@@ -2502,7 +2674,11 @@ export const DEFENSE_CARDS: GameCard[] = [
     flavor: "Your AAA or premium card membership covers free towing up to 100 miles.",
     flavorHi: "आपकी एएए या प्रीमियम कार्ड सदस्यता 100 मील तक निःशुल्क टोइंग को कवर करती है।",
     effect: { type: 'block_card', target: 'self', blocks: ["Defense Effect:", "Car Towing"] },
-  },
+      shortName: "Tow Truck",
+      shortNameHi: "टो ट्रक",
+      shortFlavor: "Roadside assist. (Defense)",
+      shortFlavorHi: "सड़क किनारे सहायता. (रक्षा)"
+},
   {
     id: "def_privacy_shield_virtual_credit_card_191",
     name: "Privacy Shield / Virtual Credit Card",
@@ -2512,7 +2688,11 @@ export const DEFENSE_CARDS: GameCard[] = [
     flavor: "You use temporary digital cards for all trials that auto-cancel after 30 days.",
     flavorHi: "आप सभी परीक्षणों के लिए अस्थायी डिजिटल कार्ड का उपयोग करते हैं जो 30 दिनों के बाद स्वतः रद्द हो जाते हैं।",
     effect: { type: 'block_card', target: 'self', blocks: ["Defense Effect:", "Subscription Trap"] },
-  },
+      shortName: "Safe Card",
+      shortNameHi: "सुरक्षित कार्ड",
+      shortFlavor: "Virtual card. (Defense)",
+      shortFlavorHi: "आभासी कार्ड. (रक्षा)"
+},
   {
     id: "def_fraud_alert_service_192",
     name: "Fraud Alert Service",
@@ -2522,7 +2702,11 @@ export const DEFENSE_CARDS: GameCard[] = [
     flavor: "Your bank flags the clone card and freezes it before the transaction clears.",
     flavorHi: "आपका बैंक क्लोन कार्ड को चिह्नित करता है और लेनदेन पूरा होने से पहले उसे फ्रीज कर देता है।",
     effect: { type: 'block_card', target: 'self', blocks: ["Defense Effect:", "Fraudulent Charge"] },
-  },
+      shortName: "Fraud Alert",
+      shortNameHi: "धोखाधड़ी चेतावनी",
+      shortFlavor: "Fraud alert. (Defense)",
+      shortFlavorHi: "धोखाधड़ी की चेतावनी. (रक्षा)"
+},
   {
     id: "def_independent_financial_advisor_193",
     name: "Independent Financial Advisor",
@@ -2532,7 +2716,11 @@ export const DEFENSE_CARDS: GameCard[] = [
     flavor: "You run all stock tips past a fiduciary before buying.",
     flavorHi: "आप खरीदने से पहले सभी स्टॉक टिप्स को एक प्रत्ययी के पास चलाते हैं।",
     effect: { type: 'block_card', target: 'self', blocks: ["Defense Effect:", "Bad Investment Tip"] },
-  },
+      shortName: "Good Advisor",
+      shortNameHi: "अच्छे सलाहकार",
+      shortFlavor: "Financial advisor. (Defense)",
+      shortFlavorHi: "वित्तीय सलाहकार। (रक्षा)"
+},
   {
     id: "def_ironclad_insurance_ombudsman_194",
     name: "Ironclad Insurance Ombudsman",
@@ -2542,7 +2730,11 @@ export const DEFENSE_CARDS: GameCard[] = [
     flavor: "You appeal the insurance denial to the national regulatory body and win.",
     flavorHi: "आप बीमा अस्वीकरण के खिलाफ राष्ट्रीय नियामक संस्था में अपील करते हैं और जीतते हैं।",
     effect: { type: 'block_card', target: 'self', blocks: ["Defense Effect:", "Insurance Denial"] },
-  },
+      shortName: "Insurance Help",
+      shortNameHi: "बीमा सहायता",
+      shortFlavor: "Insurance ombudsman. (Defense)",
+      shortFlavorHi: "बीमा लोकपाल. (रक्षा)"
+},
   {
     id: "def_excellent_credit_score_195",
     name: "Excellent Credit Score",
@@ -2552,7 +2744,11 @@ export const DEFENSE_CARDS: GameCard[] = [
     flavor: "The bank values your business so much that they waive all late fees automatically.",
     flavorHi: "बैंक आपके व्यवसाय को इतना महत्व देता है कि वे सभी विलंब शुल्क स्वचालित रूप से माफ कर देते हैं।",
     effect: { type: 'block_card', target: 'self', blocks: ["Defense Effect:", "Hidden Bank Fees"] },
-  },
+      shortName: "Good Credit",
+      shortNameHi: "अच्छा श्रेय",
+      shortFlavor: "Good credit. (Defense)",
+      shortFlavorHi: "अच्छा श्रेय. (रक्षा)"
+},
   {
     id: "def_not_my_problem_clause_197",
     name: "\"Not My Problem\" Clause",
@@ -2572,7 +2768,11 @@ export const DEFENSE_CARDS: GameCard[] = [
     flavor: "A quick, aggressive legal warning stops the attacker in their tracks.",
     flavorHi: "एक त्वरित, आक्रामक कानूनी चेतावनी हमलावर को उसकी राह पर ही रोक देती है।",
     effect: { type: 'block_card', target: 'self', blocks: ["Defense Effect:"] },
-  },
+      shortName: "Stop Letter",
+      shortNameHi: "पत्र रोकें",
+      shortFlavor: "Cease letter. (Defense)",
+      shortFlavorHi: "विराम पत्र. (रक्षा)"
+},
   {
     id: "def_severance_package_guarantee_199",
     name: "Severance Package Guarantee",
@@ -2582,7 +2782,11 @@ export const DEFENSE_CARDS: GameCard[] = [
     flavor: "You negotiated a 6-month golden parachute into your executive contract.",
     flavorHi: "आपने अपने कार्यकारी अनुबंध में 6 महीने के गोल्डन पैराशूट पर बातचीत की।",
     effect: { type: 'block_card', target: 'self', blocks: ["Defense Effect:", "Unfair Dismissal"] },
-  },
+      shortName: "Job Safety",
+      shortNameHi: "नौकरी की सुरक्षा",
+      shortFlavor: "Severance package. (Defense)",
+      shortFlavorHi: "विच्छेद पैकेज। (रक्षा)"
+},
   {
     id: "def_the_ultimate_shield_emergency_bailout_200",
     name: "The Ultimate Shield: \"Emergency Bailout\"",

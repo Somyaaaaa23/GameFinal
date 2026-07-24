@@ -61,15 +61,39 @@ function CardTimer({ turnStartTime, timeLimit, type }: { turnStartTime: number; 
   if (type === 'ring') {
     const dash = 2 * Math.PI * 25 // r=25
     return (
-      <svg style={{ position: 'absolute', top: -4, left: -4, width: 'calc(100% + 8px)', height: 'calc(100% + 8px)', pointerEvents: 'none', transform: 'rotate(-90deg)', zIndex: 10 }}>
-        <circle cx="50%" cy="50%" r="25" fill="none" 
-          stroke={isDanger ? '#ef4444' : '#22c55e'} 
-          strokeWidth="3" 
-          strokeDasharray={dash} 
-          strokeDashoffset={dash * (1 - pct/100)}
-          style={{ transition: 'stroke-dashoffset 1s linear' }}
-        />
-      </svg>
+      <>
+        <svg style={{ position: 'absolute', top: -4, left: -4, width: 'calc(100% + 8px)', height: 'calc(100% + 8px)', pointerEvents: 'none', transform: 'rotate(-90deg)', zIndex: 10 }}>
+          <circle cx="50%" cy="50%" r="25" fill="none" 
+            stroke={isDanger ? '#ef4444' : isWarning ? '#f97316' : '#22c55e'} 
+            strokeWidth="4" 
+            strokeDasharray={dash} 
+            strokeDashoffset={dash * (1 - pct/100)}
+            style={{ transition: 'stroke-dashoffset 1s linear, stroke 0.3s ease' }}
+          />
+        </svg>
+        <motion.div 
+          animate={isDanger ? { scale: [1, 1.2, 1], opacity: [1, 0.8, 1] } : { scale: 1, opacity: 1 }}
+          transition={{ repeat: isDanger ? Infinity : 0, duration: 0.5 }}
+          style={{ 
+            position: 'absolute', 
+            bottom: -12, 
+            left: '50%', 
+            transform: 'translateX(-50%)', 
+            background: isDanger ? '#ef4444' : isWarning ? '#f97316' : '#10b981', 
+            color: '#fff', 
+            padding: '2px 8px', 
+            borderRadius: 12, 
+            fontSize: 12, 
+            fontWeight: 800, 
+            zIndex: 20,
+            boxShadow: '0 2px 4px rgba(0,0,0,0.3)',
+            whiteSpace: 'nowrap',
+            transition: 'background-color 0.3s ease'
+          }}
+        >
+          {Math.ceil(timeLeft / 1000)}s
+        </motion.div>
+      </>
     )
   }
 

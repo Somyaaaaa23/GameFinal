@@ -115,10 +115,18 @@ export async function leaveRoom(roomId: string, playerId: string): Promise<void>
 export async function getRoomPlayers(roomId: string): Promise<RoomPlayer[]> {
   const { data } = await supabase
     .from('room_players')
-    .select('*')
+    .select(`
+      *,
+      profiles:player_id(avatar_url)
+    `)
     .eq('room_id', roomId)
     .order('seat_order', { ascending: true })
-  return data ?? []
+    
+  if (!data) return []
+  return data.map(p => ({
+    ...p,
+    avatar_url: (p as any).profiles?.avatar_url
+  })) as any
 }
 
 export async function getRoom(roomId: string): Promise<Room | null> {

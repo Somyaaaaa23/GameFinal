@@ -172,32 +172,22 @@ function RewardBox({ reward, isToday, isPast }: { reward: any, isToday: boolean,
 
 function renderCoins(day: number, isPast: boolean) {
   const isBag = day >= 4;
-  // Increase amount of coins visually:
-  // Day 1: 1 coin, Day 2: 2 coins, Day 3: 3 coins
-  // Day 4: 1 bag, Day 5: 2 bags, Day 6: 3 bags, Day 7: 1 huge pile (4 bags)
-  let count = isBag ? day - 3 : day;
   
-  const src = isBag ? "/avatars/coins bag.png" : "/avatars/coins.png";
-  const baseSize = isBag ? 65 : 55;
-  const size = baseSize + (count * 5); // Size increases slightly per item
+  const src = isBag ? "/avatars/coins bag.webp" : "/avatars/coins.webp";
+  const size = isBag ? 65 + (day - 3) * 5 : 55 + (day * 5); // Size increases slightly per day
   
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative' }}>
-      {Array.from({ length: count }).map((_, i) => (
-        <img 
-          key={i} 
-          src={src} 
-          style={{ 
-            height: size, 
-            width: size, 
-            objectFit: 'contain',
-            marginLeft: i > 0 ? - (size * 0.4) : 0, // Overlap items significantly
-            zIndex: i,
-            filter: isPast ? 'grayscale(100%) opacity(70%)' : 'drop-shadow(0px 4px 6px rgba(0,0,0,0.2))'
-          }} 
-          alt={`reward-${day}`}
-        />
-      ))}
+      <img 
+        src={src} 
+        style={{ 
+          height: size, 
+          width: size, 
+          objectFit: 'contain',
+          filter: isPast ? 'grayscale(100%) opacity(70%)' : 'drop-shadow(0px 4px 6px rgba(0,0,0,0.2))'
+        }} 
+        alt={`reward-${day}`}
+      />
     </div>
   )
 }

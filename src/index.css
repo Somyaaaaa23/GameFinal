@@ -934,7 +934,7 @@ input, textarea, select {
 .game-stage-bg {
   width: 1246px;
   height: 614px;
-  background: url("/avatars/cardsscreen.png") center / 100% 100% no-repeat;
+  background: url("/avatars/cardsscreen.webp") center / 100% 100% no-repeat;
 }
 
 /* Event Popup Responsive Styles */
@@ -1003,7 +1003,7 @@ input, textarea, select {
 
 @media (max-width: 950px) and (orientation: landscape) {
   .game-stage-bg {
-    background: url("/avatars/backgorund of cards.png") center / 100% 100% no-repeat;
+    background: url("/avatars/backgorund of cards.webp") center / 100% 100% no-repeat;
   }
   .event-popup-box {
     padding: 24px 40px;

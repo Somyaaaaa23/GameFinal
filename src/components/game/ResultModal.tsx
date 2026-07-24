@@ -54,7 +54,7 @@ export function ResultModal({ isWinner, finalWealth, onPlayAgain, onDashboard }:
           <div style={{
             position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
             width: 392, height: 392,
-            background: 'url("/avatars/coins bag.png") center / contain no-repeat',
+            background: 'url("/avatars/coins bag.webp") center / contain no-repeat',
             opacity: 0.2, zIndex: 1, pointerEvents: 'none'
           }} />
 

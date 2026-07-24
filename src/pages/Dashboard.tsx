@@ -340,7 +340,7 @@ function HomeTab({ navigate, profile, onlineUsers }: { navigate: (path: string) 
         {/* Candlestick faded background layer */}
         <div style={{ 
           position: 'absolute', top: -40, right: -40, width: '70%', height: 350, 
-          background: 'url("/avatars/dashboard design.png") no-repeat right top / cover',
+          background: 'url("/avatars/dashboard design.webp") no-repeat right top / cover',
           opacity: 0.1, pointerEvents: 'none', zIndex: 0 
         }} />
 
@@ -358,37 +358,43 @@ function HomeTab({ navigate, profile, onlineUsers }: { navigate: (path: string) 
             </div>
           </div>
           
-          <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginTop: 16 }}>
-            {/* Companion Mode Button (Image) */}
-            <button 
-              onClick={() => navigate('/campaign')} // Change to appropriate route later
-              style={{ 
-                background: 'none', border: 'none', padding: 0, cursor: 'pointer',
-                transition: 'transform 0.2s'
-              }}
-              onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.05)'}
-              onMouseLeave={e => e.currentTarget.style.transform = 'none'}
-            >
-              <img src="/avatars/companion button.png" alt="Companion Mode" style={{ height: 64, width: 'auto' }} />
-            </button>
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: 24, marginTop: 16 }}>
+            {/* Companion Mode Button */}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
+              <button 
+                onClick={() => navigate('/campaign')} // Change to appropriate route later
+                style={{ 
+                  background: 'none', border: 'none', padding: 0, cursor: 'pointer',
+                  transition: 'transform 0.2s'
+                }}
+                onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.05)'}
+                onMouseLeave={e => e.currentTarget.style.transform = 'none'}
+              >
+                <img src="/avatars/companion button.webp" alt="Companion Mode" style={{ height: 64, width: 'auto' }} />
+              </button>
+              <div style={{ fontSize: 13, color: '#64748B', fontWeight: 600 }}>Play against AI bots</div>
+            </div>
 
             {/* Play Online Button */}
-            <button 
-              onClick={() => navigate('/multiplayer')}
-              style={{ 
-                background: 'linear-gradient(180deg, #1A284D 0%, #0F1832 100%)', 
-                border: '2px solid rgba(255,255,255,0.1)',
-                borderRadius: 16, padding: '0 32px', height: 64,
-                color: '#4ADE80', fontSize: 24, fontWeight: 700,
-                cursor: 'pointer', fontFamily: 'var(--font-body)',
-                boxShadow: '0 8px 16px rgba(0,0,0,0.2)',
-                transition: 'transform 0.2s'
-              }}
-              onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.05)'}
-              onMouseLeave={e => e.currentTarget.style.transform = 'none'}
-            >
-              Play Online
-            </button>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
+              <button 
+                onClick={() => navigate('/multiplayer')}
+                style={{ 
+                  background: 'linear-gradient(180deg, #1A284D 0%, #0F1832 100%)', 
+                  border: '2px solid rgba(255,255,255,0.1)',
+                  borderRadius: 16, padding: '0 32px', height: 64, width: 220,
+                  color: '#4ADE80', fontSize: 24, fontWeight: 700,
+                  cursor: 'pointer', fontFamily: 'var(--font-body)',
+                  boxShadow: '0 8px 16px rgba(0,0,0,0.2)',
+                  transition: 'transform 0.2s', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8
+                }}
+                onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.05)'}
+                onMouseLeave={e => e.currentTarget.style.transform = 'none'}
+              >
+                <span>🌐</span> Play Online
+              </button>
+              <div style={{ fontSize: 13, color: '#64748B', fontWeight: 600 }}>Play with real people</div>
+            </div>
           </div>
         </div>
 
@@ -445,7 +451,7 @@ function HomeTab({ navigate, profile, onlineUsers }: { navigate: (path: string) 
           boxShadow: '0 8px 16px rgba(0,0,0,0.1)',
           cursor: 'pointer'
         }} onClick={() => navigate('/multiplayer')}>
-          <img src="/avatars/eventbanner.png" alt="Season 1: IPO Boom" style={{ width: '100%', height: 'auto', display: 'block' }} />
+          <img src="/avatars/eventbanner.webp" alt="Season 1: IPO Boom" style={{ width: '100%', height: 'auto', display: 'block' }} />
         </div>
 
         {/* Bottom Stats Pill */}
@@ -491,11 +497,13 @@ function HomeTab({ navigate, profile, onlineUsers }: { navigate: (path: string) 
           <p style={{ color: '#6B7280', fontSize: 14, fontWeight: 400, marginBottom: 24 }}>Ready to build your empire?</p>
           
           <div style={{ display: 'flex', gap: 12 }}>
-            <button onClick={() => navigate('/campaign')} style={{ flex: 1, background: '#66D575', color: '#0B4232', borderRadius: 20, padding: '12px 8px', border: 'none', fontWeight: 700, fontSize: 13, cursor: 'pointer' }}>
-              Companion Mode
+            <button onClick={() => navigate('/campaign')} style={{ flex: 1, background: '#66D575', color: '#0B4232', borderRadius: 20, padding: '12px 8px', border: 'none', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+              <div style={{ fontWeight: 700, fontSize: 14 }}>Companion Mode</div>
+              <div style={{ fontSize: 10, color: 'rgba(11,66,50,0.6)', fontWeight: 500 }}>Play against AI bots</div>
             </button>
-            <button onClick={() => navigate('/multiplayer')} style={{ flex: 1, background: '#1A284D', color: '#66D575', borderRadius: 20, padding: '12px 8px', border: 'none', fontWeight: 700, fontSize: 13, cursor: 'pointer' }}>
-              Play Online
+            <button onClick={() => navigate('/multiplayer')} style={{ flex: 1, background: '#1A284D', color: '#66D575', borderRadius: 20, padding: '12px 8px', border: 'none', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+              <div style={{ fontWeight: 700, fontSize: 14 }}><span>🌐</span> Play Online</div>
+              <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.5)', fontWeight: 500 }}>Play with real people</div>
             </button>
           </div>
         </div>
@@ -525,7 +533,7 @@ function HomeTab({ navigate, profile, onlineUsers }: { navigate: (path: string) 
         {/* Mobile Season Banner */}
         <div style={{ position: 'relative', borderRadius: 16, overflow: 'hidden', cursor: 'pointer', background: '#F0F0E0' }} onClick={() => navigate('/multiplayer')}>
            <div style={{ position: 'absolute', top: 12, right: 12, background: '#1A284D', color: '#4ADE80', fontSize: 10, fontWeight: 800, padding: '6px 10px', borderRadius: 8, zIndex: 2 }}>ACTIVE SEASON</div>
-           <img src="/avatars/eventbanner.png" alt="Season 1" style={{ width: '100%', height: 'auto', display: 'block', borderTopLeftRadius: 16, borderTopRightRadius: 16 }} />
+           <img src="/avatars/eventbanner.webp" alt="Season 1" style={{ width: '100%', height: 'auto', display: 'block', borderTopLeftRadius: 16, borderTopRightRadius: 16 }} />
            <div style={{ padding: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
              <div style={{ flex: 1 }}>
                <div style={{ fontSize: 18, fontWeight: 800, color: '#1A5A43' }}>Season 1: IPO Boom</div>
@@ -571,13 +579,16 @@ const PodiumStep = ({ rank, player, profile }: { rank: 1 | 2 | 3; player?: any; 
         {/* Avatar */}
         <div style={{
           width: rank === 1 ? 72 : 64, height: rank === 1 ? 72 : 64, borderRadius: '50%',
-          background: 'repeating-conic-gradient(#f1f5f9 0% 25%, #ffffff 25% 50%) 50% / 12px 12px',
+          background: '#ffffff',
           boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: rank === 1 ? 32 : 28, fontWeight: 800, color: '#064e3b',
-          border: '3px solid #ffffff'
+          border: '3px solid #ffffff', overflow: 'hidden'
         }}>
-          {displayUsername[0]?.toUpperCase() || '?'}
+          <img 
+            src={isMe && profile?.avatar_url ? profile.avatar_url : player?.avatar_url || ('https://api.dicebear.com/9.x/avataaars/svg?seed=' + displayUsername)} 
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+            alt="Avatar" 
+          />
         </div>
         
         {/* Name */}
@@ -755,12 +766,15 @@ function LeaderboardTab({ leaderboard, loading, profile, onRefresh }: { leaderbo
                       {/* Avatar */}
                       <div style={{
                         width: 48, height: 48, borderRadius: '50%', marginLeft: 16,
-                        background: 'repeating-conic-gradient(#f1f5f9 0% 25%, #ffffff 25% 50%) 50% / 10px 10px',
+                        background: '#ffffff',
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        fontSize: 20, fontWeight: 800, color: '#064e3b',
-                        border: '2px solid #e5e7eb'
+                        border: '2px solid #e5e7eb', overflow: 'hidden'
                       }}>
-                        {displayUsername[0]?.toUpperCase() || '?'}
+                        <img 
+                          src={isMe && profile?.avatar_url ? profile.avatar_url : (player as any)?.avatar_url || ('https://api.dicebear.com/9.x/avataaars/svg?seed=' + displayUsername)} 
+                          style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                          alt="Avatar" 
+                        />
                       </div>
 
                       {/* Details */}
@@ -1162,7 +1176,7 @@ function ProfileTab() {
       {/* Banner & Avatar section */}
       <div style={{ position: 'relative', marginBottom: 40, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         {/* Top Banner */}
-        <div style={{ width: '100%', height: 220, borderRadius: 24, overflow: 'hidden', backgroundImage: 'url("/avatars/dashboard design.png")', backgroundSize: 'cover', backgroundPosition: 'center', boxShadow: '0 8px 24px rgba(0,0,0,0.1)' }}>
+        <div style={{ width: '100%', height: 220, borderRadius: 24, overflow: 'hidden', backgroundImage: 'url("/avatars/dashboard design.webp")', backgroundSize: 'cover', backgroundPosition: 'center', boxShadow: '0 8px 24px rgba(0,0,0,0.1)' }}>
         </div>
         
         {/* Avatar overlapping banner */}
@@ -1255,7 +1269,7 @@ function ProfileTab() {
       </div>
 
       {/* Career Stats Grid */}
-      <h3 style={{ fontSize: 32, fontWeight: 800, color: '#64748B', marginBottom: 24, fontFamily: 'Space Grotesk, sans-serif' }}>Career States</h3>
+      <h3 style={{ fontSize: 32, fontWeight: 800, color: '#64748B', marginBottom: 24, fontFamily: 'Space Grotesk, sans-serif' }}>Career Stats</h3>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: 20, marginBottom: 40 }}>
         {[
           { label: 'Daanik Coins', value: `${(profile?.daank_coins ?? 0).toLocaleString()}` },
@@ -1303,7 +1317,7 @@ function ProfileTab() {
     {/* MOBILE LAYOUT */}
     <div className="mobile-flex" style={{ width: '100%', flexDirection: 'column' }}>
       {/* Cover Image */}
-      <div style={{ width: '100%', height: 160, backgroundImage: 'url("/avatars/dashboard design.png")', backgroundSize: 'cover', backgroundPosition: 'center' }}></div>
+      <div style={{ width: '100%', height: 160, backgroundImage: 'url("/avatars/dashboard design.webp")', backgroundSize: 'cover', backgroundPosition: 'center' }}></div>
       
       {/* Avatar & Name */}
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: -50 }}>
@@ -1378,9 +1392,9 @@ function ProfileTab() {
         <div style={{ textAlign: 'right', color: '#FCD34D', fontSize: 12, fontWeight: 600, marginTop: 4 }}>150/400 XP</div>
       </div>
 
-      {/* Career States Grid */}
+      {/* Career Stats Grid */}
       <div style={{ padding: '0 16px 40px' }}>
-        <h3 style={{ fontSize: 18, fontWeight: 700, color: '#64748B', marginBottom: 16 }}>Career States</h3>
+        <h3 style={{ fontSize: 18, fontWeight: 700, color: '#64748B', marginBottom: 16 }}>Career Stats</h3>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
           {[
             { label: 'Daanik Coins', value: `${(profile?.daank_coins ?? 0).toLocaleString()}` },

@@ -37,8 +37,13 @@ export function GameCard({ card, onClick, selected, disabled, compact, faceDown 
     )
   }
 
-  const title = i18n.language === 'hi' && card.nameHi ? card.nameHi : card.name;
-  const flavor = i18n.language === 'hi' && card.flavorHi ? card.flavorHi : card.flavor;
+  const title = i18n.language === 'hi' 
+    ? (card.shortNameHi || card.nameHi || card.shortName || card.name) 
+    : (card.shortName || card.name);
+  
+  const flavor = i18n.language === 'hi' 
+    ? (card.shortFlavorHi || card.flavorHi || card.shortFlavor || card.flavor) 
+    : (card.shortFlavor || card.flavor);
 
   const cardW = compact ? 140 : 220
   const cardH = compact ? 200 : 320
@@ -81,21 +86,22 @@ export function GameCard({ card, onClick, selected, disabled, compact, faceDown 
       */}
       <div style={{
         position: 'absolute',
-        top: compact ? '38%' : '42%',
+        top: compact ? '32%' : '38%',
         left: '8%',
         right: '8%',
         textAlign: 'center',
         zIndex: 2,
       }}>
         <h3 style={{ 
-          fontSize: compact ? 12 : 16, 
-          fontWeight: 800, 
+          fontSize: compact ? 14 : 22, 
+          fontWeight: 900, 
           textAlign: 'center', 
-          lineHeight: 1.2, 
+          lineHeight: 1.1, 
           fontFamily: 'Avengenz, sans-serif', 
           margin: 0,
           color: '#fff',
-          textShadow: '0 2px 6px rgba(0,0,0,0.5)',
+          textShadow: '0 2px 6px rgba(0,0,0,0.8)',
+          letterSpacing: '0.5px',
           display: '-webkit-box', 
           WebkitLineClamp: 2, 
           WebkitBoxOrient: 'vertical', 
@@ -112,21 +118,22 @@ export function GameCard({ card, onClick, selected, disabled, compact, faceDown 
       {!compact && (
         <div style={{
           position: 'absolute',
-          bottom: '4%',
-          left: '8%',
-          right: '8%',
+          bottom: '5%',
+          left: '10%',
+          right: '10%',
           height: '24%',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          padding: '6px 10px',
+          padding: '4px',
           zIndex: 2,
         }}>
           <p style={{ 
-            fontSize: 11, 
-            color: '#e5e7eb', 
+            fontSize: 12, 
+            fontWeight: 500,
+            color: 'rgba(255, 255, 255, 0.9)', 
             textAlign: 'center', 
-            lineHeight: 1.3,
+            lineHeight: 1.25,
             display: '-webkit-box', 
             WebkitLineClamp: 4, 
             WebkitBoxOrient: 'vertical', 

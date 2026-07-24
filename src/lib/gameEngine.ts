@@ -8,7 +8,7 @@ export const WEALTH_GOAL = 5000000      // ₹50 Lakhs
 export const TIME_LIMIT_MS = 30 * 60 * 1000  // 30 minutes per game limit
 export const TURN_TIME_LIMIT_MS = 60000 // 60 seconds per turn
 
-const BOT_NAMES = ['Rahul AI', 'Priya Bot', 'Arjun AI', 'Sneha Bot', 'Vikram AI']
+const BOT_NAMES = ['Rahul AI', 'Priya AI', 'Arjun AI', 'Sneha AI', 'Vikram AI']
 
 function createPlayer(id: string, name: string, isBot: boolean, rankPoints?: number, avatarUrl?: string | null, diffMultiplier?: number): PlayerState {
   return {

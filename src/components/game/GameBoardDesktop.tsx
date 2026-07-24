@@ -3,9 +3,10 @@ import { GameCard as GameCardComponent } from '../GameCard'
 import { Button } from '../ui/Button'
 import { GameLog } from './GameLog'
 import { useTranslation } from 'react-i18next'
-import { AnimatePresence } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import { formatWealth } from '../../types/game'
 import type { GameBoardProps } from './GameBoard'
+import { TURN_TIME_LIMIT_MS } from '../../lib/gameEngine'
 
 function PlayerTimerRing({ turnStartTime, timeLimit }: { turnStartTime: number, timeLimit: number }) {
   const [now, setNow] = useState(Date.now())
@@ -28,15 +29,38 @@ function PlayerTimerRing({ turnStartTime, timeLimit }: { turnStartTime: number, 
   const dash = 2 * Math.PI * 40 // r=40
   
   return (
-    <svg style={{ position: 'absolute', top: -10, left: -10, width: 'calc(100% + 20px)', height: 'calc(100% + 20px)', pointerEvents: 'none', transform: 'rotate(-90deg)', zIndex: 10 }}>
-      <circle cx="50%" cy="50%" r="40" fill="none" 
-        stroke={isDanger ? '#ef4444' : '#10b981'} 
-        strokeWidth="4" 
-        strokeDasharray={dash} 
-        strokeDashoffset={dash * (1 - pct/100)}
-        style={{ transition: 'stroke-dashoffset 0.1s linear' }}
-      />
-    </svg>
+    <>
+      <svg style={{ position: 'absolute', top: -10, left: -10, width: 'calc(100% + 20px)', height: 'calc(100% + 20px)', pointerEvents: 'none', transform: 'rotate(-90deg)', zIndex: 10 }}>
+        <circle cx="50%" cy="50%" r="40" fill="none" 
+          stroke={isDanger ? '#ef4444' : '#10b981'} 
+          strokeWidth="4" 
+          strokeDasharray={dash} 
+          strokeDashoffset={dash * (1 - pct/100)}
+          style={{ transition: 'stroke-dashoffset 0.1s linear' }}
+        />
+      </svg>
+      <motion.div 
+        animate={isDanger ? { scale: [1, 1.2, 1], opacity: [1, 0.8, 1] } : { scale: 1, opacity: 1 }}
+        transition={{ repeat: isDanger ? Infinity : 0, duration: 0.5 }}
+        style={{ 
+          position: 'absolute', 
+          bottom: -16, 
+          left: '50%', 
+          transform: 'translateX(-50%)', 
+          background: isDanger ? '#ef4444' : '#10b981', 
+          color: '#fff', 
+          padding: '2px 10px', 
+          borderRadius: 12, 
+          fontSize: 14, 
+          fontWeight: 800, 
+          zIndex: 20,
+          boxShadow: '0 2px 4px rgba(0,0,0,0.3)',
+          whiteSpace: 'nowrap'
+        }}
+      >
+        {Math.ceil(remaining / 1000)}s
+      </motion.div>
+    </>
   )
 }
 
@@ -109,12 +133,12 @@ export function GameBoardDesktop({
               {t('game.yourTurnDraw')}
             </div>
             
-            <img src="/avatars/card sshower.png" style={{ height: 260, objectFit: 'contain', marginBottom: -40, zIndex: 10, pointerEvents: 'none' }} alt="Card shower" />
+            <img src="/avatars/card sshower.webp" style={{ height: 260, objectFit: 'contain', marginBottom: -40, zIndex: 10, pointerEvents: 'none' }} alt="Card shower" />
 
             <button
               onClick={onDrawCard}
               style={{
-                background: 'url("/avatars/cnfoirmchoice.png") center / 100% 100% no-repeat', color: '#fff',
+                background: 'url("/avatars/confirmchoice.webp") center / 100% 100% no-repeat', color: '#fff',
                 border: 'none', width: 340, height: 80,
                 fontSize: 28, fontWeight: 700, zIndex: 20,
                 cursor: 'pointer', fontFamily: 'Avengenz, sans-serif'
@@ -135,18 +159,6 @@ export function GameBoardDesktop({
                 ))}
               </AnimatePresence>
             </div>
-            {/* The mock CONFIRM CHOICE button (optional if clicking card plays it directly) */}
-            <button
-              style={{
-                background: 'url("/avatars/cnfoirmchoice.png") center / 100% 100% no-repeat', color: '#fff',
-                border: 'none', width: 340, height: 80,
-                fontSize: 28, fontWeight: 700,
-                cursor: 'default', fontFamily: 'Avengenz, sans-serif',
-                opacity: 0.5 // Dimmed since card click triggers play right now
-              }}
-            >
-              CONFIRM CHOICE
-            </button>
           </div>
         )}
 
@@ -161,10 +173,14 @@ export function GameBoardDesktop({
             {/* Right Side: Decision Options */}
             <div style={{ width: 400, display: 'flex', flexDirection: 'column', gap: 16 }}>
               <h3 style={{ fontSize: 32, fontWeight: 700, color: '#fff', marginBottom: 8, fontFamily: 'Avengenz, sans-serif' }}>
-                {i18n.language === 'hi' && gameState.pendingDecision.card.nameHi ? gameState.pendingDecision.card.nameHi : gameState.pendingDecision.card.name}
+                {i18n.language === 'hi' 
+                  ? (gameState.pendingDecision.card.shortNameHi || gameState.pendingDecision.card.nameHi || gameState.pendingDecision.card.shortName || gameState.pendingDecision.card.name)
+                  : (gameState.pendingDecision.card.shortName || gameState.pendingDecision.card.name)}
               </h3>
               <p style={{ color: '#94a3b8', fontSize: 18, marginBottom: 24, lineHeight: 1.4 }}>
-                {i18n.language === 'hi' && gameState.pendingDecision.card.flavorHi ? gameState.pendingDecision.card.flavorHi : gameState.pendingDecision.card.flavor}
+                {i18n.language === 'hi' 
+                  ? (gameState.pendingDecision.card.shortFlavorHi || gameState.pendingDecision.card.flavorHi || gameState.pendingDecision.card.shortFlavor || gameState.pendingDecision.card.flavor)
+                  : (gameState.pendingDecision.card.shortFlavor || gameState.pendingDecision.card.flavor)}
               </p>
               
               {[...(gameState.pendingDecision.card.options || [])].sort((a, b) => {
@@ -192,8 +208,13 @@ export function GameBoardDesktop({
                       <div className={`decision-badge ${opt.type}`}>
                         {opt.type}
                       </div>
-                      <div className="decision-label">
-                        {opt.label}
+                      <div className="decision-label" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+                        <div style={{ fontWeight: 800 }}>{opt.label}</div>
+                        {opt.shortDescription && (
+                          <div style={{ fontSize: 13, fontWeight: 500, opacity: 0.8, marginTop: 2, textAlign: 'left', lineHeight: 1.2 }}>
+                            {i18n.language === 'hi' ? (opt.shortDescriptionHi || opt.shortDescription) : opt.shortDescription}
+                          </div>
+                        )}
                       </div>
                     </div>
                     <div style={{ textAlign: 'right' }}>
@@ -262,10 +283,10 @@ export function GameBoardDesktop({
             position: 'relative'
           }}>
             {/* SVG Timer Ring */}
-            {isMyTurn && gameState.phase !== 'game_over' && gameState.timeLimit && (
+            {isMyTurn && gameState.phase !== 'game_over' && (
               <PlayerTimerRing 
                 turnStartTime={gameState.turnStartTime} 
-                timeLimit={gameState.timeLimit} 
+                timeLimit={TURN_TIME_LIMIT_MS} 
               />
             )}
             
@@ -323,7 +344,7 @@ export function GameBoardDesktop({
         <button
           onClick={() => setShowGameLog(!showGameLog)}
           style={{
-            background: 'url("/avatars/gamelogbutton.png") center / contain no-repeat',
+            background: 'url("/avatars/gamelogbutton.webp") center / contain no-repeat',
             width: 200, height: 60, border: 'none', cursor: 'pointer',
             backgroundColor: 'transparent'
           }}
