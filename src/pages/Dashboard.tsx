@@ -1145,7 +1145,11 @@ function ProfileTab() {
   const handleUpdateAvatar = async (newAvatar: string) => {
     if (!profile) return
     setUpdating(true)
-    await supabase.rpc('update_my_profile', { p_username: profile.username, p_avatar_url: newAvatar })
+    try {
+      await supabase.from('profiles').update({ avatar_url: newAvatar }).eq('id', profile.id)
+    } catch (e) {
+      console.error(e)
+    }
     await refreshProfile()
     setIsEditingAvatar(false)
     setUpdating(false)
@@ -1157,7 +1161,13 @@ function ProfileTab() {
       return
     }
     setUpdating(true)
-    await supabase.rpc('update_my_profile', { p_username: newName.trim(), p_avatar_url: profile.avatar_url })
+    try {
+      const updatedName = newName.trim()
+      await supabase.from('profiles').update({ username: updatedName }).eq('id', profile.id)
+      await supabase.from('leaderboard').update({ username: updatedName }).eq('user_id', profile.id)
+    } catch (e) {
+      console.error(e)
+    }
     await refreshProfile()
     setIsEditingName(false)
     setUpdating(false)
