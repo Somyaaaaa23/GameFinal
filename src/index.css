@@ -1020,3 +1020,29 @@ input, textarea, select {
   .decision-label { font-size: 14px; }
   .decision-amount { font-size: 16px; }
 }
+
+/* CRED-style Velocity & Micro-rebound */
+.btn-rebound {
+  transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.btn-rebound:active {
+  transform: scale(0.95) !important;
+}
+
+@keyframes floatUpFade {
+  0% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-40px); }
+}
+.float-wealth {
+  animation: floatUpFade 2s ease-out forwards;
+}
+
+@keyframes pulseRed {
+  0% { color: #fff; transform: scale(1); }
+  50% { color: #EF4444; transform: scale(1.1); }
+  100% { color: #fff; transform: scale(1); }
+}
+.urgent-clock {
+  animation: pulseRed 1s infinite;
+  color: #EF4444 !important;
+}

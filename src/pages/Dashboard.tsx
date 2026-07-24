@@ -3,7 +3,9 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 
 import { Card } from '../components/ui/Card'
-import { formatWealth } from '../types/game'
+
+
+import { Wealth } from '../components/Wealth'
 import { supabase } from '../lib/supabase'
 import { isSoundEnabled, toggleSound } from '../lib/audio'
 import { useTranslation } from 'react-i18next'
@@ -618,7 +620,7 @@ const PodiumStep = ({ rank, player, profile }: { rank: 1 | 2 | 3; player?: any; 
           padding: '4px 16px', borderRadius: 20, marginTop: 4,
           boxShadow: '0 2px 5px rgba(6, 95, 70, 0.3)'
         }}>
-          {formatWealth(player.highest_net_worth)}
+          <Wealth amount={player.highest_net_worth} />
         </div>
       </div>
 
@@ -799,7 +801,7 @@ function LeaderboardTab({ leaderboard, loading, profile, onRefresh }: { leaderbo
                             {displayUsername} {isMe && <span style={{ fontSize: 12, color: '#059669', marginLeft: 8 }}>(You)</span>}
                           </div>
                           <div style={{ fontWeight: 600, fontSize: 14, color: '#6b7280', marginTop: 2 }}>
-                            {formatWealth(player.highest_net_worth)} <span style={{ opacity: 0.5 }}>• {player.wins} wins</span>
+                            <Wealth amount={player.highest_net_worth} /> <span style={{ opacity: 0.5 }}>• {player.wins} wins</span>
                           </div>
                         </div>
 
@@ -919,7 +921,7 @@ function LeaderboardTab({ leaderboard, loading, profile, onRefresh }: { leaderbo
                   {/* Details */}
                   <div style={{ marginLeft: 16, flex: 1 }}>
                     <div style={{ fontWeight: 600, fontSize: 18, color: '#1E293B' }}>{displayUsername}</div>
-                    <div style={{ fontWeight: 500, fontSize: 14, color: '#64748B' }}>{formatWealth(player.highest_net_worth)}</div>
+                    <div style={{ fontWeight: 500, fontSize: 14, color: '#64748B' }}><Wealth amount={player.highest_net_worth} /></div>
                   </div>
 
                   {/* Gem Icon */}

@@ -82,39 +82,20 @@ export function GameBoardDesktop({
   const myPlayer = myPlayerIndex >= 0 ? gameState.players[myPlayerIndex] : null
   const currentPlayer = gameState.players[gameState.currentPlayerIndex]
 
-  const [scale, setScale] = useState(1);
-  useEffect(() => {
-    const handleResize = () => {
-      if (typeof window !== 'undefined') {
-        const paddingX = 40;
-        const paddingY = 80;
-        const scaleX = (window.innerWidth - paddingX) / 1246;
-        const scaleY = (window.innerHeight - paddingY) / 614;
-        setScale(Math.min(1, scaleX, scaleY));
-      }
-    };
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  // const [scale, setScale] = useState(1);
+
 
   const progressRatio = myPlayer ? Math.min(1, myPlayer.wealth / gameState.wealthGoal) : 0;
 
   return (
     <div style={{ width: '100%', height: '100%', position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
       
-      {/* Wrapper to maintain physical footprint of scaled element */}
-      <div style={{ width: 1246 * scale, height: 614 * scale, position: 'relative' }}>
-        
-        {/* Central Glass Panel Stage */}
-        <div className="game-stage-bg" style={{
-          transform: `scale(${scale})`,
-          transformOrigin: 'top left',
-          position: 'absolute', top: 0, left: 0,
-          width: 1246, height: 614,
-          background: 'url("/avatars/most outher.png") center / 100% 100% no-repeat',
-          display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'
-        }}>
+      {/* Central Glass Panel Stage - Fluid */}
+      <div className="game-stage-bg" style={{
+        width: '100%', height: '100%',
+        background: 'url("/avatars/most outher.png") center / 100% 100% no-repeat',
+        display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'
+      }}>
           {/* Second Outer Layer */}
           <div style={{
             width: 1205, height: 577,
@@ -202,37 +183,32 @@ export function GameBoardDesktop({
 
               {/* Draw Button */}
               <button
+                className="btn-rebound"
                 onClick={onDrawCard}
                 style={{
-                  width: 351,
-                  height: 78,
+                  width: 250,
+                  height: 60,
                   background: 'linear-gradient(180deg, #F4D27B 0%, #DDA20C 100%)',
                   borderRadius: 8,
                   border: 'none',
+                  color: '#4B3602',
+                  fontSize: 22,
+                  fontWeight: 800,
                   cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
                   position: 'absolute',
-                  bottom: -39, // overlap out of the inner container as in Figma
-                  zIndex: 20,
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+                  bottom: -15,
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  boxShadow: '0 8px 16px rgba(0,0,0,0.3), inset 0 2px 4px rgba(255,255,255,0.4), inset 0 -4px 8px rgba(0,0,0,0.2)',
+                  fontFamily: 'Space Grotesk, sans-serif',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em',
                   transition: 'transform 0.2s'
                 }}
-                onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.02)'}
-                onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+                onMouseEnter={e => e.currentTarget.style.transform = 'translateX(-50%) scale(1.02)'}
+                onMouseLeave={e => e.currentTarget.style.transform = 'translateX(-50%) scale(1)'}
               >
-                <span style={{
-                  fontFamily: 'Avengenz, sans-serif',
-                  fontWeight: 400,
-                  fontSize: 36,
-                  color: '#604E39',
-                  letterSpacing: '0.06em',
-                  lineHeight: '41px',
-                  textTransform: 'uppercase'
-                }}>
-                  DRAW CARD
-                </span>
+                Draw Card
               </button>
             </div>
           </div>
@@ -393,7 +369,6 @@ export function GameBoardDesktop({
           </div> {/* End Second Outer Layer */}
       </div>
       {/* END CENTRAL STAGE */}
-      </div> {/* End Wrapper for Scaling */}
 
       {/* BOTTOM LEFT: Local Player HUD */}
       {myPlayer && (

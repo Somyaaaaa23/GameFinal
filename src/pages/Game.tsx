@@ -4,6 +4,7 @@ import { useAuth } from '../hooks/useAuth'
 import { ForfeitModal } from '../components/ForfeitModal'
 import { Button } from '../components/ui/Button'
 import { GameState, PlayerState, GameCard as GameCardType, formatWealth } from '../types/game'
+import { Wealth } from '../components/Wealth'
 import {
   initGame, initLevelGame, startDrawPhase, processDecision, processAction,
   advanceTurn, doBotTurn, forceSkipTurn, drawCard, TURN_TIME_LIMIT_MS, calculateRPChange
@@ -366,8 +367,9 @@ export function Game() {
         rpChange={rpChange}
         nearMiss={nearMiss}
         wealthGap={wealthGap}
-        players={gameState.players}
+        players={gameState.players.filter(p => !p.isBot)}
         mode={mode}
+        gameLog={gameState.log}
         onPlayAgain={() => { setGameState(null); setUiPhase('setup') }}
         onDashboard={() => navigate('/dashboard')}
       />
@@ -808,17 +810,13 @@ function SetupScreen({ botCount, setBotCount, onStart, onBack, levelId }: { botC
     </div>
   )
 }
-function ResultScreen({ isWinner, placement, finalWealth, rpChange, players, mode, onPlayAgain, onDashboard, nearMiss, wealthGap }: { isWinner: boolean; placement: number; finalWealth: number; rpChange: number; players: PlayerState[]; mode: string; onPlayAgain: () => void; onDashboard: () => void; nearMiss?: boolean; wealthGap?: number }) {
+function ResultScreen({ isWinner, placement, finalWealth, rpChange, players, mode, onPlayAgain, onDashboard, nearMiss, wealthGap, gameLog }: { isWinner: boolean; placement: number; finalWealth: number; rpChange: number; players: PlayerState[]; mode: string; onPlayAgain: () => void; onDashboard: () => void; nearMiss?: boolean; wealthGap?: number; gameLog: string[] }) {
   const sorted = [...players].sort((a, b) => b.wealth - a.wealth)
 
   return (
-    <div style={{ minHeight: '100vh', background: 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24, position: 'relative' }}>
-      {/* Epic background dim */}
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }} style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at center, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.9) 100%)', zIndex: 0 }} />
-
-      {isWinner && <Confetti width={window.innerWidth} height={window.innerHeight} recycle={false} numberOfPieces={800} gravity={0.15} initialVelocityY={20} colors={['#f59e0b', '#10b981', '#3b82f6', '#ec4899', '#f1f5f9']} />}
-
-      <div style={{ width: '100%', maxWidth: 500, textAlign: 'center', zIndex: 10, position: 'relative' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--green-black)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24, zIndex: 100, position: 'relative' }}>
+      {isWinner && <Confetti width={window.innerWidth} height={window.innerHeight} recycle={false} numberOfPieces={500} colors={['#f59e0b', '#10b981', '#3b82f6', '#ec4899', '#f1f5f9']} />}
+      <div style={{ width: '100%', maxWidth: 900, textAlign: 'center', zIndex: 10 }}>
         {/* Massive Text Stamp */}
         <motion.div
           initial={{ scale: 3, opacity: 0, rotate: isWinner ? 0 : -15 }}
@@ -859,25 +857,57 @@ function ResultScreen({ isWinner, placement, finalWealth, rpChange, players, mod
           </div>
         )}
 
-        {/* Final Rankings */}
-        <div style={{ background: 'rgba(255,255,255,0.4)', border: '1px solid rgba(0,0,0,0.1)', borderRadius: 16, padding: 20, marginBottom: 24 }}>
-          <h3 style={{ fontSize: 18, fontWeight: 700, color: 'var(--text-muted)', marginBottom: 12, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Final Rankings</h3>
-          {sorted.map((p, i) => (
-            <div key={p.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0', borderBottom: i < sorted.length - 1 ? '1px solid rgba(0,0,0,0.05)' : 'none' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                <span style={{ fontSize: 23 }}>{i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `#${i + 1}`}</span>
-                <span style={{ fontSize: 18, fontWeight: p.id === 'human' || !p.isBot ? 700 : 400, color: !p.isBot ? 'var(--blue-deep)' : 'var(--text-dark)' }}>
-                  {p.name}
+        {/* Final Rankings & Highlights */}
+        <div style={{ display: 'flex', gap: 24, justifyContent: 'center', flexDirection: 'row', flexWrap: 'wrap', alignItems: 'stretch', marginBottom: 24 }}>
+          <div style={{ flex: '1 1 300px', background: 'var(--green-deep)', border: '1px solid var(--green-primary)', borderRadius: 16, padding: 20 }}>
+            <h3 style={{ fontSize: 16, fontWeight: 700, color: 'var(--gray)', marginBottom: 14, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+              Final Rankings
+            </h3>
+            {sorted.map((p, i) => (
+              <div key={p.id} style={{
+                display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                padding: '10px 0',
+                borderBottom: i < sorted.length - 1 ? '1px solid var(--green-primary)' : 'none',
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <span style={{ fontSize: 25, width: 28 }}>
+                    {i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `#${i + 1}`}
+                  </span>
+                  <span style={{
+                    fontSize: 18,
+                    fontWeight: !p.isBot ? 700 : 500,
+                    color: !p.isBot ? 'var(--green-bright)' : 'var(--green-light)',
+                  }}>
+                    {p.name}
+                  </span>
+                </div>
+                <span style={{ fontSize: 18, fontWeight: 700, color: 'var(--green-bright)', fontFamily: 'Space Grotesk, sans-serif' }}>
+                  <Wealth amount={p.wealth} />
                 </span>
               </div>
-              <span style={{ fontSize: 18, fontWeight: 700, color: 'var(--green-primary)', fontFamily: 'Space Grotesk, sans-serif' }}>{formatWealth(p.wealth)}</span>
+            ))}
+          </div>
+
+          {/* Match Highlights */}
+          {gameLog && gameLog.length > 0 && (
+            <div style={{ flex: '1 1 300px', background: 'rgba(0,0,0,0.6)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 16, padding: 20, textAlign: 'left', maxHeight: 250, overflowY: 'auto' }}>
+              <h3 style={{ fontSize: 16, fontWeight: 700, color: 'var(--gray)', marginBottom: 8, textTransform: 'uppercase' }}>Match Highlights</h3>
+              <ul style={{ margin: 0, padding: 0, listStyle: 'none', fontSize: 14, color: '#e2e8f0', display: 'flex', flexDirection: 'column', gap: 8 }}>
+                {gameLog.slice(0, 15).map((entry: string, idx: number) => (
+                  <li key={idx} style={{ opacity: 1 - (idx * 0.05), lineHeight: 1.4 }}>• {entry}</li>
+                ))}
+              </ul>
             </div>
-          ))}
+          )}
         </div>
 
-        <div style={{ display: 'flex', gap: 12, justifyContent: 'center' }}>
-          <Button variant="gold" size="lg" onClick={onPlayAgain}>Play Again</Button>
-          <Button variant="secondary" onClick={onDashboard}>Dashboard</Button>
+        <div style={{ display: 'flex', gap: 24, justifyContent: 'center', marginTop: 12 }}>
+          <div className="btn-rebound" style={{ boxShadow: '0 0 20px rgba(244, 210, 123, 0.4)', borderRadius: 12 }}>
+            <Button variant="gold" size="lg" onClick={onPlayAgain} style={{ minWidth: 200 }}>PLAY AGAIN</Button>
+          </div>
+          <div className="btn-rebound">
+            <Button variant="secondary" size="lg" onClick={onDashboard} style={{ minWidth: 200 }}>DASHBOARD</Button>
+          </div>
         </div>
       </div>
     </div>

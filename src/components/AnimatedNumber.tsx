@@ -1,4 +1,6 @@
 import { useEffect, useState, useRef } from 'react'
+import { formatWealth } from '../types/game'
+import { Wealth } from './Wealth'
 
 interface AnimatedNumberProps {
   value: number;
@@ -41,5 +43,6 @@ export function AnimatedNumber({ value, duration = 1000, formatFn }: AnimatedNum
     return () => cancelAnimationFrame(animationFrameId)
   }, [value, duration])
   
-  return <>{formatFn ? formatFn(displayValue) : displayValue.toLocaleString('en-IN')}</>
+  
+  return <>{formatFn === formatWealth ? <Wealth amount={displayValue} /> : formatFn ? formatFn(displayValue) : displayValue.toLocaleString('en-IN')}</>
 }
