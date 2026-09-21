@@ -1,6 +1,6 @@
-# 💸 Paisa War
+# 💸 BHAO
 
-**Paisa War** is a fast-paced, competitive financial card game based on real Indian money decisions. 
+**BHAO** is a fast-paced, competitive financial card game based on real Indian money decisions. 
 Start with ₹5 Lakhs and race your opponents to reach **₹50 Lakhs** by making smart investments, dodging market crashes, and playing attack cards on your rivals!
 
 ---
